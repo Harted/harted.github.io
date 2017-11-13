@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css?family=Dosis');
+
+:root {
+/* Reference box variables */
+  --MAIN-size: 600px;
+  --MAIN-half: calc(var(--MAIN-size) / 2);
+  --MAIN-margin: 100px;
+
+/* Boxes variables */
+  --RU-size: 100px;
+  --RD-size: 150px;
+  --LD-size: 200px;
+  --LU-size: 250px;
+
+  --hover-size: 300px;
+
+  --MidLogo-size: 50px;
+
+/* Margin calculations */
+  --RU-margin: calc(var(--MAIN-half) - var(--RU-size));
+  --LD-margin: calc(var(--MAIN-half) - var(--LD-size));
+  --LU-margin: calc(var(--MAIN-half) - var(--LU-size));
+
+}
+
+/* Fixed types */
+body {
+  color: #F2F2F2;
+  background-color: #F2F2F2;
+  margin: 0;
+  font-family: 'Dosis', sans-serif;
+}
+h2 {
+  font-weight: 500;
+  font-size: 24px;
+  padding: 20px 20px;
+  margin: 0;
+}
+
+/* Reference box */
+#main {
+  position: relative;
+  width: var(--MAIN-size);
+  height: var(--MAIN-size);
+  margin: var(--MAIN-margin) auto;
+}
+
+/* Four boxes */
+#left_up {
+  position: absolute;
+  height: var(--LU-size);
+  width: var(--LU-size);
+  margin-top: var(--LU-margin);
+  margin-left: var(--LU-margin);
+}
+#left_up:hover {
+  --LU-size: var(--hover-size);
+  --LU-margin: calc(var(--MAIN-half) - var(--LU-size));
+  }
+#left_up img {
+  position: absolute;
+  width: var(--MidLogo-size);
+  height: var(--MidLogo-size);
+  margin-top: calc(var(--LU-size) - var(--MidLogo-size));
+  margin-left: calc(var(--LU-size) - var(--MidLogo-size));
+}
+
+#right_up {
+  position: absolute;
+  width: var(--RU-size);
+  height: var(--RU-size);
+  margin-top: var(--RU-margin);
+  margin-left: var(--MAIN-half);
+}
+#right_up:hover {
+  --RU-size: var(--hover-size);
+  --RU-margin: calc(var(--MAIN-half) - var(--RU-size));
+}
+#right_up img {
+  position: absolute;
+  width: var(--MidLogo-size);
+  height: var(--MidLogo-size);
+  margin-top: calc(var(--RU-size) - var(--MidLogo-size));
+}
+
+#right_down {
+  position: absolute;
+  width: var(--RD-size);
+  height: var(--RD-size);
+  margin-top: var(--MAIN-half);
+  margin-left: var(--MAIN-half);
+}
+#right_down:hover {
+  --RD-size: var(--hover-size);
+}
+#right_down img {
+  position: absolute;
+  width: var(--MidLogo-size);
+  height: var(--MidLogo-size);
+}
+
+/* Left down box */
+#left_down {
+  position: absolute;
+  width: var(--LD-size);
+  height: var(--LD-size);
+  margin-top: var(--MAIN-half);
+  margin-left: var(--LD-margin);
+}
+#left_down:hover {
+  --LD-size: var(--hover-size);
+  --LD-margin: calc(var(--MAIN-half) - var(--LD-size));
+}
+#left_down img {
+  position: absolute;
+  width: var(--MidLogo-size);
+  height: var(--MidLogo-size);
+  margin-left: calc(var(--LD-size) - var(--MidLogo-size));
+}
+
+/* Colors */
+.color1 { background: #01161E; }
+.color2 { background: #124559; }
+.color3 { background: #85DCAC; }
+.color4 { background: #E59500; }
+
+/* Show a box */
+.box { display: block; }
+
+/* h2 alignment in the boxes */
+.LD-align {position: absolute; bottom: 0;}
+.RD-align {position: absolute; bottom: 0; right: 0;}
+.RU-align {position: absolute; right: 0;}
