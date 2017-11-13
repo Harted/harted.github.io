@@ -1,2 +1,0 @@
-# harted.github.io
-Harted
