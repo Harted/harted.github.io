@@ -111,12 +111,9 @@ h2 {
   --LD-size: var(--hover-size);
   --LD-margin: calc(var(--MAIN-half) - var(--LD-size));
 }
-#left_down:hover img:first-child{
-  display: block;
+#left_down:hover img:first-child {
+  display: none;
 }
-
-
-
 
 /* Show a box */
 .box { display: block; }
