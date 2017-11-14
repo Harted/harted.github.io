@@ -119,7 +119,7 @@ h2 {
 .boxcontent img {
   width: var(--EP-size);
   height: var(--EP-size);
-  padding: var(--Pad)
+  padding-right: var(--Pad);
 }
 
 .MidLogo {
