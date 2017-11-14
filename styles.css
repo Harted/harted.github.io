@@ -104,31 +104,23 @@ h2 {
 .box { display: block; }
 
 /* h2 alignment in the boxes */
-.LU-align {position: absolute;}
-.LD-align {position: absolute; bottom: 0;}
-.RD-align {position: absolute; bottom: 0; right: 0;}
-.RU-align {position: absolute; right: 0;}
+.LU-align {margin:0; position: absolute;}
+.LD-align {margin:0; position: absolute; bottom: 0;}
+.RD-align {margin:0; position: absolute; bottom: 0; right: 0;}
+.RU-align {margin:0; position: absolute; right: 0;}
 
 .LU-pad {padding: 20px 0 0 20px;}
 .LD-pad {padding: 0 0 20px 20px;}
 .RD-pad {padding: 0 20px 20px 0;}
 .RU-pad {padding: 20px 20px 0 0;}
 
-.boxcontent {
-  margin: 0;
-}
 .boxcontent img {
   width:100px;
   height:100px;
-  /*margin: 0;*/
 }
 
-.MidLogo {
-  margin: 0;
-}
 .MidLogo img {
   width: var(--MidLogo-size);
   height: var(--MidLogo-size);
   padding: 0;
-  /*margin: 0;*/
 }
