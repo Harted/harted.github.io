@@ -95,6 +95,10 @@ h2 {
   --LD-size: var(--hover-size);
   --LD-margin: calc(var(--MAIN-half) - var(--LD-size));
 }
+#left_down:hover img{
+  visible: visible;
+}
+
 
 /* Colors */
 .color1 { background: #01161E; }
@@ -120,6 +124,7 @@ h2 {
   width: var(--EP-size);
   height: var(--EP-size);
   padding-right: var(--Pad);
+  vissible: hidden;
 }
 
 .MidLogo {
