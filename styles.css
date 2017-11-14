@@ -1,6 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Dosis|Raleway');
 
 :root {
+  
+/* Colors */
+  --color-1: #01161E;
+  --color-2: #124559;
+  --color-3: #85DCAC;
+  --color-4: #E59500;
+.color1 { background: #color-1; }
+.color2 { background: #color-2; }
+.color3 { background: #color-3; }
+.color4 { background: #color-4; }
+
 /* Reference box variables */
   --MAIN-size: calc(var(--hover-size) * 2);
   --MAIN-half: calc(var(--MAIN-size) / 2);
@@ -100,11 +111,7 @@ h2 {
 }
 
 
-/* Colors */
-.color1 { background: #01161E; }
-.color2 { background: #124559; }
-.color3 { background: #85DCAC; }
-.color4 { background: #E59500; }
+
 
 /* Show a box */
 .box { display: block; }
@@ -120,11 +127,11 @@ h2 {
 .RD-pad {padding: 0 var(--Pad) var(--Pad) 0;}
 .RU-pad {padding: var(--Pad) var(--Pad) 0 0;}
 
-.boxcontent {
+.EPimg {
   width: var(--EP-size);
   height: var(--EP-size); 
 }
-.boxcontent img {
+.EPimg img {
   width: var(--EP-size);
   height: var(--EP-size);
   display: none;
