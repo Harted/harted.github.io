@@ -2,7 +2,7 @@
 
 :root {
 /* Reference box variables */
-  --MAIN-size: 600px;
+  --MAIN-size: calc(var(--hover-size) * 2);
   --MAIN-half: calc(var(--MAIN-size) / 2);
   --MAIN-margin: 100px;
 
