@@ -14,8 +14,6 @@
 
   --hover-size: 300px;
 
-  --MidLogo-size: 50px;
-
 /* Margin calculations */
   --RU-margin: calc(var(--MAIN-half) - var(--RU-size));
   --LD-margin: calc(var(--MAIN-half) - var(--LD-size));
@@ -56,13 +54,6 @@ h2 {
   --LU-size: var(--hover-size);
   --LU-margin: calc(var(--MAIN-half) - var(--LU-size));
   }
-#left_up > img {
-  position: absolute;
-  width: var(--MidLogo-size);
-  height: var(--MidLogo-size);
-  margin-top: calc(var(--LU-size) - var(--MidLogo-size));
-  margin-left: calc(var(--LU-size) - var(--MidLogo-size));
-}
 
 #right_up {
   position: absolute;
@@ -75,12 +66,6 @@ h2 {
   --RU-size: var(--hover-size);
   --RU-margin: calc(var(--MAIN-half) - var(--RU-size));
 }
-#right_up > img {
-  position: absolute;
-  width: var(--MidLogo-size);
-  height: var(--MidLogo-size);
-  margin-top: calc(var(--RU-size) - var(--MidLogo-size));
-}
 
 #right_down {
   position: absolute;
@@ -91,11 +76,6 @@ h2 {
 }
 #right_down:hover {
   --RD-size: var(--hover-size);
-}
-#right_down > img {
-  position: absolute;
-  width: var(--MidLogo-size);
-  height: var(--MidLogo-size);
 }
 
 /* Left down box */
@@ -109,12 +89,6 @@ h2 {
 #left_down:hover {
   --LD-size: var(--hover-size);
   --LD-margin: calc(var(--MAIN-half) - var(--LD-size));
-}
-#left_down > img {
-  position: absolute;
-  width: var(--MidLogo-size);
-  height: var(--MidLogo-size);
-  margin-left: calc(var(--LD-size) - var(--MidLogo-size));
 }
 
 /* Colors */
@@ -135,4 +109,10 @@ h2 {
 .boxcontent img {
   width:100px;
   height:100px;
+}
+
+.MidLogo {
+  position: absolute;
+  width: 50px;
+  height: 50px;
 }
