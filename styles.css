@@ -124,7 +124,6 @@ h2 {
 .boxcontent img {
   width: var(--EP-size);
   height: var(--EP-size);
-  padding-right: var(--Pad);
   display: none;
 }
 
