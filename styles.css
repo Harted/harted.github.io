@@ -7,10 +7,6 @@
   --color-2: #124559;
   --color-3: #85DCAC;
   --color-4: #E59500;
-.color1 { background: #color-1; }
-.color2 { background: #color-2; }
-.color3 { background: #color-3; }
-.color4 { background: #color-4; }
 
 /* Reference box variables */
   --MAIN-size: calc(var(--hover-size) * 2);
@@ -146,3 +142,9 @@ h2 {
   height: var(--MidLogo-size);
   padding: 0;
 }
+
+/* Color classes */
+.color1 { background: #color-1; }
+.color2 { background: #color-2; }
+.color3 { background: #color-3; }
+.color4 { background: #color-4; }
