@@ -12,7 +12,7 @@
   --LD-size: 200px;
   --LU-size: 250px;
 
-  --hover-size: 360px;
+  --hover-size: calc(300px + (3 * var(--Pad)));
 
 /* Margin calculations */
   --RU-margin: calc(var(--MAIN-half) - var(--RU-size));
@@ -23,7 +23,7 @@
   --MidLogo-size: 50px;
   --EP-size: 150px;
 
-  --Pad: 20px;
+  --Pad: 25px;
 }
 
 /* Fixed types */
