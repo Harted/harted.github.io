@@ -65,7 +65,10 @@ h2 {
 #left_up:hover {
   --LU-size: var(--hover-size);
   --LU-margin: calc(var(--MAIN-half) - var(--LU-size));
-  }
+}
+#left_up:hover img:first-child {
+  display: none;
+}
 
 #right_up {
   position: absolute;
@@ -78,6 +81,9 @@ h2 {
   --RU-size: var(--hover-size);
   --RU-margin: calc(var(--MAIN-half) - var(--RU-size));
 }
+#right_up:hover img:first-child {
+  display: none;
+}
 
 #right_down {
   position: absolute;
@@ -88,6 +94,9 @@ h2 {
 }
 #right_down:hover {
   --RD-size: var(--hover-size);
+}
+#right_down:hover img:first-child {
+  display: none;
 }
 
 /* Left down box */
@@ -102,7 +111,7 @@ h2 {
   --LD-size: var(--hover-size);
   --LD-margin: calc(var(--MAIN-half) - var(--LD-size));
 }
-#left_down:hover img{
+#left_down:hover img:first-child{
   display: block;
 }
 
