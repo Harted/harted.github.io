@@ -33,7 +33,6 @@ body {
 h2 {
   font-weight: 500;
   font-size: 20px;
-  padding: 20px 20px;
   margin: 0;
 }
 
@@ -128,6 +127,7 @@ h2 {
 .box { display: block; }
 
 /* h2 alignment in the boxes */
-.LD-align {position: absolute; bottom: 0;}
-.RD-align {position: absolute; bottom: 0; right: 0;}
-.RU-align {position: absolute; right: 0;}
+.LU-align {position: absolute;                          padding: 20px 0 0 20px;}
+.LD-align {position: absolute; bottom: 0;               padding: 0 0 20px 20px;}
+.RD-align {position: absolute; bottom: 0; right: 0;     padding: 0 20px 20px 0;}
+.RU-align {position: absolute; right: 0;                padding: 20px 20px 0 0;}
