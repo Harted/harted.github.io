@@ -1,52 +1,102 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- CSS file -->
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
   <div id="reference_box">
-    <div class="color1 box" id="left_up">
+    <div class="color1" id="left_up">
       <div class="RD-align MidLogo">
         <img src="MidLogo_LU.png">
       </div>
-      <div class="LU-align LU-pad">
+      <div class="LU-align LU-margin">
         <h2>About</h2>
       </div>
     </div>
-    
-    <div class="color2 box" id="left_down">
+
+    <div class="color2" id="left_down">
       <div class="RU-align MidLogo">
         <img src="MidLogo_LD.png">
       </div>
-      <div class="LD-align LD-pad">
+      <div class="LD-align LD-margin">
         <h2>Music</h2>
       </div>
-      <div class="LU-align LU-pad EPimg">
-        <img src="https://i1.sndcdn.com/artworks-000131327310-caz86o-t500x500.jpg">
+<!-- WANDER EP -->
+      <div id="Wander_EP" class="LD-content">
+        <!-- EP content -->
+        <div class="LU-align LU-margin EPimg">
+          <img src="https://i1.sndcdn.com/artworks-000131327310-caz86o-t500x500.jpg">
+          <h3>Wander EP</h3>
+        </div>
+        <!-- EP selector -->
+        <input id="Wander_select" class="LU-align LU-margin" type="image" alt=""></input>
+        <!-- Wander Soundcloud_player -->
+        <iframe class="soundcloud_player"
+        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/147397667&amp;
+auto_play=false&amp;
+color=%23124559&amp;
+buying=false&amp;
+sharing=true&amp;
+show_playcount=false&amp;
+hide_related=true&amp;
+show_artwork=false&amp;
+show_comments=false&amp;
+show_user=true&amp;
+show_reposts=true&amp;
+show_teaser=false&amp;
+visual=false">
+        </iframe>
+        <!-- Cookiewrap */ -->
+        <div class="soundcloud_cookiewrap">
+          <div class="soundcloud_cookieborder LD-align"></div>
+          <div class="soundcloud_cookiecover LD-align"></div>
+          <a target="_blank" href="https://soundcloud.com/harted/sets/wander-ep">
+            <img class="LD-align soundcloud_artwork" src="https://i1.sndcdn.com/artworks-000131327310-caz86o-t500x500.jpg">
+          </a>
+        </div>
       </div>
-      <div class="RU-align RU-pad EPimg">
-        <img src="https://i1.sndcdn.com/artworks-000190711096-7rnmbf-t500x500.jpg">
+
+
+
+
+<!-- POLY EP -->
+
+      <div id="Polysemy_EP" class="LD-content">
+        <div id="Polysemy_EP" class="RU-align RU-margin EPimg">
+          <img src="https://i1.sndcdn.com/artworks-000190711096-7rnmbf-t500x500.jpg">
+          <h3>Polysemy EP</h3>
+        </div>
       </div>
+
+
+
+
     </div>
-    
-    <div class="color3 box" id="right_down">
+
+    <div class="color3" id="right_down">
       <div class="LU-align MidLogo">
         <img src="MidLogo_RD.png">
       </div>
-      <div class="RD-align RD-pad">          
+      <div class="RD-align RD-margin">
           <h2>Video</h2>
       </div>
     </div>
-  
-    <div class="color4 box" id="right_up">
+
+    <div class="color4" id="right_up">
       <div class="LD-align MidLogo">
         <img src="MidLogo_RU.png">
       </div>
-      <div class="RU-align RU-pad">
+      <div class="RU-align RU-margin">
         <h2>Shows</h2>
       </div>
     </div>
-  
+
+
+
   </div>
+
+
+
 </body>
 </html>
