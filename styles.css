@@ -12,7 +12,7 @@
   --LD-size: 200px;
   --LU-size: 250px;
 
-  --hover-size: 300px;
+  --hover-size: 360px;
 
 /* Margin calculations */
   --RU-margin: calc(var(--MAIN-half) - var(--RU-size));
@@ -21,8 +21,9 @@
 
 /* Image sizes */
   --MidLogo-size: 50px;
-  --EP-size: 120px;
-  
+  --EP-size: 150px;
+
+  --Pad: 20px;
 }
 
 /* Fixed types */
@@ -110,14 +111,15 @@ h2 {
 .RD-align {position: absolute; bottom: 0; right: 0;}
 .RU-align {position: absolute; right: 0;}
 
-.LU-pad {padding: 20px 0 0 20px;}
-.LD-pad {padding: 0 0 20px 20px;}
-.RD-pad {padding: 0 20px 20px 0;}
-.RU-pad {padding: 20px 20px 0 0;}
+.LU-pad {padding: var(--Pad) 0 0 var(--Pad);}
+.LD-pad {padding: 0 0 var(--Pad) var(--Pad);}
+.RD-pad {padding: 0 var(--Pad) var(--Pad) 0;}
+.RU-pad {padding: var(--Pad) var(--Pad) 0 0;}
 
 .boxcontent img {
   width: var(--EP-size);
   height: var(--EP-size);
+  padding: var(--Pad)
 }
 
 .MidLogo {
