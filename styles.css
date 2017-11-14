@@ -21,6 +21,7 @@
 
 /* Image sizes */
   --MidLogo-size: 50px;
+  --EP-size: 120px;
   
 }
 
@@ -104,10 +105,10 @@ h2 {
 .box { display: block; }
 
 /* h2 alignment in the boxes */
-.LU-align {margin:0; position: absolute;}
-.LD-align {margin:0; position: absolute; bottom: 0;}
-.RD-align {margin:0; position: absolute; bottom: 0; right: 0;}
-.RU-align {margin:0; position: absolute; right: 0;}
+.LU-align {position: absolute;}
+.LD-align {position: absolute; bottom: 0;}
+.RD-align {position: absolute; bottom: 0; right: 0;}
+.RU-align {position: absolute; right: 0;}
 
 .LU-pad {padding: 20px 0 0 20px;}
 .LD-pad {padding: 0 0 20px 20px;}
@@ -115,10 +116,14 @@ h2 {
 .RU-pad {padding: 20px 20px 0 0;}
 
 .boxcontent img {
-  width:100px;
-  height:100px;
+  width: var(--EP-size);
+  height: var(--EP-size);
 }
 
+.MidLogo {
+  width: var(--MidLogo-size);
+  height: var(--MidLogo-size);
+}
 .MidLogo img {
   width: var(--MidLogo-size);
   height: var(--MidLogo-size);
