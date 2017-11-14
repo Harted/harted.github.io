@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Dosis');
+@import url('https://fonts.googleapis.com/css?family=Dosis|Varela');
 
 :root {
 /* Reference box variables */
@@ -28,7 +28,7 @@ body {
   color: #F2F2F2;
   background-color: #F2F2F2;
   margin: 0;
-  font-family: 'Dosis', sans-serif;
+  font-family: 'Varela', sans-serif;
 }
 h2 {
   font-weight: 500;
