@@ -56,7 +56,7 @@ h2 {
   --LU-size: var(--hover-size);
   --LU-margin: calc(var(--MAIN-half) - var(--LU-size));
   }
-#left_up img {
+#left_up > img {
   position: absolute;
   width: var(--MidLogo-size);
   height: var(--MidLogo-size);
@@ -75,7 +75,7 @@ h2 {
   --RU-size: var(--hover-size);
   --RU-margin: calc(var(--MAIN-half) - var(--RU-size));
 }
-#right_up img {
+#right_up > img {
   position: absolute;
   width: var(--MidLogo-size);
   height: var(--MidLogo-size);
@@ -92,7 +92,7 @@ h2 {
 #right_down:hover {
   --RD-size: var(--hover-size);
 }
-#right_down img {
+#right_down > img {
   position: absolute;
   width: var(--MidLogo-size);
   height: var(--MidLogo-size);
@@ -110,7 +110,7 @@ h2 {
   --LD-size: var(--hover-size);
   --LD-margin: calc(var(--MAIN-half) - var(--LD-size));
 }
-#left_down img {
+#left_down > img {
   position: absolute;
   width: var(--MidLogo-size);
   height: var(--MidLogo-size);
