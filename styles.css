@@ -144,7 +144,7 @@ h2 {
 }
 
 /* Color classes */
-.color1 { background: #color-1; }
-.color2 { background: #color-2; }
-.color3 { background: #color-3; }
-.color4 { background: #color-4; }
+.color1 { background: var(--color-1); }
+.color2 { background: var(--color-2); }
+.color3 { background: var(--color-3); }
+.color4 { background: var(--color-4); }
