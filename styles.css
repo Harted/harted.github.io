@@ -120,7 +120,10 @@ h2 {
 .RD-pad {padding: 0 var(--Pad) var(--Pad) 0;}
 .RU-pad {padding: var(--Pad) var(--Pad) 0 0;}
 
-
+.boxcontent {
+  width: var(--EP-size);
+  height: var(--EP-size); 
+}
 .boxcontent img {
   width: var(--EP-size);
   height: var(--EP-size);
