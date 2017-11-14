@@ -21,7 +21,7 @@
 
   --hover-size: calc((2 * var(--EP-size)) + (3 * var(--Pad)));
 
-/* Margin calculations */
+/* Boxes margin calculations */
   --RU-margin: calc(var(--MAIN-half) - var(--RU-size));
   --LD-margin: calc(var(--MAIN-half) - var(--LD-size));
   --LU-margin: calc(var(--MAIN-half) - var(--LU-size));
@@ -30,7 +30,9 @@
   --MidLogo-size: 50px;
   --EP-size: 120px;
 
+/* Other sizes */
   --Pad: 25px;
+
 }
 
 /* Fixed types */
@@ -46,8 +48,8 @@ h2 {
   margin: 0;
 }
 
-/* Reference box */
-#main {
+/* Reference box - nog main aanpassen naar RB*/ 
+#reference_box {
   position: relative;
   width: var(--MAIN-size);
   height: var(--MAIN-size);
