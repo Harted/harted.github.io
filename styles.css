@@ -101,10 +101,15 @@ h2 {
 .box { display: block; }
 
 /* h2 alignment in the boxes */
-.LU-align {position: absolute;                          padding: 20px 0 0 20px;}
-.LD-align {position: absolute; bottom: 0;               padding: 0 0 20px 20px;}
-.RD-align {position: absolute; bottom: 0; right: 0;     padding: 0 20px 20px 0;}
-.RU-align {position: absolute; right: 0;                padding: 20px 20px 0 0;}
+.LU-align {position: absolute;}
+.LD-align {position: absolute; bottom: 0;}
+.RD-align {position: absolute; bottom: 0; right: 0;}
+.RU-align {position: absolute; right: 0;}
+
+.LU-pad {padding: 20px 0 0 20px;}
+.LD-pad {padding: 0 0 20px 20px;}
+.RD-pad {padding: 0 20px 20px 0;}
+.RU-pad {padding: 20px 20px 0 0;}
 
 .boxcontent img {
   width:100px;
