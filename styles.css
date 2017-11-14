@@ -96,7 +96,7 @@ h2 {
   --LD-margin: calc(var(--MAIN-half) - var(--LD-size));
 }
 #left_down:hover img{
-  visible: visible;
+  visibility: visible;
 }
 
 
@@ -125,7 +125,7 @@ h2 {
   width: var(--EP-size);
   height: var(--EP-size);
   padding-right: var(--Pad);
-  visible: hidden;
+  visiblity: hidden;
 }
 
 .MidLogo {
