@@ -125,7 +125,7 @@ h2 {
   width: var(--EP-size);
   height: var(--EP-size);
   padding-right: var(--Pad);
-  visiblity: hidden;
+  visibility: hidden;
 }
 
 .MidLogo {
