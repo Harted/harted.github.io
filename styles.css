@@ -131,3 +131,8 @@ h2 {
 .LD-align {position: absolute; bottom: 0;               padding: 0 0 20px 20px;}
 .RD-align {position: absolute; bottom: 0; right: 0;     padding: 0 20px 20px 0;}
 .RU-align {position: absolute; right: 0;                padding: 20px 20px 0 0;}
+
+.boxcontent img {
+  width:100px;
+  height:100px;
+}
