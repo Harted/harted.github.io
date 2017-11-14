@@ -115,8 +115,8 @@ h2 {
   display: none;
 }
 
-/* Show a box */
-.box { display: block; }
+/* Show a box
+.box { display: block; } */
 
 /* h2 alignment in the boxes */
 .LU-align {position: absolute;}
