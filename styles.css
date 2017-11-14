@@ -12,7 +12,7 @@
   --LD-size: 200px;
   --LU-size: 250px;
 
-  --hover-size: calc(300px + (3 * var(--Pad)));
+  --hover-size: calc((2 * var(--EP-size)) + (3 * var(--Pad)));
 
 /* Margin calculations */
   --RU-margin: calc(var(--MAIN-half) - var(--RU-size));
@@ -21,7 +21,7 @@
 
 /* Image sizes */
   --MidLogo-size: 50px;
-  --EP-size: 150px;
+  --EP-size: 120px;
 
   --Pad: 25px;
 }
