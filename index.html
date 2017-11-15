@@ -85,7 +85,7 @@ visual=false">
 
     </div>
 
-    <div class="color3" id="right_down">
+    <div id="right_down" class="color3">
       <div class="LU-align MidLogo">
         <img src="MidLogo_RD.png">
       </div>
@@ -95,7 +95,7 @@ visual=false">
     </div>
 
 
-    <div id="right_up" class="color4"> <!--class="color4" -->
+    <div id="right_up" class="color4">
       <div class="LD-align MidLogo">
         <img src="MidLogo_RU.png">
       </div>
@@ -108,44 +108,109 @@ visual=false">
 
     <script>
 
-    $(document).ready(function(){
-      //sizes in pixels
-      var ru_size = 100;
-      var EP_size = 120;
-      var pad_size = 25;
-      var hover_size = (2 * EP_size) + (3 * pad_size);
-      var ru_margin =  hover_size - ru_size;
+    //sizes in pixels
+    var ref_box_size = 630;
+    var hover_size = ref_box_size/2;
 
-      //colors
-      var color4 = "#01161E";
+    //animation speeds
+    var on_speed = 150
+    var off_speed = 50
 
-      //right up window
-      $("#right_up")
-      .css({
-        'position': 'absolute',
-        'width': ru_size,
-        'height': ru_size,
-        'margin-top': ru_margin,
-        'margin-left': hover_size,
+    //squares
+    MakeSquare("#left_up", 1, 250, "about.html");
+    MakeSquare("#left_down", 2, 200, "music.html");
+    MakeSquare("#right_down", 3, 150, "video.html");
+    MakeSquare("#right_up", 4, 100, "shows.html");
+
+    function MakeSquare(MS_id, MS_ref, MS_size, MS_href, MS_on_spd, MS_off_spd){
+      var MS_margin = hover_size - MS_size;
+      var MS_margin_top, MS_margin_right, MS_margin_bottom, MS_margin_left, MS_margin_top_h, MS_margin_right_h, MS_margin_bottom_h, MS_margin_left_h
+
+      if (MS_ref == 1) {
+        MS_margin_top = MS_margin;
+        MS_margin_right = hover_size;
+        MS_margin_bottom = hover_size;
+        MS_margin_left = MS_margin;
+        MS_margin_top_h = 0;
+        MS_margin_right_h = hover_size;
+        MS_margin_bottom_h = hover_size;
+        MS_margin_left_h = 0
+
+      } else if (MS_ref == 2) {
+        MS_margin_top = hover_size
+        MS_margin_right = hover_size
+        MS_margin_bottom = MS_margin
+        MS_margin_left = MS_margin
+        MS_margin_top_h = hover_size;
+        MS_margin_right_h = hover_size;
+        MS_margin_bottom_h = 0;
+        MS_margin_left_h = 0;
+
+      } else if (MS_ref == 3) {
+        MS_margin_top = hover_size
+        MS_margin_right = MS_margin
+        MS_margin_bottom = MS_margin
+        MS_margin_left = hover_size
+        MS_margin_top_h = hover_size;
+        MS_margin_right_h = 0;
+        MS_margin_bottom_h = 0;
+        MS_margin_left_h = hover_size;
+
+      } else if (MS_ref == 4) {
+        MS_margin_top = MS_margin
+        MS_margin_right = MS_margin
+        MS_margin_bottom = hover_size
+        MS_margin_left = hover_size
+        MS_margin_top_h = 0;
+        MS_margin_right_h = 0;
+        MS_margin_bottom_h = hover_size;
+        MS_margin_left_h = hover_size;
+      }
+
+      $(document).ready(function(){
+        $(MS_id)
+        .css({
+          'position': 'absolute',
+          //'width': MS_size,
+          //'height': MS_size,
+          'top': MS_margin_top,
+          'right': MS_margin_right,
+          'bottom': MS_margin_bottom,
+          'left': MS_margin_left
+        })
+        .mouseenter(function(){
+          $(MS_id).animate({
+            //'width': hover_size,
+            //'height': hover_size,
+            'top': MS_margin_top_h,
+            'right': MS_margin_right_h,
+            'bottom': MS_margin_bottom_h,
+            'left': MS_margin_left_h
+          },on_speed, function(){
+            $(MS_id).css({
+              'cursor' : "pointer"
+            })
+            .click(function(){
+              window.location = MS_href
+            })
+          })
+        })
+        .mouseleave(function(){
+          $(MS_id).animate({
+            //'width': MS_size,
+            //'height': MS_size,
+            'top': MS_margin_top,
+            'right': MS_margin_right,
+            'bottom': MS_margin_bottom,
+            'left': MS_margin_left
+          },off_speed)
+          .css({
+              'cursor' : "initial"
+          })
+          .unbind("click")
+        })
       })
-      .mouseenter(function(){
-        $("#right_up").animate({
-          'width': hover_size,
-          'height': hover_size,
-          'margin-top': "0px",
-          'margin-left': hover_size,
-        },150)
-      })
-      .mouseleave(function(){
-        $("#right_up").animate({
-          'width': ru_size,
-          'height': ru_size,
-          'margin-top': ru_margin,
-          'margin-left': hover_size,
-        },50)
-      });
-    });
-
+    }
 
     </script>
 

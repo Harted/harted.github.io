@@ -63,7 +63,8 @@ h3 {
 }
 
 /* Four boxes */
-#left_up {
+
+/*#left_up {
   position: absolute;
   height: var(--LU-size);
   width: var(--LU-size);
@@ -76,9 +77,9 @@ h3 {
 }
 #left_up:hover .MidLogo {
   display: none;
-}
+}*/
 
-/* Left down box ------------------------------------------------ LD --- */
+/* Left down box ------------------------------------------------ LD ---
 #left_down {
   position: absolute;
   width: var(--LD-size);
@@ -93,7 +94,7 @@ h3 {
 }
 #left_down:hover .MidLogo {
   display: none;
-}
+}*/
 #left_down:hover .LD-content {
   display: block;
 }
@@ -154,7 +155,7 @@ h3 {
   margin: 8px;
 }
 
-/* Right down box */
+/* Right down box
 #right_down {
   position: absolute;
   width: var(--RD-size);
@@ -167,7 +168,7 @@ h3 {
 }
 #right_down:hover .MidLogo {
   display: none;
-}
+}*/
 
 
 /* Right up box
