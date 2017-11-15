@@ -3,6 +3,9 @@
 <head>
 <!-- CSS file -->
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </head>
 <body>
   <div id="reference_box">
@@ -26,7 +29,7 @@
       <div id="Wander_EP" class="LD-content">
         <!-- EP content -->
         <div class="LU-align LU-margin EPimg">
-          <img src="https://i1.sndcdn.com/artworks-000131327310-caz86o-t500x500.jpg" 
+          <img src="https://i1.sndcdn.com/artworks-000131327310-caz86o-t500x500.jpg"
 
 	onclick="document.getElementById('wander_soundcloud_player').style.display='block'"
 
@@ -35,7 +38,7 @@
         </div>
 
         <!-- Wander Soundcloud_player -->
-        <iframe id="wander_soundcloud_player" class="soundcloud_player"
+<!--<iframe id="wander_soundcloud_player" class="soundcloud_player"
 
         onmouseout="document.getElementById('wander_soundcloud_player').style.display='none'"
 
@@ -52,7 +55,7 @@ show_user=true&amp;
 show_reposts=true&amp;
 show_teaser=false&amp;
 visual=false">
-        </iframe>
+</iframe>-->
         <!-- Cookiewrap */ -->
         <div class="soundcloud_cookiewrap">
           <div class="soundcloud_cookieborder LD-align"></div>
@@ -91,7 +94,8 @@ visual=false">
       </div>
     </div>
 
-    <div class="color4" id="right_up">
+
+    <div id="right_up" class="color4"> <!--class="color4" -->
       <div class="LD-align MidLogo">
         <img src="MidLogo_RU.png">
       </div>
@@ -99,6 +103,53 @@ visual=false">
         <h2>Shows</h2>
       </div>
     </div>
+
+
+
+    <script>
+
+    $(document).ready(function(){
+      //sizes in pixels
+      var ru_size = 100;
+      var EP_size = 120;
+      var pad_size = 25;
+      var hover_size = (2 * EP_size) + (3 * pad_size);
+      var ru_margin =  hover_size - ru_size;
+
+      //colors
+      var color4 = "#01161E";
+
+      //right up window
+      $("#right_up")
+      .css({
+        'position': 'absolute',
+        'width': ru_size,
+        'height': ru_size,
+        'margin-top': ru_margin,
+        'margin-left': hover_size,
+      })
+      .mouseenter(function(){
+        $("#right_up").animate({
+          'width': hover_size,
+          'height': hover_size,
+          'margin-top': "0px",
+          'margin-left': hover_size,
+        },150)
+      })
+      .mouseleave(function(){
+        $("#right_up").animate({
+          'width': ru_size,
+          'height': ru_size,
+          'margin-top': ru_margin,
+          'margin-left': hover_size,
+        },50)
+      });
+    });
+
+
+    </script>
+
+
 
 
 
