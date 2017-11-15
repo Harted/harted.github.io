@@ -56,10 +56,10 @@ h3 {
 
 /* Reference box - nog main aanpassen naar RB*/
 #reference_box {
-  position: relative;
+  position: fixed;
   width: var(--MAIN-size);
   height: var(--MAIN-size);
-  margin: var(--MAIN-margin) auto;
+  margin: auto;
 }
 
 /* Four boxes */
