@@ -93,19 +93,12 @@ h3 {
   display: block;
 }
 #left_down:hover .MidLogo {
-  display: none;
+  display: none;  
 }
 #left_down:hover .LD-content {
   display: block;
 }
 
-#Wander_select {
-  width: var(--EP-size);
-  height: var(--EP-size);
-}
-#Wander_select:focus ~ .soundcloud_player, #Wander_select:focus ~ .soundcloud_cookiewrap {
-  display: block;
-}
 
 /* EP Classes */
 .EPimg {

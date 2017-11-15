@@ -26,13 +26,19 @@
       <div id="Wander_EP" class="LD-content">
         <!-- EP content -->
         <div class="LU-align LU-margin EPimg">
-          <img src="https://i1.sndcdn.com/artworks-000131327310-caz86o-t500x500.jpg">
+          <img src="https://i1.sndcdn.com/artworks-000131327310-caz86o-t500x500.jpg" 
+
+	onclick="document.getElementById('wander_soundcloud_player').style.display='block'"
+
+	>
           <h3>Wander EP</h3>
         </div>
-        <!-- EP selector -->
-        <input id="Wander_select" class="LU-align LU-margin" type="image" alt=""></input>
+
         <!-- Wander Soundcloud_player -->
-        <iframe class="soundcloud_player"
+        <iframe id="wander_soundcloud_player" class="soundcloud_player"
+
+        onmouseout="document.getElementById('wander_soundcloud_player').style.display='none'"
+
         src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/147397667&amp;
 auto_play=false&amp;
 color=%23124559&amp;
@@ -66,7 +72,7 @@ visual=false">
 
       <div id="Polysemy_EP" class="LD-content">
         <div id="Polysemy_EP" class="RU-align RU-margin EPimg">
-          <img src="https://i1.sndcdn.com/artworks-000190711096-7rnmbf-t500x500.jpg" onclick="document.getElementById('Polysemy_EP').style.fontSize='35px'">
+          <img src="https://i1.sndcdn.com/artworks-000190711096-7rnmbf-t500x500.jpg">
           <h3>Polysemy EP</h3>
         </div>
       </div>
