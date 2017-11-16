@@ -186,7 +186,7 @@ visual=false">
             'right': MS_margin_right_h,
             'bottom': MS_margin_bottom_h,
             'left': MS_margin_left_h
-          },on_speed, function(){
+          }, (on_speed * MS_size), function(){
             $(MS_id).css({
               'cursor' : "pointer"
             })
@@ -203,7 +203,7 @@ visual=false">
             'right': MS_margin_right,
             'bottom': MS_margin_bottom,
             'left': MS_margin_left
-          },off_speed)
+          },(off_speed * MS_size))
           .css({
               'cursor' : "initial"
           })
