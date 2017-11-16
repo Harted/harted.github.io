@@ -8,19 +8,36 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
   </script>
   <script>
-  //sizes in pixels
-  var ref_box_size = 630;
+
+  //box sizes in pixels
+  var box1_size = 220;
+  var box2_size = 180;
+  var box3_size = 140;
+  var box4_size = 100;
+  var ref_box_size = 600;
   var hover_size = ref_box_size/2;
+
+  //logo sizes
   var logo_size = 80;
   var logo_ref_center = hover_size - (logo_size/2)
+
   //square animation speed factor (based on object margin)
-  var on_speed = 0.4;
+  var on_speed = 0.9;
   var off_speed = 0.3;
-  var visited = 1; //slaat op color1/square1 - is om het logo naar het bezochte vak te laten veranderen
+
+  //colors
+  var color_1 = "#01161E"
+  var color_2 = "#124559"
+  var color_3 = "#85DCAC"
+  var color_4 = "#E59500"
+  var color_back = "white"
+  var color_visited = color_back
+
+  //logo id (choice: logo / logo_fill / logo_border)
+  var MS_logo_id = "#logo"
 
   //Reference box
-  $(document)
-  .ready(function(){
+  $(document).ready(function(){
     $("#reference_box").css({
       "width": ref_box_size,
       "height": ref_box_size,
@@ -32,30 +49,43 @@
 
   //Logo styling
   .ready(function(){
-    $('#logo').css({
+    $("#logo").css({
       "width": logo_size,
+      "height": logo_size,
       "position": "absolute",
       "top": logo_ref_center,
-      "left": logo_ref_center
+      "left": logo_ref_center,
+      "fill": color_back
     })
+  })
+
+  //Logo filling by squares
+  .ready(function(){
+    $(MS_logo_id)
     .mouseleave(function(){
-      $('#logo').css({
-        //kleurtjes!!
+      $(MS_logo_id).css({
+        "fill": eval(color_visited)
       })
     })
     .mouseenter(function(){
-      $('#logo').css({
-        //kleurtjes!!
+      console.log("color_visited: " + color_visited + " - eval: " + eval(color_visited))
+      $(MS_logo_id).css({
+        "fill": color_back
       })
+      console.log("entered")
     })
   });
 
-  //squares
-  MakeSquare("#left_up", 1, 250, "about.html");
-  MakeSquare("#left_down", 2, 200, "music.html");
-  MakeSquare("#right_down", 3, 150, "video.html");
-  MakeSquare("#right_up", 4, 100, "shows.html");
 
+  //squares
+  MakeSquare("#left_up", 1, box1_size, "about.html");
+  MakeSquare("#left_down", 2, box2_size, "music.html");
+  MakeSquare("#right_down", 3, box3_size, "video.html");
+  MakeSquare("#right_up", 4, box4_size, "shows.html");
+
+
+
+//Make squares - ANIMATION STILL TO REPLACE BY TRANSITION!!!!!!!
   function MakeSquare(MS_id, MS_ref, MS_size, MS_href, MS_on_spd, MS_off_spd) {
     var MS_margin = hover_size - MS_size;
     var MS_top, MS_right, MS_bottom, MS_left, MS_top_h, MS_right_h, MS_bottom_h, MS_left_h
@@ -120,6 +150,11 @@
             window.location = MS_href
           })
         })
+        color_visited = "color_" + MS_ref
+        $(MS_logo_id).css({
+          "fill" : eval(color_visited),
+          "transition" : (on_speed * (hover_size - MS_size)) + "ms"
+        })
       }).mouseleave(function() {
         $(MS_id).animate({
           //'width': MS_size,
@@ -131,13 +166,27 @@
         }, (off_speed * (hover_size - MS_size))).css({
           'cursor': "initial"
         }).unbind("click")
+        $(MS_logo_id).css({
+          "fill" : color_back,
+          "transition" : (on_speed * (hover_size - MS_size)) + "ms"
+        })
       })
     })
   }
+
+  $(function() {
+      $('body').removeClass('fade-out');
+  });
+
 </script>
 <title>Harted</title>
+
+
+
+
 </head>
 <body>
+  <script>document.body.className += 'fade-out';</script>
   <div id="reference_box">
     <div id="left_up" class="color1">
       <div class="LU-align LU-margin">
@@ -159,7 +208,7 @@
         <h2>Shows</h2>
       </div>
     </div>
-    <svg id="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16.95 0 500 500">
+    <svg id="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16.95 0 500 500" fill="white">
       <path id="logo_fill" d="M250.4,15.9a16.7,16.7,0,0,0-7.9,2L41,126.6A16.7,16.7,0,0,0,32,141.3V358.8A16.7,16.7,0,0,0,41,373.4L242.4,482.1a17.1,17.1,0,0,0,15.9,0L459.4,373.4a16.5,16.5,0,0,0,8.5-14.6V141.3a16.5,16.5,0,0,0-8.5-14.6L258.2,17.9A16.2,16.2,0,0,0,250.4,15.9Z" transform="translate(-16.9 0)"/>
       <path id="logo_border" d="M250.4,500a22,22,0,0,1-10.4-2.6L28.6,383.3a21.9,21.9,0,0,1-11.6-19.2V135.9a21.9,21.9,0,0,1,11.6-19.2L240,2.6a21.8,21.8,0,0,1,20.6,0L471.8,116.7a21.7,21.7,0,0,1,11.2,19.2V364.1a21.7,21.7,0,0,1-11.3,19.2L260.7,497.4A21.9,21.9,0,0,1,250.4,500Zm0-495.7a17.5,17.5,0,0,0-8.3,2.1L30.7,120.6a17.5,17.5,0,0,0-9.4,15.3V364.1a17.6,17.6,0,0,0,9.4,15.4L242,493.6a17.9,17.9,0,0,0,16.7,0L469.7,379.5a17.4,17.4,0,0,0,9-15.4V135.9a17.3,17.3,0,0,0-9-15.3L258.6,6.4A17,17,0,0,0,250.4,4.3Z" transform="translate(-16.9 0)"/>
     </svg>

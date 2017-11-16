@@ -2,38 +2,18 @@
 
 :root {
 
-
-
-  /* Reference box variables */
-  --MAIN-size: calc(var(--hover-size) * 2);
-
-
-  /* Boxes variables */
-  --RU-size: 100px;
-  --RD-size: 150px;
-  --LD-size: 200px;
-  --LU-size: 250px;
-
-  --hover-size: calc((2 * var(--EP-size)) + (3 * var(--Pad)));
-
-  /* Boxes margin calculations */
-  --RU-margin: calc(var(--hover-size) - var(--RU-size));
-  --LD-margin: calc(var(--hover-size) - var(--LD-size));
-  --LU-margin: calc(var(--hover-size) - var(--LU-size));
-
-  /* Image sizes */
-  --MidLogo-size: 50px;
-  --EP-size: 120px;
-
   /* Other sizes */
-  --Pad: 25px;
   --SC-footer: 56px;
+
   /* Colors */
   --color-1: #01161E;
   --color-2: #124559;
   --color-3: #85DCAC;
   --color-4: #E59500;
   --color-back: white;
+
+  --Pad: 25px;
+
 }
 
 /* Color classes */
@@ -41,16 +21,18 @@
 .color2 { background: var(--color-2); }
 .color3 { background: var(--color-3); }
 .color4 { background: var(--color-4); }
-.color1svg { fill: var(--color-1); }
-.color2svg { fill: var(--color-2); }
-.color3svg { fill: var(--color-3); }
-.color4svg { fill: var(--color-4); }
+
 /* Fixed types */
 body {
+  opacity: 1;
+  transition: 300ms opacity;
   color: var(--color-back);
   background-color: var(--color-back);
   margin: 0;
   font-family: 'RaleWay', sans-serif;
+}
+body.fade-out {
+  opacity: 0;
 }
 h2 {
   font-weight: 500;
@@ -63,7 +45,8 @@ h3 {
   margin: 5px;
 }
 
-#logo {
+
+/*#logo {
   fill: var(--color-back)
 }
 #logo_fill:hover {
