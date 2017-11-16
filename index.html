@@ -1,167 +1,168 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!-- CSS file -->
-	<link href="styles.css" rel="stylesheet" type="text/css"><!-- jquery -->
+  <!-- CSS file -->
+  <link href="styles.css" rel="stylesheet" type="text/css">
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-	</script>
-	<title></title>
+  <!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+  </script>
+  <script>
+  //sizes in pixels
+  var ref_box_size = 630;
+  var hover_size = ref_box_size/2;
+  var logo_size = 80;
+  var logo_ref_center = hover_size - (logo_size/2)
+  //square animation speed factor (based on object margin)
+  var on_speed = 0.4;
+  var off_speed = 0.3;
+  var visited = 1; //slaat op color1/square1 - is om het logo naar het bezochte vak te laten veranderen
+
+  //Reference box
+  $(document)
+  .ready(function(){
+    $("#reference_box").css({
+      "width": ref_box_size,
+      "height": ref_box_size,
+      "margin": "auto",
+      "position": "absolute",
+      "top": 0, "left": 0, "bottom": 0, "right": 0
+    })
+  })
+
+  //Logo styling
+  .ready(function(){
+    $('#logo').css({
+      "width": logo_size,
+      "position": "absolute",
+      "top": logo_ref_center,
+      "left": logo_ref_center
+    })
+    .mouseleave(function(){
+      $('#logo').css({
+        //kleurtjes!!
+      })
+    })
+    .mouseenter(function(){
+      $('#logo').css({
+        //kleurtjes!!
+      })
+    })
+  });
+
+  //squares
+  MakeSquare("#left_up", 1, 250, "about.html");
+  MakeSquare("#left_down", 2, 200, "music.html");
+  MakeSquare("#right_down", 3, 150, "video.html");
+  MakeSquare("#right_up", 4, 100, "shows.html");
+
+  function MakeSquare(MS_id, MS_ref, MS_size, MS_href, MS_on_spd, MS_off_spd) {
+    var MS_margin = hover_size - MS_size;
+    var MS_top, MS_right, MS_bottom, MS_left, MS_top_h, MS_right_h, MS_bottom_h, MS_left_h
+    if (MS_ref == 1) {
+      MS_top = MS_margin;
+      MS_right = hover_size;
+      MS_bottom = hover_size;
+      MS_left = MS_margin;
+      MS_top_h = 0;
+      MS_right_h = hover_size;
+      MS_bottom_h = hover_size;
+      MS_left_h = 0
+    } else if (MS_ref == 2) {
+      MS_top = hover_size
+      MS_right = hover_size
+      MS_bottom = MS_margin
+      MS_left = MS_margin
+      MS_top_h = hover_size;
+      MS_right_h = hover_size;
+      MS_bottom_h = 0;
+      MS_left_h = 0;
+    } else if (MS_ref == 3) {
+      MS_top = hover_size
+      MS_right = MS_margin
+      MS_bottom = MS_margin
+      MS_left = hover_size
+      MS_top_h = hover_size;
+      MS_right_h = 0;
+      MS_bottom_h = 0;
+      MS_left_h = hover_size;
+    } else if (MS_ref == 4) {
+      MS_top = MS_margin
+      MS_right = MS_margin
+      MS_bottom = hover_size
+      MS_left = hover_size
+      MS_top_h = 0;
+      MS_right_h = 0;
+      MS_bottom_h = hover_size;
+      MS_left_h = hover_size;
+    }
+    $(document).ready(function() {
+      $(MS_id).css({
+        'position': 'absolute',
+        //'width': MS_size,
+        //'height': MS_size,
+        'top': MS_top,
+        'right': MS_right,
+        'bottom': MS_bottom,
+        'left': MS_left
+      }).mouseenter(function() {
+        $(MS_id).animate({
+          //'width': hover_size,
+          //'height': hover_size,
+          'top': MS_top_h,
+          'right': MS_right_h,
+          'bottom': MS_bottom_h,
+          'left': MS_left_h
+        }, (on_speed * (hover_size - MS_size)), function() {
+          $(MS_id).css({
+            'cursor': "pointer"
+          }).click(function() {
+            window.location = MS_href
+          })
+        })
+      }).mouseleave(function() {
+        $(MS_id).animate({
+          //'width': MS_size,
+          //'height': MS_size,
+          'top': MS_top,
+          'right': MS_right,
+          'bottom': MS_bottom,
+          'left': MS_left
+        }, (off_speed * (hover_size - MS_size))).css({
+          'cursor': "initial"
+        }).unbind("click")
+      })
+    })
+  }
+</script>
+<title>Harted</title>
 </head>
 <body>
-	<div id="reference_box">
-		<div class="color1" id="left_up">
-			<div class="RD-align MidLogo"><img src="MidLogo_LU.png"></div>
-			<div class="LU-align LU-margin">
-				<h2>About</h2>
-			</div>
-		</div>
-		<div class="color2" id="left_down">
-			<div class="RU-align MidLogo"><img src="MidLogo_LD.png"></div>
-			<div class="LD-align LD-margin">
-				<h2>Music</h2>
-			</div>
-		</div>
-		<!--<iframe id="wander_soundcloud_player" class="soundcloud_player"
-        onmouseout="document.getElementById('wander_soundcloud_player').style.display='none'"
-        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/147397667&amp;
-auto_play=false&amp;
-color=%23124559&amp;
-buying=false&amp;
-sharing=true&amp;
-show_playcount=false&amp;
-hide_related=true&amp;
-show_artwork=false&amp;
-show_comments=false&amp;
-show_user=true&amp;
-show_reposts=true&amp;
-show_teaser=false&amp;
-visual=false">
-</iframe>-->
-		<!-- Cookiewrap */ 
-        <div class="soundcloud_cookiewrap">
-          <div class="soundcloud_cookieborder LD-align"></div>
-          <div class="soundcloud_cookiecover LD-align"></div>
-          <a target="_blank" href="https://soundcloud.com/harted/sets/wander-ep">
-            <img class="LD-align soundcloud_artwork" src="https://i1.sndcdn.com/artworks-000131327310-caz86o-t500x500.jpg">
-          </a>
-          <div style="height:50px;"></div>
-        </div>
-        
-      </div>-->
-		<!-- POLY EP 
-
-      <div id="Polysemy_EP" class="LD-content">
-        <div id="Polysemy_EP" class="RU-align RU-margin EPimg">
-          <img src="https://i1.sndcdn.com/artworks-000190711096-7rnmbf-t500x500.jpg">
-          <h3>Polysemy EP</h3>
-        </div>
-      </div>-->
-		<div class="color3" id="right_down">
-			<div class="LU-align MidLogo"><img src="MidLogo_RD.png"></div>
-			<div class="RD-align RD-margin">
-				<h2>Video</h2>
-			</div>
-		</div>
-		<div class="color4" id="right_up">
-			<div class="LD-align MidLogo"><img src="MidLogo_RU.png"></div>
-			<div class="RU-align RU-margin">
-				<h2>Shows</h2>
-			</div>
-		</div>
-	</div>
-
-<script>
-//sizes in pixels
-var ref_box_size = 630;
-var hover_size = ref_box_size / 2;
-//animation speeds
-var on_speed = 0.4
-var off_speed = 0.1
-//squares
-MakeSquare("#left_up", 1, 250, "about.html");
-MakeSquare("#left_down", 2, 200, "music.html");
-MakeSquare("#right_down", 3, 150, "video.html");
-MakeSquare("#right_up", 4, 100, "shows.html");
-
-function MakeSquare(MS_id, MS_ref, MS_size, MS_href, MS_on_spd, MS_off_spd) {
-	var MS_margin = hover_size - MS_size;
-	var MS_margin_top, MS_margin_right, MS_margin_bottom, MS_margin_left, MS_margin_top_h, MS_margin_right_h, MS_margin_bottom_h, MS_margin_left_h
-	if (MS_ref == 1) {
-		MS_margin_top = MS_margin;
-		MS_margin_right = hover_size;
-		MS_margin_bottom = hover_size;
-		MS_margin_left = MS_margin;
-		MS_margin_top_h = 0;
-		MS_margin_right_h = hover_size;
-		MS_margin_bottom_h = hover_size;
-		MS_margin_left_h = 0
-	} else if (MS_ref == 2) {
-		MS_margin_top = hover_size
-		MS_margin_right = hover_size
-		MS_margin_bottom = MS_margin
-		MS_margin_left = MS_margin
-		MS_margin_top_h = hover_size;
-		MS_margin_right_h = hover_size;
-		MS_margin_bottom_h = 0;
-		MS_margin_left_h = 0;
-	} else if (MS_ref == 3) {
-		MS_margin_top = hover_size
-		MS_margin_right = MS_margin
-		MS_margin_bottom = MS_margin
-		MS_margin_left = hover_size
-		MS_margin_top_h = hover_size;
-		MS_margin_right_h = 0;
-		MS_margin_bottom_h = 0;
-		MS_margin_left_h = hover_size;
-	} else if (MS_ref == 4) {
-		MS_margin_top = MS_margin
-		MS_margin_right = MS_margin
-		MS_margin_bottom = hover_size
-		MS_margin_left = hover_size
-		MS_margin_top_h = 0;
-		MS_margin_right_h = 0;
-		MS_margin_bottom_h = hover_size;
-		MS_margin_left_h = hover_size;
-	}
-	$(document).ready(function() {
-		$(MS_id).css({
-			'position': 'absolute',
-			//'width': MS_size,
-			//'height': MS_size,
-			'top': MS_margin_top,
-			'right': MS_margin_right,
-			'bottom': MS_margin_bottom,
-			'left': MS_margin_left
-		}).mouseenter(function() {
-			$(MS_id).animate({
-				//'width': hover_size,
-				//'height': hover_size,
-				'top': MS_margin_top_h,
-				'right': MS_margin_right_h,
-				'bottom': MS_margin_bottom_h,
-				'left': MS_margin_left_h
-			}, (on_speed * (hover_size - MS_size)), function() {
-				$(MS_id).css({
-					'cursor': "pointer"
-				}).click(function() {
-					window.location = MS_href
-				})
-			})
-		}).mouseleave(function() {
-			$(MS_id).animate({
-				//'width': MS_size,
-				//'height': MS_size,
-				'top': MS_margin_top,
-				'right': MS_margin_right,
-				'bottom': MS_margin_bottom,
-				'left': MS_margin_left
-			}, (off_speed * (hover_size - MS_size))).css({
-				'cursor': "initial"
-			}).unbind("click")
-		})
-	})
-}
-</script>
+  <div id="reference_box">
+    <div id="left_up" class="color1">
+      <div class="LU-align LU-margin">
+        <h2>About</h2>
+      </div>
+    </div>
+    <div id="left_down" class="color2">
+      <div class="LD-align LD-margin">
+        <h2>Music</h2>
+      </div>
+    </div>
+    <div id="right_down" class="color3">
+      <div class="RD-align RD-margin">
+        <h2>Video</h2>
+      </div>
+    </div>
+    <div id="right_up" class="color4">
+      <div class="RU-align RU-margin">
+        <h2>Shows</h2>
+      </div>
+    </div>
+    <svg id="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-16.95 0 500 500">
+      <path id="logo_fill" d="M250.4,15.9a16.7,16.7,0,0,0-7.9,2L41,126.6A16.7,16.7,0,0,0,32,141.3V358.8A16.7,16.7,0,0,0,41,373.4L242.4,482.1a17.1,17.1,0,0,0,15.9,0L459.4,373.4a16.5,16.5,0,0,0,8.5-14.6V141.3a16.5,16.5,0,0,0-8.5-14.6L258.2,17.9A16.2,16.2,0,0,0,250.4,15.9Z" transform="translate(-16.9 0)"/>
+      <path id="logo_border" d="M250.4,500a22,22,0,0,1-10.4-2.6L28.6,383.3a21.9,21.9,0,0,1-11.6-19.2V135.9a21.9,21.9,0,0,1,11.6-19.2L240,2.6a21.8,21.8,0,0,1,20.6,0L471.8,116.7a21.7,21.7,0,0,1,11.2,19.2V364.1a21.7,21.7,0,0,1-11.3,19.2L260.7,497.4A21.9,21.9,0,0,1,250.4,500Zm0-495.7a17.5,17.5,0,0,0-8.3,2.1L30.7,120.6a17.5,17.5,0,0,0-9.4,15.3V364.1a17.6,17.6,0,0,0,9.4,15.4L242,493.6a17.9,17.9,0,0,0,16.7,0L469.7,379.5a17.4,17.4,0,0,0,9-15.4V135.9a17.3,17.3,0,0,0-9-15.3L258.6,6.4A17,17,0,0,0,250.4,4.3Z" transform="translate(-16.9 0)"/>
+    </svg>
+  </div>
 </body>
 </html>

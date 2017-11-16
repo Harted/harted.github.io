@@ -2,18 +2,13 @@
 
 :root {
 
-/* Colors */
-  --color-1: #01161E;
-  --color-2: #124559;
-  --color-3: #85DCAC;
-  --color-4: #E59500;
-  --color-back: #F2F2F2;
 
-/* Reference box variables */
+
+  /* Reference box variables */
   --MAIN-size: calc(var(--hover-size) * 2);
-  --MAIN-margin: 50px;
 
-/* Boxes variables */
+
+  /* Boxes variables */
   --RU-size: 100px;
   --RD-size: 150px;
   --LD-size: 200px;
@@ -21,21 +16,35 @@
 
   --hover-size: calc((2 * var(--EP-size)) + (3 * var(--Pad)));
 
-/* Boxes margin calculations */
+  /* Boxes margin calculations */
   --RU-margin: calc(var(--hover-size) - var(--RU-size));
   --LD-margin: calc(var(--hover-size) - var(--LD-size));
   --LU-margin: calc(var(--hover-size) - var(--LU-size));
 
-/* Image sizes */
+  /* Image sizes */
   --MidLogo-size: 50px;
   --EP-size: 120px;
 
-/* Other sizes */
+  /* Other sizes */
   --Pad: 25px;
   --SC-footer: 56px;
-
+  /* Colors */
+  --color-1: #01161E;
+  --color-2: #124559;
+  --color-3: #85DCAC;
+  --color-4: #E59500;
+  --color-back: white;
 }
 
+/* Color classes */
+.color1 { background: var(--color-1); }
+.color2 { background: var(--color-2); }
+.color3 { background: var(--color-3); }
+.color4 { background: var(--color-4); }
+.color1svg { fill: var(--color-1); }
+.color2svg { fill: var(--color-2); }
+.color3svg { fill: var(--color-3); }
+.color4svg { fill: var(--color-4); }
 /* Fixed types */
 body {
   color: var(--color-back);
@@ -54,46 +63,56 @@ h3 {
   margin: 5px;
 }
 
-/* Reference box - nog main aanpassen naar RB*/
+#logo {
+  fill: var(--color-back)
+}
+#logo_fill:hover {
+  fill: var(--color-1)
+}
+
+
+/* Reference box - nog main aanpassen naar RB
 #reference_box {
-  position: relative;
   width: var(--MAIN-size);
   height: var(--MAIN-size);
-  margin: 50px auto;
-}
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+
+}*/
 
 /* Four boxes */
 
 /*#left_up {
-  position: absolute;
-  height: var(--LU-size);
-  width: var(--LU-size);
-  margin-top: var(--LU-margin);
-  margin-left: var(--LU-margin);
+position: absolute;
+height: var(--LU-size);
+width: var(--LU-size);
+margin-top: var(--LU-margin);
+margin-left: var(--LU-margin);
 }
 #left_up:hover {
-  --LU-size: var(--hover-size);
-  --LU-margin: calc(var(--hover-size) - var(--LU-size));
+--LU-size: var(--hover-size);
+--LU-margin: calc(var(--hover-size) - var(--LU-size));
 }
 #left_up:hover .MidLogo {
-  display: none;
+display: none;
 }*/
 
 /* Left down box ------------------------------------------------ LD ---
 #left_down {
-  position: absolute;
-  width: var(--LD-size);
-  height: var(--LD-size);
-  margin-top: var(--hover-size);
-  margin-left: var(--LD-margin);
+position: absolute;
+width: var(--LD-size);
+height: var(--LD-size);
+margin-top: var(--hover-size);
+margin-left: var(--LD-margin);
 }
 #left_down:hover {
-  --LD-size: var(--hover-size);
-  --LD-margin: calc(var(--hover-size) - var(--LD-size));
-  display: block;
+--LD-size: var(--hover-size);
+--LD-margin: calc(var(--hover-size) - var(--LD-size));
+display: block;
 }
 #left_down:hover .MidLogo {
-  display: none;
+display: none;
 }*/
 #left_down:hover .LD-content {
   display: block;
@@ -157,41 +176,41 @@ h3 {
 
 /* Right down box
 #right_down {
-  position: absolute;
-  width: var(--RD-size);
-  height: var(--RD-size);
-  margin-top: var(--hover-size);
-  margin-left: var(--hover-size);
+position: absolute;
+width: var(--RD-size);
+height: var(--RD-size);
+margin-top: var(--hover-size);
+margin-left: var(--hover-size);
 }
 #right_down:hover {
-  --RD-size: var(--hover-size);
+--RD-size: var(--hover-size);
 }
 #right_down:hover .MidLogo {
-  display: none;
+display: none;
 }*/
 
 
 /* Right up box
 #right_up {
-  position: absolute;
-  width: var(--RU-size);
-  height: var(--RU-size);
-  margin-top: var(--RU-margin);
-  margin-left: var(--hover-size);
+position: absolute;
+width: var(--RU-size);
+height: var(--RU-size);
+margin-top: var(--RU-margin);
+margin-left: var(--hover-size);
 }
 #right_up:hover {
-  --RU-size: var(--hover-size);
-  --RU-margin: calc(var(--hover-size) - var(--RU-size));
+--RU-size: var(--hover-size);
+--RU-margin: calc(var(--hover-size) - var(--RU-size));
 }
 #right_up:hover .MidLogo {
-  display: none;
+display: none;
 }*/
 
 
 
 
 /* #document .cookiePolicy {
-  display: none;
+display: none;
 }*/
 
 
@@ -226,9 +245,3 @@ h3 {
   height: var(--MidLogo-size);
   padding: 0;
 }
-
-/* Color classes */
-.color1 { background: var(--color-1); }
-.color2 { background: var(--color-2); }
-.color3 { background: var(--color-3); }
-.color4 { background: var(--color-4); }
