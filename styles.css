@@ -59,7 +59,7 @@ h3 {
   position: fixed;
   width: var(--MAIN-size);
   height: var(--MAIN-size);
-  margin: auto;
+  margin: 50px auto;
 }
 
 /* Four boxes */
