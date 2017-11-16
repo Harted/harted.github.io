@@ -56,7 +56,7 @@ h3 {
 
 /* Reference box - nog main aanpassen naar RB*/
 #reference_box {
-  position: fixed;
+  position: absolute;
   width: var(--MAIN-size);
   height: var(--MAIN-size);
   margin: 50px auto;
