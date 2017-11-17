@@ -21,6 +21,7 @@
 .color2 { background: var(--color-2); }
 .color3 { background: var(--color-3); }
 .color4 { background: var(--color-4); }
+.colorBack { background: var(--color-back); }
 
 /* Fixed types */
 body {
