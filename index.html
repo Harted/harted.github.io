@@ -179,6 +179,14 @@
 
   $(function() {
       $('body').removeClass('fade-out');
+    var color_1 = $('.color1').css("background");
+    var color_2 = $('.color2').css("background");
+    var color_3 = $('.color3').css("background");
+    var color_4 = $('.color4').css("background");
+    var color_back = $('.colorBack').css("background");
+    var color_visited = color_back;
+    console.log(color_1 + " " + color_2 + " " + color_3 + " " + color_4 + " " + color_back);
+    console.log($('.color1').css("background"))  
   });
 
 </script>
@@ -189,16 +197,7 @@
 
 </head>
 <body>
-  <script>document.body.className += 'fade-out';
-    var color_1 = $('.color1').css("background");
-    var color_2 = $('.color2').css("background");
-    var color_3 = $('.color3').css("background");
-    var color_4 = $('.color4').css("background");
-    var color_back = $('.colorBack').css("background");
-    var color_visited = color_back;
-    console.log(color_1 + " " + color_2 + " " + color_3 + " " + color_4 + " " + color_back);
-    console.log($('.color1').css("background"))  
-  </script>
+  <script>document.body.className += 'fade-out';</script>
   
   <div id="reference_box">
     <div id="left_up" class="color1">
