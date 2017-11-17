@@ -92,6 +92,16 @@
   function MakeSquare(MS_id, MS_ref, MS_size, MS_href, MS_on_spd, MS_off_spd) {
     var MS_margin = hover_size - MS_size;
     var MS_top, MS_right, MS_bottom, MS_left, MS_top_h, MS_right_h, MS_bottom_h, MS_left_h
+    
+    var color_1 = $('color1').css("background");
+    var color_2 = $('color2').css("background");
+    var color_3 = $('color3').css("background");
+    var color_4 = $('color4').css("background");
+    var color_back = $('colorBack').css("background");
+    var color_visited = color_back;
+    console.log(color_1 + " " + color_2 + " " + color_3 + " " + color_4 + " " + color_back);
+    console.log($('.color1').css("background"))    
+    
     if (MS_ref == 1) {
       MS_top = MS_margin;
       MS_right = hover_size;
