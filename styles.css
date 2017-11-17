@@ -9,7 +9,7 @@
   --color-1: #01161E;
   --color-2: #124559;
   --color-3: #85DCAC;
-  --color-4: #B2E5AC;
+  --color-4: #E59500;
   --color-back: white;
 
   --Pad: 25px;
@@ -21,7 +21,6 @@
 .color2 { background: var(--color-2); }
 .color3 { background: var(--color-3); }
 .color4 { background: var(--color-4); }
-.colorBack { background: var(--color-back); }
 
 /* Fixed types */
 body {
@@ -44,4 +43,188 @@ h3 {
   font-weight: 400;
   font-size: 16px;
   margin: 5px;
+}
+
+
+/*#logo {
+  fill: var(--color-back)
+}
+#logo_fill:hover {
+  fill: var(--color-1)
+}
+
+
+/* Reference box - nog main aanpassen naar RB
+#reference_box {
+  width: var(--MAIN-size);
+  height: var(--MAIN-size);
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+
+}*/
+
+/* Four boxes */
+
+/*#left_up {
+position: absolute;
+height: var(--LU-size);
+width: var(--LU-size);
+margin-top: var(--LU-margin);
+margin-left: var(--LU-margin);
+}
+#left_up:hover {
+--LU-size: var(--hover-size);
+--LU-margin: calc(var(--hover-size) - var(--LU-size));
+}
+#left_up:hover .MidLogo {
+display: none;
+}*/
+
+/* Left down box ------------------------------------------------ LD ---
+#left_down {
+position: absolute;
+width: var(--LD-size);
+height: var(--LD-size);
+margin-top: var(--hover-size);
+margin-left: var(--LD-margin);
+}
+#left_down:hover {
+--LD-size: var(--hover-size);
+--LD-margin: calc(var(--hover-size) - var(--LD-size));
+display: block;
+}
+#left_down:hover .MidLogo {
+display: none;
+}*/
+#left_down:hover .LD-content {
+  display: block;
+}
+
+
+/* EP Classes */
+.EPimg {
+  width: var(--EP-size);
+  height: var(--EP-size);
+  /* display: none; */
+}
+.EPimg img{
+  width: var(--EP-size);
+  height: var(--EP-size);
+  box-shadow: 0 0 15px var(--color-1)
+}
+
+/* Player classes */
+.soundcloud_player {
+  height: calc(var(--SC-footer) + var(--hover-size));
+  width: var(--hover-size);
+  position: absolute;
+  right: calc(0px - var(--hover-size));
+  bottom: calc(0px - var(--RD-size) - var(--SC-footer));
+  display: none;
+  border: 0;
+}
+.soundcloud_player:hover, .soundcloud_cookiewrap:hover {
+  display: block;
+}
+
+.soundcloud_cookiewrap {
+  height: 16px;
+  width: var(--hover-size);
+  position: absolute;
+  right: calc(0px - var(--hover-size));
+  bottom: calc(0px - var(--RD-size) - var(--SC-footer));
+  display: none;
+  border: 0;
+}
+.soundcloud_cookiecover {
+  background: #F5F5F5;
+  height: 14px;
+  width: calc(var(--hover-size) - 4px);
+  position: absolute;
+  margin: 2px;
+}
+.soundcloud_cookieborder {
+  background: #F5F5F5;
+  height: 14px;
+  width: 100px;
+  position: absolute;
+  border: 1px solid #EBEBEB;
+}
+.soundcloud_artwork {
+  height: 40px;
+  width: 40px;
+  margin: 8px;
+}
+
+/* Right down box
+#right_down {
+position: absolute;
+width: var(--RD-size);
+height: var(--RD-size);
+margin-top: var(--hover-size);
+margin-left: var(--hover-size);
+}
+#right_down:hover {
+--RD-size: var(--hover-size);
+}
+#right_down:hover .MidLogo {
+display: none;
+}*/
+
+
+/* Right up box
+#right_up {
+position: absolute;
+width: var(--RU-size);
+height: var(--RU-size);
+margin-top: var(--RU-margin);
+margin-left: var(--hover-size);
+}
+#right_up:hover {
+--RU-size: var(--hover-size);
+--RU-margin: calc(var(--hover-size) - var(--RU-size));
+}
+#right_up:hover .MidLogo {
+display: none;
+}*/
+
+
+
+
+/* #document .cookiePolicy {
+display: none;
+}*/
+
+
+
+/* Alignment in the boxes */
+.LU-align {position: absolute;}
+.LD-align {position: absolute; bottom: 0;}
+.RD-align {position: absolute; bottom: 0; right: 0;}
+.RU-align {position: absolute; right: 0;}
+
+/* Padding in the boxes */
+.LU-margin {margin: var(--Pad) 0 0 var(--Pad);}
+.LD-margin {margin: 0 0 var(--Pad) var(--Pad);}
+.RD-margin {margin: 0 var(--Pad) var(--Pad) 0;}
+.RU-margin {margin: var(--Pad) var(--Pad) 0 0;}
+
+/* Hidden content in boxes */
+.LU-content {display: none;}
+.LD-content {display: none;}
+.RD-content {display: none;}
+.RU-content {display: none;}
+
+
+
+
+.MidLogo {
+  width: var(--MidLogo-size);
+  height: var(--MidLogo-size);
+}
+.MidLogo img {
+  width: var(--MidLogo-size);
+  height: var(--MidLogo-size);
+  padding: 0;
 }
