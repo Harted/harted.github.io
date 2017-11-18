@@ -59,8 +59,8 @@
 
   //logo sizes
   var logo_size = 80;
-  var logo_ref_center = hover_size - (logo_size/2)
-
+  var logo_ref_center_tl = hover_size - (logo_size/2);
+  var logo_ref_center_br = hover_size + (logo_size/2);
   //square animation speed factor (based on object margin)
   var on_speed = 0.9;
   var off_speed = 0.3;
@@ -96,8 +96,10 @@
       "width": logo_size,
       "height": logo_size,
       "position": "absolute",
-      "top": logo_ref_center,
-      "left": logo_ref_center,
+      "top": logo_ref_center_tl,
+      "left": logo_ref_center_tl,
+      "bottom" : logo_ref_center_br,
+      "right" : logo_ref_center_br,
       "fill": color_back
     })
   })
