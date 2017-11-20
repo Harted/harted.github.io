@@ -2,7 +2,7 @@
 
 body {
   opacity: 1;
-  transition: 500ms opacity;
+  transition: 1000ms opacity;
   margin: 0;
   font-family: 'RaleWay', sans-serif;
 }

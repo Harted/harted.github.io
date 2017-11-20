@@ -107,11 +107,20 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 			"transition": (anim_speed * (hover_size - MS_size) * (600 / ref_box_size)) + "ms"
 		})
 	})
+	console.log("Square " + MS_id + " made!")
 };
 
 function TransitionOff() {
 	for (n = 0; n < arguments.length; n++) {
 		$(arguments[n]).css("transition", "none");
+		console.log("transition off: " + arguments[n])
+	}
+};
+
+function TransitionOn() {
+	for (n = 0; n < arguments.length; n++) {
+		$(arguments[n]).css("transition", "250ms");
+		console.log("transition on: " + arguments[n])
 	}
 };
 
