@@ -135,6 +135,13 @@ $(document).ready(function(){
     "right" : logo_ref_center_br,
     "fill": color_back
   })
+  //box title font size
+  $('h2').css({'font-size' : box_title_font_size + 'px'});
+  //margin in the boxes
+  $('.LU-margin').css({'margin' : box_title_margin + 'px 0px 0px ' + box_title_margin + 'px'});
+  $('.LD-margin').css({'margin' : '0px 0px ' + box_title_margin + 'px ' + box_title_margin + 'px'});
+  $('.RD-margin').css({'margin' : '0px ' + box_title_margin + 'px ' + box_title_margin + 'px 0px'});
+  $('.RU-margin').css({'margin' : box_title_margin + 'px ' + box_title_margin + 'px 0px 0px'});
   //body color
   $("body").css({
     "background-color": color_back
