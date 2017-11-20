@@ -53,16 +53,18 @@
 var anim_speed = 3;
 
 //Get minimum window size
-var wiw = $(window).innerWidth();
-var wih = $(window).innerHeight();
-if (wiw <= wih) {
-  var min_window_size = wiw;
+var window_width = $(window).innerWidth();
+var window_height = $(window).innerHeight();
+if (window_width <= window_height) {
+  var min_window_size = window_width;
 } else {
-  var min_window_size = wih;
+  var min_window_size = window_height;
 };
 
 //default reference box size
 var ref_box_size = Math.round(min_window_size / 3 * 2);//600;
+
+//for BoxCenter reference
 var ref_box_offset_top_center, ref_box_offset_left_center;
 var box1_offset_top_center, box1_offset_left_center;
 var box2_offset_top_center, box2_offset_left_center;
@@ -137,7 +139,7 @@ $(document).ready(function(){
   $("body").css({
     "background-color": color_back
   })
-  //for reference
+  //for Boxcenter reference
   ref_box_offset_left_center = ($("#reference_box").offset().left + (ref_box_size / 2));
   ref_box_offset_top_center = ($("#reference_box").offset().top + (ref_box_size / 2));
   box1_offset_left_center = ($("#top_left").offset().left + ($("#top_left").width() / 2));
@@ -151,8 +153,6 @@ $(document).ready(function(){
 
   box_corner_offset = hover_size / 14;
   proximity_margin = hover_size * 5 / 4;
-  console.log(box_corner_offset)
-  console.log(proximity_margin)
 
   //fade in website when loaded
   $(function() {
@@ -171,12 +171,12 @@ $(window).on("resize", function(){
   //Turn transition off to prevent unwanted animation when resizing
   TransitionOff("#top_left","#bottom_left","#bottom_right","#top_right","#logo")
   //Get the minimum window widht/height
-  wiw = $(window).innerWidth();
-  wih = $(window).innerHeight();
-  if (wiw <= wih) {
-    min_window_size = wiw;
+  window_width = $(window).innerWidth();
+  window_height = $(window).innerHeight();
+  if (window_width <= window_height) {
+    min_window_size = window_width;
   } else {
-    min_window_size = wih;
+    min_window_size = window_height;
   };
 
   //reference box size in pixels by windowsize
@@ -195,25 +195,6 @@ $(window).on("resize", function(){
   logo_size = Math.round(ref_box_size * 0.15); //80;
   logo_ref_center_tl = Math.round(hover_size - (logo_size/2));
   logo_ref_center_br = Math.round(hover_size + (logo_size/2));
-
-  //for offset reference
-  ref_box_offset_left_center = ($("#reference_box").offset().left + (ref_box_size / 2));
-  ref_box_offset_top_center = ($("#reference_box").offset().top + (ref_box_size / 2));
-  box1_offset_left_center = ($("#top_left").offset().left + ($("#top_left").width() / 2));
-  box1_offset_top_center = ($("#top_left").offset().top + ($("#top_left").height() / 2));
-  box2_offset_left_center = ($("#bottom_left").offset().left + ($("#bottom_left").width() / 2));
-  box2_offset_top_center = ($("#bottom_left").offset().top + ($("#bottom_left").height() / 2));
-  box3_offset_left_center = ($("#bottom_right").offset().left + ($("#bottom_right").width() / 2));
-  box3_offset_top_center = ($("#bottom_right").offset().top + ($("#bottom_right").height() / 2));
-  box4_offset_left_center = ($("#top_right").offset().left + ($("#top_right").width() / 2));
-  box4_offset_top_center = ($("#top_right").offset().top + ($("#top_right").height() / 2));
-
-  box_corner_offset = hover_size / 14;
-  proximity_margin = hover_size * 5 / 4;
-
-  console.log(box_corner_offset)
-  console.log(proximity_margin)
-
 
   //reference box size and styling
   $("#reference_box").css({
@@ -243,6 +224,21 @@ $(window).on("resize", function(){
   $('.LD-margin').css({'margin' : '0px 0px ' + box_title_margin + 'px ' + box_title_margin + 'px'});
   $('.RD-margin').css({'margin' : '0px ' + box_title_margin + 'px ' + box_title_margin + 'px 0px'});
   $('.RU-margin').css({'margin' : box_title_margin + 'px ' + box_title_margin + 'px 0px 0px'});
+
+  //for offset reference
+  ref_box_offset_left_center = ($("#reference_box").offset().left + (ref_box_size / 2));
+  ref_box_offset_top_center = ($("#reference_box").offset().top + (ref_box_size / 2));
+  box1_offset_left_center = ($("#top_left").offset().left + ($("#top_left").width() / 2));
+  box1_offset_top_center = ($("#top_left").offset().top + ($("#top_left").height() / 2));
+  box2_offset_left_center = ($("#bottom_left").offset().left + ($("#bottom_left").width() / 2));
+  box2_offset_top_center = ($("#bottom_left").offset().top + ($("#bottom_left").height() / 2));
+  box3_offset_left_center = ($("#bottom_right").offset().left + ($("#bottom_right").width() / 2));
+  box3_offset_top_center = ($("#bottom_right").offset().top + ($("#bottom_right").height() / 2));
+  box4_offset_left_center = ($("#top_right").offset().left + ($("#top_right").width() / 2));
+  box4_offset_top_center = ($("#top_right").offset().top + ($("#top_right").height() / 2));
+
+  box_corner_offset = hover_size / 14;
+  proximity_margin = hover_size * 5 / 4;
 
 })
 </script>
