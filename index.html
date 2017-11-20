@@ -151,6 +151,8 @@ $(document).ready(function(){
 
   box_corner_offset = hover_size / 14;
   proximity_margin = hover_size * 5 / 4;
+  console.log(box_corner_offset)
+  console.log(proximity_margin)
 
   //fade in website when loaded
   $(function() {
@@ -209,6 +211,10 @@ $(window).on("resize", function(){
   box_corner_offset = hover_size / 14;
   proximity_margin = hover_size * 5 / 4;
 
+  console.log(box_corner_offset)
+  console.log(proximity_margin)
+
+
   //reference box size and styling
   $("#reference_box").css({
     "width": ref_box_size,
@@ -262,10 +268,10 @@ $(document).mousemove(function(){
     var box3_uni = BoxCenter(3, box3_offset_top_center + box_corner_offset, box3_offset_left_center + box_corner_offset , proximity_margin );
     var box4_uni = BoxCenter(4, box4_offset_top_center - box_corner_offset, box4_offset_left_center + box_corner_offset, proximity_margin );
 
-    AffectSquare("#top_left", 1, box1_size + (200 * box1_uni));
-    AffectSquare("#bottom_left", 2, box2_size + (200 * box2_uni));
-    AffectSquare("#bottom_right", 3, box3_size + (200 * box3_uni));
-    AffectSquare("#top_right", 4, box4_size + (200 * box4_uni));
+    AffectSquare("#top_left", 1, box1_size + (ref_box_size/3 * box1_uni));
+    AffectSquare("#bottom_left", 2, box2_size + (ref_box_size/3 * box2_uni));
+    AffectSquare("#bottom_right", 3, box3_size + (ref_box_size/3 * box3_uni));
+    AffectSquare("#top_right", 4, box4_size + (ref_box_size/3 * box4_uni));
 
   }
 })
