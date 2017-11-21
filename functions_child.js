@@ -36,3 +36,35 @@ function SetMargins(ref, SM_hover_size, SM_margin){
   }
   return [right, bottom, right_h, bottom_h]
 }
+
+//Function when a box is clicked after transition -------------------------------------------------------------------------------------
+function ClickFunction(CF_id, CF_href, CF_animation_speed){
+  var CF_array = [];
+  //console.log("link: " + CF_href)
+  $("#reference_box").css({
+    'transition': CF_animation_speed,
+    'margin-top': 0,
+    'width': '100%',
+  })
+  $(CF_id).css({
+    'width': '100%',
+    'height': '80px',
+    'right': 0,
+    'top': 0,
+  })
+  $("#reference_box > div").each(function(){
+    CF_array[CF_array.length] = $(this).attr('id');
+  });
+  console.log(CF_array);
+  console.log(CF_array.length);
+  console.log(CF_id);
+  for(n = 0; n < CF_array.length; n++){
+    if (CF_id != "#" + CF_array[n]){
+      console.log(CF_array[n]);
+    } else {
+      console.log("deze geklikt: " + CF_array[n]);
+    };
+  };
+
+  return false
+}
