@@ -1,335 +1,147 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Harted</title><!-- CSS file -->
-	<link href="styles.css" rel="stylesheet" type="text/css"><!-- jquery script -->
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-	</script><!-- Make square script -->
-
-	<script src="functions.js">
-	</script>
+	<title>Harted</title>
+	<link href="styles.css" rel="stylesheet" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="functions.js"></script>
+	<script src="functions_child.js"></script>
 </head>
 <body class="fade_in_load">
 	<!-- Reference box in centerof window -->
 	<div id="reference_box">
 		<!-- Square in top left corner -->
 		<div class="color1" id="top_left">
-			<div class="LU-align LU-margin">
+			<div class="top_left_align top_left_margin">
 				<h2>About</h2>
 			</div>
-		</div><!-- Square in bottom left corner -->
+		</div>
+		<!-- Square in bottom left corner -->
 		<div class="color2" id="bottom_left">
-			<div class="LD-align LD-margin">
+			<div class="bottom_left_align bottom_left_margin">
 				<h2>Music</h2>
 			</div>
-		</div><!-- Square in bottom right corner -->
+		</div>
+		<!-- Square in bottom right corner -->
 		<div class="color3" id="bottom_right">
-			<div class="RD-align RD-margin">
+			<div class="bottom_right_align bottom_right_margin">
 				<h2>Video</h2>
 			</div>
-		</div><!-- Square in top right corner -->
+		</div>
+		<!-- Square in top right corner -->
 		<div id="top_right">
-			<div class="RU-align RU-margin">
+			<div class="top_right_align top_right_margin">
 				<h2>Shows</h2>
 			</div>
-		</div><!-- Logo in center -->
+		</div>
+		<!-- Logo in center -->
 		<svg id="logo" viewbox="-16.95 0 500 500" xmlns="http://www.w3.org/2000/svg">
-		<path class="colorBack" d="M250.4,15.9a16.7,16.7,0,0,0-7.9,2L41,126.6A16.7,16.7,0,0,0,32,141.3V358.8A16.7,16.7,0,0,0,41,373.4L242.4,482.1a17.1,17.1,0,0,0,15.9,0L459.4,373.4a16.5,16.5,0,0,0,8.5-14.6V141.3a16.5,16.5,0,0,0-8.5-14.6L258.2,17.9A16.2,16.2,0,0,0,250.4,15.9Z" id="logo_fill" transform="translate(-16.9 0)"></path>
-		<path class="colorBack" d="M250.4,500a22,22,0,0,1-10.4-2.6L28.6,383.3a21.9,21.9,0,0,1-11.6-19.2V135.9a21.9,21.9,0,0,1,11.6-19.2L240,2.6a21.8,21.8,0,0,1,20.6,0L471.8,116.7a21.7,21.7,0,0,1,11.2,19.2V364.1a21.7,21.7,0,0,1-11.3,19.2L260.7,497.4A21.9,21.9,0,0,1,250.4,500Zm0-495.7a17.5,17.5,0,0,0-8.3,2.1L30.7,120.6a17.5,17.5,0,0,0-9.4,15.3V364.1a17.6,17.6,0,0,0,9.4,15.4L242,493.6a17.9,17.9,0,0,0,16.7,0L469.7,379.5a17.4,17.4,0,0,0,9-15.4V135.9a17.3,17.3,0,0,0-9-15.3L258.6,6.4A17,17,0,0,0,250.4,4.3Z" id="logo_border" transform="translate(-16.9 0)"></path></svg>
-	</div><!-- Script for box making/sizing and logo coloring -->
-	<script>
+			<path class="colorBack" d="M250.4,15.9a16.7,16.7,0,0,0-7.9,2L41,126.6A16.7,16.7,0,0,0,32,141.3V358.8A16.7,16.7,0,0,0,41,373.4L242.4,482.1a17.1,17.1,0,0,0,15.9,0L459.4,373.4a16.5,16.5,0,0,0,8.5-14.6V141.3a16.5,16.5,0,0,0-8.5-14.6L258.2,17.9A16.2,16.2,0,0,0,250.4,15.9Z" id="logo_fill" transform="translate(-16.9 0)"></path>
+			<path class="colorBack" d="M250.4,500a22,22,0,0,1-10.4-2.6L28.6,383.3a21.9,21.9,0,0,1-11.6-19.2V135.9a21.9,21.9,0,0,1,11.6-19.2L240,2.6a21.8,21.8,0,0,1,20.6,0L471.8,116.7a21.7,21.7,0,0,1,11.2,19.2V364.1a21.7,21.7,0,0,1-11.3,19.2L260.7,497.4A21.9,21.9,0,0,1,250.4,500Zm0-495.7a17.5,17.5,0,0,0-8.3,2.1L30.7,120.6a17.5,17.5,0,0,0-9.4,15.3V364.1a17.6,17.6,0,0,0,9.4,15.4L242,493.6a17.9,17.9,0,0,0,16.7,0L469.7,379.5a17.4,17.4,0,0,0,9-15.4V135.9a17.3,17.3,0,0,0-9-15.3L258.6,6.4A17,17,0,0,0,250.4,4.3Z" id="logo_border" transform="translate(-16.9 0)"></path></svg>
+		</div>
 
-	         // INIT value animation speed
-	         var anim_speed = 3;
-	             
-	         // Window width variables
-	         var window_width, window_height, min_window_size;
-	             
-	         // Reference box variables
-	         var ref_box_size;
-	         var ref_box_offset_top_center, ref_box_offset_left_center;
+		<script>
+		// VARIABLES -----------------------------------------------------------------------------------------------------------------------
+		// Factors
+		var anim_speed_factor = 1;
+		var action_area_corner_offset_factor = 0.1;
+		var action_area_base_size_factor = 3/2;
 
-	         //  BoxCenter variables
-	         var box_corner_offset, proximity_margin;    
-	             
-	         // Square/Box variables
-	         var box1_size, box2_size, box3_size, box4_size;
-	         var hover_size;
-	         var box_title_margin, box_title_font_size;      
-	         var box1_offset_top_center, box1_offset_left_center;
-	         var box2_offset_top_center, box2_offset_left_center;
-	         var box3_offset_top_center, box3_offset_left_center;
-	         var box4_offset_top_center, box4_offset_left_center;
-	             
-	         // Logo variables
-	         var logo_size, logo_ref_center_tl, logo_ref_center_br;
-	             
-	         // Colors
-	         var color_1 = "#424B54";
-	         var color_2 = "#2CA6A4";
-	         var color_3 = "#85DCAC";
-	         var color_4 = "#FFCF00";
-	         var color_back = "white";
-	         
-	         //SCRIPTING ----------------------------------------------------
-	         //Get minimum window size
-	         GetMinWindowSize()
-	         
-	         //reference box size and styling
-	         ref_box_size = Math.round(min_window_size / 3 * 2);//600;
-	       
-	         $("#reference_box").css({
-	            "width": ref_box_size,
-	            "height": ref_box_size,
-	            //place in absolute center
-	            "margin": "auto",
-	            "position": "absolute",
-	            "top": 0, "left": 0, "bottom": 0, "right": 0
-	         })
+		// Colors
+		var color_1 = "#424B54";
+		var color_2 = "#2CA6A4";
+		var color_3 = "#85DCAC";
+		var color_4 = "#FFCF00";
+		var color_back = "white";
 
-	         //sizes by reference box
-	         box1_size = Math.round(ref_box_size * 0.36); //220;
-	         box2_size = Math.round(ref_box_size * 0.3); //180;
-	         box3_size = Math.round(ref_box_size * 0.24); //140;
-	         box4_size = Math.round(ref_box_size * 0.18); //100;
-	         hover_size = Math.round(ref_box_size/2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
-	         box_title_margin = Math.round(ref_box_size * 0.041); //25;
-	         box_title_font_size = Math.round(ref_box_size * 0.033); //20;
+		// Window width variables
+		var window_width, window_height, min_window_size, resizeTimer;
 
-	         //logo sizes
-	         logo_size = Math.round(ref_box_size * 0.15); //80;
-	         logo_ref_center_tl = Math.round(hover_size - (logo_size/2));
-	         logo_ref_center_br = Math.round(hover_size + (logo_size/2));
+		// Reference box variables
+		var ref_box_size;
+		var ref_box_offset_top_center, ref_box_offset_left_center;
 
-	         //ACTIONS WHEN DOCUMENT IS READY
-	         $(document).ready(function(){
-			console.log("document ready")
-	          //STYLING OF BOX CONTENT
-	          //optional position class of objects in the squares
-	          $('.LU-align').css({'position' : 'absolute'});
-	          $('.LD-align').css({'position' : 'absolute','bottom' : '0'});
-	          $('.RD-align').css({'position' : 'absolute','bottom' : '0','right' : '0'});
-	          $('.RU-align').css({'position' : 'absolute','right' : '0'});
-	          //optional margin class of objects in the boxes
-	          $('.LU-margin').css({'margin' : box_title_margin + 'px 0px 0px ' + box_title_margin + 'px'});
-	          $('.LD-margin').css({'margin' : '0px 0px ' + box_title_margin + 'px ' + box_title_margin + 'px'});
-	          $('.RD-margin').css({'margin' : '0px ' + box_title_margin + 'px ' + box_title_margin + 'px 0px'});
-	          $('.RU-margin').css({'margin' : box_title_margin + 'px ' + box_title_margin + 'px 0px 0px'});
-	          //box title font size
-	          $('h2').css({'font-size' : box_title_font_size + 'px'});
+		// BoxProximity variables
+		var mouse_top, mouse_left
+		var box_corner_offset, proximity_margin;
+		var box1_proximity, box2_proximity, box3_proximity, box4_proximity;
+		var box1_proximity_size, box2_proximity_size, box3_proximity_size, box4_proximity_size;
+		BoxProximity_1_enable = true;
+		BoxProximity_2_enable = true;
+		BoxProximity_3_enable = true;
+		BoxProximity_4_enable = true;
 
-	          //MAKING OF OBJECT
+		// Square/Box variables
+		var box1_size, box2_size, box3_size, box4_size;
+		var hover_size;
+		var box_title_margin, box_title_font_size;
+		var box1_offset_top_center, box1_offset_left_center;
+		var box2_offset_top_center, box2_offset_left_center;
+		var box3_offset_top_center, box3_offset_left_center;
+		var box4_offset_top_center, box4_offset_left_center;
+		var BoxProximity_1_enable, BoxProximity_2_enable, BoxProximity_3_enable, BoxProximity_4_enable;
+		var MS_animation_speed
 
-	          //squares
-	          MakeSquare("#top_left", 1, box1_size, "about.html");
-	          MakeSquare("#bottom_left", 2, box2_size, "music.html");
-	          MakeSquare("#bottom_right", 3, box3_size, "video.html");
-	          MakeSquare("#top_right", 4, box4_size, "shows.html");
-	          //logo
-	          $("#logo").css({
-	            "width": logo_size,
-	            "height": logo_size,
-	            "position": "absolute",
-	            "top": logo_ref_center_tl,
-	            "left": logo_ref_center_tl,
-	            "bottom" : logo_ref_center_br,
-	            "right" : logo_ref_center_br,
-	            "fill": color_back
-	          })
-	          //box title font size
-	          $('h2').css({'font-size' : box_title_font_size + 'px'});
-	          //margin in the boxes
-	          $('.LU-margin').css({'margin' : box_title_margin + 'px 0px 0px ' + box_title_margin + 'px'});
-	          $('.LD-margin').css({'margin' : '0px 0px ' + box_title_margin + 'px ' + box_title_margin + 'px'});
-	          $('.RD-margin').css({'margin' : '0px ' + box_title_margin + 'px ' + box_title_margin + 'px 0px'});
-	          $('.RU-margin').css({'margin' : box_title_margin + 'px ' + box_title_margin + 'px 0px 0px'});
-	          //body color
-	          $("body").css({
-	            "background-color": color_back
-	          })
-
-
-	          setTimeout(function() {
-	          	console.log("------Calculations----------------------window ready--------------------------")
-	          	ref_box_offset_left_center = ($("#reference_box").offset().left + (ref_box_size / 2));
-			ref_box_offset_left_center = Math.round(ref_box_offset_left_center)
-
-	          	console.log("ref_box_offset_left_center: " + ref_box_offset_left_center)
-	          	ref_box_offset_top_center = ($("#reference_box").offset().top + (ref_box_size / 2));
-			ref_box_offset_top_center = Math.round(ref_box_offset_top_center)
-
-	          	console.log("ref_box_offset_top_center: " + ref_box_offset_top_center)
-	          	box1_offset_left_center = ($("#top_left").offset().left + ($("#top_left").width() / 2));
-			box1_offset_left_center = Math.round(box1_offset_left_center)
-
-	          	console.log("box1_offset_left_center: " + box1_offset_left_center)
-	          	box1_offset_top_center = ($("#top_left").offset().top + ($("#top_left").height() / 2));
-	          	console.log("box1_offset_top_center: " + box1_offset_top_center)
-	          	box2_offset_left_center = ($("#bottom_left").offset().left + ($("#bottom_left").width() / 2));
-	          	console.log("box2_offset_left_center: " + box2_offset_left_center)
-	          	box2_offset_top_center = ($("#bottom_left").offset().top + ($("#bottom_left").height() / 2));
-	          	console.log("box2_offset_top_center: " + box2_offset_top_center)
-	          	box3_offset_left_center = ($("#bottom_right").offset().left + ($("#bottom_right").width() / 2));
-	          	console.log("box3_offset_left_center: " + box3_offset_left_center)
-	          	box3_offset_top_center = ($("#bottom_right").offset().top + ($("#bottom_right").height() / 2));
-	          	console.log("box3_offset_top_center: " + box3_offset_top_center)
-	          	box4_offset_left_center = ($("#top_right").offset().left + ($("#top_right").width() / 2));
-	          	console.log("box4_offset_left_center: " + box4_offset_left_center)
-	          	box4_offset_top_center = ($("#top_right").offset().top + ($("#top_right").height() / 2));
-	          	console.log("box4_offset_top_center: " + box4_offset_top_center)
-
-	          	box_corner_offset = hover_size / 10;
-	          	console.log("box_corner_offset: " + box_corner_offset)
-	          	proximity_margin = hover_size * 3/2;
-	          	console.log("proximity_margin: " + proximity_margin)
-	          }, 0);
-
-	          //fade in website when loaded
-	          $(function() {
-	            $('body').removeClass('fade_in_load');
-	          });
-	         });
+		// Logo variables
+		var logo_size, logo_ref_center_tl, logo_ref_center_br;
 
 
 
-	</script> 
-	<script>
-	         //WINDOW RESIZING
-	         //Actions when window is resized
-console.log("resized")
-	         $(window).on( 'resize', function(){
-		 //Turn transition off to prevent unwanted animation when resizing
-		
-	          //Get the minimum window widht/height
-	          window_width = $(window).innerWidth();
-	          window_height = $(window).innerHeight();
-	          if (window_width <= window_height) {
-	            min_window_size = window_width;
-	          } else {
-	            min_window_size = window_height;
-	          };
+		// PROGRAM ------------------------------------------------------------------------------------------------------------------------
+		MakeAlignmentClasses()
 
-	          //reference box size and styling
-	          ref_box_size = Math.round(min_window_size / 3 * 2);
-	             
-	          $("#reference_box").css({
-	            "width": ref_box_size,
-	            "height": ref_box_size
-	          })
+		function MakeThings(){
+			GetMinWindowSize()
+			CalculateSizes()
+			MakeRefBox()
+			Squares()
+			MakeLogo()
+			BoxContentFormat()
+		}
 
-	          //sizes by reference box
-	          box1_size = Math.round(ref_box_size * 0.36); //220;
-	          box2_size = Math.round(ref_box_size * 0.3); //180;
-	          box3_size = Math.round(ref_box_size * 0.24); //140;
-	          box4_size = Math.round(ref_box_size * 0.18); //100;
-	          hover_size = Math.round(ref_box_size/2);
-	          box_title_margin = Math.round(ref_box_size * 0.041); //25;
-	          box_title_font_size = Math.round(ref_box_size * 0.033); //20;
+		function MouseMoveThings(){
+			MouseMoveOfsets()
+			MouseMoveActionArea()
+		}
 
-	          //logo sizes by reference box
-	          logo_size = Math.round(ref_box_size * 0.15); //80;
-	          logo_ref_center_tl = Math.round(hover_size - (logo_size/2));
-	          logo_ref_center_br = Math.round(hover_size + (logo_size/2));
-
-	       
-
-	          //make squares
-	          MakeSquare("#top_left", 1, box1_size, "about.html");
-	          MakeSquare("#bottom_left", 2, box2_size, "music.html");
-	          MakeSquare("#bottom_right", 3, box3_size, "video.html");
-	          MakeSquare("#top_right", 4, box4_size, "shows.html");
-
-
-	          TransitionOff("#top_left","#bottom_left","#bottom_right","#top_right","#logo")
-
-	         
-
-	          //logo size and styling
-	          $("#logo").css({
-	            "width": logo_size,
-	            "height": logo_size,
-	            "top": logo_ref_center_tl,
-	            "left": logo_ref_center_tl,
-	            "bottom" : logo_ref_center_br,
-	            "right" : logo_ref_center_br,
-	          })
-	          //box title font size
-	          $('h2').css({'font-size' : box_title_font_size + 'px'});
-	          //margin in the boxes
-	          $('.LU-margin').css({'margin' : box_title_margin + 'px 0px 0px ' + box_title_margin + 'px'});
-	          $('.LD-margin').css({'margin' : '0px 0px ' + box_title_margin + 'px ' + box_title_margin + 'px'});
-	          $('.RD-margin').css({'margin' : '0px ' + box_title_margin + 'px ' + box_title_margin + 'px 0px'});
-	          $('.RU-margin').css({'margin' : box_title_margin + 'px ' + box_title_margin + 'px 0px 0px'});
-
-	          
-	          setTimeout(function() {
-	          	console.log("------Calculations---------------------- resize --------------------------")
-	          	ref_box_offset_left_center = ($("#reference_box").offset().left + (ref_box_size / 2));
-	          	//console.log("ref_box_offset_left_center: " + ref_box_offset_left_center)
-	          	ref_box_offset_top_center = ($("#reference_box").offset().top + (ref_box_size / 2));
-	          	//console.log("ref_box_offset_top_center: " + ref_box_offset_top_center)
-	          	box1_offset_left_center = ($("#top_left").offset().left + ($("#top_left").width() / 2));
-	          	//console.log("box1_offset_left_center: " + box1_offset_left_center)
-	          	box1_offset_top_center = ($("#top_left").offset().top + ($("#top_left").height() / 2));
-	          	//console.log("box1_offset_top_center: " + box1_offset_top_center)
-	          	box2_offset_left_center = ($("#bottom_left").offset().left + ($("#bottom_left").width() / 2));
-	          	//console.log("box2_offset_left_center: " + box2_offset_left_center)
-	          	box2_offset_top_center = ($("#bottom_left").offset().top + ($("#bottom_left").height() / 2));
-	          	//console.log("box2_offset_top_center: " + box2_offset_top_center)
-	          	box3_offset_left_center = ($("#bottom_right").offset().left + ($("#bottom_right").width() / 2));
-	          	//console.log("box3_offset_left_center: " + box3_offset_left_center)
-	          	box3_offset_top_center = ($("#bottom_right").offset().top + ($("#bottom_right").height() / 2));
-	          	//console.log("box3_offset_top_center: " + box3_offset_top_center)
-	          	box4_offset_left_center = ($("#top_right").offset().left + ($("#top_right").width() / 2));
-	          	//console.log("box4_offset_left_center: " + box4_offset_left_center)
-	          	box4_offset_top_center = ($("#top_right").offset().top + ($("#top_right").height() / 2));
-	          	//console.log("box4_offset_top_center: " + box4_offset_top_center)
-	          	box_corner_offset = hover_size / 10;
-	          	//console.log("box_corner_offset: " + box_corner_offset)
-	          	proximity_margin = hover_size * 3/2;
-	          	//console.log("proximity_margin: " + proximity_margin)
-
+		// Actions when document is ready--------------------------------------------------------------------------------------------------
+		$(document).ready(function(){
+			MakeThings()
+			MouseMoveThings()
+			// body color & face in when loaded
+			$("body").css({"background-color": color_back}).removeClass('fade_in_load');
+			// switch transitions on after load
 			TransitionOn("#top_left","#bottom_left","#bottom_right","#top_right","#logo")
+		});
 
-	          }, 0);
+		// Actions when window is resized -------------------------------------------------------------------------------------------------
+		$(window).on( 'resize', function(){
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(function(){
+				GetMinWindowSize()
+				CalculateSizes()
+				MakeThings()
+				// transitions off when resizing
+				//(also to prevent wrong values in MouseMoveOfsets())
+				TransitionOff("#top_left","#bottom_left","#bottom_right","#top_right","#logo")
+				MouseMoveThings()
+				// switch transitions back on after resizing
+				TransitionOn("#top_left","#bottom_left","#bottom_right","#top_right","#logo")
+			}, 250)
+		});
 
-	         });
-		
-	</script> 
-	<script>
-
-	         var mouse_left_old, mouse_top_old;
-	         var mouse_top, mouse_left,
-	         BoxCenter_1_enable = true, BoxCenter_2_enable = true, BoxCenter_3_enable = true, BoxCenter_4_enable = true
-
-
-	         $(document).mousemove(function(){
-	          mouse_left = event.pageX;
-	          mouse_top = event.pageY;
-	          //double mouse event filter
-	          if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
-	            mouse_left_old = mouse_left;
-	            mouse_top_old = mouse_top;
-	            // console.log("MOUSE( left: " + mouse_left + " top: " + mouse_top + " )")
-
-
-	            var box1_uni = BoxCenter(1, box1_offset_top_center - box_corner_offset, box1_offset_left_center - box_corner_offset , proximity_margin );
-	            var box2_uni = BoxCenter(2, box2_offset_top_center + box_corner_offset, box2_offset_left_center - box_corner_offset, proximity_margin );
-	            var box3_uni = BoxCenter(3, box3_offset_top_center + box_corner_offset, box3_offset_left_center + box_corner_offset , proximity_margin );
-	            var box4_uni = BoxCenter(4, box4_offset_top_center - box_corner_offset, box4_offset_left_center + box_corner_offset, proximity_margin );
-
-	            AffectSquare("#top_left", 1, box1_size + (ref_box_size/4 * box1_uni));
-	            AffectSquare("#bottom_left", 2, box2_size + (ref_box_size/4 * box2_uni));
-	            AffectSquare("#bottom_right", 3, box3_size + (ref_box_size/4 * box3_uni));
-	            AffectSquare("#top_right", 4, box4_size + (ref_box_size/4 * box4_uni));
-
-	          } else { console.log("MOUSE DOUBLE")
-	          }
-	         })
-
-
-
+		// Actions by mouse move ----------------------------------------------------------------------------------------------------------
+		$(document).mousemove(function(){
+			GetMousePosition()
+			//filter double mouse event
+			if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
+				var mouse_left_old = mouse_left;
+				varmouse_top_old = mouse_top;
+				// affect squares whit proximity data
+				Proximities()
+				AffectSquares()
+			}
+		})
 
 	</script>
 </body>
