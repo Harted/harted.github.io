@@ -53,13 +53,13 @@ function ClickFunction(CF_id, CF_href, CF_animation_speed){
     'top': 0,
   })
   $("#reference_box > div").each(function(){
-    CF_array[CF_array.length] = $(this).attr('id');
+    CF_array[CF_array.length] = "#" + $(this).attr('id');
   });
   console.log(CF_array);
   console.log(CF_array.length);
   console.log(CF_id);
   for(n = 0; n < CF_array.length; n++){
-    if (CF_id != "#" + CF_array[n]){
+    if (CF_id != CF_array[n]){
       console.log(CF_array[n]);
     } else {
       console.log("deze geklikt: " + CF_array[n]);
