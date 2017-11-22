@@ -38,8 +38,8 @@ function CalculateSizes(){
   logo_ref_center_tl = Math.round(hover_size - (logo_size/2));
 
   //header sizes
-  header_height = Math.round(ref_box_size * 0.12);
-  console.log('index.js: ' + header_height)
+  header_height = 50;
+  console.log('index.js: ' + Math.round(header_height))
 }
 
 // Reference box ----------------------------------------------------------------------------------------------------------------------

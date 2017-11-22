@@ -37,7 +37,6 @@ function SetMargins(ref, SM_hover_size, SM_margin) {
 }
 //Function when a box is clicked after transition -------------------------------------------------------------------------------------
 function ClickFunction(CF_id, CF_href, CF_animation_speed) {
-
 	var CF_array = [];
 	$("#reference_box > div").each(function() {
 		CF_array[CF_array.length] = "#" + $(this).attr('id');
@@ -48,71 +47,68 @@ function ClickFunction(CF_id, CF_href, CF_animation_speed) {
 				'display': 'none',
 			}).off("mouseenter mouseleave");
 		} else {
-			$(CF_array[n]).off("mouseenter mouseleave transitionend click")
-			.css({ 'cursor': 'initial'});
+			$(CF_array[n]).off("mouseenter mouseleave transitionend click").css({
+				'cursor': 'initial'
+			});
 		};
 	};
 	$("#logo").css({
 		//place in absolute center
 		"transition": "none",
-    "margin": "auto",
-    "position": "absolute",
-    "top": 0, "left": 0, "bottom": 0, "right": 0
+		"margin": "auto",
+		"position": "absolute",
+		"top": 0,
+		"left": 0,
+		"bottom": 0,
+		"right": 0
 	});
 	$("h2").css({
 		'display': 'none',
 	});
 	$(document).off("mousemove");
-
-	setTimeout(function() {
-		$("#reference_box").css({
-			'transition': "none",
-			'width': window_width,
-			'height' : window_height,
-		});
-
-		var margins_to_header = SetMarginsToHeader(CF_id)
-		var top = margins_to_header[0]
-		var right = margins_to_header[1]
-		var bottom = margins_to_header[2]
-		var left = margins_to_header[3]
-
-		$(CF_id).css({
-			'transition': (parseInt(CF_animation_speed) * 2) + "ms",
-			'right': right,
-			'bottom': bottom,
-			'left': left,
-			'top': top,
-		})
-		setTimeout(function(){
-			$(CF_id).css({
-				'width': '100%',
-				'height': header_height,
-				'top': 0,
-				'right': 0,
-				'bottom': 0,
-				'left': 0
-			});
-			setTimeout(function(){
-				$("#logo").css({
-					//place in absolute center
-					"transition": CF_animation_speed,
-			    "width": 0,
-					"height": 0,
-				});
-				setTimeout(function(){
-					window.location = CF_href;
-				},parseInt(CF_animation_speed))
-
-			},(parseInt(CF_animation_speed) * 2))
-		}, 25);
-
+	$("#reference_box").css({
+		'transition': "none",
+		'width': '100%',
+		'height': '100%',
 	});
+	var margins_to_header = SetMarginsToHeader(CF_id)
+	var top = margins_to_header[0]
+	var right = margins_to_header[1]
+	var bottom = margins_to_header[2]
+	var left = margins_to_header[3]
+	$(CF_id).css({
+		'transition': (parseInt(CF_animation_speed) * 2) + "ms",
+		'right': right,
+		'bottom': bottom,
+		'left': left,
+		'top': top,
+	})
+	setTimeout(function() {
+		$(CF_id).css({
+			'width': '100%',
+			'height': header_height,
+			'top': 'auto',
+			'right': 0,
+			'bottom': 0,
+			'left': 0
+		});
+		setTimeout(function() {
+			$("#logo").css({
+				//place in absolute center
+				"transition": CF_animation_speed,
+				"width": 0,
+				"height": 0,
+			});
+			setTimeout(function() {
+				window.location = CF_href;
+			}, parseInt(CF_animation_speed) * 2)
+		}, parseInt(CF_animation_speed))
+	}, 25);
 };
 // Set margins before transitioning to header -----------------------------------------------------------------------------------------
 function SetMarginsToHeader(SMTH_id) {
 	console.log(SMTH_id)
-	if (SMTH_id == '#top_left'){
+	if (SMTH_id == '#top_left') {
 		var ref = 1;
 	} else if (SMTH_id == '#bottom_left') {
 		var ref = 2;
