@@ -1,5 +1,17 @@
 // functions are ordered as to first usage in index.html
 
+// Body fade in on load ---------------------------------------------------------------------------------------------------------------
+$('body').css({
+	'opacity': 0,
+});
+setTimeout(function(){
+	$('body').css({
+		'opacity': 1,
+		'transition': '500ms',
+	});	
+
+},25)
+
 // Make alignment classes for box content ---------------------------------------------------------------------------------------------
 function MakeAlignmentClasses(){
   $('.top_left_align').css({'position' : 'absolute'});
@@ -132,15 +144,15 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 
 // Make logo --------------------------------------------------------------------------------------------------------------------------
 function MakeLogo(){
-  console.log("tetjes")
-  $("#logo").css({
-    "width": logo_size,
-    "height": logo_size,
-    "position": "absolute",
-    "top": logo_ref_center_tl,
-    "left": logo_ref_center_tl,
-    "fill": color_back
-  })
+	$("#logo").css({
+		"width": logo_size,
+    		"height": logo_size,
+   		"position": "absolute",
+    		"top": logo_ref_center_tl,
+    		"left": logo_ref_center_tl,
+		"fill": color_back
+  	
+	});
 };
 
 // Box content formatting -------------------------------------------------------------------------------------------------------------

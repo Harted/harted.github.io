@@ -77,7 +77,7 @@ function ClickFunction(CF_id, CF_href, CF_animation_speed) {
 	var bottom = margins_to_header[2]
 	var left = margins_to_header[3]
 	$(CF_id).css({
-		'transition': (parseInt(CF_animation_speed) * 2) + "ms",
+		'transition': (parseInt(CF_animation_speed)) * 2 + "ms",
 		'right': right,
 		'bottom': bottom,
 		'left': left,
@@ -102,7 +102,7 @@ function ClickFunction(CF_id, CF_href, CF_animation_speed) {
 			setTimeout(function() {
 				window.location = CF_href;
 			}, parseInt(CF_animation_speed) * 2)
-		}, parseInt(CF_animation_speed))
+		}, parseInt(CF_animation_speed)*2)
 	}, 25);
 };
 // Set margins before transitioning to header -----------------------------------------------------------------------------------------
