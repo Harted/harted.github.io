@@ -1,9 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
+  <title>Music</title>
+  <link href="styles.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="functions.js"></script>
+  <script src="functions_child.js"></script>
 </head>
-<body>
-  <h1>Music</h1>
-  <a href="index.html"><h2>back</h2></a>
+<body class="color_back">
+  <div id="header" class="color_2">
+    <div class="container">
+      <h3 id="headertitle">
+        <a href="index.html">Back</a>
+      </h3>
+      <div id="headerlogo">
+        <svg  viewbox="-16.95 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <path d="M250.4,15.9a16.7,16.7,0,0,0-7.9,2L41,126.6A16.7,16.7,0,0,0,32,141.3V358.8A16.7,16.7,0,0,0,41,373.4L242.4,482.1a17.1,17.1,0,0,0,15.9,0L459.4,373.4a16.5,16.5,0,0,0,8.5-14.6V141.3a16.5,16.5,0,0,0-8.5-14.6L258.2,17.9A16.2,16.2,0,0,0,250.4,15.9Z" id="logo_fill" transform="translate(-16.9 0)"></path>
+          <path d="M250.4,500a22,22,0,0,1-10.4-2.6L28.6,383.3a21.9,21.9,0,0,1-11.6-19.2V135.9a21.9,21.9,0,0,1,11.6-19.2L240,2.6a21.8,21.8,0,0,1,20.6,0L471.8,116.7a21.7,21.7,0,0,1,11.2,19.2V364.1a21.7,21.7,0,0,1-11.3,19.2L260.7,497.4A21.9,21.9,0,0,1,250.4,500Zm0-495.7a17.5,17.5,0,0,0-8.3,2.1L30.7,120.6a17.5,17.5,0,0,0-9.4,15.3V364.1a17.6,17.6,0,0,0,9.4,15.4L242,493.6a17.9,17.9,0,0,0,16.7,0L469.7,379.5a17.4,17.4,0,0,0,9-15.4V135.9a17.3,17.3,0,0,0-9-15.3L258.6,6.4A17,17,0,0,0,250.4,4.3Z"
+          id="logo_border" transform="translate(-16.9 0)"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
 </body>
+<script src="variables.js"></script>
+<script>
+$('#headerlogo').css({
+  'fill': color_back,
+})
+</script>
 </html>

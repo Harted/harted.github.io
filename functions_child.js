@@ -37,41 +37,111 @@ function SetMargins(ref, SM_hover_size, SM_margin) {
 }
 //Function when a box is clicked after transition -------------------------------------------------------------------------------------
 function ClickFunction(CF_id, CF_href, CF_animation_speed) {
+
 	var CF_array = [];
 	$("#reference_box > div").each(function() {
 		CF_array[CF_array.length] = "#" + $(this).attr('id');
 	});
-	console.log(CF_array);
 	for (n = 0; n < CF_array.length; n++) {
 		if (CF_id != CF_array[n]) {
-			console.log(CF_array[n]);
 			$(CF_array[n]).css({
-				'opacity': 0,
-			});
+				'display': 'none',
+			}).off("mouseenter mouseleave");
 		} else {
-			console.log("deze geklikt: " + CF_array[n]);
+			$(CF_array[n]).off("mouseenter mouseleave transitionend click")
+			.css({ 'cursor': 'initial'});
 		};
 	};
 	$("#logo").css({
-		'opacity': 0,
+		//place in absolute center
+		"transition": "none",
+    "margin": "auto",
+    "position": "absolute",
+    "top": 0, "left": 0, "bottom": 0, "right": 0
 	});
 	$("h2").css({
-		'opacity': 0,
-		'transition': "1000ms",
-	});	
-	setInterval(function() {
+		'display': 'none',
+	});
+	$(document).off("mousemove");
+
+	setTimeout(function() {
 		$("#reference_box").css({
-			'transition': "1000ms",
-			'width': '100%',
-			'height' : '100%',
+			'transition': "none",
+			'width': window_width,
+			'height' : window_height,
 		});
+
+		var margins_to_header = SetMarginsToHeader(CF_id)
+		var top = margins_to_header[0]
+		var right = margins_to_header[1]
+		var bottom = margins_to_header[2]
+		var left = margins_to_header[3]
+
 		$(CF_id).css({
-			'transition': "1000ms",
-			'width': '100%',
-			'height': '80px',
-			'right': 0,
-			'top': 0,
+			'transition': (parseInt(CF_animation_speed) * 2) + "ms",
+			'right': right,
+			'bottom': bottom,
+			'left': left,
+			'top': top,
 		})
-	}, 100);
-	return false
-}
+		setTimeout(function(){
+			$(CF_id).css({
+				'width': '100%',
+				'height': $('#header').css("height"),
+				'top': 0,
+				'right': 0,
+				'bottom': 0,
+				'left': 0
+			});
+			setTimeout(function(){
+				$("#logo").css({
+					//place in absolute center
+					"transition": CF_animation_speed,
+			    "width": 0,
+					"height": 0,
+				});
+				setTimeout(function(){
+					window.location = CF_href;
+				},parseInt(CF_animation_speed))
+
+			},(parseInt(CF_animation_speed) * 2))
+		}, 25);
+
+	});
+};
+// Set margins before transitioning to header -----------------------------------------------------------------------------------------
+function SetMarginsToHeader(SMTH_id) {
+	console.log(SMTH_id)
+	if (SMTH_id == '#top_left'){
+		var ref = 1;
+	} else if (SMTH_id == '#bottom_left') {
+		var ref = 2;
+	} else if (SMTH_id == '#bottom_right') {
+		var ref = 3;
+	} else if (SMTH_id == '#top_right') {
+		var ref = 4;
+	};
+	console.log(ref)
+	if (ref == 1) {
+		var top = (window_height / 2 - hover_size) + "px";
+		var left = (window_width / 2 - hover_size) + "px";
+		var bottom = "50%";
+		var right = "50%";
+	} else if (ref == 2) {
+		var top = "50%";
+		var left = (window_width / 2 - hover_size) + "px";
+		var bottom = (window_height / 2 - hover_size) + "px";
+		var right = "50%";
+	} else if (ref == 3) {
+		var top = "50%";
+		var left = "50%";
+		var bottom = (window_height / 2 - hover_size) + "px";
+		var right = (window_width / 2 - hover_size) + "px";
+	} else if (ref == 4) {
+		var top = (window_height / 2 - hover_size) + "px";
+		var left = "50%";
+		var bottom = "50%";
+		var right = (window_width / 2 - hover_size) + "px";
+	};
+	return [top, right, bottom, left]
+};

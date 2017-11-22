@@ -85,8 +85,7 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
   })
 
   // MOUSE ENTER
-  .unbind("mouseenter")
-  .mouseenter(function() {
+  .mouseenter(function(){
     BoxProximityEnable(MS_ref, false)
     $(this).css({
       'width': hover_size,
@@ -98,7 +97,7 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
       $(this).css({
         "cursor": "pointer"
       }).click(function() {
-        MS_leave_enable = ClickFunction(MS_id, MS_href, MS_animation_speed)
+        ClickFunction(MS_id, MS_href, MS_animation_speed)
         //window.location = MS_href
       })
     })
@@ -109,30 +108,28 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
     })
   })
   // MOUSE LEAVE
-  .unbind("mouseleave")
   .mouseleave(function() {
-    if (MS_leave_enable == true){
-      BoxProximityEnable(MS_ref, true)
-      $(this).off("click").css({
-        'width': MS_size,
-        'height': MS_size,
-        'right': MS_right,
-        'bottom': MS_bottom,
-        'transition': MS_animation_speed,
-        "cursor": "initial",
-      }).off('transitionend')
-      // logo animation
-      $("#logo").css({
-        "fill": color_back,
-        'transition': MS_animation_speed
-      })
-    }
-  })
 
+    BoxProximityEnable(MS_ref, true)
+    $(this).off("click").css({
+      'width': MS_size,
+      'height': MS_size,
+      'right': MS_right,
+      'bottom': MS_bottom,
+      'transition': MS_animation_speed,
+      "cursor": "initial",
+    }).off('transitionend')
+    // logo animation
+    $("#logo").css({
+      "fill": color_back,
+      'transition': MS_animation_speed
+    })
+  })
 };
 
 // Make logo --------------------------------------------------------------------------------------------------------------------------
 function MakeLogo(){
+  console.log("tetjes")
   $("#logo").css({
     "width": logo_size,
     "height": logo_size,
