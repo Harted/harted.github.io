@@ -44,48 +44,54 @@ function GetMinWindowSize() {
 function CalculateSizes(){
 	//reference box size and styling
 	if (screen_large == true || screen_medium == true) {
-		ref_box_size = Math.round(min_window_size / (2 + Math.pow(min_window_size/screen_large_size, 2)) * 2)
-		/*box1_size = Math.round(ref_box_size * 0.36); //220;
-		box2_size = Math.round(ref_box_size * 0.3); //180;
-		box3_size = Math.round(ref_box_size * 0.24); //140;
-		box4_size = Math.round(ref_box_size * 0.18); //100;
-		hover_size = Math.round(ref_box_size/2);*/
+		ref_box_size = Math.round(min_window_size / (2 + Math.pow(min_window_size/screen_large_size, 4)) * 2)
+		SizesByRefBox()
+
 	} else if (screen_small == true) {
-		console.log("iphone")
-		ref_box_size = Math.round(min_window_size / (2 + Math.pow(screen_small_size/screen_large_size, 2)) * 2)
-		//ref_box_size = '100%'
-		/*box1_size = '50%';
-		box2_size = '50%'; //180;
-		box3_size = '50%'; //140;
-		box4_size = '50%'; //100;
-		hover_size = '50%';*/
+		//ref_box_size = Math.round(min_window_size / (2 + Math.pow(screen_small_size/screen_large_size, 2)) * 2)
+		ref_box_size = '100%'
+		SizesByRefBoxMobile()
 	} else {
-		console.log("other")
 		ref_box_size = Math.round(min_window_size / 3 * 2); //600;
-		/*box1_size = Math.round(ref_box_size * 0.36); //220;
+		SizesByRefBox()
+
+	}
+	//sizes by reference box
+
+
+	function SizesByRefBox() {
+		box1_size = Math.round(ref_box_size * 0.36); //220;
 		box2_size = Math.round(ref_box_size * 0.3); //180;
 		box3_size = Math.round(ref_box_size * 0.24); //140;
 		box4_size = Math.round(ref_box_size * 0.18); //100;
-		hover_size = Math.round(ref_box_size/2);*/
-	}
+		hover_size = Math.round(ref_box_size/2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
+		box_title_margin = Math.round(ref_box_size * 0.041); //25;
+		box_title_font_size = Math.round(ref_box_size * 0.033); //20;
 
-	//sizes by reference box
-	box1_size = Math.round(ref_box_size * 0.36); //220;
-	box2_size = Math.round(ref_box_size * 0.3); //180;
-	box3_size = Math.round(ref_box_size * 0.24); //140;
-	box4_size = Math.round(ref_box_size * 0.18); //100;
-	hover_size = Math.round(ref_box_size/2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
-	box_title_margin = Math.round(ref_box_size * 0.041); //25;
-	box_title_font_size = Math.round(ref_box_size * 0.033); //20;
+		//logo sizes
+		logo_size = Math.round(ref_box_size * 0.15); //80;
+		var local_ref_center = Math.round(hover_size - (logo_size/2))
+		logo_ref_center_tl = [local_ref_center, local_ref_center];
+	};
 
-	//logo sizes
-	logo_size = Math.round(ref_box_size * 0.15); //80;
-	logo_ref_center_tl = Math.round(hover_size - (logo_size/2));
+	function SizesByRefBoxMobile() {
+		box1_size = "50%"; //220;
+		box2_size = "50%"; //180;
+		box3_size = "50%"; //140;
+		box4_size = "50%"; //100;
+		hover_size = Math.round(min_window_size/2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
+		box_title_margin = Math.round(min_window_size * 0.08); //25;
+		box_title_font_size = Math.round(min_window_size * 0.08); //20;
+
+		//logo sizes
+		logo_size = Math.round(min_window_size * 0.30); //80;
+		logo_ref_center_tl = [(window_height/2) - (logo_size/2), (window_width/2) - (logo_size/2)] //Math.round(hover_size - (logo_size/2));
+	};
+
 
 	//header sizes
 	header_height = 50;
-}
-
+};
 // Reference box ----------------------------------------------------------------------------------------------------------------------
 function MakeRefBox(){
 	$("#reference_box").css({
@@ -114,26 +120,11 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 
 	var MS_leave_enable = true
 
-	var margins_array = SetMargins(MS_ref, hover_size, MS_margin);
+	var margins_array = SetMargins(MS_ref, hover_size, MS_margin, screen_small);
 	MS_right = margins_array[0];
 	MS_bottom = margins_array[1];
 	MS_right_h = margins_array[2];
 	MS_bottom_h = margins_array[3];
-
-	/*if (screen_small != true) {
-		//normal SetMargins etc..
-	} else {
-		MS_right = 0;
-		MS_bottom = 0;
-		MS_right_h = 0;
-		MS_bottom_h = 0;
-		$(MS_id).css({
-			"cursor": "pointer"
-		}).click(function() {
-			ClickFunction(MS_id, MS_href, MS_animation_speed)
-			//window.location = MS_href
-		})
-	}*/
 
 	$(MS_id)
 	.css({
@@ -195,8 +186,8 @@ function MakeLogo(){
 		"width": logo_size,
 		"height": logo_size,
 		"position": "absolute",
-		"top": logo_ref_center_tl,
-		"left": logo_ref_center_tl,
+		"top": logo_ref_center_tl[0],
+		"left": logo_ref_center_tl[1],
 		"fill": color_back
 	});
 };

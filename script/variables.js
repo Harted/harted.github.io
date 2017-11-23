@@ -18,8 +18,8 @@ var window_width, window_height, min_window_size;
 // Responsive (minimum sizes)
 var screen_large, screen_medium , screen_small;
 var screen_large_size = 1024; //iPad pro = 1024
-var screen_medium_size = 768; //iPad = 768
-var screen_small_size = 414; //iPhone plus = 414
+var screen_medium_size = 770; //iPad = 768
+var screen_small_size = 416; //iPhone plus = 414
 
 // Reference box variables
 var ref_box_size;

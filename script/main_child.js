@@ -11,30 +11,40 @@ function BoxProximityEnable(ref, Bool) {
 	};
 };
 // Set margins of squars based on position --------------------------------------------------------------------------------------------
-function SetMargins(ref, SM_hover_size, SM_margin) {
+function SetMargins(ref, SM_hover_size, SM_margin, SM_sreen_small) {
+
+	if (SM_sreen_small == true){
+		var hover_size = '50%';
+		var margin = 0;
+	} else {
+		var hover_size = SM_hover_size;
+		var margin = SM_margin;
+	}
+
 	if (ref == 1) {
-		var right = SM_hover_size;
-		var bottom = SM_hover_size;
-		var right_h = SM_hover_size;
-		var bottom_h = SM_hover_size;
+		var right = hover_size;
+		var bottom = hover_size;
+		var right_h = hover_size;
+		var bottom_h = hover_size;
 	} else if (ref == 2) {
-		var right = SM_hover_size
-		var bottom = SM_margin
-		var right_h = SM_hover_size;
+		var right = hover_size
+		var bottom = margin
+		var right_h = hover_size;
 		var bottom_h = 0;
 	} else if (ref == 3) {
-		var right = SM_margin
-		var bottom = SM_margin
+		var right = margin
+		var bottom = margin
 		var right_h = 0;
 		var bottom_h = 0;
 	} else if (ref == 4) {
-		var right = SM_margin
-		var bottom = SM_hover_size
+		var right = margin
+		var bottom = hover_size
 		var right_h = 0;
-		var bottom_h = SM_hover_size;
+		var bottom_h = hover_size;
 	}
 	return [right, bottom, right_h, bottom_h]
 }
+
 //Function when a box is clicked after transition -------------------------------------------------------------------------------------
 function ClickFunction(CF_id, CF_href, CF_animation_speed) {
 	var CF_array = [];
