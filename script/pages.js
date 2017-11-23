@@ -10,7 +10,7 @@ function Header(color) {
 	})
 };
 // Make headerlogo --------------------------------------------------------------------------------------------------------------------
-function HeaderLogo() {
+function HeaderLogo(color) {
 	$('#headerlogo').css({
 		'height' : header_height,
 		'width' : header_height,
@@ -30,7 +30,7 @@ function HeaderLogo() {
 				})
 				setTimeout(function(){
 					window.location = "index.html";
-				}, anim_speed_factor * 250);			
+				}, anim_speed_factor * 250);
 			});
 		});
 
@@ -40,8 +40,8 @@ function HeaderLogo() {
 		'width': '0px',
 		'height': '0px',
 		'margin': (header_height/2),
-		'fill': color_back,
-		
+		'fill': color,
+
 	})
 
 	setTimeout(function() {
@@ -56,3 +56,12 @@ function HeaderLogo() {
 		});
 	}, 25);
 };
+
+// Make content container -------------------------------------------------------------------------------------------------------------
+function ContentContainer(){
+	var headerlogo_center_right = window_width - ($('#headerlogo').offset().left + (header_height/2));
+	$('.content_container').css({
+			'margin': '0px ' + (headerlogo_center_right * 2) + "px",
+	})
+	console.log($('.content_container').css("width"))
+}

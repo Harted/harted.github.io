@@ -15,6 +15,12 @@ var color_back = "white";
 // Window width variables
 var window_width, window_height, min_window_size;
 
+// Responsive (minimum sizes)
+var screen_large, screen_medium , screen_small;
+var screen_large_size = 1024; //iPad pro = 1024
+var screen_medium_size = 768; //iPad = 768
+var screen_small_size = 414; //iPhone plus = 414
+
 // Reference box variables
 var ref_box_size;
 var ref_box_offset_top_center, ref_box_offset_left_center;
@@ -41,7 +47,7 @@ var BoxProximity_1_enable, BoxProximity_2_enable, BoxProximity_3_enable, BoxProx
 var MS_animation_speed
 
 // Logo variables
-var logo_size, logo_ref_center_tl, logo_ref_center_br;
+var logo_size, logo_ref_center_tl;
 
 //Header
 var header_height;
