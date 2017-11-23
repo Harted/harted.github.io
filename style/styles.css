@@ -26,6 +26,10 @@ a{
 	text-decoration: none;
   font-weight: 200;
 }
+div {
+	-webkit-tap-highlight-color: transparent;
+}
+
 
 /* Classes ---------------------------------------------------------------------*/
 .container {
