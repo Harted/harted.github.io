@@ -29,5 +29,9 @@ a{
 
 /* Classes ---------------------------------------------------------------------*/
 .container {
-	margin: 0 5%;
+	margin: 0 3%;
+}
+.content_container {
+  border: 1px solid black;
+  /*margin: 0 10%;*/
 }
