@@ -25,8 +25,9 @@ var screen_small_size = 416; //iPhone plus = 414
 var ref_box_size;
 var ref_box_offset_top_center, ref_box_offset_left_center;
 
-// BoxProximity variables
-var mouse_top, mouse_left
+// BoxProximity & mousemove variables
+var mouse_moved = 0
+var mouse_top, mouse_left, mouse_cursor, mouse_touch;
 var box_corner_offset, proximity_margin;
 var box1_proximity, box2_proximity, box3_proximity, box4_proximity;
 var box1_proximity_size, box2_proximity_size, box3_proximity_size, box4_proximity_size;
