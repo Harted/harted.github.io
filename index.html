@@ -57,71 +57,97 @@
 			<p>poef</p>
 		</div>
 	</div>-->
+<script>
+// SCRIPT -------------------------------------------------------------------------------------------------------------------------
+MakeAlignmentClasses()
 
-	<script>
-	// SCRIPT -------------------------------------------------------------------------------------------------------------------------
-	MakeAlignmentClasses()
+function MakeThings() {
+	GetMinWindowSize()
+	Responsive()
+	CalculateSizes()
+	// sizes calculated
+	// Pages shit
+	Header(color_3)
+	HeaderLogo(color_back)
+	//ContentContainer()
+	MakeRefBox()
+	Squares()
+	MakeLogo()
+	BoxContentFormat()
+}
 
-	function MakeThings(){
-		GetMinWindowSize()
-		Responsive()
-		CalculateSizes()
-		// sizes calculated
-		// Pages shit
-		Header(color_3)
-		HeaderLogo(color_back)
-		//ContentContainer()
+function MouseMoveThings() {
+	MouseMoveOfsets()
+	MouseMoveActionArea()
+}
+// Actions when document is ready--------------------------------------------------------------------------------------------------
+$(document).ready(function() {
+	MakeThings()
+	MouseMoveThings()
+	// body color & face in when loaded
+	$("body").css({
+		"background-color": color_back
+	}).removeClass('fade_in_load');
+	// switch transitions on after load
+	TransitionOn("#top_left", "#bottom_left", "#bottom_right", "#top_right", "#logo")
+	MouseMove()
+});
+// Actions when window is resized -------------------------------------------------------------------------------------------------
+$(window).on('resize', function() {
+	GetMinWindowSize()
+	CalculateSizes()
+	MakeThings()
+	// transitions off when resizing
+	//(also to prevent wrong values in MouseMoveOfsets())
+	TransitionOff("#top_left", "#bottom_left", "#bottom_right", "#top_right", "#logo")
+	MouseMoveThings()
+	// switch transitions back on after resizing
+	TransitionOn("#top_left", "#bottom_left", "#bottom_right", "#top_right", "#logo")
+	MouseMove()
+});
 
-		MakeRefBox()
-		Squares()
-		MakeLogo()
-		BoxContentFormat()
-	}
-
-	function MouseMoveThings(){
-		MouseMoveOfsets()
-		MouseMoveActionArea()
-	}
-
-	// Actions when document is ready--------------------------------------------------------------------------------------------------
-	$(document).ready(function(){
-		MakeThings()
-		MouseMoveThings()
-
-
-
-		// body color & face in when loaded
-		$("body").css({"background-color": color_back}).removeClass('fade_in_load');
-		// switch transitions on after load
-		TransitionOn("#top_left","#bottom_left","#bottom_right","#top_right","#logo")
-	});
-
-	// Actions when window is resized -------------------------------------------------------------------------------------------------
-	$(window).on( 'resize', function(){
-		GetMinWindowSize()
-		CalculateSizes()
-		MakeThings()
-		// transitions off when resizing
-		//(also to prevent wrong values in MouseMoveOfsets())
-		TransitionOff("#top_left","#bottom_left","#bottom_right","#top_right","#logo")
-		MouseMoveThings()
-		// switch transitions back on after resizing
-		TransitionOn("#top_left","#bottom_left","#bottom_right","#top_right","#logo")
-	});
-
+function MouseMove() {
 	// Actions by mouse move ----------------------------------------------------------------------------------------------------------
-	$(document).mousemove(function(){
-		GetMousePosition()
-		//filter double mouse event
-		if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
-			var mouse_left_old = mouse_left;
-			varmouse_top_old = mouse_top;
-			// affect squares whit proximity data
-			Proximities()
-			AffectSquares()
+	mouse_moved = 0;
+	mouse_cursor = false;
+	mouse_touch = false;
+	$(document).off("mousemove").mousemove(function() {
+		if (mouse_cursor == false && mouse_touch == false){
+			mouse_moved++;
+			console.log(mouse_moved);
+		};
+		if (mouse_moved > 0 && mouse_cursor == false) {
+			
+			setTimeout(function() {
+				if (mouse_moved > 1) {
+					mouse_cursor = true;
+					mouse_touch = false;
+					console.log("CURSOR");
+				} else {
+					mouse_cursor = false;
+					mouse_touch = true;
+					$(document).off("mousemove");
+					console.log("TOUCH");
+				};
+				
+			}, 100)
+			
 		}
-	})
-
-</script>
-</body>
+	
+	
+	if (screen_small != true && mouse_cursor == true) {
+						GetMousePosition()
+						//filter double mouse event
+						if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
+							var mouse_left_old = mouse_left;
+							varmouse_top_old = mouse_top;
+							// affect squares whit proximity data
+							Proximities()
+							AffectSquares()
+						}
+					}
+})
+}
+</script> 
+</body > 
 </html>
