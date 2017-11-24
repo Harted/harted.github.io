@@ -5,10 +5,10 @@ var action_area_corner_offset_factor = 0.1;
 var action_area_base_size_factor = 3/2;
 
 // Colors
-var color_1 = "#2B2B2B";
-var color_2 = "#478483";
-var color_3 = "#8CDBAF";
-var color_4 = "#EFCF3E";
+var color_1 = "#2E343A";
+var color_2 = "#238482";
+var color_3 = "#3BDB83";
+var color_4 = "#EFC700";
 var color_back = "white";
 
 
@@ -26,7 +26,6 @@ var ref_box_size;
 var ref_box_offset_top_center, ref_box_offset_left_center;
 
 // BoxProximity & mousemove variables
-var mouse_moved = 0
 var mouse_top, mouse_left, mouse_cursor, mouse_touch;
 var box_corner_offset, proximity_margin;
 var box1_proximity, box2_proximity, box3_proximity, box4_proximity;

@@ -73,7 +73,6 @@ function CalculateSizes() {
 		box_title_font_size = Math.round(ref_box_size * 0.033); //20;
 		//logo sizes
 		logo_size = Math.round(ref_box_size * 0.15); //80;
-		
 		logo_ref_center = Math.round(hover_size - (logo_size / 2));
 	};
 
@@ -136,7 +135,6 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 	if (screen_small != true) {
 		// MOUSE ENTER
 		$(MS_id).off("click mouseenter mouseleave").on("mouseenter", function() {
-				console.log("mouseenter")
 				BoxProximityEnable(MS_ref, false)
 				$(this).css({
 						'width': hover_size,
@@ -145,13 +143,17 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 						'bottom': MS_bottom_h,
 					}) //actions on end of transisition:
 					.off('transitionend').one("transitionend", function() {
-						$(this).css({
-							"cursor": "pointer"
-						}).off("click").click(function() {
-							console.log("mouseclick")
+						if (mouse_cursor == true) { // transition naar hover size niet nodig!
+							$(this).css({
+								"cursor": "pointer"
+							}).off("click").click(function() {
+								console.log("mouseclick")
+								ClickFunction(MS_id, MS_href)
+								//window.location = MS_href
+							})
+						} else if (mouse_touch == true) {
 							ClickFunction(MS_id, MS_href)
-							//window.location = MS_href
-						})
+						}
 					})
 				// logo animation
 				$("#logo").css({
@@ -190,9 +192,9 @@ function MakeLogo() { //hier moet not bottom right bij.. van small naar big tran
 			"width": logo_size,
 			"height": logo_size,
 			"position": "absolute",
-			"top": logo_ref_center, 
+			"top": logo_ref_center,
 			"left": logo_ref_center,
-			"bottom": logo_ref_center, 
+			"bottom": logo_ref_center,
 			"right": logo_ref_center,
 			"fill": color_back
 		});

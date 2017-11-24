@@ -60,14 +60,11 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 		};
 	};
 	console.log("others deleted");
-	
-	
-
-	if (screen_small != true){
+	if (screen_small != true) {
 		$("#logo").css({
 			//place in absolute center
 			"transition": "none",
-			"margin": "auto",
+			"margin": 'auto',
 			"position": "absolute",
 			"top": 0,
 			"left": 0,
@@ -76,28 +73,24 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 		});
 		$("#reference_box").css({
 			'transition': "none",
-			'width': '100%',
-			'height': '100%',
+			'width': window_width,
+			'height': window_height,
+			//'margin': "0px",
 		});
-	
 		var margins_to_header = SetMarginsToHeader(CF_id)
 		var top = margins_to_header[0]
 		var right = margins_to_header[1]
 		var bottom = margins_to_header[2]
 		var left = margins_to_header[3]
-
 		$(CF_id).css({
 			'right': right,
 			'bottom': bottom,
 			'left': left,
 			'top': top,
-		}) 
- 
+		})
 		$(document).off("mousemove");
-
 	} else {
 		$("#logo").css({
-			
 			"transition": 400 * anim_speed_factor + "ms",
 			"fill": CF_logo_color,
 		});
@@ -107,28 +100,21 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 		'opacity': 0,
 		'transition': 200 * anim_speed_factor + "ms",
 	});
-	
-	
 	setTimeout(function() {
-		
-			$(CF_id).css({
-				'transition': 400 * anim_speed_factor + "ms",
-				'width': '100%',
-				'height': header_height,
-				'top': 'auto',
-				'right': 0,
-				'bottom': 0,
-			});
-	
+		$(CF_id).css({
+			'transition': 400 * anim_speed_factor + "ms",
+			'width': '100%',
+			'height': header_height,
+			'position':'fixed',
+			'top': 'auto',
+			'right': 0,
+			'bottom': 0,
+		});
 if (screen_small != true){
-			$(CF_id).css({
-				
-				'left': 0
-			});
+		$(CF_id).css({
+			'left': 0,
+		});
 }
-
-
-		
 		setTimeout(function() {
 			$("#logo").css({
 				"transition": 200 * anim_speed_factor + "ms",
