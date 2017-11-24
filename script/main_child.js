@@ -59,7 +59,6 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 			});
 		};
 	};
-	console.log("others deleted");
 	if (screen_small != true) {
 		$("#logo").css({
 			//place in absolute center
@@ -129,7 +128,6 @@ if (screen_small != true){
 };
 // Set margins before transitioning to header -----------------------------------------------------------------------------------------
 function SetMarginsToHeader(SMTH_id) {
-	console.log(SMTH_id)
 	if (SMTH_id == '#top_left') {
 		var ref = 1;
 	} else if (SMTH_id == '#bottom_left') {
@@ -139,7 +137,6 @@ function SetMarginsToHeader(SMTH_id) {
 	} else if (SMTH_id == '#top_right') {
 		var ref = 4;
 	};
-	console.log(ref)
 	if (ref == 1) {
 		var top = (window_height / 2 - hover_size) + "px";
 		var left = (window_width / 2 - hover_size) + "px";
