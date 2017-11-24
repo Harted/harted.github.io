@@ -52,7 +52,7 @@ function GetMinWindowSize() {
 function CalculateSizes() {
 	//reference box size and styling
 	if (screen_large == true || screen_medium == true) {
-		ref_box_size = Math.round(min_window_size / (2 + Math.pow(min_window_size / screen_large_size, 4)) * 2)
+		ref_box_size = Math.round(min_window_size / (2 + Math.pow(min_window_size / screen_large_size, 2)) * 2)
 		SizesByRefBox()
 	} else if (screen_small == true) {
 		//ref_box_size = Math.round(min_window_size / (2 + Math.pow(screen_small_size/screen_large_size, 2)) * 2)
