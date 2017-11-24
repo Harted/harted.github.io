@@ -5,10 +5,10 @@ var action_area_corner_offset_factor = 0.1;
 var action_area_base_size_factor = 3/2;
 
 // Colors
-var color_1 = "#2E343A";
-var color_2 = "#238482";
-var color_3 = "#3BDB83";
-var color_4 = "#EFC300";
+var color_1 = "#2B2B2B";
+var color_2 = "#478483";
+var color_3 = "#8CDBAF";
+var color_4 = "#EFCF3E";
 var color_back = "white";
 
 
