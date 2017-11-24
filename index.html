@@ -58,7 +58,7 @@
 		</div>
 	</div>-->
 <script>
-// SCRIPT -------------------------------------------------------------------------------------------------------------------------
+// script
 MakeAlignmentClasses()
 
 function MakeThings() {
@@ -108,46 +108,53 @@ $(window).on('resize', function() {
 
 function MouseMove() {
 	// Actions by mouse move ----------------------------------------------------------------------------------------------------------
-	mouse_moved = 0;
 	mouse_cursor = false;
 	mouse_touch = false;
+	var mouse_moved = 0;
+	var clicked = false;
+	$(document).off("click").on("click", function() {
+		clicked = true
+		console.log("clicked: " + clicked);
+		setTimeout(function() {
+			clicked = false;
+			console.log("clicked: " + clicked);
+		}, 10)
+	})
 	$(document).off("mousemove").mousemove(function() {
-		if (mouse_cursor == false && mouse_touch == false){
+		if (mouse_moved < 2) {
 			mouse_moved++;
 			console.log(mouse_moved);
 		};
-		if (mouse_moved > 0 && mouse_cursor == false) {
-			
+		if (mouse_moved > 0 && mouse_cursor != true) {
 			setTimeout(function() {
-				if (mouse_moved > 1) {
+				if (mouse_moved > 1 && mouse_cursor != true) {
 					mouse_cursor = true;
 					mouse_touch = false;
 					console.log("CURSOR");
-				} else {
+				} else if (mouse_cursor != true && clicked == true) {
 					mouse_cursor = false;
 					mouse_touch = true;
-					$(document).off("mousemove");
+					mouse_moved = 0;
 					console.log("TOUCH");
+					$(document).off("mousemove")
+					//mouse_touch_counter++;
 				};
-				
-			}, 100)
-			
+			}, 0)
 		}
-	
-	
-	if (screen_small != true && mouse_cursor == true) {
-						GetMousePosition()
-						//filter double mouse event
-						if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
-							var mouse_left_old = mouse_left;
-							varmouse_top_old = mouse_top;
-							// affect squares whit proximity data
-							Proximities()
-							AffectSquares()
-						}
-					}
-})
+		if (screen_small != true && mouse_cursor == true) {
+			GetMousePosition()
+			//filter double mouse event
+			if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
+				var mouse_left_old = mouse_left;
+				varmouse_top_old = mouse_top;
+				// affect squares whit proximity data
+				Proximities()
+				AffectSquares()
+			}
+		}
+	})
 }
+
 </script> 
 </body > 
 </html>
