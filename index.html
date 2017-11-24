@@ -114,16 +114,13 @@ function MouseMove() {
 	var clicked = false;
 	$(document).off("click").on("click", function() {
 		clicked = true
-		console.log("clicked: " + clicked);
 		setTimeout(function() {
 			clicked = false;
-			console.log("clicked: " + clicked);
 		}, 10)
 	})
 	$(document).off("mousemove").mousemove(function() {
 		if (mouse_moved < 2) {
 			mouse_moved++;
-			console.log(mouse_moved);
 		};
 		if (mouse_moved > 0 && mouse_cursor != true) {
 			setTimeout(function() {
