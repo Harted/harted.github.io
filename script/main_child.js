@@ -98,7 +98,7 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 	} else {
 		$("#logo").css({
 			
-			"transition": 600 * anim_speed_factor + "ms",
+			"transition": 400 * anim_speed_factor + "ms",
 			"fill": CF_logo_color,
 		});
 	}
@@ -139,7 +139,7 @@ if (screen_small != true){
 				window.location = CF_href;
 			}, 400 * anim_speed_factor)
 		}, 400 * anim_speed_factor)
-	}, 250);
+	}, 200);
 };
 // Set margins before transitioning to header -----------------------------------------------------------------------------------------
 function SetMarginsToHeader(SMTH_id) {
