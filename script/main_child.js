@@ -98,7 +98,7 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 	} else {
 		$("#logo").css({
 			
-			"transition": 200 * anim_speed_factor + "ms",
+			"transition": 400 * anim_speed_factor + "ms",
 			"fill": CF_logo_color,
 		});
 	}
