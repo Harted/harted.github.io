@@ -1,3 +1,57 @@
+// Sizes by reference box
+function SizesByRefBox() {
+	box1_size = Math.round(ref_box_size * 0.36); //220;
+	box2_size = Math.round(ref_box_size * 0.3); //180;
+	box3_size = Math.round(ref_box_size * 0.24); //140;
+	box4_size = Math.round(ref_box_size * 0.18); //100;
+	hover_size = Math.round(ref_box_size / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
+	box_title_margin = Math.round(ref_box_size * 0.041); //25;
+	box_title_font_size = Math.round(ref_box_size * 0.033); //20;
+	//logo sizes
+	logo_size = Math.round(ref_box_size * 0.15); //80;
+	logo_ref_center = Math.round(hover_size - (logo_size / 2));
+};
+
+// Sizes on mobile
+function SizesByRefBoxMobile() {
+	box1_size = "50%"; //220;
+	box2_size = "50%"; //180;
+	box3_size = "50%"; //140;
+	box4_size = "50%"; //100;
+	hover_size = Math.round(min_window_size / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
+	box_title_margin = Math.round(min_window_size * 0.08); //25;
+	box_title_font_size = Math.round(min_window_size * 0.08); //20;
+	//logo sizes
+	logo_size = Math.round(min_window_size * 0.30); //80;
+};
+
+// Set margins of squars based on position --------------------------------------------------------------------------------------------
+function SetMargins(ref, SM_common_margin, SM_margin) {
+	if (ref == 1) {
+		var right = SM_common_margin;
+		var bottom = SM_common_margin;
+		var right_h = SM_common_margin;
+		var bottom_h = SM_common_margin;
+	} else if (ref == 2) {
+		var right = SM_common_margin
+		var bottom = SM_margin
+		var right_h = SM_common_margin;
+		var bottom_h = 0;
+	} else if (ref == 3) {
+		var right = SM_margin
+		var bottom = SM_margin
+		var right_h = 0;
+		var bottom_h = 0;
+	} else if (ref == 4) {
+		var right = SM_margin
+		var bottom = SM_common_margin
+		var right_h = 0;
+		var bottom_h = SM_common_margin;
+	};
+	return [right, bottom, right_h, bottom_h];
+};
+
+
 // Box proximity enable ---------------------------------------------------------------------------------------------------------------
 function BoxProximityEnable(ref, Bool) {
 	if (ref == 1) {
@@ -10,38 +64,8 @@ function BoxProximityEnable(ref, Bool) {
 		BoxProximity_4_enable = Bool;
 	};
 };
-// Set margins of squars based on position --------------------------------------------------------------------------------------------
-function SetMargins(ref, SM_hover_size, SM_margin, SM_sreen_small) {
-	if (SM_sreen_small == true) {
-		var hover_size = '50%';
-		var margin = 0;
-	} else {
-		var hover_size = SM_hover_size;
-		var margin = SM_margin;
-	}
-	if (ref == 1) {
-		var right = hover_size;
-		var bottom = hover_size;
-		var right_h = hover_size;
-		var bottom_h = hover_size;
-	} else if (ref == 2) {
-		var right = hover_size
-		var bottom = margin
-		var right_h = hover_size;
-		var bottom_h = 0;
-	} else if (ref == 3) {
-		var right = margin
-		var bottom = margin
-		var right_h = 0;
-		var bottom_h = 0;
-	} else if (ref == 4) {
-		var right = margin
-		var bottom = hover_size
-		var right_h = 0;
-		var bottom_h = hover_size;
-	}
-	return [right, bottom, right_h, bottom_h]
-}
+
+
 //Function when a box is clicked after transition -------------------------------------------------------------------------------------
 function ClickFunction(CF_id, CF_href, CF_logo_color) {
 	var CF_array = [];
@@ -126,33 +150,31 @@ if (screen_small != true){
 		}, 400 * anim_speed_factor)
 	}, 200);
 };
+
+// Get mouse position -----------------------------------------------------------------------------------------------------------------
+function GetMousePosition() {
+	mouse_left = event.pageX;
+	mouse_top = event.pageY;
+};
+
 // Set margins before transitioning to header -----------------------------------------------------------------------------------------
 function SetMarginsToHeader(SMTH_id) {
 	if (SMTH_id == '#top_left') {
-		var ref = 1;
-	} else if (SMTH_id == '#bottom_left') {
-		var ref = 2;
-	} else if (SMTH_id == '#bottom_right') {
-		var ref = 3;
-	} else if (SMTH_id == '#top_right') {
-		var ref = 4;
-	};
-	if (ref == 1) {
 		var top = (window_height / 2 - hover_size) + "px";
 		var left = (window_width / 2 - hover_size) + "px";
 		var bottom = "50%";
 		var right = "50%";
-	} else if (ref == 2) {
+	} else if (SMTH_id == '#bottom_left') {
 		var top = "50%";
 		var left = (window_width / 2 - hover_size) + "px";
 		var bottom = (window_height / 2 - hover_size) + "px";
 		var right = "50%";
-	} else if (ref == 3) {
+	} else if (SMTH_id == '#bottom_right') {
 		var top = "50%";
 		var left = "50%";
 		var bottom = (window_height / 2 - hover_size) + "px";
 		var right = (window_width / 2 - hover_size) + "px";
-	} else if (ref == 4) {
+	} else if (SMTH_id == '#top_right') {
 		var top = (window_height / 2 - hover_size) + "px";
 		var left = "50%";
 		var bottom = "50%";

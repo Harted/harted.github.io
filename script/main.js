@@ -1,4 +1,23 @@
 // functions are ordered as to first usage in index.html
+// Make alignment classes for box content ---------------------------------------------------------------------------------------------
+function MakeAlignmentClasses() {
+	$('.top_left_align').css({'position': 'absolute'});
+	$('.bottom_left_align').css({'position': 'absolute','bottom': '0'});
+	$('.bottom_right_align').css({'position': 'absolute','bottom': '0','right': '0'});
+	$('.top_right_align').css({'position': 'absolute','right': '0'});
+};
+
+// Get minimum window size ------------------------------------------------------------------------------------------------------------
+function GetMinWindowSize() {
+	window_width = $(window).innerWidth();
+	window_height = $(window).innerHeight();
+	if (window_width <= window_height) {
+		min_window_size = window_width;
+	} else {
+		min_window_size = window_height;
+	};
+};
+
 // Responsive -------------------------------------------------------------------------------------------------------------------------
 function Responsive() {
 	if (min_window_size < screen_large_size & min_window_size >= screen_medium_size) {
@@ -19,77 +38,22 @@ function Responsive() {
 		screen_small = false;
 	};
 };
-// Make alignment classes for box content ---------------------------------------------------------------------------------------------
-function MakeAlignmentClasses() {
-	$('.top_left_align').css({
-		'position': 'absolute'
-	});
-	$('.bottom_left_align').css({
-		'position': 'absolute',
-		'bottom': '0'
-	});
-	$('.bottom_right_align').css({
-		'position': 'absolute',
-		'bottom': '0',
-		'right': '0'
-	});
-	$('.top_right_align').css({
-		'position': 'absolute',
-		'right': '0'
-	});
-};
-// Get minimum window size ------------------------------------------------------------------------------------------------------------
-function GetMinWindowSize() {
-	window_width = $(window).innerWidth();
-	window_height = $(window).innerHeight();
-	if (window_width <= window_height) {
-		min_window_size = window_width;
-	} else {
-		min_window_size = window_height;
-	};
-};
+
 // Calculate sizes by ref_box_size (3/2 minimum window size)---------------------------------------------------------------------------
 function CalculateSizes() {
 	//reference box size and styling
 	if (screen_large == true || screen_medium == true) {
-		ref_box_size = Math.round(min_window_size / (2 + Math.pow(min_window_size / screen_large_size, 2)) * 2)
-		SizesByRefBox()
+		ref_box_size = Math.round(min_window_size / (2 + Math.pow(min_window_size / screen_large_size, 3)) * 2);
+		SizesByRefBox(); // main_child
 	} else if (screen_small == true) {
-		//ref_box_size = Math.round(min_window_size / (2 + Math.pow(screen_small_size/screen_large_size, 2)) * 2)
-		ref_box_size = '100%'
-		SizesByRefBoxMobile()
+		ref_box_size = '100%';
+		SizesByRefBoxMobile(); //main_child
 	} else {
-		ref_box_size = Math.round(min_window_size / 3 * 2); //600;
-		SizesByRefBox()
+		ref_box_size = Math.round(min_window_size / 3 * 2);
+		SizesByRefBox(); //main_child
 	}
-	//sizes by reference box
-	function SizesByRefBox() {
-		box1_size = Math.round(ref_box_size * 0.36); //220;
-		box2_size = Math.round(ref_box_size * 0.3); //180;
-		box3_size = Math.round(ref_box_size * 0.24); //140;
-		box4_size = Math.round(ref_box_size * 0.18); //100;
-		hover_size = Math.round(ref_box_size / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
-		box_title_margin = Math.round(ref_box_size * 0.041); //25;
-		box_title_font_size = Math.round(ref_box_size * 0.033); //20;
-		//logo sizes
-		logo_size = Math.round(ref_box_size * 0.15); //80;
-		logo_ref_center = Math.round(hover_size - (logo_size / 2));
-	};
-
-	function SizesByRefBoxMobile() {
-		box1_size = "50%"; //220;
-		box2_size = "50%"; //180;
-		box3_size = "50%"; //140;
-		box4_size = "50%"; //100;
-		hover_size = Math.round(min_window_size / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
-		box_title_margin = Math.round(min_window_size * 0.08); //25;
-		box_title_font_size = Math.round(min_window_size * 0.08); //20;
-		//logo sizes
-		logo_size = Math.round(min_window_size * 0.30); //80;
-	};
-	//header sizes
-	header_height = 50;
 };
+
 // Reference box ----------------------------------------------------------------------------------------------------------------------
 function MakeRefBox() {
 	$("#reference_box").css({
@@ -101,38 +65,55 @@ function MakeRefBox() {
 		"top": 0,
 		"left": 0,
 		"bottom": 0,
-		"right": 0
+		"right": 0,
 	})
 };
+
 // Make squares bundle ----------------------------------------------------------------------------------------------------------------
-// (#id | number_counter_clockwise_starting_top_left(1-4) | size(width & height) | href_on click | mouse_enable)
 function Squares() {
-	MakeSquare("#top_left", 1, box1_size, "about.html");
-	MakeSquare("#bottom_left", 2, box2_size, "music.html");
-	MakeSquare("#bottom_right", 3, box3_size, "video.html");
-	MakeSquare("#top_right", 4, box4_size, "shows.html");
-}
+	// (#id | number_counter_clockwise_starting_top_left(1-4) | size(width & height) | href_on click | mouse_enable)
+	MakeSquare("#top_left", 1, box1_size, "about.html"); // main
+	MakeSquare("#bottom_left", 2, box2_size, "music.html"); // main
+	MakeSquare("#bottom_right", 3, box3_size, "video.html"); // main
+	MakeSquare("#top_right", 4, box4_size, "shows.html"); // main
+};
+
 // Make squares -----------------------------------------------------------------------------------------------------------------------
 function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
-	MS_animation_speed = (anim_speed_factor * (hover_size - MS_size) * (600 / ref_box_size)) + "ms"
+
 	var MS_margin = hover_size - MS_size;
 	var MS_right, MS_bottom, MS_right_h, MS_bottom_h;
 	var MS_leave_enable = true
-	var margins_array = SetMargins(MS_ref, hover_size, MS_margin, screen_small);
-	MS_right = margins_array[0];
-	MS_bottom = margins_array[1];
-	MS_right_h = margins_array[2];
-	MS_bottom_h = margins_array[3];
+	var MS_animation_speed = (anim_speed_factor * (hover_size - MS_size) * (600 / ref_box_size)) + "ms"
+
+	// set margins
+	if (screen_small == true) {
+		var margins_array = SetMargins(MS_ref, '50%', 0); // main_child
+	} else {
+		var margins_array = SetMargins(MS_ref, hover_size, MS_margin); // main_child
+	}
+	var MS_right = margins_array[0];
+	var MS_bottom = margins_array[1];
+	var MS_right_h = margins_array[2];
+	var MS_bottom_h = margins_array[3];
+
+	// set square starting size, position and color (animation based on size so acceleration of hover animation is equal)
 	$(MS_id).css({
 		'position': 'absolute',
-		'background-color': eval("color_" + MS_ref),
 		'width': MS_size,
 		'height': MS_size,
 		'right': MS_right,
 		'bottom': MS_bottom,
+		'background-color': eval("color_" + MS_ref),
 		'transition': MS_animation_speed
 	})
-	if (screen_small != true) {
+
+	if (screen_small == true) {
+		$(MS_id).off("mouseenter mouseleave click").click(function() {
+			ClickFunction(MS_id, MS_href, eval("color_" + MS_ref))
+			console.log("mobiletap")
+		})
+	} else {
 		// MOUSE ENTER
 		$(MS_id).off("click mouseenter mouseleave").on("mouseenter", function() {
 				BoxProximityEnable(MS_ref, false)
@@ -178,11 +159,6 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 					'transition': MS_animation_speed
 				})
 			})
-	} else {
-		$(MS_id).off("mouseenter mouseleave click").click(function() {
-			ClickFunction(MS_id, MS_href, eval("color_" + MS_ref))
-			console.log("mobiletap")
-		})
 	}
 };
 // Make logo --------------------------------------------------------------------------------------------------------------------------
@@ -247,29 +223,71 @@ function MouseMoveOfsets() {
 	box3_offset_top_center = ($("#bottom_right").offset().top + ($("#bottom_right").height() / 2));
 	box4_offset_left_center = ($("#top_right").offset().left + ($("#top_right").width() / 2));
 	box4_offset_top_center = ($("#top_right").offset().top + ($("#top_right").height() / 2));
-};
-// Calculate the area the mouse move has effect on the object -------------------------------------------------------------------------
-function MouseMoveActionArea() {
+	//Action area (Calculate the area the mouse move has effect on the object)
 	box_corner_offset = Math.round(hover_size * action_area_corner_offset_factor);
 	proximity_margin = Math.round(hover_size * action_area_base_size_factor);
 };
+
 // Transition off ---------------------------------------------------------------------------------------------------------------------
 function TransitionOff() {
 	for (n = 0; n < arguments.length; n++) {
 		$(arguments[n]).css("transition", "none");
-	}
+	};
 };
+
 // Transition on ----------------------------------------------------------------------------------------------------------------------
 function TransitionOn() {
 	for (n = 0; n < arguments.length; n++) {
 		$(arguments[n]).css("transition", MS_animation_speed);
-	}
+	};
 };
-// Get mouse position -----------------------------------------------------------------------------------------------------------------
-function GetMousePosition() {
-	mouse_left = event.pageX;
-	mouse_top = event.pageY;
-}
+
+// Actions by mouse move --------------------------------------------------------------------------------------------------------------
+function MouseMove() {
+	mouse_cursor = false;
+	mouse_touch = false;
+	var clicked = false;
+	var mouse_moved = 0;
+	$(document).off("click").on("click", function() {
+		clicked = true
+		// 5ms mouse_moved + clicked check
+		setTimeout(function() {
+			clicked = false;
+		}, 10);
+	});
+	$(document).off('mousemove').on('mousemove', function() {
+		// Detect touch
+		if (mouse_moved < 2) {
+			mouse_moved++;
+		};
+		if (mouse_moved > 0 && mouse_cursor == false) {
+			setTimeout(function(){
+				if (mouse_moved > 1 && mouse_cursor == false) {
+					mouse_cursor = true;
+					mouse_touch = false;
+				} else if (mouse_cursor != true && clicked == true) {
+					mouse_cursor = false;
+					mouse_touch = true;
+					$(document).off("mousemove")
+				};
+				console.log('count: ' + mouse_moved + ' | click: ' + clicked + ' | mouse_cursor: ' + mouse_cursor + ' | mouse_touch: ' + mouse_touch);
+			}, 5);
+		};
+		// Mouse move actions when cursor
+		if (screen_small == false && mouse_cursor == true) {
+			GetMousePosition()
+			//filter double mouse event
+			if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
+				var mouse_left_old = mouse_left;
+				varmouse_top_old = mouse_top;
+				// affect squares whit proximity data
+				Proximities()
+				AffectSquares()
+			};
+		};
+	});
+};
+
 // Affect squares bundle ----------------------------------------------------------------------------------------------------------------
 function AffectSquares() {
 	AffectSquare("#top_left", 1, box1_proximity_size);

@@ -50,4 +50,4 @@ var MS_animation_speed
 var logo_size, logo_ref_center_tl;
 
 //Header
-var header_height;
+var header_height = 50;
