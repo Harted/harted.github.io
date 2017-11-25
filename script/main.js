@@ -1,4 +1,17 @@
 // functions are ordered as to first usage in index.html
+
+// determine if the user is working on a touch or desktop interface -------------------------------------------------------------------
+DetermineTouch()
+function DetermineTouch(){
+	touch = false
+	window.addEventListener('touchstart', function() {
+	  touch = true
+		Squares()
+		console.log(touch)
+		$(document).off("mousemove")
+	});
+};
+
 // Make alignment classes for box content ---------------------------------------------------------------------------------------------
 function MakeAlignmentClasses() {
 	$('.top_left_align').css({'position': 'absolute'});
@@ -83,15 +96,15 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 
 	var MS_margin = hover_size - MS_size;
 	var MS_right, MS_bottom, MS_right_h, MS_bottom_h;
-	var MS_leave_enable = true
-	var MS_animation_speed = (anim_speed_factor * (hover_size - MS_size) * (600 / ref_box_size)) + "ms"
+	var MS_leave_enable = true;
+	var MS_animation_speed = (anim_speed_factor * (hover_size - MS_size) * (800 / ref_box_size)) + "ms";
 
 	// set margins
 	if (screen_small == true) {
 		var margins_array = SetMargins(MS_ref, '50%', 0); // main_child
 	} else {
 		var margins_array = SetMargins(MS_ref, hover_size, MS_margin); // main_child
-	}
+	};
 	var MS_right = margins_array[0];
 	var MS_bottom = margins_array[1];
 	var MS_right_h = margins_array[2];
@@ -106,60 +119,60 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 		'bottom': MS_bottom,
 		'background-color': eval("color_" + MS_ref),
 		'transition': MS_animation_speed
-	})
+	});
 
-	if (screen_small == true) {
+	// if small screen or iphone no hover animation and clicktrough
+	if (screen_small == true || touch == true) {
+		console.log('touchinterface')
+
 		$(MS_id).off("mouseenter mouseleave click").click(function() {
 			ClickFunction(MS_id, MS_href, eval("color_" + MS_ref))
 			console.log("mobiletap")
-		})
+		});
 	} else {
+		console.log('desktop')
 		// MOUSE ENTER
 		$(MS_id).off("click mouseenter mouseleave").on("mouseenter", function() {
-				BoxProximityEnable(MS_ref, false)
+			BoxProximityEnable(MS_ref, false)
+			$(this).css({
+				'width': hover_size,
+				'height': hover_size,
+				'right': MS_right_h,
+				'bottom': MS_bottom_h,
+			}) //actions on end of transisition:
+			.off('transitionend').one("transitionend", function() {
 				$(this).css({
-						'width': hover_size,
-						'height': hover_size,
-						'right': MS_right_h,
-						'bottom': MS_bottom_h,
-					}) //actions on end of transisition:
-					.off('transitionend').one("transitionend", function() {
-						if (mouse_cursor == true) { // transition naar hover size niet nodig!
-							$(this).css({
-								"cursor": "pointer"
-							}).off("click").click(function() {
-								console.log("mouseclick")
-								ClickFunction(MS_id, MS_href)
-								//window.location = MS_href
-							})
-						} else if (mouse_touch == true) {
-							ClickFunction(MS_id, MS_href)
-						}
-					})
-				// logo animation
-				$("#logo").css({
-					"fill": eval("color_" + MS_ref),
-					'transition': MS_animation_speed
+					"cursor": "pointer"
+				}).off("click").click(function() {
+					console.log("mouseclick")
+					ClickFunction(MS_id, MS_href)
+					//window.location = MS_href
 				})
 			})
-			// MOUSE LEAVE
-			.mouseleave(function() {
-				BoxProximityEnable(MS_ref, true)
-				$(this).off("click").css({
-					'width': MS_size,
-					'height': MS_size,
-					'right': MS_right,
-					'bottom': MS_bottom,
-					'transition': MS_animation_speed,
-					"cursor": "initial",
-				}).off('transitionend')
-				// logo animation
-				$("#logo").css({
-					"fill": color_back,
-					'transition': MS_animation_speed
-				})
+			// logo animation
+			$("#logo").css({
+				"fill": eval("color_" + MS_ref),
+				'transition': MS_animation_speed
 			})
-	}
+		})
+		// MOUSE LEAVE
+		.mouseleave(function() {
+			BoxProximityEnable(MS_ref, true)
+			$(this).off("click").css({
+				'width': MS_size,
+				'height': MS_size,
+				'right': MS_right,
+				'bottom': MS_bottom,
+				'transition': MS_animation_speed,
+				"cursor": "initial",
+			}).off('transitionend')
+			// logo animation
+			$("#logo").css({
+				"fill": color_back,
+				'transition': MS_animation_speed
+			});
+		});
+	};
 };
 // Make logo --------------------------------------------------------------------------------------------------------------------------
 function MakeLogo() { //hier moet not bottom right bij.. van small naar big transistion heeft ie die nodig
@@ -238,43 +251,15 @@ function TransitionOff() {
 // Transition on ----------------------------------------------------------------------------------------------------------------------
 function TransitionOn() {
 	for (n = 0; n < arguments.length; n++) {
-		$(arguments[n]).css("transition", MS_animation_speed);
+		$(arguments[n]).css("transition", '300ms');
 	};
 };
 
 // Actions by mouse move --------------------------------------------------------------------------------------------------------------
 function MouseMove() {
-	mouse_cursor = false;
-	mouse_touch = false;
-	var clicked = false;
-	var mouse_moved = 0;
-	$(document).off("click").on("click", function() {
-		clicked = true
-		// 5ms mouse_moved + clicked check
-		setTimeout(function() {
-			clicked = false;
-		}, 10);
-	});
 	$(document).off('mousemove').on('mousemove', function() {
-		// Detect touch
-		if (mouse_moved < 2) {
-			mouse_moved++;
-		};
-		if (mouse_moved > 0 && mouse_cursor == false) {
-			setTimeout(function(){
-				if (mouse_moved > 1 && mouse_cursor == false) {
-					mouse_cursor = true;
-					mouse_touch = false;
-				} else if (mouse_cursor != true && clicked == true) {
-					mouse_cursor = false;
-					mouse_touch = true;
-					$(document).off("mousemove")
-				};
-				console.log('count: ' + mouse_moved + ' | click: ' + clicked + ' | mouse_cursor: ' + mouse_cursor + ' | mouse_touch: ' + mouse_touch);
-			}, 5);
-		};
 		// Mouse move actions when cursor
-		if (screen_small == false && mouse_cursor == true) {
+		if (screen_small == false && touch == false) {
 			GetMousePosition()
 			//filter double mouse event
 			if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {

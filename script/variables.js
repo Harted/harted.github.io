@@ -17,7 +17,7 @@ var window_width, window_height, min_window_size;
 
 // Responsive (minimum sizes)
 var screen_large, screen_medium , screen_small;
-var screen_large_size = 1024; //iPad pro = 1024
+var screen_large_size = 1026; //iPad pro = 1024
 var screen_medium_size = 770; //iPad = 768
 var screen_small_size = 416; //iPhone plus = 414
 
@@ -26,7 +26,8 @@ var ref_box_size;
 var ref_box_offset_top_center, ref_box_offset_left_center;
 
 // BoxProximity & mousemove variables
-var mouse_top, mouse_left, mouse_cursor, mouse_touch;
+var mouse_top, mouse_left, touch
+
 var box_corner_offset, proximity_margin;
 var box1_proximity, box2_proximity, box3_proximity, box4_proximity;
 var box1_proximity_size, box2_proximity_size, box3_proximity_size, box4_proximity_size;

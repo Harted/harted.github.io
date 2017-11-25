@@ -83,61 +83,64 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 			});
 		};
 	};
-	if (screen_small != true) {
-		$("#logo").css({
-			//place in absolute center
-			"transition": "none",
-			"margin": 'auto',
-			"position": "absolute",
-			"top": 0,
-			"left": 0,
-			"bottom": 0,
-			"right": 0
-		});
-		$("#reference_box").css({
-			'transition': "none",
-			'width': window_width,
-			'height': window_height,
-			//'margin': "0px",
-		});
-		var margins_to_header = SetMarginsToHeader(CF_id)
-		var top = margins_to_header[0]
-		var right = margins_to_header[1]
-		var bottom = margins_to_header[2]
-		var left = margins_to_header[3]
-		$(CF_id).css({
-			'right': right,
-			'bottom': bottom,
-			'left': left,
-			'top': top,
-		})
-		$(document).off("mousemove");
-	} else {
-		$("#logo").css({
-			"transition": 400 * anim_speed_factor + "ms",
-			"fill": CF_logo_color,
-		});
-	}
+
+	$("#logo").css({
+		//place in absolute center
+		"transition": "none",
+		"margin": 'auto',
+		"position": "absolute",
+		"top": 0,
+		"left": 0,
+		"bottom": 0,
+		"right": 0
+	});
+
+	var margins_to_header = SetMarginsToHeader(CF_id)
+	var top = margins_to_header[0]
+	var right = margins_to_header[1]
+	var bottom = margins_to_header[2]
+	var left = margins_to_header[3]
+	$(CF_id).css({
+		'right': right,
+		'bottom': bottom,
+		'left': left,
+		'top': top,
+	})
+	$("#reference_box").css({
+		'transition': "none",
+		'width': window_width,
+		'height': window_height,
+		"top": 0,
+		"left": 0,
+		"bottom": 0,
+		"right": 0
+		//'margin': "0px",
+	});
+	$(document).off("mousemove");
+
+	$("#logo").css({
+		"transition": 300 * anim_speed_factor + "ms",
+		"fill": CF_logo_color,
+	});
+
+
 	$("h2").css({
 		//'display': 'none',
 		'opacity': 0,
-		'transition': 200 * anim_speed_factor + "ms",
+		'transition': 300 * anim_speed_factor + "ms",
 	});
 	setTimeout(function() {
 		$(CF_id).css({
-			'transition': 400 * anim_speed_factor + "ms",
+			'transition': 300 * anim_speed_factor + "ms",
 			'width': '100%',
 			'height': header_height,
 			'position':'fixed',
+			'margin': 0,
 			'top': 'auto',
 			'right': 0,
 			'bottom': 0,
-		});
-if (screen_small != true){
-		$(CF_id).css({
 			'left': 0,
 		});
-}
 		setTimeout(function() {
 			$("#logo").css({
 				"transition": 200 * anim_speed_factor + "ms",
@@ -146,9 +149,9 @@ if (screen_small != true){
 			});
 			setTimeout(function() {
 				window.location = CF_href;
-			}, 400 * anim_speed_factor)
-		}, 400 * anim_speed_factor)
-	}, 200);
+			}, 300 * anim_speed_factor)
+		}, 300 * anim_speed_factor)
+	}, 000);
 };
 
 // Get mouse position -----------------------------------------------------------------------------------------------------------------
@@ -159,26 +162,18 @@ function GetMousePosition() {
 
 // Set margins before transitioning to header -----------------------------------------------------------------------------------------
 function SetMarginsToHeader(SMTH_id) {
-	if (SMTH_id == '#top_left') {
-		var top = (window_height / 2 - hover_size) + "px";
-		var left = (window_width / 2 - hover_size) + "px";
-		var bottom = "50%";
-		var right = "50%";
-	} else if (SMTH_id == '#bottom_left') {
-		var top = "50%";
-		var left = (window_width / 2 - hover_size) + "px";
-		var bottom = (window_height / 2 - hover_size) + "px";
-		var right = "50%";
-	} else if (SMTH_id == '#bottom_right') {
-		var top = "50%";
-		var left = "50%";
-		var bottom = (window_height / 2 - hover_size) + "px";
-		var right = (window_width / 2 - hover_size) + "px";
-	} else if (SMTH_id == '#top_right') {
-		var top = (window_height / 2 - hover_size) + "px";
-		var left = "50%";
-		var bottom = "50%";
-		var right = (window_width / 2 - hover_size) + "px";
-	};
+
+	var offset_top = $(SMTH_id).offset().top;
+	var offset_left = $(SMTH_id).offset().left;
+	var height = parseFloat($(SMTH_id).css('height'));
+	var width = parseFloat($(SMTH_id).css('width'));
+
+	console.log(offset_top + ' - ' + offset_left + ' - ' +width + ' - ' +height)
+
+		var top = offset_top + "px";
+		var left = offset_left + "px";
+		var bottom = (window_height - offset_top - height) + "px";
+		var right = (window_width - offset_left - width); + "px"
+
 	return [top, right, bottom, left]
 };
