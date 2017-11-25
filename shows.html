@@ -9,8 +9,13 @@
 	<script src="script/main_child.js"></script>
 	<script src="script/pages.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="https://connect.facebook.net/en_US/sdk.js"></script>
+	<script src="script/facebook.js"></script>
+
 </head>
 <body class="color_back">
+	<div id="events"></div>
 	<div id="header">
 		<div class="container">
 			<div id="headerlogo">
@@ -20,14 +25,28 @@
 			</div>
 		</div>
 	</div>
+
 	<script>
-	var page_color = color_4
+	var page_color = color_4;
+	var receive_timeout = 1000;
 
 	GetMinWindowSize()
 	CalculateSizes()
 
 	Header(page_color)
 	HeaderLogo(color_back)
+
+	GetFacebookEvents();
+
+
+
+
+
+
+
+
+// Add the contents of options[0] to #foo:
+
 
 	</script>
 </body>
