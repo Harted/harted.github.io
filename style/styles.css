@@ -5,7 +5,7 @@
 
 body {
   opacity: 1;
-  transition: 1000ms opacity;
+  transition: 500ms opacity;
   margin: 0;
   font-family: 'RaleWay', sans-serif;
 }
@@ -38,4 +38,9 @@ div {
 .content_container {
   border: 1px solid black;
   /*margin: 0 10%;*/
+}
+
+
+#events{
+  opacity: 0;
 }
