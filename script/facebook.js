@@ -17,14 +17,26 @@ function GetFacebookEvents(){
     function(response) {
       console.log(response)
       for (n = 0; n < response.data.length; n++){
-        date = new Date(response.data[n].start_time)
-        console.log(date + " | " + response.data[n].name);
-        var dayArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        var monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        var day = dayArray[date.getDay()]
-        var dayofmonth = date.getDate()
-        var month = monthArray[date.getMonth()]
-        var year = date.getFullYear()
+        var date = String(response.data[n].start_time);
+        date = date.replace("T"," ").replace(/-/g, "/");
+        date = new Date(date);
+
+        var name = response.data[n].name;
+        console.log(date + " | " + name);
+
+
+        function DateFormat(date){
+          var dayArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+          var monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+          var day = dayArray[date.getDay()];
+          var dayofmonth = date.getDate();
+          var month = monthArray[date.getMonth()];
+          var year = date.getFullYear();
+          return [day, dayofmonth, month, year]
+        }
+
+        dateArray = DateFormat(date)
+
         if (response.data[n].place.location != undefined){
           console.log(response.data[n].place.location.city)
           var city = response.data[n].place.location.city
@@ -32,7 +44,7 @@ function GetFacebookEvents(){
           console.log("nergens")
           var city = ""
         }
-        var deit = day + ' ' + dayofmonth + ' '+ month + ' ' + year
+        var deit = dateArray[0] + ' ' + dateArray[1] + ' '+ dateArray[2] + ' ' + dateArray[3]
         events.push("<strong><h4>" + deit + "</h4> </strong> <br>" + response.data[n].name + "<br><em>" + response.data[n].place.name + "</em><br><h5>" + city + "</h5><br><hr>")
       };
 
