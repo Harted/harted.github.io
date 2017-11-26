@@ -22,7 +22,7 @@ function GetFacebookEvents(){
         date = new Date(date);
 
         var name = response.data[n].name;
-        console.log(date + " | " + name);
+        //console.log(date + " | " + name);
 
 
         function DateFormat(date){
@@ -35,17 +35,22 @@ function GetFacebookEvents(){
           return [day, dayofmonth, month, year]
         }
 
+        var place_name = utf8.encode(response.data[n].place.name);
+        console.log(place_name)
+
+        var pleice = $.getJSON("https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + place_name + "&key=AIzaSyCAfweFk9WmyilfFwdGxuVlytSQU0e6BSI")
+        console.log(pleice)
         dateArray = DateFormat(date)
 
-        if (response.data[n].place.location != undefined){
+        /*if (response.data[n].place.location != undefined){
           console.log(response.data[n].place.location.city)
           var city = response.data[n].place.location.city
         } else {
           console.log("nergens")
           var city = ""
-        }
+        }*/
         var deit = dateArray[0] + ' ' + dateArray[1] + ' '+ dateArray[2] + ' ' + dateArray[3]
-        events.push("<strong><h4>" + deit + "</h4> </strong> <br>" + response.data[n].name + "<br><em>" + response.data[n].place.name + "</em><br><h5>" + city + "</h5><br><hr>")
+        //events.push("<strong><h4>" + deit + "</h4> </strong> <br>" + response.data[n].name + "<br><em>" + response.data[n].place.name + "</em><br><h5>" + city + "</h5><br><hr>")
       };
 
       $('#events').html(events).css({
