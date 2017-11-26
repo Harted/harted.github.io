@@ -1,5 +1,5 @@
 function GetFacebookEvents(){
-  var events = ["<hr>"];
+  var events = [];
 
   FB.init({
     appId: '131918997473097',
@@ -14,15 +14,19 @@ function GetFacebookEvents(){
       limit: '9999'
     },
 
+
+
     function(response) {
-      console.log(response)
+
       for (n = 0; n < response.data.length; n++){
+        //console.log(response.data[n])
         var date = String(response.data[n].start_time);
         date = date.replace("T"," ").replace(/-/g, "/");
         date = new Date(date);
 
         var name = response.data[n].name;
         //console.log(date + " | " + name);
+
 
 
         function DateFormat(date){
@@ -35,23 +39,24 @@ function GetFacebookEvents(){
           return [day, dayofmonth, month, year]
         }
 
-        var place_name = utf8.encode(response.data[n].place.name);
-        console.log(place_name)
-
-        var pleice = $.getJSON("https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + place_name + "&key=AIzaSyCAfweFk9WmyilfFwdGxuVlytSQU0e6BSI")
-        console.log(pleice)
+        var place_name = response.data[n].place.name;
+        //console.log(place_name)
         dateArray = DateFormat(date)
 
-        /*if (response.data[n].place.location != undefined){
-          console.log(response.data[n].place.location.city)
+        if (response.data[n].place.location != undefined){
+          //console.log(response.data[n].place.location.city)
           var city = response.data[n].place.location.city
         } else {
-          console.log("nergens")
+          //console.log("nergens")
           var city = ""
-        }*/
-        var deit = dateArray[0] + ' ' + dateArray[1] + ' '+ dateArray[2] + ' ' + dateArray[3]
-        //events.push("<strong><h4>" + deit + "</h4> </strong> <br>" + response.data[n].name + "<br><em>" + response.data[n].place.name + "</em><br><h5>" + city + "</h5><br><hr>")
+        }
+        var date = String(/*dateArray[0] + ' ' + */dateArray[1] + ' '+ dateArray[2] + ' ' + dateArray[3])
+        events.push("<strong><h4>" + date + "</h4> </strong> <br>" + response.data[n].name + "<br><em>" + response.data[n].place.name + "</em><br><h5>" + city + "</h5><br><hr>")
+        //events.push({name, date, place_name}) // making a custom array to put in file to edit.. 
+
+
       };
+      console.log(events)
 
       $('#events').html(events).css({
         'opacity': 1,
