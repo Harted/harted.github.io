@@ -149,7 +149,7 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 				'height': 0,
 			});
 			setTimeout(function() {
-				//window.location = CF_href;
+				window.location = CF_href;
 			}, 300 * anim_speed_factor)
 		}, 300 * anim_speed_factor)
 	}, 000);
