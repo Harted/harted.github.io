@@ -37,10 +37,12 @@ div {
 }
 .content_container {
   border: 1px solid black;
-  /*margin: 0 10%;*/
+}
+.shadow {
+  box-shadow: 0 0 5px rgba(0,0,0,0.25);
 }
 
-
+/* voorlopige fade in voor content op shows.html */
 #events{
   opacity: 0;
 }
