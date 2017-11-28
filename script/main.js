@@ -2,7 +2,7 @@
 function DetermineTouch(){
 	touch = false;
 	$(window).on('touchstart', function() {
-	  touch = true;
+		touch = true;
 		Squares(); //on first touch immediat clicktrough
 		$(this).off('touchstart mousemove');
 	});
@@ -214,10 +214,11 @@ function MouseMoveOfsets() {
 
 // Actions by mouse move --------------------------------------------------------------------------------------------------------------
 function MouseMove() {
-	$(window).off('mousemove').on('mousemove', function() {
+	$(window).off('mousemove').on('mousemove', function(event) {
 		// Mouse move actions on desktop
 		if (screen_small == false && touch == false) {
-			GetMousePosition(); //---------------------------------------------------- |F| main_child.js
+			mouse_left = event.clientX;
+			mouse_top = event.clientY;
 			//filter double mouse event
 			if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
 				var mouse_left_old = mouse_left;
@@ -241,5 +242,62 @@ function TransitionOff() {
 function TransitionOn() {
 	for (n = 0; n < arguments.length; n++) {
 		$(arguments[n]).css('transition', anim_speed_factor * 300 + 'ms');
+	};
+};
+
+// link_logos -------------------------------------------------------------------------------------------------------------------------
+function LinkLogos(){
+	if (screen_small == true) {
+		LLs_color_dim = color_back;
+		LLs_color = color_back_50;
+		display = 'inline-block';
+	} else {
+		LLs_color_dim = color_1_dim;
+		LLs_color = color_1;
+		var display = 'block';
+	};
+
+	$('#link_logos').css({
+		'right': 0,
+		'padding-top': '3%',
+		'position': 'absolute',
+	});
+
+	$('.link_logo').css({
+		'width': header_height/3*2,
+		'height': header_height/3*2,
+		'margin': header_height/6,
+		'padding-bottom': window_width*0.02 + 'px',
+		'display': display,
+	});
+
+	LinkLogo('#facebook use', LLs_color, LLs_color_dim, 'https://facebook.com/hartedmusic');
+	LinkLogo('#soundcloud use', LLs_color, LLs_color_dim, 'https://soundcloud.com/harted');
+	LinkLogo('#instagram use', LLs_color, LLs_color_dim, 'https://www.instagram.com/harted.music/');
+	LinkLogo('#mail use', LLs_color, LLs_color_dim, 'mailto:harted@moodfamily.net?subject=Contact from site&body=%0A%0A...contacted from website');
+
+	function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href){
+		var LL_animation_speed = anim_speed_factor * 150
+		$(LL_id).css({'fill': LL_color_dim})
+		.off('mouseover click').on('mouseover', function(){
+			$(this).css({
+				'fill': LL_color,
+				'transition': LL_animation_speed + "ms",
+				'cursor': 'pointer',
+			}).on('click', function(){
+				$(this).css({
+					'fill': LL_color_dim,
+					'transition': 0,
+					'cursor': 'pointer',
+				});
+				window.open(LL_href)
+			});
+		}).off('mouseout').on('mouseout', function(){
+			$(this).css({
+				'fill': LL_color_dim,
+				'cursor': 'initial',
+				'transition': LL_animation_speed + "ms",
+			})
+		})
 	};
 };

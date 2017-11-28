@@ -172,12 +172,6 @@ function BoxProximityEnable(ref, Bool) {
 	};
 };
 
-// Get mouse position -----------------------------------------------------------------------------------------------------------------
-function GetMousePosition() {
-	mouse_left = event.pageX;
-	mouse_top = event.pageY;
-};
-
 // Create offset to corner farthest from the center of the reference box ----------------------------------------------------------------
 function Proximities() {
 	// BoxProximity(); //--------------------------------------------------------- |F| main_child.js

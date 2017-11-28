@@ -5,11 +5,13 @@ var action_area_corner_offset_factor = 0.1;
 var action_area_base_size_factor = 3/2;
 
 // Colors
-var color_1 = "#2E343A";
+var color_1 = "#3C3C3C";
+var color_1_dim = '#BFBFBF';
 var color_2 = "#238482";
 var color_3 = "#3BDB83";
 var color_4 = "#EFC700";
-var color_back = "white";
+var color_back = "#FFFFFF";
+var color_back_50 = '#80FFFFFF'
 
 
 // Window width variables
@@ -50,5 +52,5 @@ var MS_animation_speed
 // Logo variables
 var logo_size, logo_ref_center_tl;
 
-//Header
+// Header
 var header_height = 50;
