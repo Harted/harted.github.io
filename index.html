@@ -32,88 +32,109 @@
 	<!-- Reference box in centerof window -->
 	<div id='reference_box'>
 		<!-- Square in top left corner -->
-		<div id='top_left'>
+		<div id='top_left' class='shadow' style='z-index:0'>
 			<div class='top_left_align top_left_margin'>
 				<h2>About</h2>
 			</div>
 		</div>
 		<!-- Square in bottom left corner -->
-		<div id='bottom_left'>
+		<div id='bottom_left' class='shadow' style='z-index:1'>
 			<div class='bottom_left_align bottom_left_margin'>
 				<h2>Music</h2>
 			</div>
 		</div>
 		<!-- Square in bottom right corner -->
-		<div id='bottom_right'>
+		<div id='bottom_right' class='shadow' style='z-index:0'>
 			<div class='bottom_right_align bottom_right_margin'>
 				<h2>Video</h2>
 			</div>
 		</div>
 		<!-- Square in top right corner -->
-		<div id='top_right'>
+		<div id='top_right' class='shadow' style='z-index:1'>
 			<div class='top_right_align top_right_margin'>
 				<h2>Shows</h2>
 			</div>
 		</div>
-		<svg id='logo' viewbox='-16 0 500 500'>
+		<svg id='logo' viewbox='0 0 500 500' style='z-index:2'>
 			<use xlink:href='svg/logo.svg#logo'></use>
 		</svg>
 	</div>
 
-<script type='text/javascript'>
-// script
-DetermineTouch(); //------------------------------------------------------------ |F| main.js
-MakeAlignmentClasses(); //------------------------------------------------------ |F| main.js
+	<div id='link_logos' class='container' style='z-index:3'>
+		<div class='link_logo'>
+			<svg id='facebook' viewbox='0 0 500 500'>
+				<use xlink:href='svg/link_logo.svg#facebook'></use>
+			</svg>
+		</div>
+		<div class='link_logo'>
+			<svg id='soundcloud' viewbox='0 0 500 500'>
+				<use xlink:href='svg/link_logo.svg#soundcloud'></use>
+			</svg>
+		</div>
+		<div class='link_logo'>
+			<svg id='instagram' viewbox='0 0 500 500'>
+				<use xlink:href='svg/link_logo.svg#instagram'></use>
+			</svg>
+		</div>
+		<div class='link_logo'>
+			<svg id='mail' viewbox='0 0 500 500'>
+				<use xlink:href='svg/link_logo.svg#mail'></use>
+			</svg>
+		</div>
+	</div>
 
-function MakeThings() {
-	GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
-	Responsive(); //-------------------------------------------------------------- |F| main.js
-	CalculateSizes(); //---------------------------------------------------------- |F| main.js
-	// sizes calculated
-	// Pages shit
-	Header(color_3); //----------------------------------------------------------- |F| pages.js
-	HeaderLogo(color_back); //---------------------------------------------------- |F| pages.js
-	//ContentContainer()
-	MakeRefBox(); //-------------------------------------------------------------- |F| main.js
-	Squares(); //----------------------------------------------------------------- |F| main.js
-	MakeLogo(); //---------------------------------------------------------------- |F| main.js
-	BoxContentFormat(); //-------------------------------------------------------- |F| main.js
-};
 
-// Actions when document is ready--------------------------------------------------------------------------------------------------
-$(document).ready(function() {
-	MakeThings(); //-------------------------------------------------------------- |F| index.html <script>
-	// body color & face in when loaded
-	$('body').css({
-		'background-color': color_back
-	}).removeClass('fade_in_load');
 
-	MouseMoveOfsets(); //--------------------------------------------------------- |F| main.js
-	MouseMove(); //--------------------------------------------------------------- |F| main.js
-});
+	<script type='text/javascript'>
+	// script
+	DetermineTouch(); //------------------------------------------------------------ |F| main.js
+	MakeAlignmentClasses(); //------------------------------------------------------ |F| main.js
 
-// Actions when window is resized -------------------------------------------------------------------------------------------------
-$(window).on('resize', function() {
-	MakeThings(); //-------------------------------------------------------------- |F| index.html <script>
-	// transitions off when resizing
-	TransitionOff( //------------------------------------------------------------- |F| main.js
-		'#top_left',
-		'#bottom_left',
-		'#bottom_right',
-		'#top_right',
-		'#logo'
-	);
-	MouseMoveOfsets(); //--------------------------------------------------------- |F| main.js
-	// switch transitions back on after resizing (300ms)
-	TransitionOn( //-------------------------------------------------------------- |F| main.js
-		'#top_left',
-		'#bottom_left',
-		'#bottom_right',
-		'#top_right',
-		'#logo'
-	);
-	MouseMove();//---------------------------------------------------------------- |F| main.js
-});
+	function MakeThings() {
+		GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
+		Responsive(); //-------------------------------------------------------------- |F| main.js
+		CalculateSizes(); //---------------------------------------------------------- |F| main.js
+		MakeRefBox(); //-------------------------------------------------------------- |F| main.js
+		Squares(); //----------------------------------------------------------------- |F| main.js
+		MakeLogo(); //---------------------------------------------------------------- |F| main.js
+		LinkLogos();
+		BoxContentFormat(); //-------------------------------------------------------- |F| main.js
+	};
+
+	// Actions when document is ready--------------------------------------------------------------------------------------------------
+	$(document).ready(function() {
+		MakeThings(); //-------------------------------------------------------------- |F| index.html <script>
+		// body color & face in when loaded
+		$('body').css({
+			'background-color': color_back
+		}).removeClass('fade_in_load');
+
+		MouseMoveOfsets(); //--------------------------------------------------------- |F| main.js
+		MouseMove(); //--------------------------------------------------------------- |F| main.js
+	});
+
+	// Actions when window is resized -------------------------------------------------------------------------------------------------
+	$(window).on('resize', function() {
+		MakeThings(); //-------------------------------------------------------------- |F| index.html <script>
+		// transitions off when resizing
+		TransitionOff( //------------------------------------------------------------- |F| main.js
+			'#top_left',
+			'#bottom_left',
+			'#bottom_right',
+			'#top_right',
+			'#logo'
+		);
+		MouseMoveOfsets(); //--------------------------------------------------------- |F| main.js
+		// switch transitions back on after resizing (300ms)
+		TransitionOn( //-------------------------------------------------------------- |F| main.js
+			'#top_left',
+			'#bottom_left',
+			'#bottom_right',
+			'#top_right',
+			'#logo'
+		);
+		MouseMove();//---------------------------------------------------------------- |F| main.js
+	});
 
 </script>
 </body >
