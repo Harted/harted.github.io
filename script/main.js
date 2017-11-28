@@ -173,7 +173,7 @@ function MakeLogo() {
 		'height': logo_size,
 		//place in absolute center
 		'transition': 'none',
-		'margin': 'auto',
+		'margin': 'auto', // fix at work
 		'position': 'absolute',
 		'top': 0,
 		'left': 0,

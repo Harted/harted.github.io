@@ -1,15 +1,15 @@
 // Sizes by reference box
 function SizesByRefBox() {
-	box1_size = /*Math.round*/(ref_box_size * 0.36); //220;
-	box2_size = /*Math.round*/(ref_box_size * 0.3); //180;
-	box3_size = /*Math.round*/(ref_box_size * 0.24); //140;
-	box4_size = /*Math.round*/(ref_box_size * 0.18); //100;
-	hover_size = /*Math.round*/(ref_box_size / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
-	box_title_margin = /*Math.round*/(ref_box_size * 0.041); //25;
-	box_title_font_size = /*Math.round*/(ref_box_size * 0.033); //20;
+	box1_size = (ref_box_size * 0.36); //220;
+	box2_size = (ref_box_size * 0.3); //180;
+	box3_size = (ref_box_size * 0.24); //140;
+	box4_size = (ref_box_size * 0.18); //100;
+	hover_size = (ref_box_size / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
+	box_title_margin = (ref_box_size * 0.041); //25;
+	box_title_font_size = (ref_box_size * 0.033); //20;
 	//logo sizes
-	logo_size = /*Math.round*/(ref_box_size * 0.15); //80;
-	logo_ref_center = /*Math.round*/(hover_size - (logo_size / 2));
+	logo_size = (ref_box_size * 0.15); //80;
+	logo_ref_center = (hover_size - (logo_size / 2));
 };
 
 // Sizes on mobile
@@ -18,11 +18,11 @@ function SizesByRefBoxMobile() {
 	box2_size = '50%'; //180;
 	box3_size = '50%'; //140;
 	box4_size = '50%'; //100;
-	hover_size = /*Math.round*/(min_window_size / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
-	box_title_margin = /*Math.round*/(min_window_size * 0.08); //25;
-	box_title_font_size = /*Math.round*/(min_window_size * 0.08); //20;
+	hover_size = (min_window_size / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
+	box_title_margin = (min_window_size * 0.08); //25;
+	box_title_font_size = (min_window_size * 0.08); //20;
 	//logo sizes
-	logo_size = /*Math.round*/(min_window_size * 0.30); //80;
+	logo_size = (min_window_size * 0.30); //80;
 };
 
 // Set margins of squars based on position --------------------------------------------------------------------------------------------
@@ -51,28 +51,15 @@ function SetMargins(ref, SM_common_margin, SM_margin) {
 	return [right, bottom, right_h, bottom_h];
 };
 
-
-// Box proximity enable ---------------------------------------------------------------------------------------------------------------
-function BoxProximityEnable(ref, Bool) {
-	if (ref == 1) {
-		BoxProximity_1_enable = Bool;
-	} else if (ref == 2) {
-		BoxProximity_2_enable = Bool;
-	} else if (ref == 3) {
-		BoxProximity_3_enable = Bool;
-	} else if (ref == 4) {
-		BoxProximity_4_enable = Bool;
-	};
-};
-
-
 //Function when a box is clicked after transition -------------------------------------------------------------------------------------
 function ClickFunction(CF_id, CF_href, CF_logo_color) {
 	$(window).off('resize mousemove touchstart');
 	var CF_array = [];
+	// Make an array for each div (square) in the reference box
 	$('#reference_box > div').each(function() {
 		CF_array[CF_array.length] = '#' + $(this).attr('id');
 	});
+	// Hide the squares you didn't click
 	for (n = 0; n < CF_array.length; n++) {
 		if (CF_id != CF_array[n]) {
 			$(CF_array[n]).css({
@@ -85,51 +72,52 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 		};
 	};
 
-	$('#logo').css({
-		//place in absolute center
-		'transition': 'none',
-		'margin': 'auto',
-		'position': 'absolute',
-		'top': 0,
-		'left': 0,
-		'bottom': 0,
-		'right': 0
-	});
-
-	var margins_to_header = SetMarginsToHeader(CF_id)
-	var top = margins_to_header[0]
-	var right = margins_to_header[1]
-	var bottom = margins_to_header[2]
-	var left = margins_to_header[3]
+	// Get current position and set margins for squares in reference to the window for to_banner animation
+	var margins_to_header = SetMarginsToHeader(CF_id); //------------------------- |F| main_child.js
+	var top = margins_to_header[0];
+	var right = margins_to_header[1];
+	var bottom = margins_to_header[2];
+	var left = margins_to_header[3];
 	$(CF_id).css({
 		'right': right,
 		'bottom': bottom,
 		'left': left,
 		'top': top,
-	})
+	});
+
+	// Make reference box fullscreen (has to come after position check!!)
 	$('#reference_box').css({
 		'transition': 'none',
-		'width': window_width,
+		'width': $('body').innerWidth(), // window changes by scroll bar on windows
 		'height': window_height,
 		'top': 0,
 		'left': 0,
 		'bottom': 0,
-		'right': 0
-		//'margin': '0px',
+		'right': 0,
+		'margin': '0px',
 	});
 
-
+	// Transition logo color on touch devices
 	$('#logo').css({
 		'transition': 300 * anim_speed_factor + 'ms',
 		'fill': CF_logo_color,
 	});
 
-
+	// Fade out text in squares
 	$('h2').css({
 		//'display': 'none',
 		'opacity': 0,
 		'transition': 300 * anim_speed_factor + 'ms',
 	});
+
+	// Set timeout for logo to fade to color on touch devices
+	if (touch == true) {
+		var mobileTimeout = 300;
+	} else {
+		var mobileTimeout = 0;
+	};
+
+	// Animation to header
 	setTimeout(function() {
 		$(CF_id).css({
 			'transition': 300 * anim_speed_factor + 'ms',
@@ -152,13 +140,7 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 				window.location = CF_href;
 			}, 300 * anim_speed_factor)
 		}, 300 * anim_speed_factor)
-	}, 000);
-};
-
-// Get mouse position -----------------------------------------------------------------------------------------------------------------
-function GetMousePosition() {
-	mouse_left = event.pageX;
-	mouse_top = event.pageY;
+	}, mobileTimeout);
 };
 
 // Set margins before transitioning to header -----------------------------------------------------------------------------------------
@@ -169,48 +151,47 @@ function SetMarginsToHeader(SMTH_id) {
 	var height = parseFloat($(SMTH_id).css('height'));
 	var width = parseFloat($(SMTH_id).css('width'));
 
-	console.log(offset_top + ' - ' + offset_left + ' - ' +width + ' - ' +height)
+	var top = offset_top + 'px';
+	var left = offset_left + 'px';
+	var bottom = (window_height - offset_top - height) + 'px';
+	var right = (window_width - offset_left - width); + 'px'
 
-		var top = offset_top + 'px';
-		var left = offset_left + 'px';
-		var bottom = (window_height - offset_top - height) + 'px';
-		var right = (window_width - offset_left - width); + 'px'
-
-	return [top, right, bottom, left]
+	return [top, right, bottom, left];
 };
 
-// Affect squares bundle ----------------------------------------------------------------------------------------------------------------
-function AffectSquares() {
-	AffectSquare('#top_left', 1, box1_proximity_size);
-	AffectSquare('#bottom_left', 2, box2_proximity_size);
-	AffectSquare('#bottom_right', 3, box3_proximity_size);
-	AffectSquare('#top_right', 4, box4_proximity_size);
-}
-// Affect squares -----------------------------------------------------------------------------------------------------------------------
-function AffectSquare(AS_id, AS_ref, AS_size) {
-	var AS_margin = hover_size - AS_size;
-	var AS_right, AS_bottom;
-	var margins_array = SetMargins(AS_ref, hover_size, AS_margin);
-	AS_right = margins_array[0];
-	AS_bottom = margins_array[1];
-	$(AS_id).css({
-		'width': AS_size,
-		'height': AS_size,
-		'right': AS_right,
-		'bottom': AS_bottom,
-	})
+// Box proximity enable ---------------------------------------------------------------------------------------------------------------
+function BoxProximityEnable(ref, Bool) {
+	if (ref == 1) {
+		BoxProximity_1_enable = Bool;
+	} else if (ref == 2) {
+		BoxProximity_2_enable = Bool;
+	} else if (ref == 3) {
+		BoxProximity_3_enable = Bool;
+	} else if (ref == 4) {
+		BoxProximity_4_enable = Bool;
+	};
 };
+
+// Get mouse position -----------------------------------------------------------------------------------------------------------------
+function GetMousePosition() {
+	mouse_left = event.pageX;
+	mouse_top = event.pageY;
+};
+
 // Create offset to corner farthest from the center of the reference box ----------------------------------------------------------------
 function Proximities() {
+	// BoxProximity(); //--------------------------------------------------------- |F| main_child.js
 	box1_proximity = BoxProximity(1, box1_offset_top_center - box_corner_offset, box1_offset_left_center - box_corner_offset, proximity_margin);
 	box2_proximity = BoxProximity(2, box2_offset_top_center + box_corner_offset, box2_offset_left_center - box_corner_offset, proximity_margin);
 	box3_proximity = BoxProximity(3, box3_offset_top_center + box_corner_offset, box3_offset_left_center + box_corner_offset, proximity_margin);
 	box4_proximity = BoxProximity(4, box4_offset_top_center - box_corner_offset, box4_offset_left_center + box_corner_offset, proximity_margin);
-	box1_proximity_size = box1_size + (hover_size / 2 * box1_proximity)
-	box2_proximity_size = box2_size + (hover_size / 2 * box2_proximity)
-	box3_proximity_size = box3_size + (hover_size / 2 * box3_proximity)
-	box4_proximity_size = box4_size + (hover_size / 2 * box4_proximity)
-}
+
+	box1_proximity_size = box1_size + (hover_size / 2 * box1_proximity);
+	box2_proximity_size = box2_size + (hover_size / 2 * box2_proximity);
+	box3_proximity_size = box3_size + (hover_size / 2 * box3_proximity);
+	box4_proximity_size = box4_size + (hover_size / 2 * box4_proximity);
+};
+
 // Calculate proximities - when cursor is getting closer to the ofsettet point things get funny -----------------------------------------
 function BoxProximity(BP_ref, BP_offset_top_center, BP_offset_left_center, BP_proximity_box_size) {
 	if (eval('BoxProximity_' + BP_ref + '_enable') == true) {
@@ -238,4 +219,27 @@ function BoxProximity(BP_ref, BP_offset_top_center, BP_offset_left_center, BP_pr
 		var to_center_horizontal_uni = pos_neg_horizontal * Math.round(10000 * (to_center_horizontal / (BP_proximity_box_size / 2))) / 10000;
 		return Math.abs(to_center_vertical_uni * to_center_horizontal_uni)
 	}
+};
+
+// Affect squares bundle ----------------------------------------------------------------------------------------------------------------
+function AffectSquares() {
+	AffectSquare('#top_left', 1, box1_proximity_size); //------------------------- |F| main_child.js
+	AffectSquare('#bottom_left', 2, box2_proximity_size); //---------------------- |F| main_child.js
+	AffectSquare('#bottom_right', 3, box3_proximity_size); //--------------------- |F| main_child.js
+	AffectSquare('#top_right', 4, box4_proximity_size); //------------------------ |F| main_child.js
+};
+
+// Affect squares -----------------------------------------------------------------------------------------------------------------------
+function AffectSquare(AS_id, AS_ref, AS_size) {
+	var AS_margin = hover_size - AS_size;
+	var AS_right, AS_bottom;
+	var margins_array = SetMargins(AS_ref, hover_size, AS_margin); //------------- |F| main_child.js
+	AS_right = margins_array[0];
+	AS_bottom = margins_array[1];
+	$(AS_id).css({
+		'width': AS_size,
+		'height': AS_size,
+		'right': AS_right,
+		'bottom': AS_bottom,
+	});
 };
