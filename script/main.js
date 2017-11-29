@@ -258,7 +258,7 @@ function LinkLogos(){
 
 		var right = (window_width - (logo_width*4 + logo_margin*8 + link_logo_margin_lr*2))/2;
 
-		var top = (window_height/4*3) - logo_size;
+		var top = (window_height/4*3) - logo_size/2;
 
 	} else {
 		LLs_color_dim = color_1_dim;
