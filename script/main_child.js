@@ -104,10 +104,10 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 	});
 
 	// Fade out text in squares
-	$('h2').css({
+	$('h2, #link_logos').css({
 		//'display': 'none',
 		'opacity': 0,
-		'transition': 300 * anim_speed_factor + 'ms',
+		'transition': 50 * anim_speed_factor + 'ms',
 	});
 
 	// Set timeout for logo to fade to color on touch devices
@@ -236,4 +236,73 @@ function AffectSquare(AS_id, AS_ref, AS_size) {
 		'right': AS_right,
 		'bottom': AS_bottom,
 	});
+};
+
+// Mailto generator ---------------------------------------------------------------------------------------------------------------------
+function MailTo(email, subject, body, cc, bcc){
+	var mailto = {
+		prefix: 'mailto:',
+		arguments: '?',
+		separator: '&',
+		email: email,
+		subject: {arg: 'subject=', text: subject},
+		body: {arg: 'body=', text: body},
+		cc: {arg: 'cc=', email: cc},
+		bcc: {arg: 'bcc=', email: bcc},
+	}
+	return mailto.prefix + mailto.email +
+	mailto.arguments +
+	mailto.subject.arg + mailto.subject.text +
+	mailto.separator +
+	mailto.body.arg + mailto.body.text +
+	mailto.separator +
+	mailto.cc.arg + mailto.cc.email +
+	mailto.separator +
+	mailto.bcc.arg + mailto.bcc.email
+};
+
+// Make Link logos ----------------------------------------------------------------------------------------------------------------------
+function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href, LL_target){
+	var LL_animation_speed = anim_speed_factor * 50
+	$(LL_id).css({'fill': LL_color_dim})
+	.off('mouseover click').on('mouseover', function(){
+		console.log('mouseover')
+		$(this).css({
+			'fill': LL_color,
+			'transition': LL_animation_speed + "ms",
+			'cursor': 'pointer',
+		}).on('click', function(){
+			console.log('click')
+			if (touch == true){
+				$(this).css({
+					'fill': LL_color,
+					'transition': LL_animation_speed,
+					'cursor': 'pointer',
+				});
+				setTimeout(function(){
+					DimColorOpen();
+				}, LL_animation_speed);
+			} else {
+				DimColorOpen();
+			}
+
+			function DimColorOpen(){
+				$(LL_id).css({
+					'fill': LL_color_dim,
+					'transition': 0,
+					'cursor': 'pointer',
+				});
+				$(LL_id).off('click')
+				window.open(LL_href, LL_target)
+			};
+
+
+		});
+	}).off('mouseout click').on('mouseout', function(){
+		$(this).css({
+			'fill': LL_color_dim,
+			'cursor': 'initial',
+			'transition': LL_animation_speed + "ms",
+		})
+	})
 };
