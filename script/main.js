@@ -251,30 +251,50 @@ function LinkLogos(){
 		LLs_color_dim = color_back;
 		LLs_color = color_back_50;
 		display = 'inline-block';
+
+		var logo_width = header_height/3*2;
+		var logo_margin = header_height/6;
+		var link_logo_margin_lr = window_width*0.03;
+
+		var right = (window_width - (logo_width*4 + logo_margin*8 + link_logo_margin_lr*2))/2;
+
+		var top = (window_height/4*3) - logo_size;
+
 	} else {
 		LLs_color_dim = color_1_dim;
 		LLs_color = color_1;
 		var display = 'block';
+		var right = 0;
+		var top = 0;
 	};
 
 	$('#link_logos').css({
-		'right': 0,
+		'right': right + 'px',
+		'top': top + 'px',
 		'padding-top': '3%',
 		'position': 'absolute',
+		'margin': '0 ' + link_logo_margin_lr + 'px',
+		'font-size': 0,
 	});
 
 	$('.link_logo').css({
-		'width': header_height/3*2,
-		'height': header_height/3*2,
-		'margin': header_height/6,
+		'width': logo_width,
+		'height': logo_width,
+		'margin': logo_margin,
+		'padding-right':0,
 		'padding-bottom': window_width*0.02 + 'px',
 		'display': display,
 	});
+
+
 
 	LinkLogo('#facebook use', LLs_color, LLs_color_dim, 'https://facebook.com/hartedmusic');
 	LinkLogo('#soundcloud use', LLs_color, LLs_color_dim, 'https://soundcloud.com/harted');
 	LinkLogo('#instagram use', LLs_color, LLs_color_dim, 'https://www.instagram.com/harted.music/');
 	LinkLogo('#mail use', LLs_color, LLs_color_dim, 'mailto:harted@moodfamily.net?subject=Contact from site&body=%0A%0A...contacted from website');
+
+	console.log(right)
+	console.log($('#link_logos').width())
 
 	function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href){
 		var LL_animation_speed = anim_speed_factor * 150
