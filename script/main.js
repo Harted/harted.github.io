@@ -248,53 +248,73 @@ function TransitionOn() {
 // link_logos -------------------------------------------------------------------------------------------------------------------------
 function LinkLogos(){
 	if (screen_small == true) {
-		LLs_color_dim = color_back;
-		LLs_color = color_back_50;
-		display = 'inline-block';
-
-		var logo_width = header_height/3*2;
-		var logo_margin = header_height/6;
-		var link_logo_margin_lr = window_width*0.03;
-
-		var right = (window_width - (logo_width*4 + logo_margin*8 + link_logo_margin_lr*2))/2;
-
-		var top = (window_height/4*3) - logo_size/2;
-
+		var LLS = {
+			logo: {
+				color_dim: color_back_50,
+				color: color_back,
+				width: logo_size/2,
+				margin: logo_size/1.8,
+				padding_bottom: function(){return this.margin},
+			},
+			left: {float: 'left'},
+			right: {float: 'right'},
+			margin_right: 0,
+			padding_top: 0,
+			right: function(){
+				return (window_width - (this.logo.width*2 + this.logo.margin*4))/2
+			},
+			top: function(){
+				return (window_height - (this.logo.width*2 + this.logo.margin*4))/2
+			},
+		};
 	} else {
-		LLs_color_dim = color_1_dim;
-		LLs_color = color_1;
-		var display = 'block';
-		var right = 0;
-		var top = 0;
+		var LLS = {
+			logo: {
+				color_dim: color_1_dim,
+				color: color_1,
+				width: header_height/3*2,
+				margin: header_height/6,
+				padding_bottom: function(){return window_width*0.02},
+			},
+			left: {float: 'none'},
+			right: {float: 'none'},
+			margin_right: window_width*0.03,
+			padding_top: '3%',
+			right: function(){return 0},
+			top: function(){return 0},
+		};
 	};
 
+	console.log(LLS)
+	console.log(LLS.right())
+
 	$('#link_logos').css({
-		'right': right + 'px',
-		'top': top + 'px',
-		'padding-top': '3%',
+		'right': LLS.right() + 'px',
+		'top': LLS.top() + 'px',
+		'padding-top': LLS.padding_top,
 		'position': 'absolute',
-		'margin': '0 ' + link_logo_margin_lr + 'px',
+		'margin-right': LLS.margin_right,
 		'font-size': 0,
 	});
 
+	$('#link_logos_left').css({
+		'float': LLS.left.float,
+		})
+	$('#link_logos_right').css({
+		'float': LLS.left.float,
+	})
+
 	$('.link_logo').css({
-		'width': logo_width,
-		'height': logo_width,
-		'margin': logo_margin,
-		'padding-right':0,
-		'padding-bottom': window_width*0.02 + 'px',
-		'display': display,
+		'width': LLS.logo.width,
+		'height': LLS.logo.width,
+		'margin': LLS.logo.margin,
+		'padding-bottom': LLS.logo.padding_bottom() + 'px',
 	});
 
-
-
-	LinkLogo('#facebook use', LLs_color, LLs_color_dim, 'https://facebook.com/hartedmusic');
-	LinkLogo('#soundcloud use', LLs_color, LLs_color_dim, 'https://soundcloud.com/harted');
-	LinkLogo('#instagram use', LLs_color, LLs_color_dim, 'https://www.instagram.com/harted.music/');
-	LinkLogo('#mail use', LLs_color, LLs_color_dim, 'mailto:harted@moodfamily.net?subject=Contact from site&body=%0A%0A...contacted from website');
-
-	console.log(right)
-	console.log($('#link_logos').width())
+	LinkLogo('#facebook use', LLS.logo.color, LLS.logo.color_dim, 'https://facebook.com/hartedmusic');
+	LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.color_dim, 'https://soundcloud.com/harted');
+	LinkLogo('#instagram use', LLS.logo.color, LLS.logo.color_dim, 'https://www.instagram.com/harted.music/');
+	LinkLogo('#mail use', LLS.logo.color, LLS.logo.color_dim, 'mailto:harted@moodfamily.net?subject=Contact from site&body=%0A%0A...contacted from website');
 
 	function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href){
 		var LL_animation_speed = anim_speed_factor * 150
