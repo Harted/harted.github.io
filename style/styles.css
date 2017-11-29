@@ -32,9 +32,9 @@ div {
 
 
 /* Classes ---------------------------------------------------------------------*/
-.container {
+/*.container {
 	margin: 0 3%;
-}
+}*/
 .content_container {
   border: 1px solid black;
 }
@@ -45,4 +45,5 @@ div {
 /* voorlopige fade in voor content op shows.html */
 #events{
   opacity: 0;
+  display:
 }
