@@ -292,7 +292,7 @@ function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href, LL_target){
 					'transition': 0,
 					'cursor': 'pointer',
 				});
-				$(LL_id).off('click')
+				//$(LL_id).off('click')
 				window.open(LL_href, LL_target)
 			};
 
