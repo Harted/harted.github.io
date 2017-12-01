@@ -306,9 +306,9 @@ function LinkLogos(){
 	});
 
 	// LinkLogo() & Mailto () ---------------------------------------------------- |F| main_child.js
-	LinkLogo('#facebook use', LLS.logo.color, LLS.logo.color_dim, 'https://urlgeni.us/facebook/eYH5', '_blank' );
-	LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.color_dim, 'https://urlgeni.us/soundcloud/Od7z', '_blank' );
-	LinkLogo('#instagram use', LLS.logo.color, LLS.logo.color_dim, 'https://urlgeni.us/instagram/QEvA', '_blank' );
-	LinkLogo('#mail use', LLS.logo.color, LLS.logo.color_dim, MailTo('hartedmusic@gmail.com','Contact:', '','',''), '_blank' );
+	LinkLogo('#facebook use', LLS.logo.color, LLS.logo.color_dim, 'https://facebook.com/hartedmusic', 'fb://profile/617065351770738', 'fb://page/617065351770738' );
+	LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.color_dim, 'https://soundcloud.com/harted', 'soundcloud://users:89067487', 'soundcloud://users:89067487' );
+	LinkLogo('#instagram use', LLS.logo.color, LLS.logo.color_dim, 'https://www.instagram.com/harted.music/', 'instagram://user?username=harted.music', 'intent://instagram.com/_u/harted.music/#Intent;package=com.instagram.android;scheme=https;end');
+	LinkLogo('#mail use', LLS.logo.color, LLS.logo.color_dim, MailTo('hartedmusic@gmail.com','Contact:', '','',''));
 
 };

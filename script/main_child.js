@@ -262,7 +262,7 @@ function MailTo(email, subject, body, cc, bcc){
 };
 
 // Make Link logos ----------------------------------------------------------------------------------------------------------------------
-function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href, LL_target){
+function LinkLogo(LL_id, LL_color, LL_color_dim, web_link, ios_link, android_link){
 	var LL_animation_speed = anim_speed_factor * 50
 	$(LL_id).css({'fill': LL_color_dim})
 	.off('mouseover click').on('mouseover', function(){
@@ -292,7 +292,7 @@ function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href, LL_target){
 					'transition': 0,
 					'cursor': 'pointer',
 				});
-				window.open(LL_href, LL_target)
+				DeepLink(web_link, ios_link, android_link)
 			};
 
 
@@ -304,4 +304,22 @@ function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href, LL_target){
 			'transition': LL_animation_speed + "ms",
 		})
 	})
+};
+// Deep link ----------------------------------------------------------------------------------------------------------------------------
+
+function DeepLink(web_link, ios_link, android_link) {
+
+	//redirect web
+	setTimeout(function() {
+  		window.location = web_link;
+	}, 20);
+
+	//redirect android
+	setTimeout(function() {
+  		window.location = android_link;
+	}, 10);
+
+	//direct ios
+	window.location = web_link;
+
 };
