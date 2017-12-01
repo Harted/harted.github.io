@@ -266,13 +266,11 @@ function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href){
 	var LL_animation_speed = anim_speed_factor * 50
 	$(LL_id).css({'fill': LL_color_dim})
 	.off('mouseover').on('mouseover', function(){
-		console.log('mouseover')
 		$(this).css({
 			'fill': LL_color,
 			'transition': LL_animation_speed + "ms",
 			'cursor': 'pointer',
 		}).off('click').on('click', function(){
-			console.log('click')
 			if (touch == true){
 				$(this).css({
 					'fill': LL_color,
@@ -285,7 +283,7 @@ function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href){
 			} else {
 				DimColorOpen();
 			}
-
+			// little function used here
 			function DimColorOpen(){
 				$(LL_id).css({
 					'fill': LL_color_dim,
@@ -293,14 +291,9 @@ function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href){
 					'cursor': 'pointer',
 				});
 				window.open(LL_href);
-				console.log('window opened')
-
 			};
-
-
 		});
 	}).off('mouseout click').on('mouseout', function(){
-		console.log('mouseout')
 		$(this).css({
 			'fill': LL_color_dim,
 			'cursor': 'initial',

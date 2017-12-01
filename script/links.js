@@ -1,45 +1,57 @@
 // Deep link ----------------------------------------------------------------------------------------------------------------------------
 function DeepLink(web_link, ios_link, android_link) {
 
-	//redirect web
-	setTimeout(function() {
-  		//window.location = web_link;
-	}, 20);
-/*
-	//redirect android
-	setTimeout(function() {
-  		window.location = android_link;
-	}, 10);
+	var UA = getMobileOperatingSystem();
+	console.log(UA)
 
-	//direct ios
-	window.location = ios_link;
-*/
+	if (UA == 'iOS') {
+		AppSiteFallback(web_link, ios_link);
+	} else if (UA == 'Android'){
+		AppSiteFallback(web_link, android_link);
+	} else {
+		window.location = web_link;
+	};
 
-console.log(getMobileOperatingSystem())
 
-function getMobileOperatingSystem() {
-  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+	function AppSiteFallback(sitelink, applink){
+		setTimeout(function() {
+			window.location = sitelink;
+		}, 10);
+		//app?
+		window.location = applink;
+	}
 
-      // Windows Phone must come first because its UA also contains "Android"
-    if (/windows phone/i.test(userAgent)) {
-        return "Windows Phone";
-    }
+	function getMobileOperatingSystem() {
+		var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-    if (/android/i.test(userAgent)) {
-        return "Android";
-    }
+		// Windows Phone must come first because its UA also contains "Android"
+		if (/windows phone/i.test(userAgent)) {
+			return "WindowsPhone";
+		}
 
-    // iOS detection from: http://stackoverflow.com/a/9039885/177710
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        return "iOS";
-    }
+		if (/android/i.test(userAgent)) {
+			return "Android";
+		}
+
+		// iOS detection from: http://stackoverflow.com/a/9039885/177710
+		if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+			return "iOS";
+		}
 
 		if (/Chrome/.test(userAgent)) {
 			return "Chrome";
 		}
-		console.log('userAgent: ' + userAgent)
 
-    return "unknown";
-}
+		if (/Safari/.test(userAgent)) {
+			return "Safari";
+		}
+
+		if (/Firefox/.test(userAgent)) {
+			return "Firefox"
+		}
+		console.log('OTHER userAgent: ' + userAgent)
+
+		return "unknown";
+	}
 
 };
