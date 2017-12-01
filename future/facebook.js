@@ -52,7 +52,7 @@ function GetFacebookEvents(){
         }
         var date = String(/*dateArray[0] + ' ' + */dateArray[1] + ' '+ dateArray[2] + ' ' + dateArray[3])
         events.push("<strong><h4>" + date + "</h4> </strong> <br>" + response.data[n].name + "<br><em>" + response.data[n].place.name + "</em><br><h5>" + city + "</h5><br><hr>")
-        //events.push({name, date, place_name}) // making a custom array to put in file to edit.. 
+        //events.push({name, date, place_name}) // making a custom array to put in file to edit..
 
 
       };
@@ -60,8 +60,8 @@ function GetFacebookEvents(){
 
       $('#events').html(events).css({
         'opacity': 1,
-        'transition': "1000ms",
-        'margin-bottom': '50px'
+        'transition': "500ms",
+        'margin': header_height,
       });
     });
   };

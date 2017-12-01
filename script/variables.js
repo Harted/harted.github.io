@@ -57,3 +57,6 @@ var header_height = 50;
 
 // User agent
 var UserAgent;
+
+// Objects
+var HL = {};

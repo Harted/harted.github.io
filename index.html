@@ -27,7 +27,7 @@
 	<script src='script/pages.js'></script>
 
 </head>
-<body class='fade_in_load'>
+<body class='fade_in_at_load'>
 
 	<!-- Reference box in centerof window -->
 	<div id='reference_box'>
@@ -83,14 +83,13 @@
 		</div>
 	</div>
 
-
-
 	<script type='text/javascript'>
 	// script
 	UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
 	console.log(UserAgent);
 	DetermineTouch(); //------------------------------------------------------------ |F| main.js
-	MakeAlignmentClasses(); //------------------------------------------------------ |F| main.js
+	MakeAlignmentClasses(); // probably something for css file.. ------------------- |F| main.js
+	MakeThings(); //---------------------------------------------------------------- |F| index.html <script>
 
 	function MakeThings() {
 		GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
@@ -99,18 +98,13 @@
 		MakeRefBox(); //-------------------------------------------------------------- |F| main.js
 		Squares(); //----------------------------------------------------------------- |F| main.js
 		MakeLogo(); //---------------------------------------------------------------- |F| main.js
-		LinkLogos();
+		LinkLogos(); //--------------------------------------------------------------- |F| main.js
 		BoxContentFormat(); //-------------------------------------------------------- |F| main.js
 	};
 
 	// Actions when document is ready--------------------------------------------------------------------------------------------------
 	$(document).ready(function() {
-		MakeThings(); //-------------------------------------------------------------- |F| index.html <script>
-		// body color & face in when loaded
-		$('body').css({
-			'background-color': color_back
-		}).removeClass('fade_in_load');
-
+		$('body').removeClass('fade_in_at_load');
 		MouseMoveOfsets(); //--------------------------------------------------------- |F| main.js
 		MouseMove(); //--------------------------------------------------------------- |F| main.js
 	});

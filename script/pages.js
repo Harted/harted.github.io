@@ -4,64 +4,75 @@ function Header(color) {
 		'position': 'fixed',
 		'width': '100%',
 		'height': header_height,
-		'line-height': header_height + "px",
+		'line-height': header_height + 'px',
 		'bottom': 0,
 		'background-color': color,
 	})
 };
 // Make headerlogo --------------------------------------------------------------------------------------------------------------------
 function HeaderLogo(color) {
+
+	HL = {
+		color: color_back,
+		width: header_height/3*2,
+		margin: header_height/6,
+		right: window_width*0.03,
+		bottom: 0,
+		load: {
+			width: 0,
+			margin: header_height/2,
+			transition: anim_speed_factor * 250,
+		},
+		click: {
+			transition: anim_speed_factor * 100,
+		},
+	};
+
 	$('#headerlogo').css({
-		'height' : header_height,
-		'width' : header_height,
-		'float': 'right'
-	}).on("mouseenter", function(){
-		$(this).css('cursor', 'pointer')
-		.on('click', function(){
-			$('#headerlogo svg').css({
-				'width': '0px',
-				'height': '0px',
-				'margin': (header_height/2),
-				'transition': anim_speed_factor * 100 + "ms",
-			}).on("transitionend", function(){
-				$('#header').css({
-					'opacity': 0,
-					'transition': anim_speed_factor * 250 + "ms",
-				})
-				setTimeout(function(){
-					window.location = "index.html";
-				}, anim_speed_factor * 250);
+		'position': 'absolute',
+		'width': HL.load.width,
+		'height': HL.load.width,
+		'margin': HL.load.margin,
+		'fill': HL.color,
+		'right': HL.right,
+		'bottom': HL.bottom,
+	})
+	setTimeout(function(){
+		$('#headerlogo').css({
+			'height': HL.width,
+			'width': HL.width,
+			'margin': HL.margin,
+			'transition': HL.load.transition + 'ms',
+		}).off('mouseover').on('mouseover', function(){
+			$(this).css('cursor', 'pointer')
+			.off('click').on('click', function(){
+				$('#headerlogo').css({
+					'width': HL.load.width,
+					'height': HL.load.width,
+					'margin': HL.load.margin,
+					'transition': HL.click.transition + 'ms',
+				}).on('transitionend', function(){
+					//future replace by fadebox and go to index
+					$('#header').css({
+						'opacity': 0,
+						'transition': HL.load.transition + 'ms',
+					});
+					setTimeout(function(){
+						window.location = 'index.html';
+					}, HL.load.transition)
+				});
 			});
 		});
-
-	});
-
-	$('#headerlogo svg').css({
-		'width': '0px',
-		'height': '0px',
-		'margin': (header_height/2),
-		'fill': color,
-
-	})
-
-	setTimeout(function() {
-		$('#headerlogo svg').css({
-			'width': (header_height/3*2),
-			'height': (header_height/3*2),
-			'margin': (header_height/6),
-			'transition': anim_speed_factor * 250 + "ms",
-		}).on("transitionend", function(){
-			$(this).css("transition", "none")
-			.off("transitionend");
-		});
-	}, 25);
+	},10)
 };
 
 // Make content container -------------------------------------------------------------------------------------------------------------
 function ContentContainer(){
-	var headerlogo_center_right = window_width - ($('#headerlogo').offset().left + (header_height/2));
+	var headerlogo_center_right = HL.right + (HL.width/2) + HL.margin;
+	console.log(headerlogo_center_right)
 	$('.content_container').css({
-			'margin': '0px ' + (headerlogo_center_right * 2) + "px",
+			'margin': '0px ' + (headerlogo_center_right) + 'px',
+			'height': window_height,
+			'background-color': '#f9f9f9',
 	})
-	console.log($('.content_container').css("width"))
 }

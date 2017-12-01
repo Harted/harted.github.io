@@ -1,49 +1,35 @@
 /* Fonts -----------------------------------------------------------------------*/
 @import url('https://fonts.googleapis.com/css?family=Dosis|Raleway:100,200,400,500');
 
-/* Elements --------------------------------------------------------------------*/
-
+/* BODY ------------------------------------------------------------------------*/
 body {
+  /* uniform font-family */
+  font-family: 'RaleWay', sans-serif;
+  /* opacity for index page fade in */
   opacity: 1;
   transition: 500ms opacity;
+  /* zero margin ofcourse */
   margin: 0;
-  font-family: 'RaleWay', sans-serif;
 }
-body.fade_in_load {
+.fade_in_at_load {
+  /* Opactity = 0 untill page is loaded */
   opacity: 0;
 }
+
+/* H2 --------------------------------------------------------------------------*/
+/* used mainly for box titles on index */
 h2 {
   font-weight: 100;
   margin: 0;
   color: white;
 }
-h3 {
-  margin: auto;
-  left: 10px;
-}
-a{
-  color: white;
-	text-decoration: none;
-  font-weight: 200;
-}
+
+/* No highlight when tapping on mobile -----------------------------------------*/
 div {
 	-webkit-tap-highlight-color: transparent;
 }
 
-
-/* Classes ---------------------------------------------------------------------*/
-/*.container {
-	margin: 0 3%;
-}*/
-.content_container {
-  border: 1px solid black;
-}
+/* Shadow on header and boxes --------------------------------------------------*/
 .shadow {
   box-shadow: 0 0 5px rgba(0,0,0,0.25);
-}
-
-/* voorlopige fade in voor content op shows.html */
-#events{
-  opacity: 0;
-  display:
 }

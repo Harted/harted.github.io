@@ -1,8 +1,7 @@
 // Deep link ----------------------------------------------------------------------------------------------------------------------------
 function DeepLink(web_link, ios_link, android_link) {
-
 	var UA_local = getUserAgent();
-	console.log(UA_local)
+	console.log(UA_local);
 
 	if (UA_local == 'iOS') {
 		AppSiteFallback(web_link, ios_link);
@@ -12,12 +11,13 @@ function DeepLink(web_link, ios_link, android_link) {
 		window.location = web_link;
 	};
 
+};
 
-	function AppSiteFallback(sitelink, applink){
-		setTimeout(function() {
-			window.location = sitelink;
-		}, 10);
-		//app?
-		window.location = applink;
-	}
+// When app then app else site ----------------------------------------------------------------------------------------------------------
+function AppSiteFallback(sitelink, applink){
+	setTimeout(function() {
+		window.location = sitelink;
+	}, 10);
+	//app?
+	window.location = applink;
 };
