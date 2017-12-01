@@ -1,12 +1,12 @@
 // Deep link ----------------------------------------------------------------------------------------------------------------------------
 function DeepLink(web_link, ios_link, android_link) {
 
-	var UA = getUserAgent();
-	console.log(UA)
+	var UA_local = getUserAgent();
+	console.log(UA_local)
 
-	if (UA == 'iOS') {
+	if (UA_local == 'iOS') {
 		AppSiteFallback(web_link, ios_link);
-	} else if (UA == 'Android'){
+	} else if (UA_local == 'Android'){
 		AppSiteFallback(web_link, android_link);
 	} else {
 		window.location = web_link;
