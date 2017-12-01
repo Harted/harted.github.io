@@ -311,15 +311,15 @@ function DeepLink(web_link, ios_link, android_link) {
 
 	//redirect web
 	setTimeout(function() {
-  		window.open(web_link);
+  		window.location = web_link;
 	}, 20);
 
 	//redirect android
 	setTimeout(function() {
-  		window.open(android_link);
+  		window.location = android_link;
 	}, 10);
 
 	//direct ios
-	window.open(ios_link);
+	window.location = ios_link;
 
 };
