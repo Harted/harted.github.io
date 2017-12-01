@@ -4,3 +4,5 @@
 <p>Trying to put in this paragraph</p>
 =======
 >>>>>>> f11c5f30e8e32cb6709a2759616b3b9237a5f1dd
+
+cant seem to understand what is happening
