@@ -265,13 +265,13 @@ function MailTo(email, subject, body, cc, bcc){
 function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href){
 	var LL_animation_speed = anim_speed_factor * 50
 	$(LL_id).css({'fill': LL_color_dim})
-	.off('mouseover click').on('mouseover', function(){
+	.off('mouseover').on('mouseover', function(){
 		console.log('mouseover')
 		$(this).css({
 			'fill': LL_color,
 			'transition': LL_animation_speed + "ms",
 			'cursor': 'pointer',
-		}).on('click', function(){
+		}).off('click').on('click', function(){
 			console.log('click')
 			if (touch == true){
 				$(this).css({
@@ -292,12 +292,15 @@ function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href){
 					'transition': 0,
 					'cursor': 'pointer',
 				});
-				window.open(LL_href)
+				window.open(LL_href);
+				console.log('window opened')
+
 			};
 
 
 		});
 	}).off('mouseout click').on('mouseout', function(){
+		console.log('mouseout')
 		$(this).css({
 			'fill': LL_color_dim,
 			'cursor': 'initial',
