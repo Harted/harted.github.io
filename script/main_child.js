@@ -320,6 +320,6 @@ function DeepLink(web_link, ios_link, android_link) {
 	}, 10);
 
 	//direct ios
-	window.location = web_link;
+	window.location = ios_link;
 
 };
