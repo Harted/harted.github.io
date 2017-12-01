@@ -11,7 +11,6 @@ var color_2 = "#238482";
 var color_3 = "#3BDB83";
 var color_4 = "#EFC700";
 var color_back = "#FFFFFF";
-var color_back_50 = '#FFFFFF80'
 
 
 // Window width variables
