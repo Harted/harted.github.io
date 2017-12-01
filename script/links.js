@@ -2,7 +2,6 @@
 function DeepLink(web_link, ios_link, android_link) {
 
 	var UA = getMobileOperatingSystem();
-	console.log(UA)
 
 	if (UA == 'iOS') {
 		AppSiteFallback(web_link, ios_link);
@@ -15,7 +14,7 @@ function DeepLink(web_link, ios_link, android_link) {
 
 	function AppSiteFallback(sitelink, applink){
 		setTimeout(function() {
-			window.location = sitelink;
+			//window.location = sitelink;
 		}, 10);
 		//app?
 		window.location = applink;
