@@ -257,8 +257,6 @@ function LinkLogos(){
 				padding_bottom: 0,
 				position: 'absolute'
 			},
-			//left: {float: 'left'},
-			//right: {float: 'right'},
 			margin_right: 0,
 			padding_top: 0,
 			width: logo_size*2,
@@ -280,8 +278,6 @@ function LinkLogos(){
 				padding_bottom: window_width*0.02,
 				position: 'static'
 			},
-			//left: {float: 'none'},
-			//right: {float: 'none'},
 			margin_right: window_width*0.03,
 			padding_top: '3%',
 			width: 'auto',
