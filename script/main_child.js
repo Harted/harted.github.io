@@ -262,7 +262,7 @@ function MailTo(email, subject, body, cc, bcc){
 };
 
 // Make Link logos ----------------------------------------------------------------------------------------------------------------------
-function LinkLogo(LL_id, LL_color, LL_color_dim, web_link, ios_link, android_link){
+function LinkLogo(LL_id, LL_color, LL_color_dim, LL_href){
 	var LL_animation_speed = anim_speed_factor * 50
 	$(LL_id).css({'fill': LL_color_dim})
 	.off('mouseover click').on('mouseover', function(){
@@ -292,7 +292,7 @@ function LinkLogo(LL_id, LL_color, LL_color_dim, web_link, ios_link, android_lin
 					'transition': 0,
 					'cursor': 'pointer',
 				});
-				DeepLink(web_link, ios_link, android_link)
+				window.open(LL_href)
 			};
 
 
@@ -306,7 +306,6 @@ function LinkLogo(LL_id, LL_color, LL_color_dim, web_link, ios_link, android_lin
 	})
 };
 // Deep link ----------------------------------------------------------------------------------------------------------------------------
-
 function DeepLink(web_link, ios_link, android_link) {
 
 	//redirect web
