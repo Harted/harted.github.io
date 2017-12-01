@@ -54,3 +54,6 @@ var logo_size, logo_ref_center_tl;
 
 // Header
 var header_height = 50;
+
+// User agent
+var UserAgent;
