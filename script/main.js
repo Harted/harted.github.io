@@ -306,9 +306,9 @@ function LinkLogos(){
 	});
 
 	// LinkLogo() & Mailto () ---------------------------------------------------- |F| main_child.js
-	LinkLogo('#facebook use', LLS.logo.color, LLS.logo.color_dim, 'https://facebook.com/hartedmusic', '_blank' );
-	LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.color_dim, 'https://soundcloud.com/harted', '_blank' );
-	LinkLogo('#instagram use', LLS.logo.color, LLS.logo.color_dim, 'https://www.instagram.com/harted.music/', '_blank' );
+	LinkLogo('#facebook use', LLS.logo.color, LLS.logo.color_dim, 'https://urlgeni.us/facebook/eYH5', '_blank' );
+	LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.color_dim, 'https://urlgeni.us/soundcloud/Od7z', '_blank' );
+	LinkLogo('#instagram use', LLS.logo.color, LLS.logo.color_dim, 'https://urlgeni.us/instagram/QEvA', '_blank' );
 	LinkLogo('#mail use', LLS.logo.color, LLS.logo.color_dim, MailTo('hartedmusic@gmail.com','Contact:', '','',''), '_blank' );
 
 };
