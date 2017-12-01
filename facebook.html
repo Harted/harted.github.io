@@ -5,18 +5,26 @@
 
 <script>
 
-//redirect web
-setTimeout(function() {
-  window.location = "https://facebook.com/hartedmusic";
-}, 20);
+DeepLink('fb://profile/617065351770738', 'fb://page/617065351770738', 'https://facebook.com/hartedmusic')
 
-//redirect android
-setTimeout(function() {
-  window.location = "fb://page/617065351770738";
-}, 10);
 
-//ios
-window.location = "fb://profile/617065351770738";
+function DeepLink(ios_link, android_link, web_link) {
+
+	//redirect web
+	setTimeout(function() {
+  		window.location = web_link;
+	}, 20);
+
+	//redirect android
+	setTimeout(function() {
+  		window.location = android_link;
+	}, 10);
+
+	//direct ios
+	window.location = web_link;
+
+};
+
 
 </script>
 
