@@ -50,7 +50,7 @@ function GetMinWindowSize() {
 };
 
 // Responsive -------------------------------------------------------------------------------------------------------------------------
-function Responsive() {
+function Responsive() { // this should only work with min_window_size.. make seperate for content containt window width!!!!!!!!!!!!!!!!!!!!!!!
 	if (min_window_size < screen_large_size & min_window_size >= screen_medium_size) {
 		screen_large = true;
 		screen_medium = false;
@@ -67,6 +67,24 @@ function Responsive() {
 		screen_large = false;
 		screen_medium = false;
 		screen_small = false;
+	};
+
+	if (window_width < screen_large_size & window_width >= screen_medium_size) {
+		width_large = true;
+		width_medium = false;
+		width_small = false;
+	} else if (window_width < screen_medium_size & min_window_size >= screen_small_size) {
+		width_large = false;
+		width_medium = true;
+		width_small = false;
+	} else if (min_window_size < screen_small_size) {
+		width_large = false;
+		width_medium = false;
+		width_small = true;
+	} else {
+		width_large = false;
+		width_medium = false;
+		width_small = false;
 	};
 };
 

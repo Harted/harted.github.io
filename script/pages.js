@@ -70,9 +70,17 @@ function HeaderLogo(color) {
 function ContentContainer(){
 	var headerlogo_center_right = HL.right + (HL.width/2) + HL.margin;
 	console.log(headerlogo_center_right)
-	$('.content_container').css({
-			'margin': '0px ' + (headerlogo_center_right) + 'px',
-			'height': window_height,
-			'background-color': '#f9f9f9',
-	})
+	if (width_medium == true || width_small == true) {
+		$('.content_container').css({
+				'margin': '0px ' + window_width * 0.01 + 'px',
+				'height': window_height,
+				'background-color': '#f9f9f9',
+		})
+	} else {
+		$('.content_container').css({
+				'margin': '0px ' + (headerlogo_center_right) + 'px',
+				'height': window_height,
+				'background-color': '#f9f9f9',
+		})
+	}
 }

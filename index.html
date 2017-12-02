@@ -104,7 +104,8 @@
 
 	// Actions when document is ready--------------------------------------------------------------------------------------------------
 	$(document).ready(function() {
-		$('body').removeClass('fade_in_at_load');
+		$('body').removeClass('fade_in_at_load')
+		.css({'background-color': color_back})
 		MouseMoveOfsets(); //--------------------------------------------------------- |F| main.js
 		MouseMove(); //--------------------------------------------------------------- |F| main.js
 	});

@@ -263,8 +263,7 @@ function MailTo(email, subject, body, cc, bcc){
 
 // Make Link logos ----------------------------------------------------------------------------------------------------------------------
 function LinkLogo(LL_id, LL_color, LL_color_dim, LL_opacity, LL_opacity_click, LL_href){
-	var LL_animation_speed = anim_speed_factor * 50
-	console.log(LL_opacity)
+	var LL_animation_speed = anim_speed_factor * 50;
 	$(LL_id).css({
 		'fill': LL_color_dim,
 		'opacity': LL_opacity

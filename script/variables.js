@@ -5,12 +5,12 @@ var action_area_corner_offset_factor = 0.1;
 var action_area_base_size_factor = 3/2;
 
 // Colors
-var color_1 = "#3C3C3C";
+var color_1 = "#78837D";
 var color_1_dim = '#BFBFBF';
-var color_2 = "#238482";
-var color_3 = "#3BDB83";
-var color_4 = "#EFC700";
-var color_back = "#FFFFFF";
+var color_2 = "#337680";
+var color_3 = "#09494D";
+var color_4 = "#2B2B2B";
+var color_back = "#FFF";
 
 
 // Window width variables
@@ -18,6 +18,7 @@ var window_width, window_height, min_window_size;
 
 // Responsive (minimum sizes)
 var screen_large, screen_medium , screen_small;
+var width_large, width_medium , width_small;
 var screen_large_size = 1026; //iPad pro = 1024
 var screen_medium_size = 770; //iPad = 768
 var screen_small_size = 416; //iPhone plus = 414
