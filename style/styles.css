@@ -1,5 +1,5 @@
 /* Fonts -----------------------------------------------------------------------*/
-@import url('https://fonts.googleapis.com/css?family=Dosis|Raleway:100,200,400,500');
+@import url('https://fonts.googleapis.com/css?family=Dosis|Raleway:100,200,500');
 
 /* BODY ------------------------------------------------------------------------*/
 body {
@@ -19,7 +19,7 @@ body {
 /* H2 --------------------------------------------------------------------------*/
 /* used mainly for box titles on index */
 h2 {
-  font-weight: 100;
+  font-weight: 500;
   margin: 0;
   color: white;
 }
