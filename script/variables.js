@@ -5,13 +5,13 @@ var action_area_corner_offset_factor = 0.1;
 var action_area_base_size_factor = 3/2;
 
 // Colors
-var color_1 = "#78837D";
-var color_1_dim = '#BFBFBF';
-var color_2 = "#337680";
-var color_3 = "#09494D";
-var color_4 = "#2B2B2B";
-var color_back = "#FFF";
+var color_1 = "#2B2B2B";
+var color_2 = "#09494D";
+var color_3 = "#337680";
+var color_4 = "#78837D";
 
+var color_1_dim = '#BFBFBF';
+var color_back = "#FFF";
 
 // Window width variables
 var window_width, window_height, min_window_size;
