@@ -30,16 +30,29 @@
 <body>
 
 	<!-- Header -->
+
 	<div id='header' class='shadow' style='z-index:99'>
+		<ul>
+			<li>About</li>
+			<li>Music</li>
+			<li>Video</li>
+			<li>Shows</li>
+		</ul>
 		<svg id='headerlogo' viewbox='0 0 500 500' style='z-index:100'>
 			<use xlink:href='svg/logo.svg#logo'></use>
 		</svg>
 	</div>
 
-<!-- Still have to implement link logo disapear on small screen -->
 	<div class='content_container'>
+
+		<img src='image/about.png' style='width:100%; height:auto;'>
+		<div class='text_container'>
+			<h1>About <strong>Harted</strong> </h1>
+			<p>
+				Jens De Ketelaere - aka - Harted is highly energetic on stage and ever cheerful. Yet his skills are no laughing matter, this technical guru is an excellent producer, brewing on years of experience in different genres, while at the same time showcasing unbridled musicality and an ear for the finer sounds. Born and raised in close to Ghent, this young Belgian dedicates his life to the craft of sounds and feels. Dropping into music coincidentally, it quickly became obvious that the many years that lay ahead, would be filled with hours of indoor activity, preferably during the night in the vicinity of synths, sequencers, grooveboxes, only to go outside for a cigarette break.
+			</p>
+		</div>
 	</div>
-<!--
 	<div id='link_logos' style='z-index:3'>
 		<div class='link_logo top_left_align'>
 			<svg id='facebook' viewbox='0 0 500 500'>
@@ -62,9 +75,9 @@
 			</svg>
 		</div>
 	</div>
--->
 	<script>
 	// script
+	page = true;
 	UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
 	console.log(UserAgent); //------------------------------------------------------ |F| main.js
 	DetermineTouch(); //------------------------------------------------------------ |F| main.js
@@ -78,6 +91,7 @@
 		HeaderLogo(color_back); //---------------------------------------------------- |F| pages.js
 		LinkLogos(); //--------------------------------------------------------------- |F| main.js
 		ContentContainer(); //-------------------------------------------------------- |F| pages.js
+		TextContainer(); //----------------------------------------------------------- |F| pages.js
 	};
 
 	$(window).on('resize', function() {

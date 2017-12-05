@@ -14,7 +14,7 @@ var palette = {
     color_4: '#F4C700',
   },
   blue: {
-    color_1: '#2B2B2B',
+    color_1: '#2F2F2F',
     color_2: '#09494D',
     color_3: '#337680',
     color_4: '#5C9199',
@@ -25,21 +25,9 @@ var palette = {
     color_3: '#666666',
     color_4: '#808080',
   },
-  sunset: {
-    color_1: '#2B2A27',
-    color_2: '#921B16',
-    color_3: '#D6701C',
-    color_4: '#D69723',
-  },
-  tuscanpool: {
-    color_1: '#262625',
-    color_2: '#203D35',
-    color_3: '#00B99E',
-    color_4: '#FCC885',
-  },
 }
 
-var pallet = 'tuscanpool'
+var pallet = 'blue'
 
 var color_1 = palette[pallet].color_1;
 var color_2 = palette[pallet].color_2;
@@ -52,7 +40,8 @@ var color_back = "#FFF";
 // Window width variables
 var window_width, window_height, min_window_size;
 
-// Responsive (minimum sizes)
+// Responsive
+var page = false;
 var screen_large, screen_medium , screen_small;
 var width_large, width_medium , width_small;
 var screen_large_size = 1026; //iPad pro = 1024
@@ -95,4 +84,4 @@ var header_height = 50;
 var UserAgent;
 
 // Objects
-var HL = {};
+var HL = {}; // header logo

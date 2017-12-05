@@ -1,10 +1,10 @@
 /* Fonts -----------------------------------------------------------------------*/
-@import url('https://fonts.googleapis.com/css?family=Dosis|Raleway:100,200,300,500');
-
+@import url('https://fonts.googleapis.com/css?family=Mukta:200,300,400,500');
 /* BODY ------------------------------------------------------------------------*/
 body {
   /* uniform font-family */
-  font-family: 'RaleWay', sans-serif;
+  font-family: 'Mukta', sans-serif;
+  font-size:16px
   /* opacity for index page fade in */
   opacity: 1;
   transition: 500ms opacity;
@@ -19,9 +19,10 @@ body {
 /* H2 --------------------------------------------------------------------------*/
 /* used mainly for box titles on index */
 h2 {
-  font-weight: 100;
+  font-weight: 200;
   margin: 0;
   color: white;
+  line-height: 1em;
 }
 
 /* No highlight when tapping on mobile -----------------------------------------*/
@@ -31,5 +32,26 @@ div {
 
 /* Shadow on header and boxes --------------------------------------------------*/
 .shadow {
-  box-shadow: 0 0 5px rgba(0,0,0,0.25);
+  box-shadow: 0 0 8px rgba(0,0,0,0.30);
+}
+
+p {
+ text-align: justify;
+ font-weight: 200
+}
+
+h1 {
+  font-weight: 200
+}
+
+ul {
+  text-decoration: none;
+  margin-top: 0;
+}
+
+li {
+  font-weight: 200;
+  display: inline;
+  padding-right: 20px;
+  color: white;
 }

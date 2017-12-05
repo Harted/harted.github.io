@@ -331,29 +331,35 @@ function LinkLogos(){
 			top: function(){return 0},
 		};
 	};
+	console.log(page +''+ width_small +''+  width_medium +''+  width_large)
+	if (page == true && (width_small == true || width_medium == true || width_large == true )) {
+		$('#link_logos').css({
+			'display': 'none'
+		})
+	} else {
+		$('#link_logos').css({
+			'position': 'fixed',
+			'width': LLS.width,
+			'height': LLS.height,
+			'right': LLS.right() + 'px',
+			'top': LLS.top() + 'px',
+			'padding-top': LLS.padding_top,
+			'margin-right': LLS.margin_right,
+			'display': 'block'
+		});
 
-	$('#link_logos').css({
-		'position': 'absolute',
-		'width': LLS.width,
-		'height': LLS.height,
-		'right': LLS.right() + 'px',
-		'top': LLS.top() + 'px',
-		'padding-top': LLS.padding_top,
-		'margin-right': LLS.margin_right,
-	});
+		$('.link_logo').css({
+			'width': LLS.logo.width,
+			'height': LLS.logo.width,
+			'margin': LLS.logo.margin,
+			'padding-bottom': LLS.logo.padding_bottom + 'px',
+			'position': LLS.logo.position,
+		});
 
-	$('.link_logo').css({
-		'width': LLS.logo.width,
-		'height': LLS.logo.width,
-		'margin': LLS.logo.margin,
-		'padding-bottom': LLS.logo.padding_bottom + 'px',
-		'position': LLS.logo.position,
-	});
-
-	// LinkLogo() & Mailto () ---------------------------------------------------- |F| main_child.js
-	LinkLogo('#facebook use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, './/links/facebook.html');
-	LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, './/links/soundcloud.html');
-	LinkLogo('#instagram use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, './/links/instagram.html');
-	LinkLogo('#mail use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, MailTo('hartedmusic@gmail.com','Contact:', '','',''));
-
+		// LinkLogo() & Mailto () ---------------------------------------------------- |F| main_child.js
+		LinkLogo('#facebook use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, './/links/facebook.html');
+		LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, './/links/soundcloud.html');
+		LinkLogo('#instagram use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, './/links/instagram.html');
+		LinkLogo('#mail use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, MailTo('hartedmusic@gmail.com','Contact:', '','',''));
+	}
 };

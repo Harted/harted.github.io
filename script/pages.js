@@ -69,18 +69,47 @@ function HeaderLogo(color) {
 // Make content container -------------------------------------------------------------------------------------------------------------
 function ContentContainer(){
 	var headerlogo_center_right = HL.right + (HL.width/2) + HL.margin;
-	console.log(headerlogo_center_right)
 	if (width_medium == true || width_small == true) {
 		$('.content_container').css({
-				'margin': '0px ' + window_width * 0.01 + 'px',
+				'margin': '0px',
 				'height': window_height,
-				'background-color': '#f9f9f9',
+				'background-color': '#FFF' //'#f9f9f9',
 		})
-	} else {
+	} else if (width_large == true){
 		$('.content_container').css({
 				'margin': '0px ' + (headerlogo_center_right) + 'px',
 				'height': window_height,
-				'background-color': '#f9f9f9',
+				'background-color': '#FFF' //'#f9f9f9',
+		})
+	} else {
+		$('.content_container').css({
+				'margin': '0px ' + (headerlogo_center_right * 2) + 'px',
+				'height': window_height,
+				'background-color': '#FFF' //'#f9f9f9',
+		})
+	}
+}
+
+// Make content container -------------------------------------------------------------------------------------------------------------
+function TextContainer(){
+	var headerlogo_center_right = HL.right + (HL.width/2) + HL.margin;
+	if (width_medium == true || width_small == true) {
+		$('.text_container').css({
+			'margin': '0px ' + (headerlogo_center_right) + 'px',
+			'height': window_height,
+			'background-color': '#FFF' //'#f9f9f9',
+		})
+	} else if (width_large == true){
+		$('.text_container').css({
+			'margin': '0px ' + (headerlogo_center_right) + 'px',
+			'height': window_height,
+			'background-color': '#FFF' //'#f9f9f9',
+		})
+	} else {
+		$('.text_container').css({
+				'margin': '0px ' + (headerlogo_center_right) + 'px',
+				'height': window_height,
+				'background-color': '#FFF' //'#f9f9f9',
 		})
 	}
 }
