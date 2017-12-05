@@ -37,6 +37,18 @@ var palette = {
     color_3: '#00B99E',
     color_4: '#FCC885',
   },
+  purpledawn: {
+    color_1: '#2D2325',
+    color_2: '#6B0E49',
+    color_3: '#A31A5A',
+    color_4: '#EC4067',
+  },
+  wander: {
+    color_1: '#2B2D23',
+    color_2: '#5B635A',
+    color_3: '#7A8D8E',
+    color_4: '#8DB4C1',
+  },
 }
 
 var pallet = 'tuscanpool'
