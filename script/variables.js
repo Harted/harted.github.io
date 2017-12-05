@@ -31,7 +31,7 @@ var palette = {
     color_3: '#D6701C',
     color_4: '#D69723',
   },
-  tuscanpool: {
+  tuscanpool: { //color4 is toch ni da
     color_1: '#262625',
     color_2: '#203D35',
     color_3: '#00B99E',
@@ -39,7 +39,7 @@ var palette = {
   },
 }
 
-var pallet = 'tuscanpool'
+var pallet = 'sunset'
 
 var color_1 = palette[pallet].color_1;
 var color_2 = palette[pallet].color_2;
