@@ -37,7 +37,7 @@ var palette = {
     color_3: '#00B99E',
     color_4: '#FCC885',
   },
-  purpledawn: {
+  purpledawn: { //nice but not me
     color_1: '#2D2325',
     color_2: '#6B0E49',
     color_3: '#A31A5A',
@@ -51,7 +51,7 @@ var palette = {
   },
 }
 
-var pallet = 'purpledawn'
+var pallet = 'wander'
 
 var color_1 = palette[pallet].color_1;
 var color_2 = palette[pallet].color_2;
