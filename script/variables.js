@@ -25,11 +25,44 @@ var palette = {
     color_3: '#666666',
     color_4: '#808080',
   },
+<<<<<<< HEAD
 }
 
 var pallet = 'blue'
 
 //testing
+=======
+<<<<<<< HEAD
+}
+
+var pallet = 'blue'
+
+//er is geen kloot veranderd
+
+=======
+<<<<<<< HEAD
+}
+
+var pallet = 'blue'
+=======
+  sunset: {
+    color_1: '#2B2A27',
+    color_2: '#921B16',
+    color_3: '#D6701C',
+    color_4: '#D69723',
+  },
+  tuscanpool: { //color4 is toch ni da
+    color_1: '#262625',
+    color_2: '#203D35',
+    color_3: '#00B99E',
+    color_4: '#FCC885',
+  },
+}
+
+var pallet = 'sunset'
+>>>>>>> 8334efaf7acc2abd38156ff07381e79d09287ba8
+>>>>>>> 074f6747b1568b94d0c577edf518e45939d92354
+>>>>>>> 77b4f4b941d820fc5ccbfd05c4ccedecc5d523d6
 
 var color_1 = palette[pallet].color_1;
 var color_2 = palette[pallet].color_2;
