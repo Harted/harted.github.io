@@ -25,15 +25,21 @@ var palette = {
     color_3: '#666666',
     color_4: '#808080',
   },
-   sunset: {
+  sunset: {
     color_1: '#2B2A27',
     color_2: '#921B16',
     color_3: '#D6701C',
     color_4: '#D69723',
   },
+  tuscanpool: {
+    color_1: '#262625',
+    color_2: '#203D35',
+    color_3: '#00B99E',
+    color_4: '#FCC885',
+  },
 }
 
-var pallet = 'sunset'
+var pallet = 'tuscanpool'
 
 var color_1 = palette[pallet].color_1;
 var color_2 = palette[pallet].color_2;
