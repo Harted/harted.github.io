@@ -29,11 +29,6 @@ var palette = {
 
 var pallet = 'blue'
 
-//testing
->>>>>>> d067c9992fa88646bf6cd13fc122206708690098
->>>>>>> 074f6747b1568b94d0c577edf518e45939d92354
->>>>>>> 77b4f4b941d820fc5ccbfd05c4ccedecc5d523d6
-
 var color_1 = palette[pallet].color_1;
 var color_2 = palette[pallet].color_2;
 var color_3 = palette[pallet].color_3;
