@@ -51,7 +51,7 @@ var palette = {
   },
 }
 
-var pallet = 'tuscanpool'
+var pallet = 'purpledawn'
 
 var color_1 = palette[pallet].color_1;
 var color_2 = palette[pallet].color_2;
