@@ -29,9 +29,6 @@ var palette = {
 
 var pallet = 'blue'
 
-//er is geen kloot veranderd
-
-
 var color_1 = palette[pallet].color_1;
 var color_2 = palette[pallet].color_2;
 var color_3 = palette[pallet].color_3;
