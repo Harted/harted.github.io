@@ -27,7 +27,7 @@ var palette = {
   },
 }
 
-var pallet = 'blue'
+var pallet = 'blue_yellow'
 
 var color_1 = palette[pallet].color_1;
 var color_2 = palette[pallet].color_2;
