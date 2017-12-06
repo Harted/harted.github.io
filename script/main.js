@@ -91,8 +91,8 @@ function Responsive() { // this should only work with min_window_size.. make sep
 // Calculate sizes by ref_box_size (3/2 minimum window size)---------------------------------------------------------------------------
 function CalculateSizes() {
 	//reference box size and styling
-	if (screen_large == true || screen_medium == true) {
-		ref_box_size = Math.round(min_window_size / (2 + Math.pow(min_window_size / screen_large_size, 3)) * 2);
+	if (screen_medium == true) {
+		ref_box_size = Math.round(min_window_size / (2 + Math.pow(min_window_size / screen_medium_size, 3)) * 2);
 		SizesByRefBox(); //--------------------------------------------------------- |F| main_child.js
 	} else if (screen_small == true) {
 		ref_box_size = '100%';
@@ -291,7 +291,7 @@ function LinkLogos(){
 		var LLS = {
 			logo: {
 				//opadity for iphone niels
-				opacity: 0.5,
+				opacity: 0.75,
 				opacity_click: 1,
 				color_dim: color_back,
 				color: color_back,

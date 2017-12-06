@@ -19,6 +19,7 @@
 	<!-- Title -->
 	<title>Harted</title>
 	<link href='style/styles.css' rel='stylesheet' type='text/css'>
+
 	<!-- scripts -->
 	<script src='script/jQuery/jquery-3.2.1.js'></script>
 	<script src='script/variables.js'></script>
@@ -27,60 +28,61 @@
 	<script src='script/pages.js'></script>
 
 </head>
-<body class='fade_in_at_load'>
-<div id='fade_box' >
-	<!-- Reference box in centerof window -->
-	<div id='reference_box'>
-		<!-- Square in top left corner -->
-		<div id='top_left' class='shadow' style='z-index:0'>
-			<div class='top_left_align top_left_margin'>
-				<h2>About</h2>
+<body>
+	<div class='fade'>
+		<!-- Reference box in centerof window -->
+		<div id='reference_box'>
+			<!-- Square in top left corner -->
+			<div id='top_left' class='shadow' style='z-index:0'>
+				<div class='top_left_align top_left_margin'>
+					<h2>About</h2>
+				</div>
 			</div>
-		</div>
-		<!-- Square in bottom left corner -->
-		<div id='bottom_left' class='shadow' style='z-index:1'>
-			<div class='bottom_left_align bottom_left_margin'>
-				<h2>Music</h2>
+			<!-- Square in bottom left corner -->
+			<div id='bottom_left' class='shadow' style='z-index:1'>
+				<div class='bottom_left_align bottom_left_margin'>
+					<h2>Music</h2>
+				</div>
 			</div>
-		</div>
-		<!-- Square in bottom right corner -->
-		<div id='bottom_right' class='shadow' style='z-index:0'>
-			<div class='bottom_right_align bottom_right_margin'>
-				<h2>Video</h2>
+			<!-- Square in bottom right corner -->
+			<div id='bottom_right' class='shadow' style='z-index:0'>
+				<div class='bottom_right_align bottom_right_margin'>
+					<h2>Video</h2>
+				</div>
 			</div>
-		</div>
-		<!-- Square in top right corner -->
-		<div id='top_right' class='shadow' style='z-index:1'>
-			<div class='top_right_align top_right_margin'>
-				<h2>Shows</h2>
+			<!-- Square in top right corner -->
+			<div id='top_right' class='shadow' style='z-index:1'>
+				<div class='top_right_align top_right_margin'>
+					<h2>Shows</h2>
+				</div>
 			</div>
+			<svg id='logo' viewbox='0 0 500 500' style='z-index:2'>
+				<use xlink:href='svg/logo.svg#logo'></use>
+			</svg>
 		</div>
-		<svg id='logo' viewbox='0 0 500 500' style='z-index:2'>
-			<use xlink:href='svg/logo.svg#logo'></use>
-		</svg>
-	</div>
-</div>
 
-	<div id='link_logos' style='z-index:3'>
-		<div class='link_logo top_left_align'>
-			<svg id='facebook' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#facebook'></use>
-			</svg>
-		</div>
-		<div class='link_logo bottom_left_align'>
-			<svg id='soundcloud' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#soundcloud'></use>
-			</svg>
-		</div>
-		<div class='link_logo bottom_right_align'>
-			<svg id='instagram' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#instagram'></use>
-			</svg>
-		</div>
-		<div class='link_logo top_right_align'>
-			<svg id='mail' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#mail'></use>
-			</svg>
+
+		<div id='link_logos' style='z-index:3'>
+			<div class='link_logo top_left_align'>
+				<svg id='facebook' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#facebook'></use>
+				</svg>
+			</div>
+			<div class='link_logo bottom_left_align'>
+				<svg id='soundcloud' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#soundcloud'></use>
+				</svg>
+			</div>
+			<div class='link_logo bottom_right_align'>
+				<svg id='instagram' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#instagram'></use>
+				</svg>
+			</div>
+			<div class='link_logo top_right_align'>
+				<svg id='mail' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#mail'></use>
+				</svg>
+			</div>
 		</div>
 	</div>
 
@@ -88,7 +90,8 @@
 	// script
 	page = false;
 	UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
-	console.log(UserAgent);
+	$('body').css({'background-color': color_back})
+
 	DetermineTouch(); //------------------------------------------------------------ |F| main.js
 	MakeAlignmentClasses(); // probably something for css file.. ------------------- |F| main.js
 	MakeThings(); //---------------------------------------------------------------- |F| index.html <script>
@@ -106,8 +109,10 @@
 
 	// Actions when document is ready--------------------------------------------------------------------------------------------------
 	$(document).ready(function() {
-		$('body').removeClass('fade_in_at_load')
-		.css({'background-color': color_back})
+		$('.fade').css({
+			'opacity': 1,
+			'transition': anim_speed_factor * 500 + 'ms',
+		})
 		MouseMoveOfsets(); //--------------------------------------------------------- |F| main.js
 		MouseMove(); //--------------------------------------------------------------- |F| main.js
 	});

@@ -8,6 +8,18 @@ function Header(color) {
 		'bottom': 0,
 		'background-color': color,
 	})
+	$('#header_whitespace').css({
+		'width': '100%',
+		'height': header_height * 2,
+	})
+	$('#header_scrollspace').css({
+		'position': 'fixed',
+		'width': window_width*3,
+		'left': -(window_width),
+		'height': window_height,
+		'bottom': -(window_height) + header_height,
+		'background-color': color,
+	})
 };
 // Make headerlogo --------------------------------------------------------------------------------------------------------------------
 function HeaderLogo(color) {
@@ -53,7 +65,7 @@ function HeaderLogo(color) {
 					'transition': HL.click.transition + 'ms',
 				}).on('transitionend', function(){
 					//future replace by fadebox and go to index
-					$('#header').css({
+					$('#header, #header_scrollspace, .fade').css({
 						'opacity': 0,
 						'transition': HL.load.transition + 'ms',
 					});
@@ -66,25 +78,40 @@ function HeaderLogo(color) {
 	},10)
 };
 
+// Make headermenu --------------------------------------------------------------------------------------------------------------------
+function HeaderMenu() {
+	$('#header_menu').css({
+		'text-decoration': 'none',
+		'margin-top': '1px',
+		'padding-left': HL.right + (HL.width/2) + HL.margin,
+	})
+	$('#header_menu li').css({
+		'font-weight': '200',
+		'display': 'inline-block',
+		'padding-right': '20px',
+		'color': color_back,
+	})
+};
+
 // Make content container -------------------------------------------------------------------------------------------------------------
 function ContentContainer(){
 	var headerlogo_center_right = HL.right + (HL.width/2) + HL.margin;
 	if (width_medium == true || width_small == true) {
 		$('.content_container').css({
 				'margin': '0px',
-				'height': window_height,
+				//'height': window_height,
 				'background-color': '#FFF' //'#f9f9f9',
 		})
 	} else if (width_large == true){
 		$('.content_container').css({
 				'margin': '0px ' + (headerlogo_center_right) + 'px',
-				'height': window_height,
+				//'height': window_height,
 				'background-color': '#FFF' //'#f9f9f9',
 		})
 	} else {
 		$('.content_container').css({
 				'margin': '0px ' + (headerlogo_center_right * 2) + 'px',
-				'height': window_height,
+				//'height': window_height,
 				'background-color': '#FFF' //'#f9f9f9',
 		})
 	}
@@ -96,20 +123,20 @@ function TextContainer(){
 	if (width_medium == true || width_small == true) {
 		$('.text_container').css({
 			'margin': '0px ' + (headerlogo_center_right) + 'px',
-			'height': window_height,
+			//'height': window_height,
 			'background-color': '#FFF' //'#f9f9f9',
 		})
 	} else if (width_large == true){
 		$('.text_container').css({
 			'margin': '0px ' + (headerlogo_center_right) + 'px',
-			'height': window_height,
+			//'height': window_height,
 			'background-color': '#FFF' //'#f9f9f9',
 		})
 	} else {
 		$('.text_container').css({
-				'margin': '0px ' + (headerlogo_center_right) + 'px',
-				'height': window_height,
-				'background-color': '#FFF' //'#f9f9f9',
+			'margin': '0px ' + (headerlogo_center_right) + 'px',
+			//'height': window_height,
+			'background-color': '#FFF' //'#f9f9f9',
 		})
 	}
 }

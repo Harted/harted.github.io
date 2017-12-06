@@ -32,7 +32,7 @@
 	<!-- Header -->
 
 	<div id='header' class='shadow' style='z-index:99'>
-		<ul>
+		<ul id='header_menu'>
 			<li>About</li>
 			<li>Music</li>
 			<li>Video</li>
@@ -43,43 +43,52 @@
 		</svg>
 	</div>
 
-	<div class='content_container'>
+	<div class='fade'>
+		<div class='content_container'>
 
-		<img src='image/about.png' style='width:100%; height:auto;'>
-		<div class='text_container'>
-			<h1>About <strong>Harted</strong> </h1>
-			<p>
-				Jens De Ketelaere - aka - Harted is highly energetic on stage and ever cheerful. Yet his skills are no laughing matter, this technical guru is an excellent producer, brewing on years of experience in different genres, while at the same time showcasing unbridled musicality and an ear for the finer sounds. Born and raised in close to Ghent, this young Belgian dedicates his life to the craft of sounds and feels. Dropping into music coincidentally, it quickly became obvious that the many years that lay ahead, would be filled with hours of indoor activity, preferably during the night in the vicinity of synths, sequencers, grooveboxes, only to go outside for a cigarette break.
-			</p>
+			<img src='image/about.png' style='width:100%; height:auto;'>
+			<div class='text_container'>
+				<h1>About <strong>Harted</strong> </h1>
+				<p>
+					Jens De Ketelaere - aka - Harted is highly energetic on stage and ever cheerful. Yet his skills are no laughing matter, this technical guru is an excellent producer, brewing on years of experience in different genres, while at the same time showcasing unbridled musicality and an ear for the finer sounds. Born and raised in close to Ghent, this young Belgian dedicates his life to the craft of sounds and feels. Dropping into music coincidentally, it quickly became obvious that the many years that lay ahead, would be filled with hours of indoor activity, preferably during the night in the vicinity of synths, sequencers, grooveboxes, only to go outside for a cigarette break.
+				</p>
+			</div>
+		</div>
+		<div id='link_logos' style='z-index:3'>
+			<div class='link_logo top_left_align'>
+				<svg id='facebook' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#facebook'></use>
+				</svg>
+			</div>
+			<div class='link_logo bottom_left_align'>
+				<svg id='soundcloud' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#soundcloud'></use>
+				</svg>
+			</div>
+			<div class='link_logo bottom_right_align'>
+				<svg id='instagram' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#instagram'></use>
+				</svg>
+			</div>
+			<div class='link_logo top_right_align'>
+				<svg id='mail' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#mail'></use>
+				</svg>
+			</div>
 		</div>
 	</div>
-	<div id='link_logos' style='z-index:3'>
-		<div class='link_logo top_left_align'>
-			<svg id='facebook' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#facebook'></use>
-			</svg>
-		</div>
-		<div class='link_logo bottom_left_align'>
-			<svg id='soundcloud' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#soundcloud'></use>
-			</svg>
-		</div>
-		<div class='link_logo bottom_right_align'>
-			<svg id='instagram' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#instagram'></use>
-			</svg>
-		</div>
-		<div class='link_logo top_right_align'>
-			<svg id='mail' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#mail'></use>
-			</svg>
-		</div>
+
+	<div id='header_whitespace'>
 	</div>
+	<div id='header_scrollspace'>
+	</div>
+
 	<script>
 	// script
 	page = true;
 	UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
-	console.log(UserAgent); //------------------------------------------------------ |F| main.js
+	$('body').css({'background-color': color_back})
+
 	DetermineTouch(); //------------------------------------------------------------ |F| main.js
 	MakeThings(); //---------------------------------------------------------------- |F| about.html <script>
 
@@ -89,10 +98,20 @@
 		CalculateSizes(); //---------------------------------------------------------- |F| main.js
 		Header(color_1); //----------------------------------------------------------- |F| pages.js ------------------- COLOR SETTING!
 		HeaderLogo(color_back); //---------------------------------------------------- |F| pages.js
+		HeaderMenu();
 		LinkLogos(); //--------------------------------------------------------------- |F| main.js
 		ContentContainer(); //-------------------------------------------------------- |F| pages.js
 		TextContainer(); //----------------------------------------------------------- |F| pages.js
 	};
+
+	$(document).ready(function(){
+		setTimeout(function(){
+			$('.fade').css({
+				'opacity': 1,
+				'transition': anim_speed_factor * 200 + 'ms',
+			})
+		}, HL.load.transition)
+	})
 
 	$(window).on('resize', function() {
 		MakeThings(); //-------------------------------------------------------------- |F| about.html <script>

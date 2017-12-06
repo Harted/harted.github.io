@@ -4,24 +4,13 @@
 body {
   /* uniform font-family */
   font-family: 'Mukta', sans-serif;
-  font-size:16px
-  /* opacity for index page fade in */
-  opacity: 1;
-  transition: 500ms opacity;
+  font-size: 16px;
   /* zero margin ofcourse */
   margin: 0;
 }
-.fade_in_at_load {
-  /* Opactity = 0 untill page is loaded */
+.fade {
   opacity: 0;
 }
-/*#fade_box {
-  position: absolute;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-}*/
 
 /* H2 --------------------------------------------------------------------------*/
 /* used mainly for box titles on index */
@@ -37,11 +26,7 @@ div {
 	-webkit-tap-highlight-color: transparent;
 }
 
-/* Shadow on header and boxes --------------------------------------------------*/
-/*.shadow { make it a function where it's only acitve on the big graphic
-  box-shadow: 0 0 8px rgba(0,0,0,0.30);
-} AND actually the shadow effect is nog neccesary */
-
+/* Text */
 p {
  text-align: justify;
  font-weight: 200
@@ -49,16 +34,4 @@ p {
 
 h1 {
   font-weight: 200
-}
-
-ul {
-  text-decoration: none;
-  margin-top: 0;
-}
-
-li {
-  font-weight: 200;
-  display: inline;
-  padding-right: 20px;
-  color: white;
 }
