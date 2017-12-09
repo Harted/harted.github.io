@@ -49,7 +49,14 @@ function HeaderLogo(color) {
 		'right': HL.right,
 		'bottom': HL.bottom,
 	})
+	$('#header_menu').css({
+		'opacity': 0,
+	})
 	setTimeout(function(){
+		$('#header_menu').css({
+			'opacity': 1,
+			'transition': HL.load.transition + 'ms',
+		})
 		$('#headerlogo').css({
 			'height': HL.width,
 			'width': HL.width,
@@ -58,6 +65,10 @@ function HeaderLogo(color) {
 		}).off('mouseover').on('mouseover', function(){
 			$(this).css('cursor', 'pointer')
 			.off('click').on('click', function(){
+				$('.fade, #header_menu').css({
+					'opacity': 0,
+					'transition': HL.click.transition + 'ms',
+				});
 				$('#headerlogo').css({
 					'width': HL.load.width,
 					'height': HL.load.width,
@@ -65,7 +76,7 @@ function HeaderLogo(color) {
 					'transition': HL.click.transition + 'ms',
 				}).on('transitionend', function(){
 					//future replace by fadebox and go to index
-					$('#header, #header_scrollspace, .fade').css({
+					$('#header, #header_scrollspace').css({
 						'opacity': 0,
 						'transition': HL.load.transition + 'ms',
 					});
