@@ -1,9 +1,9 @@
 /* Fonts -----------------------------------------------------------------------*/
-@import url('https://fonts.googleapis.com/css?family=Mukta:200,300,400,500');
+@import url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,500');
 /* BODY ------------------------------------------------------------------------*/
 body {
   /* uniform font-family */
-  font-family: 'Mukta', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 16px;
   /* zero margin ofcourse */
   margin: 0;
@@ -19,11 +19,35 @@ body {
 
 /* H2 --------------------------------------------------------------------------*/
 /* used mainly for box titles on index */
+h1 {
+  font-weight: 200;
+  margin: 0.5em 0em;
+  font-size: 1.6em;
+  line-height: 3em;
+  text-align: center;
+  text-transform: uppercase;
+}
 h2 {
   font-weight: 200;
   margin: 0;
   color: white;
   line-height: 1em;
+}
+h3 {
+  font-weight: 200;
+  line-height: 1.6em;
+  margin: 0;
+}
+
+#reference_box { /* Test artistic background */
+  background-image: url('https://astutegraphics.com/images/blog/tutorials/watercolor_15_feb_2012/06.png');
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+.shadow { /*only when full artwork -> TODO */
+  box-shadow: 0px 0px 12px rgba(0,0,0,0.25);
 }
 
 /* No highlight when tapping on mobile -----------------------------------------*/
@@ -34,9 +58,87 @@ div {
 /* Text */
 p {
  text-align: justify;
- font-weight: 200
+ font-weight: 200;
+ margin-top: 0;
 }
 
 h1 {
-  font-weight: 200
+  font-weight: 200;
+  padding: 0.5em 0em;
+  margin: 0;
+}
+
+.ep_container {
+  display: flex;
+  margin-top:0;
+  color: #238482;
+  background-color: #F6F6F6;
+  margin-top: 50px;
+  clear: both;
+}
+
+.ep_img {
+  display: flex;
+  width: 66.66%;
+  align-items: center;
+}
+.ep_img > img {
+  display: block;
+  width: 100%;
+}
+
+.ep_text {
+  width: 33.33%;
+  padding: 60px 0 60px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ep_header{
+  margin-top: 0;
+  margin-bottom: 50px;
+}
+
+.ep_title {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 2em;
+  width: 100%;
+}
+
+.ep_tracks {
+  display: flex;
+  flex-direction: column;
+  font-size: 1em;
+  font-weight: 400;
+  bottom: 0;
+  line-height: 3em;
+}
+.ep_label {
+  font-weight: 200;
+}
+.ep_code{
+  opacity: 0.5;
+  text-transform: uppercase;
+  line-height: 3em;
+}
+.track {
+  float: left;
+    line-height: 2em;
+}
+.track_time {
+  float: right;
+}
+.track_remix {
+  opacity: 0.5;
+  font-size: 0.8em;
+  padding-left: 0.2em;
+}
+
+.ep_under_text {
+  width: auto;
+  /*float: left;*/
+  margin-bottom: 50px;
+  font-size: 0.9em;
 }

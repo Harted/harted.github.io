@@ -1,6 +1,7 @@
 // Get user agent ---------------------------------------------------------------------------------------------------------------------
 function getUserAgent() {
 	var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+	console.log (userAgent)
 
 	if (/windows phone/i.test(userAgent)) {
 		return "WindowsPhone";
@@ -285,7 +286,7 @@ function TransitionOn() {
 };
 
 // link_logos -------------------------------------------------------------------------------------------------------------------------
-function LinkLogos(){
+function LinkLogos(LL_color){
 	if (screen_small == true) {
 		var LLS = {
 			logo: {
@@ -313,7 +314,7 @@ function LinkLogos(){
 			logo: {
 				opacity: 0.25,
 				opacity_click: 1,
-				color: color_1,
+				color: LL_color,
 				width: header_height/3*2,
 				margin: header_height/6,
 				padding_bottom: window_width*0.02,

@@ -200,21 +200,70 @@ function ContentContainer(){
 function TextContainer(){
 		$('.text_container').css({
 			'margin': '0px ' + (HL.center_right()) + 'px',
+			'top': 0,
 		});
 };
 
-const SCA = require('soundcloud-audio');
-const scPlayer = new SCA()
+// Make page header -------------------------------------------------------------------------------------------------------------------
+function PageBanner(){
 
-// OR if you need to load a SoundCloud track and resolve it's data
-scPlayer.resolve('https://soundcloud.com/djangodjango/first-light', function (track) {
-    // do smth with track object
-    // e.g. display data in a view etc.
-    console.log(track);
+	// make sure the image fills the content container width
+	$('#page_banner img').css({
+		'width': $('.content_container').width(),
+	})
 
-    // once track is loaded it can be played
-    scPlayer.play();
+	// run function on load and resize
+	PageBannerPosition();
 
-    // stop playing track and keep silence
-    //scPlayer.pause();
-});
+	// run function on scroll
+	$(window).off('scroll').on('scroll', function(){
+		PageBannerPosition();
+	});
+};
+
+// Page header position ---------------------------------------------------------------------------------------------------------------
+function PageBannerPosition(){
+
+	var fixed_whitespace = window_height - $('#page_banner_scroll').height();
+	var maximum_whitespace = $('#page_banner_scroll').height()/4;
+	var viewport_height = window_height - header_height;
+
+	// if the white_space is small enough then do the animation where the content meets the banner when scrolling
+	if (fixed_whitespace < maximum_whitespace) {
+		$('#page_banner').css({
+			'position': 'relative',
+			'height': viewport_height + 'px',
+		});
+
+		// actual height of the banner + the amount of space above the viewport when scrolling down.
+		var scroll_whitespace = viewport_height - ($(window).scrollTop() + $('#page_banner_scroll').height());
+
+		// if the space between the page banner and content > 0 then banner is fixed
+		if (scroll_whitespace > 0) {
+			$('#page_banner_scroll').css({
+				'position': 'fixed',
+				'width': $('.content_container').width(),
+				'top': 0,
+				'bottom': 'auto',
+			});
+		} else { // banner is fixed untill page banner and content = 0
+			$('#page_banner_scroll').css({
+				'position': 'absolute',
+				'width': $('.content_container').width(),
+				'top': 'auto',
+				'bottom': 0,
+			});
+		};
+	} else {
+		$('#page_banner').css({
+			'position': 'relative',
+			'height': $('#page_banner_scroll').height(),
+		});
+		$('#page_banner_scroll').css({
+			'position': 'absolute',
+			'width': $('.content_container').width(),
+			'top': 'auto',
+			'bottom': 0,
+		});
+	}
+}

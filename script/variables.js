@@ -8,7 +8,7 @@ var action_area_base_size_factor = 3/2;
 
 var palette = {
   blue_yellow: {
-    color_1: '#3C3C3C',
+    color_1: '#3E3E3E',
     color_2: '#238482',
     color_3: '#3BDB83',
     color_4: '#F4C700',

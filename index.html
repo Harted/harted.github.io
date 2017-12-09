@@ -103,7 +103,7 @@
 		MakeRefBox(); //-------------------------------------------------------------- |F| main.js
 		Squares(); //----------------------------------------------------------------- |F| main.js
 		MakeLogo(); //---------------------------------------------------------------- |F| main.js
-		LinkLogos(); //--------------------------------------------------------------- |F| main.js
+		LinkLogos(color_1); //--------------------------------------------------------------- |F| main.js
 		BoxContentFormat(); //-------------------------------------------------------- |F| main.js
 	};
 
@@ -119,25 +119,27 @@
 
 	// Actions when window is resized -------------------------------------------------------------------------------------------------
 	$(window).on('resize', function() {
-		MakeThings(); //-------------------------------------------------------------- |F| index.html <script>
-		// transitions off when resizing
-		TransitionOff( //------------------------------------------------------------- |F| main.js
-			'#top_left',
-			'#bottom_left',
-			'#bottom_right',
-			'#top_right',
-			'#logo'
-		);
-		MouseMoveOfsets(); //--------------------------------------------------------- |F| main.js
-		// switch transitions back on after resizing (300ms)
-		TransitionOn( //-------------------------------------------------------------- |F| main.js
-			'#top_left',
-			'#bottom_left',
-			'#bottom_right',
-			'#top_right',
-			'#logo'
-		);
-		MouseMove();//---------------------------------------------------------------- |F| main.js
+		setTimeout(function(){
+			MakeThings(); //------------------------------------------------------------ |F| index.html <script>
+			// transitions off when resizing
+			TransitionOff( //----------------------------------------------------------- |F| main.js
+				'#top_left',
+				'#bottom_left',
+				'#bottom_right',
+				'#top_right',
+				'#logo'
+			);
+			MouseMoveOfsets(); //------------------------------------------------------- |F| main.js
+			// switch transitions back on after resizing (300ms)
+			TransitionOn( //------------------------------------------------------------ |F| main.js
+				'#top_left',
+				'#bottom_left',
+				'#bottom_right',
+				'#top_right',
+				'#logo'
+			);
+			MouseMove();//-------------------------------------------------------------- |F| main.js
+		}, 100)
 	});
 
 </script>
