@@ -202,3 +202,19 @@ function TextContainer(){
 			'margin': '0px ' + (HL.center_right()) + 'px',
 		});
 };
+
+const SCA = require('soundcloud-audio');
+const scPlayer = new SCA()
+
+// OR if you need to load a SoundCloud track and resolve it's data
+scPlayer.resolve('https://soundcloud.com/djangodjango/first-light', function (track) {
+    // do smth with track object
+    // e.g. display data in a view etc.
+    console.log(track);
+
+    // once track is loaded it can be played
+    scPlayer.play();
+
+    // stop playing track and keep silence
+    //scPlayer.pause();
+});
