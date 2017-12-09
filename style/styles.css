@@ -8,7 +8,12 @@ body {
   /* zero margin ofcourse */
   margin: 0;
 }
+/* everything that has to fade on load */
 .fade {
+  opacity: 0;
+}
+/* everything that's not fading but has to be hided before objects are made */
+.hide_on_load {
   opacity: 0;
 }
 

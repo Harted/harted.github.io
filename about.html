@@ -31,12 +31,12 @@
 
 	<!-- Header -->
 
-	<div id='header' class='shadow' style='z-index:99'>
+	<div id='header' class='hide_on_load' style='z-index:99'>
 		<ul id='header_menu'>
-			<li>About</li>
-			<li>Music</li>
-			<li>Video</li>
-			<li>Shows</li>
+			<li id='menu_about'>About</li>
+			<li id='menu_music'>Music</li>
+			<li id='menu_video'>Video</li>
+			<li id='menu_shows'>Shows</li>
 		</ul>
 		<svg id='headerlogo' viewbox='0 0 500 500' style='z-index:100'>
 			<use xlink:href='svg/logo.svg#logo'></use>
@@ -80,7 +80,7 @@
 
 	<div id='header_whitespace'>
 	</div>
-	<div id='header_scrollspace'>
+	<div id='header_forcescrollspace'>
 	</div>
 
 	<script>
@@ -92,13 +92,15 @@
 	DetermineTouch(); //------------------------------------------------------------ |F| main.js
 	MakeThings(); //---------------------------------------------------------------- |F| about.html <script>
 
+	$('.hide_on_load').css('opacity',1);
+
 	function MakeThings(){
 		GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
 		Responsive(); //-------------------------------------------------------------- |F| main.js
 		CalculateSizes(); //---------------------------------------------------------- |F| main.js
 		Header(color_1); //----------------------------------------------------------- |F| pages.js ------------------- COLOR SETTING!
 		HeaderLogo(color_back); //---------------------------------------------------- |F| pages.js
-		HeaderMenu();
+		HeaderMenu(); //-------------------------------------------------------------- |F| pages.js
 		LinkLogos(); //--------------------------------------------------------------- |F| main.js
 		ContentContainer(); //-------------------------------------------------------- |F| pages.js
 		TextContainer(); //----------------------------------------------------------- |F| pages.js

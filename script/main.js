@@ -2,7 +2,6 @@
 function getUserAgent() {
 	var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-	// Windows Phone must come first because its UA also contains "Android"
 	if (/windows phone/i.test(userAgent)) {
 		return "WindowsPhone";
 	} else if (/android/i.test(userAgent)) {
@@ -16,6 +15,7 @@ function getUserAgent() {
 	} else if (/Firefox/.test(userAgent)) {
 		return "Firefox"
 	};
+	
 	console.log('OTHER userAgent: ' + userAgent)
 	return "unknown";
 };
@@ -175,7 +175,6 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 				$(this).css({
 					'cursor': 'pointer'
 				}).off('click').on('click', function() {
-					console.log('mouseclick')
 					ClickFunction(MS_id, MS_href) //-------------------------------------- |F| main_child.js
 				})
 			})
@@ -331,7 +330,6 @@ function LinkLogos(){
 			top: function(){return 0},
 		};
 	};
-	console.log(page +''+ width_small +''+  width_medium +''+  width_large)
 	if (page == true && (width_small == true || width_medium == true || width_large == true )) {
 		$('#link_logos').css({
 			'display': 'none'

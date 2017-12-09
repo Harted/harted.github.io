@@ -30,46 +30,63 @@
 <body>
 
 	<!-- Header -->
-	<div id='header' class='shadow' style='z-index:99'>
+
+	<div id='header' class='hide_on_load' style='z-index:99'>
+		<ul id='header_menu'>
+			<li id='menu_about'>About</li>
+			<li id='menu_music'>Music</li>
+			<li id='menu_video'>Video</li>
+			<li id='menu_shows'>Shows</li>
+		</ul>
 		<svg id='headerlogo' viewbox='0 0 500 500' style='z-index:100'>
 			<use xlink:href='svg/logo.svg#logo'></use>
 		</svg>
 	</div>
 
-<!-- Still have to implement link logo disapear on small screen -->
-<!-- Still have to implement content container responsive sizes
-	<div class='content_container'>
+	<div class='fade'>
+		<div class='content_container'>
+		</div>
+
+		<div id='link_logos' style='z-index:3'>
+			<div class='link_logo top_left_align'>
+				<svg id='facebook' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#facebook'></use>
+				</svg>
+			</div>
+			<div class='link_logo bottom_left_align'>
+				<svg id='soundcloud' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#soundcloud'></use>
+				</svg>
+			</div>
+			<div class='link_logo bottom_right_align'>
+				<svg id='instagram' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#instagram'></use>
+				</svg>
+			</div>
+			<div class='link_logo top_right_align'>
+				<svg id='mail' viewbox='0 0 500 500'>
+					<use xlink:href='svg/link_logo.svg#mail'></use>
+				</svg>
+			</div>
+		</div>
+
 	</div>
 
-	<div id='link_logos' style='z-index:3'>
-		<div class='link_logo top_left_align'>
-			<svg id='facebook' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#facebook'></use>
-			</svg>
-		</div>
-		<div class='link_logo bottom_left_align'>
-			<svg id='soundcloud' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#soundcloud'></use>
-			</svg>
-		</div>
-		<div class='link_logo bottom_right_align'>
-			<svg id='instagram' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#instagram'></use>
-			</svg>
-		</div>
-		<div class='link_logo top_right_align'>
-			<svg id='mail' viewbox='0 0 500 500'>
-				<use xlink:href='svg/link_logo.svg#mail'></use>
-			</svg>
-		</div>
+	<div id='header_whitespace'>
 	</div>
--->
+	<div id='header_forcescrollspace'>
+	</div>
+
 	<script>
 	// script
+	page = true;
 	UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
-	console.log(UserAgent); //------------------------------------------------------ |F| main.js
+	$('body').css({'background-color': color_back})
+
 	DetermineTouch(); //------------------------------------------------------------ |F| main.js
 	MakeThings(); //---------------------------------------------------------------- |F| about.html <script>
+
+	$('.hide_on_load').css('opacity',1);
 
 	function MakeThings(){
 		GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
@@ -77,9 +94,20 @@
 		CalculateSizes(); //---------------------------------------------------------- |F| main.js
 		Header(color_2); //----------------------------------------------------------- |F| pages.js ------------------- COLOR SETTING!
 		HeaderLogo(color_back); //---------------------------------------------------- |F| pages.js
+		HeaderMenu(); //-------------------------------------------------------------- |F| pages.js
 		LinkLogos(); //--------------------------------------------------------------- |F| main.js
 		ContentContainer(); //-------------------------------------------------------- |F| pages.js
+		TextContainer(); //----------------------------------------------------------- |F| pages.js
 	};
+
+	$(document).ready(function(){
+		setTimeout(function(){
+			$('.fade').css({
+				'opacity': 1,
+				'transition': anim_speed_factor * 200 + 'ms',
+			})
+		}, HL.load.transition)
+	})
 
 	$(window).on('resize', function() {
 		MakeThings(); //-------------------------------------------------------------- |F| about.html <script>
