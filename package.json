@@ -1,0 +1,22 @@
+{
+  "name": "harted.github.io",
+  "version": "1.0.0",
+  "description": "harted website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Harted/harted.github.io.git"
+  },
+  "author": "jens de ketelaere",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Harted/harted.github.io/issues"
+  },
+  "homepage": "https://github.com/Harted/harted.github.io#readme",
+  "dependencies": {
+    "soundcloud": "^3.3.0"
+  }
+}
