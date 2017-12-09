@@ -262,36 +262,32 @@ function MailTo(email, subject, body, cc, bcc){
 };
 
 // Make Link logos ----------------------------------------------------------------------------------------------------------------------
-function LinkLogo(LL_id, LL_color, LL_color_dim, LL_opacity, LL_opacity_click, LL_href){
+function LinkLogo(LL_id, LL_color, LL_opacity, LL_opacity_click, LL_href){
 	var LL_animation_speed = anim_speed_factor * 50;
 	$(LL_id).css({
-		'fill': LL_color_dim,
+		'fill': LL_color,
 		'opacity': LL_opacity
 	})
 	.off('mouseover').on('mouseover', function(){
 		$(this).css({
-			'fill': LL_color,
 			'opacity': LL_opacity_click,
 			'transition': LL_animation_speed + "ms",
 			'cursor': 'pointer',
 		}).off('click').on('click', function(){
 			if (touch == true){
 				$(this).css({
-					'fill': LL_color,
 					'opacity': LL_opacity_click,
-					'transition': LL_animation_speed,
+					'transition': LL_animation_speed + "ms",
 					'cursor': 'pointer',
 				});
 				setTimeout(function(){
-					DimColorOpen();
+					Open();
 				}, LL_animation_speed);
 			} else {
-				DimColorOpen();
+				Open();
 			}
-			// little function used here
-			function DimColorOpen(){
+			function Open(){
 				$(LL_id).css({
-					'fill': LL_color_dim,
 					'opacity': LL_opacity,
 					'transition': 0,
 					'cursor': 'pointer',
@@ -301,7 +297,6 @@ function LinkLogo(LL_id, LL_color, LL_color_dim, LL_opacity, LL_opacity_click, L
 		});
 	}).off('mouseout click').on('mouseout', function(){
 		$(this).css({
-			'fill': LL_color_dim,
 			'opacity': LL_opacity,
 			'cursor': 'initial',
 			'transition': LL_animation_speed + "ms",

@@ -15,7 +15,7 @@ function getUserAgent() {
 	} else if (/Firefox/.test(userAgent)) {
 		return "Firefox"
 	};
-	
+
 	console.log('OTHER userAgent: ' + userAgent)
 	return "unknown";
 };
@@ -289,10 +289,8 @@ function LinkLogos(){
 	if (screen_small == true) {
 		var LLS = {
 			logo: {
-				//opadity for iphone niels
 				opacity: 0.75,
 				opacity_click: 1,
-				color_dim: color_back,
 				color: color_back,
 				width: logo_size/2,
 				margin: 0,
@@ -313,9 +311,8 @@ function LinkLogos(){
 	} else {
 		var LLS = {
 			logo: {
-				opacity: 1,
+				opacity: 0.25,
 				opacity_click: 1,
-				color_dim: color_1_dim,
 				color: color_1,
 				width: header_height/3*2,
 				margin: header_height/6,
@@ -355,9 +352,9 @@ function LinkLogos(){
 		});
 
 		// LinkLogo() & Mailto () ---------------------------------------------------- |F| main_child.js
-		LinkLogo('#facebook use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, './/links/facebook.html');
-		LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, './/links/soundcloud.html');
-		LinkLogo('#instagram use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, './/links/instagram.html');
-		LinkLogo('#mail use', LLS.logo.color, LLS.logo.color_dim, LLS.logo.opacity, LLS.logo.opacity_click, MailTo('hartedmusic@gmail.com','Contact:', '','',''));
+		LinkLogo('#facebook use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/facebook.html');
+		LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/soundcloud.html');
+		LinkLogo('#instagram use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/instagram.html');
+		LinkLogo('#mail use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, MailTo('hartedmusic@gmail.com','Contact:', '','',''));
 	}
 };

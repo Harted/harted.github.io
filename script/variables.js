@@ -34,7 +34,6 @@ var color_2 = palette[pallet].color_2;
 var color_3 = palette[pallet].color_3;
 var color_4 = palette[pallet].color_4;
 
-var color_1_dim = '#BFBFBF';
 var color_back = "#FFF";
 
 // Window width variables

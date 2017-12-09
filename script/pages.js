@@ -94,9 +94,12 @@ function HeaderLogo(color) {
 
 // Make headermenu --------------------------------------------------------------------------------------------------------------------
 function HeaderMenu() {
+
+	var padding_right = 20;
+
 	$('#header_menu').css({
 		'text-decoration': 'none',
-		'margin-top': '1px',
+		'margin-top': 0,
 		'padding-left': HL.center_right(),
 	})
 	$('#header_menu li').css({
@@ -105,6 +108,32 @@ function HeaderMenu() {
 		'padding-right': '20px',
 		'color': color_back,
 	})
+
+	var menu_size = Math.round((($('#header_menu li').width() + padding_right)*4) + HL.center_right());
+	var menu_space = Math.round((window_width - (HL.center_right()*2)));
+	var menu_overlap = menu_space - menu_size
+
+	var padding_right_new = Math.round(padding_right + (menu_overlap/4))
+
+	if (padding_right_new > 4) {
+		$('#header_menu li').css({
+			'display': 'inline-block',
+		})
+		if (menu_overlap > 0) {
+			$('#header_menu li').css({
+				'padding-right': padding_right + 'px',
+			})
+		} else {
+			$('#header_menu li').css({
+				'padding-right': padding_right_new + 'px',
+			})
+		};
+	} else {
+		$('#header_menu li').css({
+			'display': 'none',
+		})
+	}
+
 
 	MenuItem('#menu_about', 'about.html', color_1)
 	MenuItem('#menu_music', 'music.html', color_2)
