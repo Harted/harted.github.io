@@ -96,6 +96,8 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 		'right': 0,
 		'margin': '0px',
 	});
+	$('#art_box').css('display', 'none');
+	$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)');
 
 	// Transition logo color on touch devices
 	$('#logo').css({
@@ -105,7 +107,6 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 
 	// Fade out text in squares
 	$('h2, #link_logos').css({
-		//'display': 'none',
 		'opacity': 0,
 		'transition': 50 * anim_speed_factor + 'ms',
 	});

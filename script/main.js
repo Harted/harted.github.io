@@ -119,6 +119,37 @@ function MakeRefBox() {
 	})
 };
 
+// Art box ----------------------------------------------------------------------------------------------------------------------------
+function MakeArtBox() {
+	if (screen_small == true) {
+		$('#art_box').css({
+			'display': 'none'
+		})
+	} else {
+		$('#art_box').css({
+			'display' : 'block',
+			'width': ref_box_size,
+			'height': ref_box_size,
+			//place in absolute center
+			'margin': 'auto',
+			'position': 'absolute',
+			'top': 0,
+			'left': 0,
+			'bottom': 0,
+			'right': 0,
+		})
+		$('#art_box img').css({
+			'width': '100%',
+			'margin': 'auto',
+			'position': 'absolute',
+			'top': 0,
+			'left': 0,
+			'bottom': 0,
+			'right': 0,
+		})
+	};
+};
+
 // Make squares bundle ----------------------------------------------------------------------------------------------------------------
 function Squares() {
 	// (#id | number_counter_clockwise_starting_top_left(1-4) | size(width & height) | href_on click | mouse_enable)
@@ -204,6 +235,15 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 		});
 	};
 };
+
+// Shadow -----------------------------------------------------------------------------------------------------------------------------
+function Shadow() {
+	if (screen_small == true) {
+		$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
+	} else {
+		$('.shadow').css('box-shadow', '0px 0px 12px rgba(0,0,0,0.35)')
+	}
+}
 
 // Make logo --------------------------------------------------------------------------------------------------------------------------
 function MakeLogo() {

@@ -30,33 +30,38 @@
 </head>
 <body>
 	<div class='fade'>
+
+		<div id='art_box'>
+			<img src='image/vlek.png' style='z-index:0'>
+		</div>
+
 		<!-- Reference box in centerof window -->
 		<div id='reference_box'>
 			<!-- Square in top left corner -->
-			<div id='top_left' class='shadow' style='z-index:0'>
+			<div id='top_left' class='shadow' style='z-index:1'>
 				<div class='top_left_align top_left_margin'>
 					<h2>About</h2>
 				</div>
 			</div>
 			<!-- Square in bottom left corner -->
-			<div id='bottom_left' class='shadow' style='z-index:1'>
+			<div id='bottom_left' class='shadow' style='z-index:2'>
 				<div class='bottom_left_align bottom_left_margin'>
 					<h2>Music</h2>
 				</div>
 			</div>
 			<!-- Square in bottom right corner -->
-			<div id='bottom_right' class='shadow' style='z-index:0'>
+			<div id='bottom_right' class='shadow' style='z-index:1'>
 				<div class='bottom_right_align bottom_right_margin'>
 					<h2>Video</h2>
 				</div>
 			</div>
 			<!-- Square in top right corner -->
-			<div id='top_right' class='shadow' style='z-index:1'>
+			<div id='top_right' class='shadow' style='z-index:2'>
 				<div class='top_right_align top_right_margin'>
 					<h2>Shows</h2>
 				</div>
 			</div>
-			<svg id='logo' viewbox='0 0 500 500' style='z-index:2'>
+			<svg id='logo' viewbox='0 0 500 500' style='z-index:3'>
 				<use xlink:href='svg/logo.svg#logo'></use>
 			</svg>
 		</div>
@@ -101,7 +106,9 @@
 		Responsive(); //-------------------------------------------------------------- |F| main.js
 		CalculateSizes(); //---------------------------------------------------------- |F| main.js
 		MakeRefBox(); //-------------------------------------------------------------- |F| main.js
+		MakeArtBox(); //-------------------------------------------------------------- |F| main.js
 		Squares(); //----------------------------------------------------------------- |F| main.js
+		Shadow();
 		MakeLogo(); //---------------------------------------------------------------- |F| main.js
 		LinkLogos(color_1); //--------------------------------------------------------------- |F| main.js
 		BoxContentFormat(); //-------------------------------------------------------- |F| main.js
@@ -139,7 +146,7 @@
 				'#logo'
 			);
 			MouseMove();//-------------------------------------------------------------- |F| main.js
-		}, 100)
+		}, 50)
 	});
 
 </script>
