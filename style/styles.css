@@ -21,9 +21,9 @@ body {
 
 h1 {
   font-weight: 200;
-  margin: 1.5em 0em;
+  margin: 0;
   font-size: 1.6em;
-  /*line-height: 3em;*/
+  line-height: 4em; /* must be line height for ''$('#page_banner_scroll').height()' calculation' in 'PageBannerPosition()' in 'pages.js'*/
   text-align: center;
   text-transform: uppercase;
 }
