@@ -210,6 +210,7 @@ function PageBanner(){
 	// make sure the image fills the content container width
 	$('#page_banner img').css({
 		'width': $('.content_container').width(),
+		'height': 'auto';
 	})
 
 	// run function on load and resize
