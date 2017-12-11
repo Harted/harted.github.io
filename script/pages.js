@@ -208,8 +208,9 @@ function TextContainer(){
 function PageBanner(){
 
 	// make sure the image fills the content container width
+	console.log($('.content_container').width())
 	$('#page_banner img').css({
-		'width': $('.content_container').width(),
+		'width': $('.content_container').width() + 'px',
 		'height': 'auto',
 	})
 
