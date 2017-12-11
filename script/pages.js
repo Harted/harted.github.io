@@ -197,8 +197,8 @@ function ContentContainer(){
 }
 
 // Make content container -------------------------------------------------------------------------------------------------------------
-function TextContainer(){
-		$('.text_container').css({
+function ContainerChild(){
+		$('.container_child').css({
 			'margin': '0px ' + (HL.center_right()) + 'px',
 			'top': 0,
 		});

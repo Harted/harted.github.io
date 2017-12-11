@@ -17,13 +17,13 @@ body {
   opacity: 0;
 }
 
-/* H2 --------------------------------------------------------------------------*/
-/* used mainly for box titles on index */
+/* TEXT ------------------------------------------------------------------------*/
+
 h1 {
   font-weight: 200;
-  margin: 0.5em 0em;
+  margin: 1.5em 0em;
   font-size: 1.6em;
-  line-height: 3em;
+  /*line-height: 3em;*/
   text-align: center;
   text-transform: uppercase;
 }
@@ -38,23 +38,14 @@ h3 {
   line-height: 1.6em;
   margin: 0;
 }
-
-/*#reference_box { Test artistic background
-  background-image: url('https://astutegraphics.com/images/blog/tutorials/watercolor_15_feb_2012/06.png');
-  background-size: 90%;
-  background-repeat: no-repeat;
-  background-position: left;
-}*/
-
-/*.shadow { /*only when full artwork -> TODO 
-  box-shadow: 0px 0px 12px rgba(0,0,0,0.25);
-}/*
-
-/* No highlight when tapping on mobile -----------------------------------------*/
-div {
-	-webkit-tap-highlight-color: transparent;
+h4 {
+  font-weight: 200;
+  font-size: 2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  text-transform: uppercase;
+  text-align: center;
 }
-
 /* Text */
 p {
  text-align: justify;
@@ -62,11 +53,42 @@ p {
  margin-top: 0;
 }
 
-h1 {
-  font-weight: 200;
-  padding: 0.5em 0em;
-  margin: 0;
+/* No highlight when tapping on mobile -----------------------------------------*/
+div {
+	-webkit-tap-highlight-color: transparent;
+
 }
+
+
+/* Used in 'AlbumFlexByID' in 'pages_music.js' ---------------------------------*/
+.after:after {content: ''; width: 33%;} /* 33% is the width of 1 object when 3 objects are next to eachother (defined in AlbumFlexByID), */
+.fore:before {content: ''; width: 33%;} /* so if its added before or after it alignes perfectly                                          */
+
+.album_title {
+  text-align: center;
+  text-transform: capitalize;
+  margin: 1em 0 0.2em 0;
+  font-size: 1em;
+  font-weight: 400;
+}
+
+.album_year {
+  text-align: center;
+  text-transform: capitalize;
+  margin: 0.2em 0 1em 0;
+  font-size: 0.8em;
+  font-weight: 200;
+}
+
+
+
+
+
+
+
+
+
+
 
 .ep_container {
   display: flex;

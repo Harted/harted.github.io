@@ -74,11 +74,11 @@ function Responsive() { // this should only work with min_window_size.. make sep
 		width_large = true;
 		width_medium = false;
 		width_small = false;
-	} else if (window_width < screen_medium_size & min_window_size >= screen_small_size) {
+	} else if (window_width < screen_medium_size & window_width >= screen_small_size) {
 		width_large = false;
 		width_medium = true;
 		width_small = false;
-	} else if (min_window_size < screen_small_size) {
+	} else if (window_width < screen_small_size) {
 		width_large = false;
 		width_medium = false;
 		width_small = true;
