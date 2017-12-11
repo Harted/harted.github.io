@@ -211,7 +211,7 @@ function PageBanner(){
 	console.log($('.content_container').width())
 	$('#page_banner img').css({
 		'width': $('.content_container').width() + 'px',
-		'height': 'auto',
+		'height': $('.content_container').width() / 2 + 'px',
 	})
 
 	// run function on load and resize
