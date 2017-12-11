@@ -1,5 +1,6 @@
 // Make header ------------------------------------------------------------------------------------------------------------------------
 function Header(color) {
+
 	$('#header').css({
 		'position': 'fixed',
 		'width': '100%',
@@ -22,12 +23,12 @@ function Header(color) {
 	})
 };
 // Make headerlogo --------------------------------------------------------------------------------------------------------------------
-function HeaderLogo(color) {
+function HeaderLogo(HL_color) {
 
 	HL = {
-		color: color_back,
-		width: header_height/3*2,
-		margin: header_height/6,
+		color: HL_color || color_back,
+		width: header_height* 3/5,
+		margin: function(){return (header_height - this.width)/2},
 		right: window_width*0.03,
 		bottom: 0,
 		load: {
@@ -39,7 +40,7 @@ function HeaderLogo(color) {
 			transition: anim_speed_factor * 100,
 		},
 		center_right: function(){
-			return this.right + (this.width/2) + this.margin;
+			return this.right + (this.width/2) + this.margin();
 		},
 	};
 
@@ -63,7 +64,7 @@ function HeaderLogo(color) {
 		$('#headerlogo').css({
 			'height': HL.width,
 			'width': HL.width,
-			'margin': HL.margin,
+			'margin': HL.margin(),
 			'transition': HL.load.transition + 'ms',
 		}).off('mouseover').on('mouseover', function(){
 			$(this).css('cursor', 'pointer')
@@ -84,7 +85,7 @@ function HeaderLogo(color) {
 						'transition': HL.load.transition + 'ms',
 					});
 					setTimeout(function(){
-						window.location = 'index.html';
+						window.location = '/index.html';
 					}, HL.load.transition)
 				});
 			});
@@ -93,7 +94,7 @@ function HeaderLogo(color) {
 };
 
 // Make headermenu --------------------------------------------------------------------------------------------------------------------
-function HeaderMenu() {
+function HeaderMenu(text_color) {
 
 	var padding_right = 20;
 
@@ -103,10 +104,10 @@ function HeaderMenu() {
 		'padding-left': HL.center_right(),
 	})
 	$('#header_menu li').css({
-		'font-weight': '200',
+		'font-weight': '400',
 		'display': 'inline-block',
 		'padding-right': '20px',
-		'color': color_back,
+		'color': text_color || color_back,
 	})
 
 	var menu_size = Math.round((($('#header_menu li').width() + padding_right)*4) + HL.center_right());
@@ -135,16 +136,17 @@ function HeaderMenu() {
 	}
 
 
-	MenuItem('#menu_about', 'about.html', color_1)
-	MenuItem('#menu_music', 'music.html', color_2)
-	MenuItem('#menu_video', 'video.html', color_3)
-	MenuItem('#menu_shows', 'shows.html', color_4)
+	MenuItem('#menu_about', '/about.html', color_1)
+	MenuItem('#menu_music', '/music.html', color_2)
+	MenuItem('#menu_video', '/video.html', color_3)
+	MenuItem('#menu_shows', '/shows.html', color_4)
 
 };
 
 // Make menuitem ----------------------------------------------------------------------------------------------------------------------
 function MenuItem(MI_id, MI_href, MI_color) {
-	if (MI_href != document.location.href.match(/[^\/]+$/)[0]) {
+	console.log(document.location.href.match(/[^\/]+$/)[0])
+	if (MI_href != '/' + document.location.href.match(/[^\/]+$/)[0]) {
 		$(MI_id)
 		.off('mouseover').on('mouseover', function(){
 			$(this).css({

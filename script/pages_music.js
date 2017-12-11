@@ -45,12 +45,18 @@ function AlbumFlexByID(AF_ID, important) {
     'margin-bottom': article.margin_bottom + 'px',
   })
 
+  $(AF_ID + ' .album_container article a').css({
+    'max-width': article.img_max_dimension + 'px',
+    'width': '100%',
+    'align-self': 'center',
+  })
+
   $(AF_ID + ' .album_container article img').css({
     'max-width': article.img_max_dimension + 'px',
     'width': '100%',
     'height': 'auto',
     'align-self': 'center',
-    'box-shadow': '0px 0px 2px rgba(0,0,0,0.25)'
+    'box-shadow': '0px 0px 2px rgba(0,0,0,0.25)',
   })
 
   $(AF_ID + ' .album_container::after').css({
