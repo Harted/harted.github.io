@@ -208,7 +208,7 @@ function TextContainer(){
 function PageBanner(){
 
 	// make sure the image fills the content container width
-	console.log($('.content_container').width())
+	// aspect = 2x1 so height is defined so browser nows how heigh the image is on first load
 	$('#page_banner img').css({
 		'width': $('.content_container').width() + 'px',
 		'height': $('.content_container').width() / 2 + 'px',
