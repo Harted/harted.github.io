@@ -13,23 +13,23 @@ function AlbumFlexByID(AF_ID, important) {
 
   if (width_small == true) {
     article = {
-      'width': '100%',
+      'width': $('.container_child').width(),
       'padding': 0,
     }
   } else if (width_medium == true || width_large == true || (width_small == false && article_count < 3 && important == true)) {
     article = {
-      'width': '45%',
-      'padding': '2.5%',
+      'width': $('.container_child').width() * 0.45,
+      'padding': $('.container_child').width() * 0.025,
     }
   } else {
     article = {
-      'width': '30%',
-      'padding': '1.5%',
+      'width': $('.container_child').width() * 0.30,
+      'padding': $('.container_child').width() * 0.015,
     }
   }
 
-  article.margin_bottom = '2em'
-  article.img_max_dimension = window_height/2 +'px'
+  article.margin_bottom = 30
+  article.img_max_dimension = window_height/2
 
   $(AF_ID + ' .album_container').css({
     'display': 'flex',
@@ -40,13 +40,13 @@ function AlbumFlexByID(AF_ID, important) {
   $(AF_ID + ' .album_container article').css({
     'display': 'flex',
     'flex-direction': 'column',
-    'width': article.width,
-    'margin': '0px ' + article.padding,
-    'margin-bottom': article.margin_bottom,
+    'width': article.width + 'px',
+    'margin': '0px ' + article.padding + 'px',
+    'margin-bottom': article.margin_bottom + 'px',
   })
 
   $(AF_ID + ' .album_container article img').css({
-    'max-width': article.img_max_dimension,
+    'max-width': article.img_max_dimension + 'px',
     'width': '100%',
     'height': 'auto',
     'align-self': 'center',
@@ -55,10 +55,8 @@ function AlbumFlexByID(AF_ID, important) {
 
   $(AF_ID + ' .album_container::after').css({
     'content': '""',
-    'width': parseInt(article.width)+(parseInt(article.padding)*2) + '%',
+    'width': article.width+(article.padding*2) + 'px',
   })
-
-  console.log(parseInt(article.width)+(parseInt(article.padding)*2))
 
   $(AF_ID + ' .album_container').addClass('after')
 
