@@ -87,6 +87,13 @@ function Responsive() { // this should only work with min_window_size.. make sep
 		width_medium = false;
 		width_small = false;
 	};
+
+	if (width_large == false && width_medium == false && width_small == false){
+		width_big = true
+	} else {
+		width_big = false
+	};
+
 };
 
 // Calculate sizes by ref_box_size (3/2 minimum window size)---------------------------------------------------------------------------
@@ -327,7 +334,7 @@ function TransitionOn() {
 
 // link_logos -------------------------------------------------------------------------------------------------------------------------
 function LinkLogos(LL_color){
-	if (screen_small == true) {
+	if (screen_small == true && width_big == false) {
 		var LLS = {
 			logo: {
 				opacity: 0.75,
@@ -368,7 +375,7 @@ function LinkLogos(LL_color){
 			top: function(){return 0},
 		};
 	};
-	if (page == true && (width_small == true || width_medium == true || width_large == true )) {
+	if (page == true && (width_small == true || width_medium == true || width_large == true || (screen_small == true && width_big == true))) {
 		$('#link_logos').css({
 			'display': 'none'
 		})

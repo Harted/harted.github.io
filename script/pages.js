@@ -145,7 +145,6 @@ function HeaderMenu(text_color) {
 
 // Make menuitem ----------------------------------------------------------------------------------------------------------------------
 function MenuItem(MI_id, MI_href, MI_color) {
-	console.log(document.location.href.match(/[^\/]+$/)[0])
 	if (MI_href != '/' + document.location.href.match(/[^\/]+$/)[0]) {
 		$(MI_id)
 		.off('mouseover').on('mouseover', function(){
@@ -211,9 +210,16 @@ function PageBanner(){
 
 	// make sure the image fills the content container width
 	// aspect = 2x1 so height is defined so browser nows how heigh the image is on first load
-	$('#page_banner img').css({
+	$('#banner_img_holder').css({
 		'width': $('.content_container').width() + 'px',
 		'height': $('.content_container').width() / 2 + 'px',
+		'overflow': 'hidden'
+	})
+
+	$('#banner_img_holder img').css({
+		'width': $('.content_container').width() + 'px',
+		'height': $('.content_container').width() / 2 + 'px',
+		'vertical-align': 'middle',
 	})
 
 	// run function on load and resize
@@ -228,12 +234,24 @@ function PageBanner(){
 // Page header position ---------------------------------------------------------------------------------------------------------------
 function PageBannerPosition(){
 
-	var fixed_whitespace = window_height - $('#page_banner_scroll').height();
-	var maximum_whitespace = $('#page_banner_scroll').height()/4;
 	var viewport_height = window_height - header_height;
+	var whitespace = viewport_height - $('#page_banner_scroll').height();
+	var maximum_whitespace = $('#page_banner_scroll').height()/4; //maximum whitespace until content joins the header initially
+	var horizontal_crop = Math.round(-(whitespace)/2)
+
+	// crop evenly when Niels Blondeel wants to do his screen all fancy :p
+	if (whitespace < 0){
+		$('#banner_img_holder img').css({
+			'margin-top': horizontal_crop,
+		})
+	} else {
+		$('#banner_img_holder img').css({
+			'margin-top': 0,
+		})
+	}
 
 	// if the white_space is small enough then do the animation where the content meets the banner when scrolling
-	if (fixed_whitespace < maximum_whitespace) {
+	if (whitespace < maximum_whitespace) {
 		$('#page_banner').css({
 			'position': 'relative',
 			'height': viewport_height + 'px',

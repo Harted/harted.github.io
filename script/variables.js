@@ -42,7 +42,7 @@ var window_width, window_height, min_window_size;
 // Responsive
 var page = false;
 var screen_large, screen_medium , screen_small;
-var width_large, width_medium , width_small;
+var width_big, width_large, width_medium , width_small;
 var screen_large_size = 1026; //iPad pro = 1024
 var screen_medium_size = 770; //iPad = 768
 var screen_small_size = 416; //iPhone plus = 414
