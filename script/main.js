@@ -192,7 +192,7 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 		'right': MS_right,
 		'bottom': MS_bottom,
 		'background-color': eval('color_' + MS_ref),
-		'transition': MS_animation_speed
+		'transition': MS_animation_speed,
 	});
 
 	// if small screen or iphone no hover animation and clicktrough immediately
@@ -300,21 +300,27 @@ function MouseMoveOfsets() {
 };
 
 // Actions by mouse move --------------------------------------------------------------------------------------------------------------
+setInterval(function(){mousemove_enable = true},32); //mousemove rate
+//setInterval(function(){console.log('---')},1000); DEBUG LOG
+
 function MouseMove() {
 	$(window).off('mousemove').on('mousemove', function(event) {
-		// Mouse move actions on desktop
-		if (screen_small == false && touch == false) {
-			mouse_left = event.clientX;
-			mouse_top = event.clientY;
-			//filter double mouse event
-			if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
-				var mouse_left_old = mouse_left;
-				varmouse_top_old = mouse_top;
-				// affect squares with proximity data
-				Proximities(); //------------------------------------------------------- |F| main_child.js
-				AffectSquares(); //----------------------------------------------------- |F| main_child.js
+		if (mousemove_enable == true) {
+			if (screen_small == false && touch == false) {
+				mouse_left = event.clientX;
+				mouse_top = event.clientY;
+				//filter double mouse event
+				if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
+					var mouse_left_old = mouse_left;
+					varmouse_top_old = mouse_top;
+					// affect squares with proximity data
+					Proximities(); //------------------------------------------------------- |F| main_child.js
+					AffectSquares(); //----------------------------------------------------- |F| main_child.js
+				};
 			};
-		};
+			//console.log('-') DEBUG LOG
+			mousemove_enable = false;
+		}
 	});
 };
 

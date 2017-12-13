@@ -224,7 +224,7 @@ function AffectSquares() {
 	AffectSquare('#top_right', 4, box4_proximity_size); //------------------------ |F| main_child.js
 };
 
-// Affect squares -----------------------------------------------------------------------------------------------------------------------
+// Affect squares (+ ease out animation)-------------------------------------------------------------------------------------------------
 function AffectSquare(AS_id, AS_ref, AS_size) {
 	var AS_margin = hover_size - AS_size;
 	var AS_right, AS_bottom;
@@ -236,6 +236,7 @@ function AffectSquare(AS_id, AS_ref, AS_size) {
 		'height': AS_size,
 		'right': AS_right,
 		'bottom': AS_bottom,
+		'transition-timing-function': 'ease-out' // should be here because this one updates
 	});
 };
 

@@ -1,7 +1,7 @@
 // VARIABLES -----------------------------------------------------------------------------------------------------------------------
 // Factors
 var anim_speed_factor = 1;
-var action_area_corner_offset_factor = 0.1;
+var action_area_corner_offset_factor = 0.1; //(1 = 100%)
 var action_area_base_size_factor = 3/2;
 
 // Colors
@@ -52,7 +52,8 @@ var ref_box_size;
 var ref_box_offset_top_center, ref_box_offset_left_center;
 
 // BoxProximity & mousemove variables
-var mouse_top, mouse_left, touch
+var mouse_top, mouse_left, touch;
+var mousemove_enable = true; // to lower move move event rate
 
 var box_corner_offset, proximity_margin;
 var box1_proximity, box2_proximity, box3_proximity, box4_proximity;
@@ -84,3 +85,6 @@ var UserAgent;
 
 // Objects
 var HL = {}; // header logo
+
+//DEBUG VARIABLES
+var counter = 0;
