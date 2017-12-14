@@ -48,120 +48,16 @@ p {
  margin-top: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 /* No highlight when tapping on mobile -----------------------------------------*/
 div {
 	-webkit-tap-highlight-color: transparent;
 
 }
 
-
 /* Used in 'AlbumFlexByID' in 'pages_music.js' ---------------------------------*/
 .after:after {content: ''; width: 33%;} /* 33% is the width of 1 object when 3 objects are next to eachother (defined in AlbumFlexByID), */
 .fore:before {content: ''; width: 33%;} /* so if its added before or after it alignes perfectly                                          */
-
-.album_title {
-  text-align: center;
-  text-transform: capitalize;
-  margin: 1em 0 0.2em 0;
-  font-size: 1em;
-  font-weight: 400;
-}
-
-.album_year {
-  text-align: center;
-  text-transform: capitalize;
-  margin: 0.2em 0 1em 0;
-  font-size: 0.8em;
-  font-weight: 200;
-}
-
-
-
-
-
-
-
-
-
-
-
-.ep_container {
-  display: flex;
-  margin-top:0;
-  background-color: #FCFBF3;
-  /*margin-top: 50px;*/
-  clear: both;
-}
-
-.ep_img {
-  display: flex;
-  width: 66.66%;
-  align-items: center;
-}
-.ep_img > img {
-  display: block;
-  width: 100%;
-}
-
-.ep_text {
-  width: 33.33%;
-  padding: 60px 0 60px 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.ep_header{
-  margin-top: 0;
-  margin-bottom: 50px;
-}
-
-.ep_title {
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 2em;
-  width: 100%;
-  margin: 0.5em 0;
-}
-.ep_label {
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 1em;
-  width: 100%;
-  opacity: 0.5;
-  margin: 0.5em 0;
-}
-
-.ep_tracks {
-  display: flex;
-  flex-direction: column;
-  font-size: 1em;
-  font-weight: 300;
-  bottom: 0;
-}
-
-.ep_code{
-  opacity: 0.5;
-  font-size: 0.75em;
-  text-transform: uppercase;
-  line-height: 3em;
-}
-.track {
-  float: left;
-    line-height: 2em;
-}
-.track_time {
-  float: right;
-}
-.track_remix {
-  opacity: 0.5;
-  font-size: 0.8em;
-  padding-left: 0.2em;
-}
-
-.ep_under_text {
-  width: auto;
-  /*float: left;*/
-  margin-bottom: 50px;
-  font-size: 0.9em;
-}

@@ -1,6 +1,46 @@
 // Flexbox script for albums ----------------------------------------------------------------------------------------------------------
 function AlbumFlex() {
 
+  var albumtext = {
+    margin: {
+      title: '1em 0 0.2em 0',
+      year: '0.2em 0 1em 0',
+    },
+    font_size: {
+      title: '1em',
+      year: '0.8em',
+    },
+    font_weight: {
+      title: '400',
+      year: '200',
+    },
+    text_align: {
+      title: 'center',
+      year: 'center',
+    },
+    text_transform: {
+      title: 'capitalize',
+      year: 'capitalize',
+    },
+  }
+
+
+  $('.album_title').css({
+  	'text-align' : albumtext.text_align.title,
+  	'text-transform' : albumtext.text_transform.title,
+  	'margin' : albumtext.margin.title,
+  	'font-size' : albumtext.font_size.title,
+  	'font-weight' : albumtext.font_weight.title,
+  });
+
+  $('.album_year').css({
+    'text-align' : albumtext.text_align.year,
+  	'text-transform' : albumtext.text_transform.year,
+  	'margin' : albumtext.margin.year,
+  	'font-size' : albumtext.font_size.year,
+  	'font-weight' : albumtext.font_weight.year,
+  });
+
   AlbumFlexByID('#albums', true);
   AlbumFlexByID('#remixes', false);
 
@@ -56,7 +96,7 @@ function AlbumFlexByID(AF_ID, important) {
     'width': '100%',
     'height': 'auto',
     'align-self': 'center',
-    'box-shadow': '0px 0px 1px rgba(0,0,0,0.1)',
+    'box-shadow': '0px 0px 1px rgba(0,0,0,0.25)',
     'vertical-align': 'middle',
   })
 
