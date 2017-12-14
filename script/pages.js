@@ -234,20 +234,44 @@ function PageBanner(){
 // Page header position ---------------------------------------------------------------------------------------------------------------
 function PageBannerPosition(){
 
+	var scroll_top = $(window).scrollTop();
 	var viewport_height = window_height - header_height;
-	var whitespace = viewport_height - $('#page_banner_scroll').height();
-	var maximum_whitespace = $('#page_banner_scroll').height()/4; //maximum whitespace until content joins the header initially
-	var horizontal_crop = Math.round(-(whitespace)/2)
+	var image_height = $('#banner_img_holder img').height()
+	var h1_height = $('#page_banner_scroll h1').height();
+	var banner_height = image_height + h1_height
+
+	var maximum_whitespace = image_height/2 - h1_height; //maximum whitespace until content joins the header initially
+	var whitespace = viewport_height - banner_height;
+
+	var horizontal_crop = Math.round(-(whitespace)/2);
+	var h1_margin_top = Math.round((whitespace - scroll_top)/2) ;
+
+	console.log(whitespace + ' ' + maximum_whitespace + ' ' + banner_height + ' ' + h1_margin_top)
 
 	// crop evenly when Niels Blondeel wants to do his screen all fancy :p
 	if (whitespace < 0){
 		$('#banner_img_holder img').css({
 			'margin-top': horizontal_crop,
 		})
+		$('#page_banner_scroll h1').css({
+			'pading-top': 0,
+		})
 	} else {
 		$('#banner_img_holder img').css({
-			'margin-top': 0,
+			'padding-top': 0,
 		})
+		console.log('step1')
+		if (whitespace < maximum_whitespace){
+			$('#page_banner_scroll h1').css({
+				'padding-top': h1_margin_top,
+			})
+			console.log('yes')
+		} else {
+			$('#page_banner_scroll h1').css({
+				'padding-top': 0,
+			})
+			console.log('no')
+		}
 	}
 
 	// if the white_space is small enough then do the animation where the content meets the banner when scrolling
@@ -258,7 +282,7 @@ function PageBannerPosition(){
 		});
 
 		// actual height of the banner + the amount of space above the viewport when scrolling down.
-		var scroll_whitespace = viewport_height - ($(window).scrollTop() + $('#page_banner_scroll').height());
+		var scroll_whitespace = viewport_height - (scroll_top + banner_height);
 
 		// if the space between the page banner and content > 0 then banner is fixed
 		if (scroll_whitespace > 0) {
