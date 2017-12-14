@@ -113,9 +113,9 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 
 	// Set timeout for logo to fade to color on touch devices
 	if (touch == true) {
-		var mobileTimeout = 300;
+		var Timeout = 300; //mobile
 	} else {
-		var mobileTimeout = 0;
+		var Timeout = 25; //desktop
 	};
 
 	// Animation to header
@@ -141,7 +141,7 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 				window.location = CF_href;
 			}, 300 * anim_speed_factor)
 		}, 300 * anim_speed_factor)
-	}, mobileTimeout);
+	}, Timeout);
 };
 
 // Set margins before transitioning to header -----------------------------------------------------------------------------------------
