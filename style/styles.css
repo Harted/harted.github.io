@@ -55,9 +55,17 @@ a {
 /* No highlight when tapping on mobile -----------------------------------------*/
 div {
 	-webkit-tap-highlight-color: transparent;
-
 }
 
 /* Used in 'AlbumFlexByID' in 'pages_music.js' ---------------------------------*/
 .after:after {content: ''; width: 33%;} /* 33% is the width of 1 object when 3 objects are next to eachother (defined in AlbumFlexByID), */
 .fore:before {content: ''; width: 33%;} /* so if its added before or after it alignes perfectly                                          */
+
+
+
+
+
+
+iframe {
+  margin: 50px 0;
+}
