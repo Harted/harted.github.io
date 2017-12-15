@@ -203,14 +203,6 @@ function ContainerChild(){
 			'margin': '0px ' + (HL.center_right()) + 'px',
 			'top': 0,
 		});
-		$('.container_child_left').css({
-			'margin-left': (HL.center_right()) + 'px',
-			'top': 0,
-		});
-		$('.container_child_right').css({
-			'margin-right': (HL.center_right()) + 'px',
-			'top': 0,
-		});
 };
 
 // Make page header -------------------------------------------------------------------------------------------------------------------

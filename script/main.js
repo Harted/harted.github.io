@@ -412,3 +412,11 @@ function LinkLogos(LL_color){
 		LinkLogo('#mail use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, MailTo('hartedmusic@gmail.com','Contact:', '','',''));
 	}
 };
+
+
+
+
+// GLOBAL FUNCTIONS -------------------------------------------------------------------------------------------------------------------
+function valBetween(v, min, max) {
+    return (Math.min(max, Math.max(min, v)));
+}
