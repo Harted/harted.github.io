@@ -8,6 +8,7 @@ function EpHeader(header_color, link_color){
   var ep = {
     'display': 'flex',
     'flex_direction': 'row',
+    'margin_bottom': header_height,
     'color': header_color,
     'font_size': base_em + 'em',
     text_holder: {
@@ -66,11 +67,15 @@ function EpHeader(header_color, link_color){
           title: {},
           time: {
             'float': 'right',
-            'font_size': '0.8em'
+            'font_size': '0.8em',
+            'padding_left': '0.2em',
           },
           remix: {
             'opacity': '0.5',
             'font_size': '0.8em' //of tracks font-size
+          },
+          duration: {
+            'opacity': '0.5',
           },
         },
       }
@@ -103,6 +108,7 @@ function EpHeader(header_color, link_color){
     'flex-direction': ep.flex_direction,
     'background-color': ep.color,
     'font-size': ep.font_size,
+    'margin-bottom': ep.margin_bottom,
   });
   $('.text_holder').css({
     'display': ep.text_holder.display,
@@ -156,6 +162,12 @@ function EpHeader(header_color, link_color){
   $('.track_time').css({
     'float': ep.text.tracks.track.time.float,
     'font-size': ep.text.tracks.track.time.font_size,
+    'padding-left': ep.text.tracks.track.time.padding_left,
+  });
+  $('.track_duration').css({
+    'float': ep.text.tracks.track.time.float,
+    'font-size': ep.text.tracks.track.time.font_size,
+    'opacity': ep.text.tracks.track.duration.opacity,
   });
   $('.track_remix').css({
     'opacity': ep.text.tracks.track.remix.opacity,
@@ -172,3 +184,106 @@ function EpHeader(header_color, link_color){
   });
 
 };
+
+// General soundcloud player generating etc -------------------------------------------------------------------------------------------
+function Soundcloud(color){
+
+  $('.play').css('fill', color).attr('width','9')
+
+  //soundcloud logo right cutoff
+  $('.sc_player_holder').css({
+    'overflow': 'hidden',
+    'position': 'fixed',
+    'visibility': 'hidden',
+    'transition': '100ms',
+    'opacity': 1,
+    'bottom': header_height - 10,
+    'padding-top': '10px',
+    //'background': color_back
+  });
+  $('.sc_player').css({
+    'margin-right': '-110px',
+    'margin-left': '-30px',
+  });
+
+  SCMiniTrackPlayer('#polysemy', '290042835', color, false, false, false);
+  SCMiniTrackPlayer('#garden', '290042833', color, false, false, false);
+  SCMiniTrackPlayer('#dew', '290042831', color, false, false, false);
+  SCMiniTrackPlayer('#astray', '290042830', color, false, false, false);
+
+};
+function scRefresh(){
+  $('.sc_player_holder').css({
+    'width': window_width + 'px',
+  });
+}
+
+// Make mini track player -------------------------------------------------------------------------------------------------------------
+function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_bool, show_user_bool){
+
+  color = color.replace('#','%23')
+  var playing = false;
+  var time;
+  //var test;
+
+  //link making
+  var link =
+  'https://w.soundcloud.com/player/' +
+  '?url=' +
+  'https%3A//api.soundcloud.com/tracks/' + track_id +
+  '&amp;color=' + color +
+  '&amp;inverse=' + inverse_bool +
+  '&amp;auto_play=' + auto_play_bool +
+  '&amp;show_user=' + show_user_bool;
+
+  $(iframe_id).attr('src' , link)
+
+  //playing
+  var id_name = iframe_id.replace('#','')
+
+  eval(id_name + '= SC.Widget(id_name)');
+  eval(id_name).bind(SC.Widget.Events.READY, function() {
+    $(iframe_id + '_track').on('click', function(){
+      if (playing == true){
+        eval(id_name).pause()
+      } else {
+        eval(id_name).play()
+      }
+    }).on('mouseover', function(){
+      $(this).css('cursor', 'pointer')
+    }).on('mouseout', function(){
+      $(this).css('cursor', 'initial')
+    })
+    eval(id_name).bind(SC.Widget.Events.PLAY_PROGRESS, function(){
+      this.getPosition(function(val){time = val})
+      $(iframe_id + '_track .track_duration').html(msToTime(time || 0) + ' /');
+    }).bind(SC.Widget.Events.PLAY, function() {
+      playing = true
+      $(iframe_id + '_track .play use').attr('xlink:href','/svg/playpause.svg#pause')
+      $(iframe_id + '_track .track_duration').css('visibility', 'visible')
+      $(iframe_id + '_holder').css('visibility', 'visible')
+    }).bind(SC.Widget.Events.PAUSE, function() {
+      playing = false
+      $(iframe_id + '_track .play use').attr('xlink:href','/svg/playpause.svg#play')
+      $(iframe_id + '_track .track_duration').css('visibility', 'hidden')
+      $(iframe_id + '_holder').css('visibility', 'hidden')
+    })
+  })
+};
+
+function msToTime(ms){
+
+  var hour = Math.floor(ms/3600000)
+  var min = Math.floor(ms/60000) - (Math.floor(ms/3600000)*60)
+  var sec = Math.floor((ms/1000) - (Math.floor(ms/60000)*60))
+  if (sec < 10) {sec = '0' + sec}
+  if (hour > 0) {
+    if (min < 10) {min = '0' + min}
+    var time = hour + ':' + min + ':' + sec
+  } else {
+    var time = min + ':' + sec
+  }
+
+  return time
+
+}

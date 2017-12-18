@@ -62,21 +62,12 @@ div {
 .fore:before {content: ''; width: 33%;} /* so if its added before or after it alignes perfectly                                          */
 
 
-
-.sc_player_holder {
-  overflow: hidden;
-
-}
-.sc_player {
-  margin-right: -74px;
-
-}
-
-#play {
-  margin-top: 10px;
-}
-
-iframe {
-  margin-top: 10px;
-  padding: 1px;
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }

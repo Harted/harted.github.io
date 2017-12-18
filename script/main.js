@@ -420,3 +420,13 @@ function LinkLogos(LL_color){
 function valBetween(v, min, max) {
     return (Math.min(max, Math.max(min, v)));
 }
+
+var mem;
+function Change(val){
+	if (val == mem) {
+		return false
+	} else {
+		mem = val
+		return true
+	}
+}

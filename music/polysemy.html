@@ -57,22 +57,38 @@
 						</div>
 						<div class='ep_tracks_text'>
 							<span class='ep_code'>UYSR036</span>
-							<div class='track'>
+							<div id='polysemy_track' class='track noselect'>
+								<svg class='play' viewBox="0 0 283.02 322.2">
+									<use xlink:href='/svg/playpause.svg#play'></use>
+								</svg>
 								<span class='track_title'>Polysemy</span>
 								<span class='track_time'>6:57</span>
+								<span class='track_duration' style='visibility:hidden;'>0:00 /</span>
 							</div>
-							<div class='track'>
+							<div id='garden_track' class='track noselect'>
+								<svg class='play noselect' viewBox="0 0 283.02 322.2">
+									<use xlink:href='/svg/playpause.svg#play'></use>
+								</svg>
 								<span class='track_title'>Garden</span>
 								<span class='track_time'>6:11</span>
+								<span class='track_duration' style='visibility:hidden;'>0:00 /</span>
 							</div>
-							<div class='track'>
+							<div id='dew_track' class='track noselect'>
+								<svg class='play noselect' viewBox="0 0 283.02 322.2">
+									<use xlink:href='/svg/playpause.svg#play'></use>
+								</svg>
 								<span class='track_title'>Dew</span>
 								<span class='track_time'>4:49</span>
+								<span class='track_duration' style='visibility:hidden;'>0:00 /</span>
 							</div>
-							<div class='track'>
+							<div id='astray_track' class='track noselect'>
+								<svg class='play noselect' viewBox="0 0 283.02 322.2">
+									<use xlink:href='/svg/playpause.svg#play'></use>
+								</svg>
 								<span class='track_title'>Astray</span>
 								<span class='track_remix'></span>
 								<span class='track_time'>5:52</span>
+								<span class='track_duration' style='visibility:hidden;'>0:00 /</span>
 							</div>
 						</div>
 					</div>
@@ -82,87 +98,17 @@
 				</div>
 			</div>
 
-			<div class='container_child'>
-
-				<div class='sc_player_holder'>
-					<div class='sc_player'>
-						<iframe id='polysemy' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
-						<iframe id='garden' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
-						<iframe id='dew' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
-						<iframe id='astray' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
-					</div>
-				</div>
-
-
-				<svg id='play' viewBox="0 0 283.02 322.2" width='20'>
-					<use xlink:href='/svg/playpause.svg#play'></use>
-				</svg>
-
-
-				<script>
-
-				var sc_player_color = '#76A948'
-				$('#play').css('fill', sc_player_color)
-
-				SCMiniTrackPlayer('#polysemy', '290042835', sc_player_color, false, false, false);
-				SCMiniTrackPlayer('#garden', '290042833', sc_player_color, false, false, false);
-				SCMiniTrackPlayer('#dew', '290042831', sc_player_color, false, false, false);
-				SCMiniTrackPlayer('#astray', '290042830', sc_player_color, false, false, false);
-
-
-
-				function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_bool, show_user_bool){
-
-					color = color.replace('#','%23')
-
-					var link =
-					'https://w.soundcloud.com/player/' +
-					'?url=' +
-					'https%3A//api.soundcloud.com/tracks/' + track_id +
-					'&amp;color=' + color +
-					'&amp;inverse=' + inverse_bool +
-					'&amp;auto_play=' + auto_play_bool +
-					'&amp;show_user=' + show_user_bool;
-
-					$(iframe_id).attr('src' , link)
-				}
 
 
 
 
 
-				var playing = false;
-
-
-				polysemy = SC.Widget('polysemy');
-				polysemy.bind(SC.Widget.Events.READY, function() {
-					console.log('loaded')
-					//widget.play()
-				}).bind(SC.Widget.Events.PLAY, function() {
-					playing = true
-					console.log(playing)
-					$('#play use').attr('xlink:href','/svg/playpause.svg#pause')
-				}).bind(SC.Widget.Events.PAUSE, function() {
-					playing = false
-					console.log(playing)
-					$('#play use').attr('xlink:href','/svg/playpause.svg#play')
-				});
-
-
-				$('#play').on('click', function(){
-					if (playing == true){
-						polysemy.pause()
-					} else {
-						polysemy.play()
-					}
-				})
-
-				</script>
+<div class='container_child'>
 
 				<div class='ep_under_text'>
-					<!--<p>
+					<p>
 					Everything has a meaning. Everything has a different meaning to somebody. Hence everything has various meanings and therefore everything is polysemic. Belgian producer Jens de Ketelaere alias Harted gives music more than one meaning with his EP on Underyourskin Records by marching straight into a dreamy heart with the EPs opening track before some deep almost dubbish synthflavors provide an emotional ride throughout the end. Garden lets ones heart blossom in the style of a shrinking violet in the beginning before unfolding its whole melodic piano enriched beauty in the continuance of its endurance. Morning dew drips down rather chilly in Harteds garden who enriches the Dew with broken beats and raindroplike suffixes on the undertone focussing on deep synthpatterns on the tracks frame. Lastly Astray steps into the polisemic garden and combines catchy dub elements with a straight forward house baseline that is enriched with mellow vocal snippets that lends the track a smooth dreamy easiness.
-				</p>-->
+				</p>
 			</div>
 		</div>
 	</div>
@@ -190,6 +136,27 @@
 		</div>
 	</div>
 
+	<div id='polysemy_holder'class='sc_player_holder' style='z-index:100'>
+		<div class='sc_player'>
+			<iframe id='polysemy' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+		</div>
+	</div>
+	<div id='garden_holder'class='sc_player_holder' style='z-index:100'>
+		<div class='sc_player'>
+			<iframe id='garden' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+		</div>
+	</div>
+	<div id='dew_holder'class='sc_player_holder' style='z-index:100'>
+		<div class='sc_player'>
+			<iframe id='dew' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+		</div>
+	</div>
+	<div id='astray_holder'class='sc_player_holder' style='z-index:100'>
+		<div class='sc_player'>
+			<iframe id='astray' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+		</div>
+	</div>
+
 </div>
 
 <div id='header_whitespace'>
@@ -200,13 +167,17 @@
 <script>
 // script
 page = true;
+var ep_back_color = '#FCFBF3';
+var ep_highlight_color = '#76A948'
 UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
 $('body').css({'background-color': color_back})
 
 DetermineTouch(); //------------------------------------------------------------ |F| main.js
 MakeThings(); //---------------------------------------------------------------- |F| about.html <script>
+Soundcloud(ep_highlight_color);
 
 $('.hide_on_load').css('opacity',1);
+
 
 function MakeThings(){
 	GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
@@ -218,7 +189,8 @@ function MakeThings(){
 	LinkLogos(); //--------------------------------------------------------------- |F| main.js
 	ContentContainer(); //-------------------------------------------------------- |F| pages.js
 	ContainerChild(); //----------------------------------------------------------- |F| pages.js
-	EpHeader('#FCFBF3', '#76A948');
+	EpHeader(ep_back_color, ep_highlight_color);
+	scRefresh();
 };
 
 $(document).ready(function(){
@@ -232,6 +204,7 @@ $(document).ready(function(){
 
 $(window).on('resize', function() {
 	MakeThings(); //-------------------------------------------------------------- |F| about.html <script>
+	scRefresh();
 });
 
 
