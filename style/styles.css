@@ -65,9 +65,11 @@ div {
 
 .sc_player_holder {
   overflow: hidden;
+
 }
 .sc_player {
   margin-right: -74px;
+
 }
 
 #play {
