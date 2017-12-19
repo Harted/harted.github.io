@@ -62,6 +62,7 @@ div {
 .fore:before {content: ''; width: 33%;} /* so if its added before or after it alignes perfectly                                          */
 
 
+<<<<<<< HEAD
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -70,4 +71,23 @@ div {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+=======
+
+.sc_player_holder {
+  overflow: hidden;
+
+}
+.sc_player {
+  margin-right: -110px;
+
+}
+
+#play {
+  margin-top: 10px;
+}
+
+iframe {
+  margin-top: 10px;
+  padding: 1px;
+>>>>>>> 139963b44a01ddf73ed4250dc255e3290001782d
 }
