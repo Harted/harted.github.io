@@ -30,8 +30,8 @@ function EpHeader(header_color, link_color){
         'margin_bottom': '50px', //automate??
         title: {
           'margin': '0.25em 0',
-          'font_size': '1.6em',
-          'font_weight': '500',
+          'font_size': '1.2em',
+          'font_weight': '400',
           'text_align': 'left',
           'text_transform': 'uppercase',
           'opacity': '1'
