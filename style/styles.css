@@ -1,5 +1,15 @@
 /* Fonts -----------------------------------------------------------------------*/
 @import url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,500');
+
+/* Scrollbar -------------------------------------------------------------------*/
+html {
+  -ms-overflow-style: -ms-autohiding-scrollbar; /*hide scrollbar in IE11*/
+}
+
+body::-webkit-scrollbar { /*hide scrollbar in windows chrome*/
+display: none;
+}
+
 /* BODY ------------------------------------------------------------------------*/
 body {
   /* uniform font-family */
@@ -15,10 +25,6 @@ body {
 /* everything that's not fading but has to be hided before objects are made */
 .hide_on_load {
   opacity: 0;
-}
-
-body::-webkit-scrollbar {
-display: none;
 }
 
 /* TEXT ------------------------------------------------------------------------*/
