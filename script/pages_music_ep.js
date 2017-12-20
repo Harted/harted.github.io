@@ -209,9 +209,13 @@ function Soundcloud(info, color){
     'margin-left': '-30px',
   });
 
+  var order = 0;
+
+  console.log(Object.keys(info).length)
+
   for (key in info) {
-  	console.log(info[key])
-    SCMiniTrackPlayer(info[key].id, info[key].sc_id, color, info[key].inverse, info[key].auto_play, info[key].show_user);
+    SCMiniTrackPlayer(info[key].id, info[key].sc_id, color, info[key].inverse, info[key].auto_play, info[key].show_user, info, order);
+    order++
   }
 
 };
@@ -223,7 +227,9 @@ function scRefresh(){
 }
 
 // Make mini track player -------------------------------------------------------------------------------------------------------------
-function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_bool, show_user_bool){
+function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_bool, show_user_bool, info, order){
+
+  console.log(order, (info[order].id).replace('#',''))
 
   color = color.replace('#','%23')
   var playing = false;
@@ -271,6 +277,15 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
       $(iframe_id + '_track .play use').attr('xlink:href','/svg/playpause.svg#play')
       $(iframe_id + '_track .track_duration').css('visibility', 'hidden')
       $(iframe_id + '_holder').css('visibility', 'hidden')
+    }).bind(SC.Widget.Events.FINISH, function() {
+      console.log('finish')
+      if (order+1 < Object.keys(info).length){
+        eval((info[order+1].id).replace('#','')).seekTo(0)
+        eval((info[order+1].id).replace('#','')).play()
+      } else {
+        eval((info[0].id).replace('#','')).seekTo(0)
+        eval((info[0].id).replace('#','')).play()
+      }
     })
   })
 };
