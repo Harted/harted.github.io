@@ -190,7 +190,10 @@ function Soundcloud(info, color){
   
   //console.log(info)
 
-  $('.play').css('fill', color).attr('width','9')
+  $('.play').css('fill', color).attr({
+    'width':'9',
+    'height':'9',
+  }) //height needed for IE because use svg is not showing
 
   //soundcloud logo right cutoff
   $('.sc_player_holder').css({
