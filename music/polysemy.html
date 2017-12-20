@@ -174,7 +174,39 @@ $('body').css({'background-color': color_back})
 
 DetermineTouch(); //------------------------------------------------------------ |F| main.js
 MakeThings(); //---------------------------------------------------------------- |F| about.html <script>
-Soundcloud(ep_highlight_color);
+  
+var sc_tracks_info: {
+  'polysemy': {
+  	'id': '#polysemy',
+    'sc_id': '290042835',
+    'inverse': false,
+    'auto_play': false,
+    'show_user': false,
+  },
+  'garden': {
+  	'id': '#garden',
+    'sc_id': '290042833',
+    'inverse': false,
+    'auto_play': false,
+    'show_user': false,
+  },
+  'dew': {
+  	'id': '#dew',
+    'sc_id': '290042831',
+    'inverse': false,
+    'auto_play': false,
+    'show_user': false,
+  },
+  'astray': {
+  	'id': '#astray',
+    'sc_id': '290042830',
+    'inverse': false,
+    'auto_play': false,
+    'show_user': false,
+  },
+}
+  
+Soundcloud(sc_tracks_info, ep_highlight_color);
 
 $('.hide_on_load').css('opacity',1);
 
