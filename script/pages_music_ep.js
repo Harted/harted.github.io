@@ -186,7 +186,9 @@ function EpHeader(header_color, link_color){
 };
 
 // General soundcloud player generating etc -------------------------------------------------------------------------------------------
-function Soundcloud(color){
+function Soundcloud(info, color){
+  
+  console.log(info)
 
   $('.play').css('fill', color).attr('width','9')
 
