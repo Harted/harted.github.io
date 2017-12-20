@@ -56,7 +56,7 @@ function AlbumFlexByID(AF_ID, important) {
       'width': $('.container_child').width(),
       'padding': 0,
     }
-  } else if (width_medium == true || width_large == true || (width_small == false && article_count < 2 && important == true)) { //disabled the big ep's (article count < 3)
+  } else if (width_medium == true || width_large == true || (width_small == false && article_count < 2 && important == true)) { //disabled the big ep's (default: article count < 3)
     article = {
       'width': $('.container_child').width() * 0.45,
       'padding': $('.container_child').width() * 0.025,
@@ -107,7 +107,7 @@ function AlbumFlexByID(AF_ID, important) {
 
   $(AF_ID + ' .album_container').addClass('after')
 
-  if (width_medium == false && width_large == false && article_count < 2 ) {
+  if (width_medium == false && width_large == false && article_count < 1 ) { //disabled the centering of albums (default: article_count < 2)
     $(AF_ID + ' .album_container').addClass('fore')
   } else {
     $(AF_ID + ' .album_container').removeClass('fore')
