@@ -48,7 +48,7 @@
 
 	<div class='fade'>
 		<div class='content_container'>
-			<div id='polysemy_ep' class='ep_container'>
+			<div id='wander_ep' class='ep_container'>
 				<div class='text_holder'>
 					<div class='ep_text'>
 						<div class='ep_header_text'>
@@ -62,32 +62,41 @@
 									<use xlink:href='/svg/playpause.svg#play'></use>
 								</svg>
 								<span class='track_title'>Wander</span>
-								<span class='track_time'>6:57</span>
+								<span class='track_time'>5:54</span>
 								<span class='track_duration' style='visibility:hidden;'>0:00 /</span>
 							</div>
-							<div id='garden_track' class='track noselect'>
+							<div id='abridged_track' class='track noselect'>
 								<svg class='play noselect' viewBox="0 0 283.02 322.2">
 									<use xlink:href='/svg/playpause.svg#play'></use>
 								</svg>
-								<span class='track_title'>Garden</span>
-								<span class='track_time'>6:11</span>
+								<span class='track_title'>Abridged</span>
+								<span class='track_time'>4:50</span>
 								<span class='track_duration' style='visibility:hidden;'>0:00 /</span>
 							</div>
-							<div id='dew_track' class='track noselect'>
+							<div id='strom_track' class='track noselect'>
 								<svg class='play noselect' viewBox="0 0 283.02 322.2">
 									<use xlink:href='/svg/playpause.svg#play'></use>
 								</svg>
-								<span class='track_title'>Dew</span>
-								<span class='track_time'>4:49</span>
+								<span class='track_title'>Strom</span>
+								<span class='track_time'>6:22</span>
 								<span class='track_duration' style='visibility:hidden;'>0:00 /</span>
 							</div>
-							<div id='astray_track' class='track noselect'>
+							<div id='wander_amyn_track' class='track noselect'>
 								<svg class='play noselect' viewBox="0 0 283.02 322.2">
 									<use xlink:href='/svg/playpause.svg#play'></use>
 								</svg>
-								<span class='track_title'>Astray</span>
-								<span class='track_remix'></span>
-								<span class='track_time'>5:52</span>
+								<span class='track_title'>Wander</span>
+								<span class='track_remix'>AMyn remix</span>
+								<span class='track_time'>5:08</span>
+								<span class='track_duration' style='visibility:hidden;'>0:00 /</span>
+							</div>
+                          	<div id='abridged_nutia_track' class='track noselect'>
+								<svg class='play noselect' viewBox="0 0 283.02 322.2">
+									<use xlink:href='/svg/playpause.svg#play'></use>
+								</svg>
+								<span class='track_title'>Abridged</span>
+								<span class='track_remix'>Nutia remix</span>
+								<span class='track_time'>8:20</span>
 								<span class='track_duration' style='visibility:hidden;'>0:00 /</span>
 							</div>
 						</div>
@@ -136,24 +145,29 @@
 		</div>
 	</div>
 
-	<div id='polysemy_holder'class='sc_player_holder' style='z-index:100'>
+	<div id='wander_holder'class='sc_player_holder' style='z-index:100'>
 		<div class='sc_player'>
-			<iframe id='polysemy' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+			<iframe id='wander' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
 		</div>
 	</div>
-	<div id='garden_holder'class='sc_player_holder' style='z-index:100'>
+	<div id='abridged_holder'class='sc_player_holder' style='z-index:100'>
 		<div class='sc_player'>
-			<iframe id='garden' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+			<iframe id='abridged' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
 		</div>
 	</div>
-	<div id='dew_holder'class='sc_player_holder' style='z-index:100'>
+	<div id='strom_holder'class='sc_player_holder' style='z-index:100'>
 		<div class='sc_player'>
-			<iframe id='dew' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+			<iframe id='strom' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
 		</div>
 	</div>
-	<div id='astray_holder'class='sc_player_holder' style='z-index:100'>
+	<div id='wander_amyn_holder'class='sc_player_holder' style='z-index:100'>
 		<div class='sc_player'>
-			<iframe id='astray' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+			<iframe id='wander_amyn' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+		</div>
+	</div>
+     <div id='abridged_nutia_holder'class='sc_player_holder' style='z-index:100'>
+		<div class='sc_player'>
+			<iframe id='abridged_nutia' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
 		</div>
 	</div>
 
@@ -167,8 +181,8 @@
 <script>
 // script
 page = true;
-var ep_back_color = '#FCFBF3';
-var ep_highlight_color = '#76A948'
+var ep_back_color = '#F6F3F3';
+var ep_highlight_color = '#5A6380'
 UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
 $('body').css({'background-color': color_back})
 
