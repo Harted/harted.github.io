@@ -151,7 +151,7 @@ function EpHeader(header_color, link_color){
     'font-weight': ep.text.tracks.font_weight,
     'bottom': ep.text.tracks.bottom,
     'line-height': ep.text.tracks.line_height,
-    'white-space': ep.text.tracks.white_space,
+    //'white-space': ep.text.tracks.white_space, doesn't have the disired outcome in firefox
   });
   $('.ep_code').css({
     'opacity': ep.text.tracks.code.opacity,
