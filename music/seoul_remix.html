@@ -1,1 +1,189 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+	<meta charset='utf-8'>
 
+	<!-- Responsive -->
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+	<!-- Favicon -->
+	<meta name='msapplication-config' content='/icons/browserconfig.xml'>
+	<meta name='theme-color' content='#ffffff'>
+	<link rel='apple-touch-icon' href='/icons/apple-touch-icon_180x180.png'>
+	<link rel='icon' type='image/png' sizes='32x32' href='/icons/favicon-32x32.png'>
+	<link rel='icon' type='image/png' sizes='16x16' href='/icons/favicon-16x16.png'>
+	<link rel='manifest' href='/icons/manifest.webmanifest'>
+	<link rel='mask-icon' href='/icons/safari-pinned-tab.svg' color='#5bbad5'>
+	<link rel='shortcut icon' href='/icons/favicon.ico'>
+
+	<!-- Title -->
+	<title>Seoul remix</title>
+	<link href='/style/styles.css' rel='stylesheet' type='text/css'>
+	<!-- scripts -->
+	<script src='/script/jQuery/jquery-3.2.1.js'></script>
+	<script src='/script/variables.js'></script>
+	<script src='/script/main.js'></script>
+	<script src='/script/main_child.js'></script>
+	<script src='/script/pages.js'></script>
+	<script src='/script/pages_music_ep.js'></script>
+
+	<script src='/script/external/sc_widget.js'></script>
+
+</head>
+<body>
+
+	<!-- Header -->
+
+	<div id='header' class='hide_on_load' style='z-index:99'>
+		<ul id='header_menu'>
+			<li id='menu_about'>About</li>
+			<li id='menu_music'>Music</li>
+			<li id='menu_video'>Video</li>
+			<li id='menu_shows'>Shows</li>
+		</ul>
+		<svg id='headerlogo' viewbox='0 0 500 500' style='z-index:100'>
+			<use xlink:href='svg/logo.svg#logo'></use>
+		</svg>
+	</div>
+
+	<div class='fade'>
+		<div class='content_container'>
+			<div id='seoul_ep' class='ep_container'>
+				<div class='text_holder'>
+					<div class='ep_text'>
+						<div class='ep_header_text'>
+							<h3 class='ep_title'>Seoul</h3>
+							<h3 class='original artist' style='margin:-0.5em 0 0 0;'>MAXIM LANY<h3>
+							<a href='/links/fb_lanyrec.html' target='_blank'><h3 class='ep_label'>Lany recordings</h3></a>
+						</div>
+						<div class='ep_tracks_text'>
+							<span class='ep_code'>LANY019</span>
+							<div id='seoul_remix_track' class='track noselect'>
+								<svg class='play' viewBox="0 0 283.02 322.2">
+									<use xlink:href='/svg/playpause.svg#play'></use>
+								</svg>
+								<span class='track_title'>Seoul</span>
+                <span class='track_remix'>Harted remix</span>
+								<span class='track_time'>7:00</span>
+								<span class='track_duration' style='visibility:hidden;'>0:00 /</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class='ep_img'>
+					<img src='/image/banner_seoul_remix.png'>
+				</div>
+			</div>
+
+
+
+
+
+
+<div class='container_child'>
+
+				<div class='ep_under_text'>
+					<p>
+					Everything has a meaning. Everything has a different meaning to somebody. Hence everything has various meanings and therefore everything is polysemic. Belgian producer Jens de Ketelaere alias Harted gives music more than one meaning with his EP on Underyourskin Records by marching straight into a dreamy heart with the EPs opening track before some deep almost dubbish synthflavors provide an emotional ride throughout the end. Garden lets ones heart blossom in the style of a shrinking violet in the beginning before unfolding its whole melodic piano enriched beauty in the continuance of its endurance. Morning dew drips down rather chilly in Harteds garden who enriches the Dew with broken beats and raindroplike suffixes on the undertone focussing on deep synthpatterns on the tracks frame. Lastly Astray steps into the polisemic garden and combines catchy dub elements with a straight forward house baseline that is enriched with mellow vocal snippets that lends the track a smooth dreamy easiness.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div id='link_logos' style='z-index:3'>
+		<div class='link_logo top_left_align'>
+			<svg id='facebook' viewbox='0 0 500 500'>
+				<use xlink:href='/svg/link_logo.svg#facebook'></use>
+			</svg>
+		</div>
+		<div class='link_logo bottom_left_align'>
+			<svg id='soundcloud' viewbox='0 0 500 500'>
+				<use xlink:href='/svg/link_logo.svg#soundcloud'></use>
+			</svg>
+		</div>
+		<div class='link_logo bottom_right_align'>
+			<svg id='instagram' viewbox='0 0 500 500'>
+				<use xlink:href='/svg/link_logo.svg#instagram'></use>
+			</svg>
+		</div>
+		<div class='link_logo top_right_align'>
+			<svg id='mail' viewbox='0 0 500 500'>
+				<use xlink:href='/svg/link_logo.svg#mail'></use>
+			</svg>
+		</div>
+	</div>
+
+	<div id='seoul_remix_holder'class='sc_player_holder' style='z-index:100'>
+		<div class='sc_player'>
+			<iframe id='seoul_remix' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+		</div>
+	</div>
+
+</div>
+
+<div id='header_whitespace'>
+</div>
+<div id='header_forcescrollspace'>
+</div>
+
+<script>
+// script
+page = true;
+var ep_back_color = '#E5E5E5';
+var ep_highlight_color = '#909090'
+UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
+$('body').css({'background-color': color_back})
+
+DetermineTouch(); //------------------------------------------------------------ |F| main.js
+MakeThings(); //---------------------------------------------------------------- |F| about.html <script>
+
+var sc_tracks_info = {
+  '0': {
+  	'id': '#seoul_remix',
+    'sc_id': '255615644',
+    'inverse': false,
+    'auto_play': false,
+    'show_user': false,
+  },
+}
+
+Soundcloud(sc_tracks_info, ep_highlight_color);
+
+$('.hide_on_load').css('opacity',1);
+
+
+function MakeThings(){
+	GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
+	Responsive(); //-------------------------------------------------------------- |F| main.js
+	CalculateSizes(); //---------------------------------------------------------- |F| main.js
+	Header(color_back); //----------------------------------------------------------- |F| pages.js ------------------- COLOR SETTING!
+	HeaderLogo(color_1); //---------------------------------------------------- |F| pages.js
+	HeaderMenu(color_1); //-------------------------------------------------------------- |F| pages.js
+	LinkLogos(); //--------------------------------------------------------------- |F| main.js
+	ContentContainer(); //-------------------------------------------------------- |F| pages.js
+	ContainerChild(); //----------------------------------------------------------- |F| pages.js
+	EpHeader(ep_back_color, ep_highlight_color);
+	scRefresh();
+};
+
+$(document).ready(function(){
+	setTimeout(function(){
+		$('.fade').css({
+			'opacity': 1,
+			'transition': anim_speed_factor * 200 + 'ms',
+		})
+	}, HL.load.transition)
+})
+
+$(window).on('resize', function() {
+	MakeThings(); //-------------------------------------------------------------- |F| about.html <script>
+	scRefresh();
+});
+
+
+
+
+
+</script>
+</body>
+</html>

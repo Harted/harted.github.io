@@ -23,6 +23,7 @@ body {
   opacity: 0;
 }
 /* everything that's not fading but has to be hided before objects are made */
+/* Header text will show as a list and headerlogo svg big black */
 .hide_on_load {
   opacity: 0;
 }
