@@ -188,8 +188,6 @@ function EpHeader(header_color, link_color){
 // General soundcloud player generating etc -------------------------------------------------------------------------------------------
 function Soundcloud(info, color){
 
-  //console.log(info)
-
   $('.play').css('fill', color).attr({
     'width':'9',
     'height':'9',
@@ -216,12 +214,8 @@ function Soundcloud(info, color){
     SCMiniTrackPlayer(info[key].id, info[key].sc_id, color, info[key].inverse, info[key].auto_play, info[key].show_user);
   }
 
-  //SCMiniTrackPlayer('#polysemy', '290042835', color, false, false, false);
-  //SCMiniTrackPlayer('#garden', '290042833', color, false, false, false);
-  //SCMiniTrackPlayer('#dew', '290042831', color, false, false, false);
-  //SCMiniTrackPlayer('#astray', '290042830', color, false, false, false);
-
 };
+
 function scRefresh(){
   $('.sc_player_holder').css({
     'width': window_width + 'px',
