@@ -188,7 +188,46 @@ $('body').css({'background-color': color_back})
 
 DetermineTouch(); //------------------------------------------------------------ |F| main.js
 MakeThings(); //---------------------------------------------------------------- |F| about.html <script>
-Soundcloud(ep_highlight_color);
+
+var sc_tracks_info = {
+  'wander': {
+  	'id': '#wander',
+    'sc_id': '210409317',
+    'inverse': false,
+    'auto_play': false,
+    'show_user': false,
+  },
+  'garden': {
+  	'id': '#abridged',
+    'sc_id': '210409311',
+    'inverse': false,
+    'auto_play': false,
+    'show_user': false,
+  },
+  'dew': {
+  	'id': '#strom',
+    'sc_id': '210409313',
+    'inverse': false,
+    'auto_play': false,
+    'show_user': false,
+  },
+  'astray': {
+  	'id': '#wander_amyn',
+    'sc_id': '225034820',
+    'inverse': false,
+    'auto_play': false,
+    'show_user': false,
+  },
+   'astray': {
+  	'id': '#abridged_nutia',
+    'sc_id': '225034822',
+    'inverse': false,
+    'auto_play': false,
+    'show_user': false,
+  },
+}
+  
+Soundcloud(sc_tracks_info, ep_highlight_color);
 
 $('.hide_on_load').css('opacity',1);
 
