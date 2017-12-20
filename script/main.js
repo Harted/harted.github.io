@@ -368,8 +368,8 @@ function LinkLogos(LL_color){
 				opacity: 0.25,
 				opacity_click: 1,
 				color: LL_color,
-				width: header_height/3*2,
-				margin: header_height/6,
+				width: HL.width,
+				margin: HL.margin(),
 				padding_bottom: window_width*0.02,
 				position: 'static'
 			},

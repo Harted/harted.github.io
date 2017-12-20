@@ -29,8 +29,8 @@ function EpHeader(header_color, link_color){
       header: {
         'margin_bottom': '50px', //automate??
         title: {
-          'margin': '0.25em 0',
-          'font_size': '1.2em',
+          'margin': '0 0 0.25em 0',
+          'font_size': '1.6em',
           'font_weight': '400',
           'text_align': 'left',
           'text_transform': 'uppercase',
@@ -151,7 +151,7 @@ function EpHeader(header_color, link_color){
     'font-weight': ep.text.tracks.font_weight,
     'bottom': ep.text.tracks.bottom,
     'line-height': ep.text.tracks.line_height,
-    'white-space': ep.text.tracks.white_space,
+    //'white-space': ep.text.tracks.white_space, doesn't have the disired outcome in firefox
   });
   $('.ep_code').css({
     'opacity': ep.text.tracks.code.opacity,
@@ -187,7 +187,7 @@ function EpHeader(header_color, link_color){
 
 // General soundcloud player generating etc -------------------------------------------------------------------------------------------
 function Soundcloud(info, color){
-  
+
   //console.log(info)
 
   $('.play').css('fill', color).attr({
@@ -210,12 +210,12 @@ function Soundcloud(info, color){
     'margin-right': '-110px',
     'margin-left': '-30px',
   });
-  
+
   for (key in info) {
   	console.log(info[key])
     SCMiniTrackPlayer(info[key].id, info[key].sc_id, color, info[key].inverse, info[key].auto_play, info[key].show_user);
   }
-  
+
   //SCMiniTrackPlayer('#polysemy', '290042835', color, false, false, false);
   //SCMiniTrackPlayer('#garden', '290042833', color, false, false, false);
   //SCMiniTrackPlayer('#dew', '290042831', color, false, false, false);

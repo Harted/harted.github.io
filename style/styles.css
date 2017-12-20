@@ -71,11 +71,7 @@ div {
 .after:after {content: ''; width: 33%;} /* 33% is the width of 1 object when 3 objects are next to eachother (defined in AlbumFlexByID), */
 .fore:before {content: ''; width: 33%;} /* so if its added before or after it alignes perfectly                                          */
 
-
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 3ccb19dc45d58e1714318c1d1b792775f2830e72
+/* Prevent items from being selected */
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -84,9 +80,7 @@ div {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-<<<<<<< HEAD
-=======
-=======
+}
 
 .sc_player_holder {
   overflow: hidden;
@@ -94,7 +88,6 @@ div {
 }
 .sc_player {
   margin-right: -110px;
-
 }
 
 #play {
@@ -104,6 +97,4 @@ div {
 iframe {
   margin-top: 10px;
   padding: 1px;
->>>>>>> 139963b44a01ddf73ed4250dc255e3290001782d
->>>>>>> 3ccb19dc45d58e1714318c1d1b792775f2830e72
 }
