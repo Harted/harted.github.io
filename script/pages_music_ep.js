@@ -191,7 +191,7 @@ function Soundcloud(info, color){
   //console.log(info)
   
   for (key in info) {
-  	console.log(info.key)
+  	console.log(eval(info.key))
   }
 
   $('.play').css('fill', color).attr('width','9')
