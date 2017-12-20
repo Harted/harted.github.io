@@ -56,7 +56,7 @@ function AlbumFlexByID(AF_ID, important) {
       'width': $('.container_child').width(),
       'padding': 0,
     }
-  } else if (width_medium == true || width_large == true || (width_small == false && article_count < 3 && important == true)) {
+  } else if (width_medium == true || width_large == true || (width_small == false && article_count < 2 && important == true)) { //disabled the big ep's (article count < 3)
     article = {
       'width': $('.container_child').width() * 0.45,
       'padding': $('.container_child').width() * 0.025,
