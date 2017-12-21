@@ -229,6 +229,7 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
 
   color = color.replace('#','%23')
   var playing = false;
+  playing_global = playing
   var time;
   //var test;
 
@@ -271,11 +272,13 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
       $(iframe_id + '_track .track_duration').html(msToTime(time || 0) + ' /');
     }).bind(SC.Widget.Events.PLAY, function() {
       playing = true
+      playing_global = playing
       $(iframe_id + '_track .play use').attr('xlink:href','/svg/playpause.svg#pause')
       $(iframe_id + '_track .track_duration').css('visibility', 'visible')
       $(iframe_id + '_holder').css('visibility', 'visible')
     }).bind(SC.Widget.Events.PAUSE, function() {
       playing = false
+      playing_global = playing
       $(iframe_id + '_track .play use').attr('xlink:href','/svg/playpause.svg#play')
       $(iframe_id + '_track .track_duration').css('visibility', 'hidden')
       $(iframe_id + '_holder').css('visibility', 'hidden')

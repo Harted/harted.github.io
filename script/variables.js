@@ -83,8 +83,8 @@ var header_height = 50;
 // User agent
 var UserAgent;
 
-// Objects
+// Global objects
 var HL = {}; // header logo
 
-//DEBUG VARIABLES
-var counter = 0;
+// Soundcloud
+var playing_global = false;
