@@ -250,10 +250,9 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
   eval(id_name + '= SC.Widget(id_name)');
   eval(id_name).bind(SC.Widget.Events.READY, function() {
     $(iframe_id + '_track').on('click', function(){
-      if (first_user_touch == false && touch == true) {
+      if (first_user_touch == false && touch == true) { //on mobile on first user touch launch all - first play has to be on user interaction!
         for (i = 0; i < Object.keys(info).length; i++) {
           eval((info[i].id).replace('#','')).play().pause()
-          $('#log').append(info[i].id)
         }
         first_user_touch = true
       }
