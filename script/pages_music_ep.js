@@ -210,6 +210,7 @@ function Soundcloud(info, color){
   });
 
   var order = 0;
+  var finish = false;
   for (key in info) {
     SCMiniTrackPlayer(info[key].id, info[key].sc_id, color, info[key].inverse, info[key].auto_play, info[key].show_user, info, order);
     order++
@@ -248,6 +249,7 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
 
   eval(id_name + '= SC.Widget(id_name)');
   eval(id_name).bind(SC.Widget.Events.READY, function() {
+    $('#log').append('ready 1 <br>')
     $(iframe_id + '_track').on('click', function(){
       if (playing == true){
         eval(id_name).pause()
@@ -264,22 +266,42 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
       $(iframe_id + '_track .track_duration').html(msToTime(time || 0) + ' /');
     }).bind(SC.Widget.Events.PLAY, function() {
       playing = true
-      $('#log').append(id_name + ' - playing: ' + playing + '<br>')
+
+        $('#log').append(id_name + ' - playing: ' + playing + '<br>')
+
       $(iframe_id + '_track .play use').attr('xlink:href','/svg/playpause.svg#pause')
       $(iframe_id + '_track .track_duration').css('visibility', 'visible')
       $(iframe_id + '_holder').css('visibility', 'visible')
     }).bind(SC.Widget.Events.PAUSE, function() {
       playing = false
-      $('#log').append(id_name + ' - playing: ' + playing + '<br>')
+
+      if (finish == true) {
+        eval(id_name).play()
+        $('#log').append(id_name + ' - retriggered')
+      }
+
+        $('#log').append(id_name + ' - playing: ' + playing + '<br>')
+
       $(iframe_id + '_track .play use').attr('xlink:href','/svg/playpause.svg#play')
       $(iframe_id + '_track .track_duration').css('visibility', 'hidden')
       $(iframe_id + '_holder').css('visibility', 'hidden')
     }).bind(SC.Widget.Events.FINISH, function() {
-      $('#log').append(id_name + ' - finish ' + '<br>')
+
+        $('#log').append(id_name + ' - finish ' + '<br>')
+
+      finish = true
+
+        $('#log').append('finish: ' + finish + '<br>')
+
+      setTimeout(function(){
+        finish = false
+        $('#log').append('finish: ' + finish + '<br>')
+      },1000)
+
       if (order+1 < Object.keys(info).length){
-        eval((info[order+1].id).replace('#',''))/*.seekTo(0)*/.play()
+        eval((info[order+1].id).replace('#','')).seekTo(0).play()
       } else {
-        eval((info[0].id).replace('#',''))/*.seekTo(0)*/.play()
+        eval((info[0].id).replace('#','')).seekTo(0).play()
       }
     })
   })
