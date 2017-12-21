@@ -274,9 +274,14 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
       $(iframe_id + '_holder').css('visibility', 'hidden')
     }).bind(SC.Widget.Events.FINISH, function() {
       if (order+1 < Object.keys(info).length){
-        eval((info[order+1].id).replace('#','')).seekTo(1000).play()
+        eval((info[order+1].id).replace('#','')).seekTo(0).play()
+        for (i = 0; i < 100; i++){
+          eval((info[order+1].id).replace('#','')).play()
+          console.log('play')
+        }
+
       } else {
-        eval((info[0].id).replace('#','')).seekTo(1000).play()
+        eval((info[0].id).replace('#','')).seekTo(0).play()
       }
     })
   })
