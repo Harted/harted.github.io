@@ -249,6 +249,10 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
   eval(id_name + '= SC.Widget(id_name)');
   eval(id_name).bind(SC.Widget.Events.READY, function() {
     $(iframe_id + '_track').on('click', function(){
+      for (i = 0; i < 4; i++) {
+        console.log(info[i].id)
+        eval((info[i].id).replace('#','')).play().pause()
+      }
       if (playing == true){
         eval(id_name).pause()
       } else {
@@ -275,11 +279,6 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
     }).bind(SC.Widget.Events.FINISH, function() {
       if (order+1 < Object.keys(info).length){
         eval((info[order+1].id).replace('#','')).seekTo(0).play()
-        for (i = 0; i < 100; i++){
-          eval((info[order+1].id).replace('#','')).play()
-          console.log('play')
-        }
-
       } else {
         eval((info[0].id).replace('#','')).seekTo(0).play()
       }
