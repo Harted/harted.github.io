@@ -277,11 +277,15 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
     }).bind(SC.Widget.Events.FINISH, function() {
       $('#log').append(id_name + ' - finish ' + '<br>')
       if (order+1 < Object.keys(info).length){
-        eval((info[order+1].id).replace('#','')).seekTo(0)
-        eval((info[order+1].id).replace('#','')).play()
+        eval((info[order+1].id).replace('#','')).seekTo(0)//.play()
+        setTimeout(function(){
+          eval((info[order+1].id).replace('#','')).play()
+        },10000)
       } else {
-        eval((info[0].id).replace('#','')).seekTo(0)
-        eval((info[0].id).replace('#','')).play()
+        eval((info[0].id).replace('#','')).seekTo(0)//.play()
+        setTimeout(function(){
+          eval((info[0].id).replace('#','')).play()
+        },10000)
       }
     })
   })
