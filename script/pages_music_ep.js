@@ -211,7 +211,7 @@ function Soundcloud(info, color){
 
   var order = 0;
   for (key in info) {
-    SCMiniTrackPlayer(info[key].id, info[key].sc_id, color, info[key].inverse, info[key].auto_play, info[key].show_user, info, order);
+    SCMiniTrackPlayer(info[key].id, info[key].sc_id, color, info[key].inverse, info[key].auto_play, info[key].show_user, info, order, first_user_touch);
     order++
   }
 
@@ -224,6 +224,7 @@ function scRefresh(){
 }
 
 // Make mini track player -------------------------------------------------------------------------------------------------------------
+var first_user_touch = false; //on mobile on first user touch launch all - first play has to be on user interaction!
 function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_bool, show_user_bool, info, order){
 
   color = color.replace('#','%23')
@@ -249,9 +250,12 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
   eval(id_name + '= SC.Widget(id_name)');
   eval(id_name).bind(SC.Widget.Events.READY, function() {
     $(iframe_id + '_track').on('click', function(){
-      for (i = 0; i < 4; i++) {
-        console.log(info[i].id)
-        eval((info[i].id).replace('#','')).play().pause()
+      if (first_user_touch == false && touch == true) {
+        for (i = 0; i < Object.keys(info).length; i++) {
+          eval((info[i].id).replace('#','')).play().pause()
+          $('#log').append(info[i].id)
+        }
+        first_user_touch = true
       }
       if (playing == true){
         eval(id_name).pause()
