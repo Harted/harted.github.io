@@ -264,15 +264,18 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
       $(iframe_id + '_track .track_duration').html(msToTime(time || 0) + ' /');
     }).bind(SC.Widget.Events.PLAY, function() {
       playing = true
+      $('#log').append(id_name + ' - playing: ' + playing + '<br>')
       $(iframe_id + '_track .play use').attr('xlink:href','/svg/playpause.svg#pause')
       $(iframe_id + '_track .track_duration').css('visibility', 'visible')
       $(iframe_id + '_holder').css('visibility', 'visible')
     }).bind(SC.Widget.Events.PAUSE, function() {
       playing = false
+      $('#log').append(id_name + ' - playing: ' + playing + '<br>')
       $(iframe_id + '_track .play use').attr('xlink:href','/svg/playpause.svg#play')
       $(iframe_id + '_track .track_duration').css('visibility', 'hidden')
       $(iframe_id + '_holder').css('visibility', 'hidden')
     }).bind(SC.Widget.Events.FINISH, function() {
+      $('#log').append(id_name + ' - finish ' + '<br>')
       if (order+1 < Object.keys(info).length){
         eval((info[order+1].id).replace('#','')).seekTo(0)
         eval((info[order+1].id).replace('#','')).play()
