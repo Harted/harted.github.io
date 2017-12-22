@@ -174,15 +174,15 @@ function MenuItem(MI_id, MI_href, MI_color) {
 				$('#header, #header_forcescrollspace').css({
 					'background-color': MI_color,
 					'transition': HL.click.transition + 'ms',
-				})
-				$('#headerlogo').css({
+				}).on('transitionend', function(){
+					window.location = MI_href;
+				});
+				/*$('#headerlogo').css({
 					'width': HL.load.width,
 					'height': HL.load.width,
 					'margin': HL.load.margin,
 					'transition': HL.click.transition + 'ms',
-				}).on('transitionend', function(){
-					window.location = MI_href;
-				});
+				})*/
 			}
 		});
 	};
