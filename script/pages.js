@@ -46,15 +46,15 @@ function HeaderLogo(HL_color) {
 
 	$('#headerlogo').css({
 		'position': 'absolute',
-		'width': HL.load.width,
-		'height': HL.load.width,
-		'margin': HL.load.margin,
+		'width': HL.width, //HL.load.width,
+		'height': HL.width,//HL.load.width,
+		'margin': HL.margin(),//HL.load.margin,
 		'fill': HL.color,
 		'right': HL.right,
 		'bottom': HL.bottom,
 	})
 	$('#header_menu').css({
-		'opacity': 0,
+		'opacity': 1,  //no fade in
 	})
 	setTimeout(function(){
 		$('#header_menu').css({
