@@ -83,19 +83,21 @@ div {
                                   supported by Chrome and Opera */
 }
 
-.sc_player_holder {
-  overflow: hidden;
 
-}
-.sc_player {
-  margin-right: -110px;
-}
 
-#play {
-  margin-top: 10px;
-}
 
-iframe {
-  margin-top: 10px;
-  padding: 1px;
+.buy_flex {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+}
+.buy_flex_item {
+  display:flex;
+  justify-content: space-around;
+  width: 33%;
+}
+.buy_flex_item svg {
+  align-items: center;
+  width: 100%
 }

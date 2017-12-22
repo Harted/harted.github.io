@@ -104,12 +104,28 @@
 
 
 			<div class='container_child'>
-				<div>
-					<a href='https://itunes.apple.com/album/1158840923' target='_blank'>
-					<svg id='itunes' viewBox="0 0 110 40" height='40'>
-						<use xlink:href='/svg/itunes.svg#logo'></use>
-					</svg>
-				</a>
+				<div class='buy_flex'>
+					<div class='buy_flex_item'>
+						<a href='https://itunes.apple.com/album/1158840923?&app=itunes' target='_blank'>
+							<svg id='itunes' viewBox="0 0 110 40" height='40'>
+								<use xlink:href='/svg/itunes.svg#logo'></use>
+							</svg>
+						</a>
+					</div>
+					<div class='buy_flex_item'>
+						<a href='https://itunes.apple.com/album/1158840923?&app=itunes' target='_blank'>
+							<svg id='itunes' viewBox="0 0 110 40" height='40'>
+								<use xlink:href='/svg/itunes.svg#logo'></use>
+							</svg>
+						</a>
+					</div>
+					<div class='buy_flex_item'>
+						<a href='https://itunes.apple.com/album/1158840923?&app=itunes' target='_blank'>
+							<svg id='itunes' viewBox="0 0 110 40" height='40'>
+								<use xlink:href='/svg/itunes.svg#logo'></use>
+							</svg>
+						</a>
+					</div>
 				</div>
 				<div class='ep_under_text'>
 					<p>
@@ -119,131 +135,131 @@
 			</div>
 		</div>
 
-	<div id='link_logos' style='z-index:3'>
-		<div class='link_logo top_left_align'>
-			<svg id='facebook' viewbox='0 0 500 500'>
-				<use xlink:href='/svg/link_logo.svg#facebook'></use>
-			</svg>
+		<div id='link_logos' style='z-index:3'>
+			<div class='link_logo top_left_align'>
+				<svg id='facebook' viewbox='0 0 500 500'>
+					<use xlink:href='/svg/link_logo.svg#facebook'></use>
+				</svg>
+			</div>
+			<div class='link_logo bottom_left_align'>
+				<svg id='soundcloud' viewbox='0 0 500 500'>
+					<use xlink:href='/svg/link_logo.svg#soundcloud'></use>
+				</svg>
+			</div>
+			<div class='link_logo bottom_right_align'>
+				<svg id='instagram' viewbox='0 0 500 500'>
+					<use xlink:href='/svg/link_logo.svg#instagram'></use>
+				</svg>
+			</div>
+			<div class='link_logo top_right_align'>
+				<svg id='mail' viewbox='0 0 500 500'>
+					<use xlink:href='/svg/link_logo.svg#mail'></use>
+				</svg>
+			</div>
 		</div>
-		<div class='link_logo bottom_left_align'>
-			<svg id='soundcloud' viewbox='0 0 500 500'>
-				<use xlink:href='/svg/link_logo.svg#soundcloud'></use>
-			</svg>
+
+		<div id='polysemy_holder'class='sc_player_holder' style='z-index:100'>
+			<div class='sc_player'>
+				<iframe id='polysemy' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+			</div>
 		</div>
-		<div class='link_logo bottom_right_align'>
-			<svg id='instagram' viewbox='0 0 500 500'>
-				<use xlink:href='/svg/link_logo.svg#instagram'></use>
-			</svg>
+		<div id='garden_holder'class='sc_player_holder' style='z-index:100'>
+			<div class='sc_player'>
+				<iframe id='garden' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+			</div>
 		</div>
-		<div class='link_logo top_right_align'>
-			<svg id='mail' viewbox='0 0 500 500'>
-				<use xlink:href='/svg/link_logo.svg#mail'></use>
-			</svg>
+		<div id='dew_holder'class='sc_player_holder' style='z-index:100'>
+			<div class='sc_player'>
+				<iframe id='dew' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+			</div>
 		</div>
+		<div id='astray_holder'class='sc_player_holder' style='z-index:100'>
+			<div class='sc_player'>
+				<iframe id='astray' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
+			</div>
+		</div>
+
 	</div>
 
-	<div id='polysemy_holder'class='sc_player_holder' style='z-index:100'>
-		<div class='sc_player'>
-			<iframe id='polysemy' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
-		</div>
+	<div id='header_whitespace'>
 	</div>
-	<div id='garden_holder'class='sc_player_holder' style='z-index:100'>
-		<div class='sc_player'>
-			<iframe id='garden' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
-		</div>
-	</div>
-	<div id='dew_holder'class='sc_player_holder' style='z-index:100'>
-		<div class='sc_player'>
-			<iframe id='dew' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
-		</div>
-	</div>
-	<div id='astray_holder'class='sc_player_holder' style='z-index:100'>
-		<div class='sc_player'>
-			<iframe id='astray' width="100%" height="20" scrolling="no" frameborder="no"></iframe>
-		</div>
+	<div id='header_forcescrollspace'>
 	</div>
 
-</div>
+	<script>
+	// script
+	page = true;
+	var ep_back_color = '#FCFBF3';
+	var ep_highlight_color = '#76A948'
+	UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
+	$('body').css({'background-color': color_back})
 
-<div id='header_whitespace'>
-</div>
-<div id='header_forcescrollspace'>
-</div>
+	DetermineTouch(); //------------------------------------------------------------ |F| main.js
+	MakeThings(); //---------------------------------------------------------------- |F| about.html <script>
 
-<script>
-// script
-page = true;
-var ep_back_color = '#FCFBF3';
-var ep_highlight_color = '#76A948'
-UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
-$('body').css({'background-color': color_back})
+	var sc_tracks_info = {
+		'0': {
+			'id': '#polysemy',
+			'sc_id': '290042835',
+			'inverse': false,
+			'auto_play': false,
+			'show_user': false,
+		},
+		'1': {
+			'id': '#garden',
+			'sc_id': '290042833',
+			'inverse': false,
+			'auto_play': false,
+			'show_user': false,
+		},
+		'2': {
+			'id': '#dew',
+			'sc_id': '290042831',
+			'inverse': false,
+			'auto_play': false,
+			'show_user': false,
+		},
+		'3': {
+			'id': '#astray',
+			'sc_id': '290042830',
+			'inverse': false,
+			'auto_play': false,
+			'show_user': false,
+		},
+	}
 
-DetermineTouch(); //------------------------------------------------------------ |F| main.js
-MakeThings(); //---------------------------------------------------------------- |F| about.html <script>
+	Soundcloud(sc_tracks_info, ep_highlight_color);
 
-var sc_tracks_info = {
-  '0': {
-  	'id': '#polysemy',
-    'sc_id': '290042835',
-    'inverse': false,
-    'auto_play': false,
-    'show_user': false,
-  },
-  '1': {
-  	'id': '#garden',
-    'sc_id': '290042833',
-    'inverse': false,
-    'auto_play': false,
-    'show_user': false,
-  },
-  '2': {
-  	'id': '#dew',
-    'sc_id': '290042831',
-    'inverse': false,
-    'auto_play': false,
-    'show_user': false,
-  },
-  '3': {
-  	'id': '#astray',
-    'sc_id': '290042830',
-    'inverse': false,
-    'auto_play': false,
-    'show_user': false,
-  },
-}
-
-Soundcloud(sc_tracks_info, ep_highlight_color);
-
-$('.hide_on_load').css('opacity',1);
+	$('.hide_on_load').css('opacity',1);
 
 
-function MakeThings(){
-	GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
-	Responsive(); //-------------------------------------------------------------- |F| main.js
-	CalculateSizes(); //---------------------------------------------------------- |F| main.js
-	Header(color_back); //----------------------------------------------------------- |F| pages.js ------------------- COLOR SETTING!
-	HeaderLogo(color_1); //---------------------------------------------------- |F| pages.js
-	HeaderMenu(color_1); //-------------------------------------------------------------- |F| pages.js
-	LinkLogos(); //--------------------------------------------------------------- |F| main.js
-	ContentContainer(); //-------------------------------------------------------- |F| pages.js
-	ContainerChild(); //----------------------------------------------------------- |F| pages.js
-	EpHeader(ep_back_color, ep_highlight_color);
-	scRefresh();
-};
+	function MakeThings(){
+		GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
+		Responsive(); //-------------------------------------------------------------- |F| main.js
+		CalculateSizes(); //---------------------------------------------------------- |F| main.js
+		Header(color_back); //----------------------------------------------------------- |F| pages.js ------------------- COLOR SETTING!
+		HeaderLogo(color_1); //---------------------------------------------------- |F| pages.js
+		HeaderMenu(color_1); //-------------------------------------------------------------- |F| pages.js
+		LinkLogos(); //--------------------------------------------------------------- |F| main.js
+		ContentContainer(); //-------------------------------------------------------- |F| pages.js
+		ContainerChild(); //----------------------------------------------------------- |F| pages.js
+		EpHeader(ep_back_color, ep_highlight_color);
+		scRefresh();
+	};
 
-$(document).ready(function(){
-	setTimeout(function(){
-		$('.fade').css({
-			'opacity': 1,
-			'transition': anim_speed_factor * 200 + 'ms',
-		})
-	}, HL.load.transition)
-})
+	$(document).ready(function(){
+		setTimeout(function(){
+			$('.fade').css({
+				'opacity': 1,
+				'transition': anim_speed_factor * 200 + 'ms',
+			})
+		}, HL.load.transition)
+	})
 
-$(window).on('resize', function() {
-	MakeThings(); //-------------------------------------------------------------- |F| about.html <script>
-	scRefresh();
-});
+	$(window).on('resize', function() {
+		MakeThings(); //-------------------------------------------------------------- |F| about.html <script>
+		scRefresh();
+	});
 
 
 
