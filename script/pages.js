@@ -1,14 +1,14 @@
 // Make header ------------------------------------------------------------------------------------------------------------------------
 function Header(color) {
 
-	$('#header').css({
+	/*$('#header').css({
 		'position': 'fixed',
 		'width': '100%',
 		'height': header_height,
 		'line-height': header_height + 'px',
 		'bottom': 0,
 		'background-color': color,
-	})
+	})*/ //in stylesheet and page to prevent flicker
 	$('#header_whitespace').css({
 		'width': '100%',
 		'height': header_height * 2,
@@ -167,10 +167,10 @@ function MenuItem(MI_id, MI_href, MI_color) {
 			if (playing_global == true) {
 				window.open(MI_href);
 			} else if (playing_global == false) {
-				$('.fade, #header_menu').css({
+				/*$('.fade, #header_menu').css({
 					'opacity': 0,
 					'transition': HL.click.transition + 'ms',
-				});
+				});*/
 				$('#header, #header_forcescrollspace').css({
 					'background-color': MI_color,
 					'transition': HL.click.transition + 'ms',
