@@ -6,6 +6,8 @@ var action_area_base_size_factor = 3/2;
 
 // Colors
 
+/* palette test (temp disable for banner fix)
+
 var palette = {
   blue_yellow: {
     color_1: '#3E3E3E',
@@ -33,12 +35,12 @@ var color_1 = palette[pallet].color_1;
 var color_2 = palette[pallet].color_2;
 var color_3 = palette[pallet].color_3;
 var color_4 = palette[pallet].color_4;
-
-
 */
 
-
-
+var color_1 = '#3E3E3E';
+var color_2 = '#238482';
+var color_3 = '#3BDB83';
+var color_4 = '#F4C700';
 
 var color_back = "#FFF";
 
