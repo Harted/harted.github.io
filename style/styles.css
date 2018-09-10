@@ -1,6 +1,41 @@
 /* Fonts -----------------------------------------------------------------------*/
 @import url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,500');
 
+/* HEADER ----------------------------------------------------------------------*/
+#header {
+		position: fixed;
+		width: 100%;
+		height: 50px; /* header_height */
+		line-height: 50px; /* header_height + 'px' */
+		bottom: 0;
+}
+.color_1 { background-color: #3E3E3E; }
+.color_2 { background-color: #238482; }
+.color_3 { background-color: #3BDB83; }
+.color_4 { background-color: #F4C700; }
+#header_menu {
+  text-decoration: none;
+  margin-top: 0;
+  padding-left: calc(25px + 3%); /* HL.center_right() */
+}
+#header_menu li {
+  font-weight: 400;
+  display: inline-block;
+  padding-right: 20px;
+  color: #FFF;
+}
+#headerlogo {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	margin: 10px;
+	fill: #FFF;
+	right: 3%;
+	bottom: 0;
+	transition: 0ms;
+}
+
+
 /* Scrollbar -------------------------------------------------------------------*/
 html {
   -ms-overflow-style: -ms-autohiding-scrollbar; /*hide scrollbar in IE11*/
@@ -84,13 +119,6 @@ div {
 }
 
 
-#header {
-		position: fixed;
-		width: 100%;
-		height: 50px;
-		line-height: 50px;
-		bottom: 0;
-}
 
 .buy_flex {
   display: flex;

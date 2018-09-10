@@ -1,6 +1,7 @@
 // Make header ------------------------------------------------------------------------------------------------------------------------
 function Header(color) {
 
+	//placed in css to prevent inter page flicker
 	/*$('#header').css({
 		'position': 'fixed',
 		'width': '100%',
@@ -8,7 +9,7 @@ function Header(color) {
 		'line-height': header_height + 'px',
 		'bottom': 0,
 		'background-color': color,
-	})*/ //in stylesheet and page to prevent flicker
+	})*/
 	$('#header_whitespace').css({
 		'width': '100%',
 		'height': header_height * 2,
@@ -44,7 +45,7 @@ function HeaderLogo(HL_color) {
 		},
 	};
 
-	$('#headerlogo').css({
+	/*$('#headerlogo').css({
 		'position': 'absolute',
 		'width': HL.width, //HL.load.width,
 		'height': HL.width,//HL.load.width,
@@ -52,7 +53,7 @@ function HeaderLogo(HL_color) {
 		'fill': HL.color,
 		'right': HL.right,
 		'bottom': HL.bottom,
-	})
+	})*/
 	$('#header_menu').css({
 		'opacity': 1,  //no fade in
 	})
@@ -94,7 +95,7 @@ function HeaderLogo(HL_color) {
 				};
 			});
 		});
-	},10)
+	},100)
 };
 
 // Make headermenu --------------------------------------------------------------------------------------------------------------------
@@ -102,17 +103,17 @@ function HeaderMenu(text_color) {
 
 	var padding_right = 20;
 
-	$('#header_menu').css({
+	/*$('#header_menu').css({
 		'text-decoration': 'none',
 		'margin-top': 0,
 		'padding-left': HL.center_right(),
-	})
-	$('#header_menu li').css({
+	})*/
+	/*$('#header_menu li').css({
 		'font-weight': '400',
 		'display': 'inline-block',
 		'padding-right': '20px',
 		'color': text_color || color_back,
-	})
+	})*/
 
 	var menu_size = Math.round((($('#header_menu li').width() + padding_right)*4) + HL.center_right());
 	var menu_space = Math.round((window_width - (HL.center_right()*2)));
@@ -185,6 +186,8 @@ function MenuItem(MI_id, MI_href, MI_color) {
 				})*/
 			}
 		});
+	} else {
+		$(MI_id).css({'opacity':0.5})
 	};
 };
 
