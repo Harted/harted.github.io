@@ -7,4 +7,5 @@
   right: 0;
   border: 1px solid;
   pointer-events:none;
+  visibily: hidden;
 }
