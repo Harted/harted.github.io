@@ -22,6 +22,7 @@
 	<!-- Title -->
 	<title>Harted</title>
 	<link href='style/styles.css' rel='stylesheet' type='text/css'>
+	<link href='style/canvas.css' rel='stylesheet' type='text/css'>
 
 	<!-- scripts -->
 	<script src='script/jQuery/jquery-3.2.1.js'></script>
@@ -29,10 +30,19 @@
 	<script src='script/main.js'></script>
 	<script src='script/main_child.js'></script>
 	<script src='script/pages.js'></script>
+	<script src='script/canvas.js'></script>
 
 </head>
 <body>
 	<div class='fade'>
+
+		<!--CANVAS-->
+		<canvas id="c_logo" style='z-index:4;'></canvas>
+
+		<!--NAMECALLING-->
+		<div id="harted" class='top_left_align top_left_margin'>
+			<h2>HARTED</h2>
+		</div>
 
 		<div id='art_box'>
 			<img src='image/vlek.png' style='z-index:0'>
@@ -101,7 +111,7 @@
 	$('body').css({'background-color': color_back})
 
 	DetermineTouch(); //------------------------------------------------------------ |F| main.js
-	MakeAlignmentClasses(); // probably something for css file.. ------------------- |F| main.js
+	//MakeAlignmentClasses(); // probably something for css file.. ------------------- |F| main.js
 	MakeThings(); //---------------------------------------------------------------- |F| index.html <script>
 
 	function MakeThings() {
@@ -113,9 +123,10 @@
 		MakeArtBox(); //-------------------------------------------------------------- |F| main.js
 		Squares(); //----------------------------------------------------------------- |F| main.js
 		Shadow();
-		MakeLogo(); //---------------------------------------------------------------- |F| main.js
-		LinkLogos(color_1); //--------------------------------------------------------------- |F| main.js
+		MakeLogo('#3E3E3E'); //---------------------------------------------------------------- |F| main.js
+		LinkLogos('#3E3E3E'); //--------------------------------------------------------------- |F| main.js
 		BoxContentFormat(); //-------------------------------------------------------- |F| main.js
+		Canvas();
 	};
 
 	// Actions when document is ready--------------------------------------------------------------------------------------------------

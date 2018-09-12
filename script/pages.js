@@ -172,12 +172,13 @@ function MenuItem(MI_id, MI_href, MI_color) {
 					'opacity': 0,
 					'transition': HL.click.transition + 'ms',
 				});*/
-				$('#header, #header_forcescrollspace').css({
+				/*$('#header, #header_forcescrollspace').css({
 					'background-color': MI_color,
 					'transition': HL.click.transition + 'ms',
 				}).on('transitionend', function(){
 					window.location = MI_href;
-				});
+				});*/
+				window.location = MI_href;
 				/*$('#headerlogo').css({
 					'width': HL.load.width,
 					'height': HL.load.width,

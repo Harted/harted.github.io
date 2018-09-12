@@ -6,43 +6,11 @@ var action_area_base_size_factor = 3/2;
 
 // Colors
 
-/* palette test (temp disable for banner fix)
-
-var palette = {
-  blue_yellow: {
-    color_1: '#3E3E3E',
-    color_2: '#238482',
-    color_3: '#3BDB83',
-    color_4: '#F4C700',
-  },
-  blue: {
-    color_1: '#2F2F2F',
-    color_2: '#09494D',
-    color_3: '#337680',
-    color_4: '#5C9199',
-  },
-  grayscale: {
-    color_1: '#333333',
-    color_2: '#4D4D4D',
-    color_3: '#666666',
-    color_4: '#808080',
-  },
-}
-
-var pallet = 'blue_yellow'
-
-var color_1 = palette[pallet].color_1;
-var color_2 = palette[pallet].color_2;
-var color_3 = palette[pallet].color_3;
-var color_4 = palette[pallet].color_4;
-*/
-
-var color_1 = '#3E3E3E';
-var color_2 = '#238482';
-var color_3 = '#3BDB83';
-var color_4 = '#F4C700';
-
-var color_back = "#FFF";
+var color_1 = '#FFFFFF';//'#3E3E3E'
+var color_2 = '#FFFFFF';//'#238482';
+var color_3 = '#FFFFFF';//'#3BDB83';
+var color_4 = '#FFFFFF';//'#F4C700';
+var color_back = '#FFFFFF';
 
 // Window width variables
 var window_width, window_height, min_window_size;

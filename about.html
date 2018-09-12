@@ -17,7 +17,7 @@
 	<link rel='shortcut icon' href='icons/favicon.ico'>
 
 	<!-- Title -->
-	<title>About</title>
+	<title>Harted | About</title>
 	<link href='style/styles.css' rel='stylesheet' type='text/css'>
 	<!-- scripts -->
 	<script src='script/jQuery/jquery-3.2.1.js'></script>
@@ -31,7 +31,8 @@
 
 	<!-- Header -->
 
-	<div id='header' class='color_1' style='z-index:99'>
+	<div id='header' class='color_1 shadow' style='z-index:99'>
+		<h5 style='position:absolute;right:6%;bottom:-23px;'>HARTED</h5>
 		<ul id='header_menu'>
 			<li id='menu_about'>About</li>
 			<li id='menu_music'>Music</li>
@@ -126,9 +127,9 @@
 		GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
 		Responsive(); //-------------------------------------------------------------- |F| main.js
 		CalculateSizes(); //---------------------------------------------------------- |F| main.js
-		Header(color_1); //----------------------------------------------------------- |F| pages.js ------------------- COLOR SETTING!
-		HeaderLogo(color_back); //---------------------------------------------------- |F| pages.js
-		HeaderMenu(); //-------------------------------------------------------------- |F| pages.js
+		Header(color_back); //----------------------------------------------------------- |F| pages.js ------------------- COLOR SETTING!
+		HeaderLogo(color_1); //---------------------------------------------------- |F| pages.js
+		HeaderMenu(color_1); //-------------------------------------------------------------- |F| pages.js
 		LinkLogos(color_1); //--------------------------------------------------------------- |F| main.js
 		ContentContainer(); //-------------------------------------------------------- |F| pages.js
 		ContainerChild(); //----------------------------------------------------------- |F| pages.js

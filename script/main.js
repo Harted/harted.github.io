@@ -1,3 +1,4 @@
+console.log('main_ls:' + logo_size)
 // Get user agent ---------------------------------------------------------------------------------------------------------------------
 function getUserAgent() {
 	var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -32,12 +33,12 @@ function DetermineTouch(){
 };
 
 // Make alignment classes for box content ---------------------------------------------------------------------------------------------
-function MakeAlignmentClasses() {
+/*function MakeAlignmentClasses() {
 	$('.top_left_align').css({'position': 'absolute'});
 	$('.bottom_left_align').css({'position': 'absolute','bottom': '0'});
 	$('.bottom_right_align').css({'position': 'absolute','bottom': '0','right': '0'});
 	$('.top_right_align').css({'position': 'absolute','right': '0'});
-};
+};*/
 
 // Get minimum window size ------------------------------------------------------------------------------------------------------------
 function GetMinWindowSize() {
@@ -109,6 +110,7 @@ function CalculateSizes() {
 		ref_box_size = Math.round(min_window_size / 3 * 2);
 		SizesByRefBox(); //--------------------------------------------------------- |F| main_child.js
 	}
+	console.log(ref_box_size)
 };
 
 // Reference box ----------------------------------------------------------------------------------------------------------------------
@@ -191,9 +193,14 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 		'height': MS_size,
 		'right': MS_right,
 		'bottom': MS_bottom,
-		'background-color': eval('color_' + MS_ref),
+		'background-color': eval('color_' + MS_ref) + '80',
 		'transition': MS_animation_speed,
 	});
+	if (screen_small == true) {
+		$(MS_id).css({
+			'background-color': eval('color_' + MS_ref) + '80',
+		});
+	};
 
 	// if small screen or iphone no hover animation and clicktrough immediately
 	if (screen_small == true || touch == true) {
@@ -209,6 +216,7 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 				'height': hover_size,
 				'right': MS_right_h,
 				'bottom': MS_bottom_h,
+				'background-color': eval('color_' + MS_ref),
 			}) //actions on end of transisition:
 			.off('transitionend').one('transitionend', function() {
 				$(this).css({
@@ -217,6 +225,7 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 					ClickFunction(MS_id, MS_href) //-------------------------------------- |F| main_child.js
 				})
 			})
+			//$(MS_id + ' h2').css('color',color_back)
 			// logo animation
 			$('#logo').css({
 				'fill': eval('color_' + MS_ref),
@@ -233,12 +242,14 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 				'bottom': MS_bottom,
 				'transition': MS_animation_speed,
 				'cursor': 'initial',
+				'background-color': eval('color_' + MS_ref) + '80',
 			}).off('transitionend')
 			// logo animation
 			$('#logo').css({
-				'fill': color_back,
+				'fill': '#3E3E3E',
 				'transition': MS_animation_speed
 			});
+			//$(MS_id + ' h2').css('color',color_1)
 		});
 	};
 };
@@ -248,12 +259,12 @@ function Shadow() {
 	if (screen_small == true) {
 		$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
 	} else {
-		$('.shadow').css('box-shadow', '0px 0px 12px rgba(0,0,0,0.35)')
+		$('.shadow').css('box-shadow', '0px 0px 12px rgba(0,0,0,.35)')
 	}
 }
 
 // Make logo --------------------------------------------------------------------------------------------------------------------------
-function MakeLogo() {
+function MakeLogo(color) {
 	$('#logo').css({
 		'position': 'absolute',
 		'width': logo_size,
@@ -267,7 +278,7 @@ function MakeLogo() {
 		'bottom': 0,
 		'right': 0,
 		//color
-		'fill': color_back
+		'fill': color
 	});
 };
 
@@ -343,9 +354,9 @@ function LinkLogos(LL_color){
 	if (screen_small == true && width_big == false) {
 		var LLS = {
 			logo: {
-				opacity: 0.75,
+				opacity: 0.25,
 				opacity_click: 1,
-				color: color_back,
+				color: LL_color,
 				width: logo_size/2,
 				margin: 0,
 				padding_bottom: 0,

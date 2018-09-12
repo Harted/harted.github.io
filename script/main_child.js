@@ -97,7 +97,7 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 		'margin': '0px',
 	});
 	$('#art_box').css('display', 'none');
-	$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)');
+	//$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)');
 
 	// Transition logo color on touch devices
 	$('#logo').css({
@@ -110,6 +110,8 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 		'opacity': 0,
 		'transition': 50 * anim_speed_factor + 'ms',
 	});
+
+	//$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0.35)')
 
 	// Set timeout for logo to fade to color on touch devices
 	if (touch == true) {
@@ -137,6 +139,7 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 				'width': 0,
 				'height': 0,
 			});
+			$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
 			setTimeout(function() {
 				window.location = CF_href;
 			}, 300 * anim_speed_factor)

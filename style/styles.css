@@ -1,18 +1,21 @@
 /* Fonts -----------------------------------------------------------------------*/
 @import url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,500');
 
+/* Colors ----------------------------------------------------------------------*/
+.color_1 { background-color: #FFFFFF; }
+.color_2 { background-color: #FFFFFF; }
+.color_3 { background-color: #FFFFFF; }
+.color_4 { background-color: #FFFFFF; }
+.color_back { background-color: #FFFFFF; }
+
 /* HEADER ----------------------------------------------------------------------*/
 #header {
-		position: fixed;
-		width: 100%;
-		height: 50px; /* header_height */
-		line-height: 50px; /* header_height + 'px' */
-		bottom: 0;
+	position: fixed;
+	width: 100%;
+	height: 50px; /* header_height */
+	line-height: 50px; /* header_height + 'px' */
+	bottom: 0;
 }
-.color_1 { background-color: #3E3E3E; }
-.color_2 { background-color: #238482; }
-.color_3 { background-color: #3BDB83; }
-.color_4 { background-color: #F4C700; }
 #header_menu {
   text-decoration: none;
   margin-top: 0;
@@ -22,19 +25,26 @@
   font-weight: 400;
   display: inline-block;
   padding-right: 20px;
-  color: #FFF;
+  color: #4E4E4E;/*#FFF;*/
 }
 #headerlogo {
 	position: absolute;
 	width: 30px;
 	height: 30px;
 	margin: 10px;
-	fill: #FFF;
+	fill: #4E4E4E;/*#FFF;*/
 	right: 3%;
 	bottom: 0;
 	transition: 0ms;
 }
 
+/* MakeAlignmentClasses --------------------------------------------------------*/
+.top_left_align, .bottom_left_align, .bottom_right_align, .top_right_align {
+	position: absolute;
+}
+.bottom_left_align {bottom:0;}
+.bottom_right_align {bottom:0; right:0}
+.top_right_align {right:0;}
 
 /* Scrollbar -------------------------------------------------------------------*/
 html {
@@ -42,7 +52,7 @@ html {
 }
 
 body::-webkit-scrollbar { /*hide scrollbar in windows chrome*/
-display: none;
+	display: none;
 }
 
 /* BODY ------------------------------------------------------------------------*/
@@ -76,7 +86,7 @@ h1 {
 h2 {
   font-weight: 200;
   margin: 0;
-  color: white;
+  color: #3E3E3E;
   line-height: 1em;
 }
 h4 {
@@ -119,7 +129,7 @@ div {
 }
 
 
-
+/* TEMPORARY */
 .buy_flex {
   display: flex;
   flex-direction: row;
