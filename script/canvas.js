@@ -35,7 +35,7 @@ function Canvas(){
   //DrawHex(cl, 6, logo_size/2, c_logo.width/2, c_logo.height/2)
 
   for (var i = 2; i <= 1000 ; i++) {
-    DrawHex(cl, 6, logo_size/10 * Math.random(), (c_logo.width * Math.random()), (c_logo.heigth * Math.random()))
+    DrawHex(cl, 6, logo_size/10 * Math.random(), (c_logo.width * Math.random()), (c_logo.height * Math.random()))
   }
 
   function DrawHex(context_id, sides, size, xcenter, ycenter){
