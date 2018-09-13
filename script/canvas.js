@@ -65,13 +65,31 @@ function Canvas(){
         context_id.arcTo (this.x1, this.y1, this.x2, this.y2, this.size/6);
     }
     context_id.closePath()
-    context_id.strokeStyle = "#999"
+    context_id.strokeStyle = "#222"
     context_id.fillStyle = "#999"
     context_id.lineWidth = size/30;
     context_id.stroke()
     context_id.fill()
     context_id.restore()
 
+  }
+
+  var j = 1
+  var d = 1
+
+  animate();
+
+  function animate(){
+    requestAnimationFrame(animate);
+    cl.clearRect(0,0,c_logo.width, c_logo.height)
+    for (var i = 2; i <= 1000 ; i++) {
+      DrawHex(cl, 6, logo_size/10 * Math.random(), (c_logo.width * Math.random()), (c_logo.height * Math.random()))
+    }
+    // DrawHex(cl, 6, logo_size/10 * j, (c_logo.width/2), (c_logo.height/2))
+    // j = j + d
+    // if (j > 50 || j < 1) {
+      // d = -d
+    // }
   }
 
 
