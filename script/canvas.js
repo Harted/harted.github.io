@@ -6,34 +6,74 @@ function Canvas(){
 
   var cl = c_logo.getContext('2d');
   var deg = Math.PI / 180
+  var circle = Math.PI * 2
 
 
-  cl.translate(c_logo.width/2,c_logo.height/2)
-  cl.scale(1.05,1)
-  cl.rotate(30 * deg);
-  cl.translate(-c_logo.width/2,-c_logo.height/2)
+  //
+  //
+  // // hexagon
+  // var sides = 6,
+  // size = logo_size*2,
+  // xc = c_logo.width/2,
+  // yc = c_logo.height/2;
+  // x1 = xc +  (size * Math.cos((180/sides)*deg)) * Math.cos(circle/(sides*2))
+  // y1 = yc +  (size * Math.cos((180/sides)*deg)) * Math.sin(circle/(sides*2))
+  //
+  // cl.save()
+  // cl.translate(c_logo.width/2,c_logo.height/2)
+  // cl.scale(1.05,1)
+  // cl.rotate(180/sides*deg)
+  // cl.translate(-c_logo.width/2,-c_logo.height/2)
+  //
+  // cl.beginPath();
+  // cl.moveTo (x1 , y1);
 
 
-  // hexagon
-  var numberOfSides = 6,
-  size = logo_size*4,
-  Xcenter = c_logo.width/2,
-  Ycenter = c_logo.height/2;
 
-  cl.beginPath();
-  x = Xcenter +  size * Math.cos(0)
-  y = Ycenter +  size * Math.sin(0)
-  cl.moveTo (x , y);
 
-  for (var i = 1; i <= numberOfSides + 1; i++) {
-    x = Xcenter + size * Math.cos((i-1) * 2 * Math.PI / numberOfSides)
-    y = Ycenter + size * Math.sin((i-1) * 2 * Math.PI / numberOfSides)
-    x2 = Xcenter + size * Math.cos((i) * 2 * Math.PI / numberOfSides)
-    y2 = Ycenter + size * Math.sin((i) * 2 * Math.PI / numberOfSides)
-    cl.arcTo (x, y, x2, y2, 30);
+
+  //DrawHex(cl, 6, logo_size/2, c_logo.width/2, c_logo.height/2)
+
+  for (var i = 2; i <= 1000 ; i++) {
+    DrawHex(cl, 6, logo_size/8 * Math.random(), (c_logo.width * Math.random()), (c_logo.width * Math.random()))
   }
-  cl.closePath()
 
-  cl.strokeStyle = "red"
-  cl.stroke()
+  function DrawHex(context_id, sides, size, xcenter, ycenter){
+    //variables
+    this.sides = sides
+    this.size = size
+    this.xc = xcenter
+    this.xy = ycenter
+    this.x1 = this.xc +  (this.size * Math.cos((180/this.sides)*deg)) * Math.cos(circle/(this.sides*2))
+    this.y1 = this.xy +  (this.size * Math.cos((180/this.sides)*deg)) * Math.sin(circle/(this.sides*2))
+
+    //transform
+    context_id.save()
+    context_id.translate(this.xc,this.xy)
+    context_id.scale(1.05,1)
+    context_id.rotate(180/sides*deg)
+    context_id.translate(-this.xc,-this.xy)
+
+    context_id.beginPath();
+    context_id.moveTo (this.x1 , this.y1);
+
+    for (var i = 2; i <= (this.sides) + 1; i++) {
+        this.x1 = this.xc + this.size * Math.cos((i-1) * circle / (this.sides))
+        this.y1 = this.xy + this.size * Math.sin((i-1) * circle / (this.sides))
+        this.x2 = this.xc + this.size * Math.cos((i) * circle / (this.sides))
+        this.y2 = this.xy + this.size * Math.sin((i) * circle / (this.sides))
+        context_id.arcTo (this.x1, this.y1, this.x2, this.y2, this.size/6);
+    }
+    context_id.closePath()
+    context_id.strokeStyle = "lightgray"
+    context_id.fillStyle = "lightgray"
+    context_id.lineWidth = size/30;
+    context_id.stroke()
+    context_id.fill()
+    context_id.restore()
+
+  }
+
+
+
 };
