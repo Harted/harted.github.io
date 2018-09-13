@@ -216,7 +216,7 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 				'height': hover_size,
 				'right': MS_right_h,
 				'bottom': MS_bottom_h,
-				'background-color': eval('color_' + MS_ref),
+				'background-color': eval('color_' + MS_ref) + AA,
 			}) //actions on end of transisition:
 			.off('transitionend').one('transitionend', function() {
 				$(this).css({
