@@ -65,8 +65,8 @@ function Canvas(){
         context_id.arcTo (this.x1, this.y1, this.x2, this.y2, this.size/6);
     }
     context_id.closePath()
-    context_id.strokeStyle = "lightgray"
-    context_id.fillStyle = "lightgray"
+    context_id.strokeStyle = "#EEE"
+    context_id.fillStyle = "#EEE"
     context_id.lineWidth = size/30;
     context_id.stroke()
     context_id.fill()
