@@ -1,96 +1,153 @@
 function Canvas(){
-  var c_logo = $('#c_logo')[0];
+  var background = $('#background')[0];
+  var c_logo = $('#center_logo')[0];
   //logo_size = 500
+  background.width = window.innerWidth
+  background.height = window.innerHeight
   c_logo.width = window.innerWidth
+  c_logo.style.width = window.innerWidth/2 + 'px'
   c_logo.height = window.innerHeight
+  c_logo.style.height = window.innerHeight/2 + 'px'
 
+  var b = background.getContext('2d');
   var cl = c_logo.getContext('2d');
   var deg = Math.PI / 180
-  var circle = Math.PI * 2
-
-
-  //
-  //
-  // // hexagon
-  // var sides = 6,
-  // size = logo_size*2,
-  // xc = c_logo.width/2,
-  // yc = c_logo.height/2;
-  // x1 = xc +  (size * Math.cos((180/sides)*deg)) * Math.cos(circle/(sides*2))
-  // y1 = yc +  (size * Math.cos((180/sides)*deg)) * Math.sin(circle/(sides*2))
-  //
-  // cl.save()
-  // cl.translate(c_logo.width/2,c_logo.height/2)
-  // cl.scale(1.05,1)
-  // cl.rotate(180/sides*deg)
-  // cl.translate(-c_logo.width/2,-c_logo.height/2)
-  //
-  // cl.beginPath();
-  // cl.moveTo (x1 , y1);
-
-
-
-
+  var cir = Math.PI * 2
 
   //DrawHex(cl, 6, logo_size/2, c_logo.width/2, c_logo.height/2)
 
-  for (var i = 2; i <= 1000 ; i++) {
-    DrawHex(cl, 6, logo_size/10 * Math.random(), (c_logo.width * Math.random()), (c_logo.height * Math.random()))
+  var LogoBorder = {
+    context: b,
+    sides: 6,
+    radius_div: 8,
+    size: function(){return logo_size/5 * Math.random()},
+    xcenter: function(){return c_logo.width * Math.random()},
+    ycenter: function(){return c_logo.height * Math.random()},
+    fill: {
+      on: false,
+      color: undefined,
+    },
+    border: {
+      on: true,
+      color: "#3E3E3E",
+      linediv: 60,
+    },
+    linewidth: function(){return this.size()/30},
   }
 
-  function DrawHex(context_id, sides, size, xcenter, ycenter){
+  var LogoFill = {
+    context: b,
+    sides: 6,
+    radius_div: 8,
+    size: function(){return logo_size/5  * Math.random()},
+    xcenter: function(){return c_logo.width * Math.random()},
+    ycenter: function(){return c_logo.height * Math.random()},
+    fill: {
+      on: true,
+      color:  "#3E3E3E",
+    },
+    border: {
+      on: false,
+      color: undefined,
+      linediv: undefined,
+    },
+  }
+
+  for (var i = 1; i <= 50 ; i++) {
+    DrawHex(LogoBorder)
+    DrawHex(LogoFill)
+  }
+
+  var CenterLogoBorder = {
+    context: cl,
+    sides: 6,
+    radius_div: 8,
+    size: function(){return (logo_size)*1.02},
+    xcenter: function(){return c_logo.width/2},
+    ycenter: function(){return c_logo.height/2},
+    fill: {
+      on: false,
+      color:  undefined,
+    },
+    border: {
+      on: true,
+      color: "#3E3E3E",
+      linediv: 60,
+    },
+  }
+
+  var CenterLogoFill = {
+    context: cl,
+    sides: 6,
+    radius_div: 8,
+    size: function(){return (logo_size)*0.97},
+    xcenter: function(){return c_logo.width/2},
+    ycenter: function(){return c_logo.height/2},
+    fill: {
+      on: true,
+      color:  '#3E3E3E',
+    },
+    border: {
+      on: false,
+      color: undefined,
+      linediv: undefined,
+    },
+  }
+
+  DrawHex(CenterLogoBorder)
+  DrawHex(CenterLogoFill)
+
+  for (var i = 1; i <= 50 ; i++) {
+    DrawHex(LogoBorder)
+    DrawHex(LogoFill)
+  }
+
+  function DrawHex(id){
     //variables
-    this.sides = sides
-    this.size = size
-    this.xc = xcenter
-    this.xy = ycenter
-    this.x1 = this.xc +  (this.size * Math.cos((180/this.sides)*deg)) * Math.cos(circle/(this.sides*2))
-    this.y1 = this.xy +  (this.size * Math.cos((180/this.sides)*deg)) * Math.sin(circle/(this.sides*2))
+    this.c = id.context
+    this.sides = id.sides
+    this.size = id.size()
+    this.radius = id.radius_div
+    this.xc = id.xcenter()
+    this.xy = id.ycenter()
+
+    this.x1 = this.xc +  (this.size * Math.cos((180/this.sides)*deg)) * Math.cos(cir/(this.sides*2))
+    this.y1 = this.xy +  (this.size * Math.cos((180/this.sides)*deg)) * Math.sin(cir/(this.sides*2))
 
     //transform
-    context_id.save()
-    context_id.translate(this.xc,this.xy)
-    context_id.scale(1.05,1)
-    context_id.rotate(180/sides*deg)
-    context_id.translate(-this.xc,-this.xy)
+    this.c.save()
+    this.c.translate(this.xc,this.xy)
+    this.c.scale(1.05,1)
+    this.c.rotate(180/this.sides*deg)
+    this.c.translate(-this.xc,-this.xy)
 
-    context_id.beginPath();
-    context_id.moveTo (this.x1 , this.y1);
+    this.c.beginPath();
+    this.c.moveTo (this.x1 , this.y1);
 
     for (var i = 2; i <= (this.sides) + 1; i++) {
-        this.x1 = this.xc + this.size * Math.cos((i-1) * circle / (this.sides))
-        this.y1 = this.xy + this.size * Math.sin((i-1) * circle / (this.sides))
-        this.x2 = this.xc + this.size * Math.cos((i) * circle / (this.sides))
-        this.y2 = this.xy + this.size * Math.sin((i) * circle / (this.sides))
-        context_id.arcTo (this.x1, this.y1, this.x2, this.y2, this.size/6);
+        this.x1 = this.xc + this.size * Math.cos((i-1) * cir / (this.sides))
+        this.y1 = this.xy + this.size * Math.sin((i-1) * cir / (this.sides))
+        this.x2 = this.xc + this.size * Math.cos((i) * cir / (this.sides))
+        this.y2 = this.xy + this.size * Math.sin((i) * cir / (this.sides))
+        this.c.arcTo (this.x1, this.y1, this.x2, this.y2, this.size/this.radius);
     }
-    context_id.closePath()
-    context_id.strokeStyle = "#222"
-    context_id.fillStyle = "#999"
-    context_id.lineWidth = size/30;
-    context_id.stroke()
-    context_id.fill()
-    context_id.restore()
+    this.c.closePath()
+    this.c.strokeStyle = id.border.color
+    this.c.lineWidth = this.size/id.border.linediv
+    this.c.fillStyle = id.fill.color
+
+    if (id.border.on == true) { this.c.stroke() }
+    if (id.fill.on == true) { this.c.fill() }
+
+    this.c.restore()
 
   }
 
-  var j = 1
-  var d = 1
 
-  animate();
-
-  function animate(){
-    requestAnimationFrame(animate);
-    cl.clearRect(0,0,c_logo.width, c_logo.height)
-    for (var i = 2; i <= 1000 ; i++) {
-      DrawHex(cl, 6, logo_size/10 * Math.random(), (c_logo.width * Math.random()), (c_logo.height * Math.random()))
-    }
-    // DrawHex(cl, 6, logo_size/10 * j, (c_logo.width/2), (c_logo.height/2))
-    // j = j + d
-    // if (j > 50 || j < 1) {
-      // d = -d
-    // }
-  }
+  // animate();
+  // function animate(){
+  //   requestAnimationFrame(animate);
+  // }
 
 
 

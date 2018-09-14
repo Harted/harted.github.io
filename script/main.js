@@ -1,4 +1,3 @@
-console.log('main_ls:' + logo_size)
 // Get user agent ---------------------------------------------------------------------------------------------------------------------
 function getUserAgent() {
 	var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -110,7 +109,6 @@ function CalculateSizes() {
 		ref_box_size = Math.round(min_window_size / 3 * 2);
 		SizesByRefBox(); //--------------------------------------------------------- |F| main_child.js
 	}
-	console.log(ref_box_size)
 };
 
 // Reference box ----------------------------------------------------------------------------------------------------------------------
