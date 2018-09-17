@@ -7,7 +7,7 @@
   	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<!-- Responsive -->
-	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
 
 	<!-- Favicon -->
 	<meta name='msapplication-config' content='icons/browserconfig.xml'>
@@ -37,7 +37,7 @@
 	<div class='fade'>
 
 		<!--CANVAS-->
-		<canvas id="background" style='z-index:0;'></canvas>
+		<canvas id="background" style='z-index:1;'></canvas>
 		<canvas id="center_logo" style='z-index:10;'></canvas>
 
 		<!--NAMECALLING-->
@@ -52,30 +52,30 @@
 		<!-- Reference box in centerof window -->
 		<div id='reference_box'>
 			<!-- Square in top left corner -->
-			<div id='top_left' class='shadow' style='z-index:1'>
+			<div id='top_left' class='shadow' style='z-index:2'>
 				<div class='top_left_align top_left_margin'>
 					<h2>About</h2>
 				</div>
 			</div>
 			<!-- Square in bottom left corner -->
-			<div id='bottom_left' class='shadow' style='z-index:2'>
+			<div id='bottom_left' class='shadow' style='z-index:3'>
 				<div class='bottom_left_align bottom_left_margin'>
 					<h2>Music</h2>
 				</div>
 			</div>
 			<!-- Square in bottom right corner -->
-			<div id='bottom_right' class='shadow' style='z-index:1'>
+			<div id='bottom_right' class='shadow' style='z-index:2'>
 				<div class='bottom_right_align bottom_right_margin'>
 					<h2>Video</h2>
 				</div>
 			</div>
 			<!-- Square in top right corner -->
-			<div id='top_right' class='shadow' style='z-index:2'>
+			<div id='top_right' class='shadow' style='z-index:3'>
 				<div class='top_right_align top_right_margin'>
 					<h2>Shows</h2>
 				</div>
 			</div>
-			<!--<svg id='logo' viewbox='0 0 500 500' style='z-index:3'>
+			<!--<svg id='logo' viewbox='0 0 500 500' style='z-index:4'>
 				<use xlink:href='svg/logo.svg#logo'></use>
 			</svg>-->
 		</div>
