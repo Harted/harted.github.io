@@ -1,18 +1,37 @@
 function Canvas(){
   var background = $('#background')[0];
   var c_logo = $('#center_logo')[0];
-  //logo_size = 500
-  background.width = window.innerWidth
-  background.height = window.innerHeight
-  c_logo.width = window.innerWidth
-  c_logo.style.width = window.innerWidth/2 + 'px'
-  c_logo.height = window.innerHeight
-  c_logo.style.height = window.innerHeight/2 + 'px'
-
   var b = background.getContext('2d');
   var cl = c_logo.getContext('2d');
+
+  var dPR = window.devicePixelRatio
+  console.log('window.devicePixelRatio: ' + dPR)
+  var iW = window.innerWidth
+  var iH = window.innerHeight
+  var iWdPR = window.innerWidth*dPR
+  var iHdPR = window.innerHeight*dPR
+
+  background.width = iWdPR
+  background.style.width = iW + 'px'
+  background.height = iHdPR
+  background.style.height = iH + 'px'
+
+  c_logo.width = iWdPR
+  c_logo.style.width = iW + 'px'
+  c_logo.height = iHdPR
+  c_logo.style.height = iH + 'px'
+
+
   var deg = Math.PI / 180
   var cir = Math.PI * 2
+
+  //pixelRatio compensation
+  cl.translate(iWdPR/2,iHdPR/2)
+  cl.scale(dPR,dPR)
+  cl.translate(-iWdPR/2,-iHdPR/2)
+  b.translate(b.width/2,b.width/2)
+  b.scale(dPR,dPR)
+  b.translate(-b.width/2,-b.width/2)
 
   //DrawHex(cl, 6, logo_size/2, c_logo.width/2, c_logo.height/2)
 
@@ -20,9 +39,9 @@ function Canvas(){
     context: b,
     sides: 6,
     radius_div: 8,
-    size: function(){return logo_size/5 * Math.random()},
-    xcenter: function(){return c_logo.width * Math.random()},
-    ycenter: function(){return c_logo.height * Math.random()},
+    size: function(){return logo_size/10 * Math.random()},
+    xcenter: function(){return iW * Math.random()},
+    ycenter: function(){return iH * Math.random()},
     fill: {
       on: false,
       color: undefined,
@@ -30,7 +49,7 @@ function Canvas(){
     border: {
       on: true,
       color: "#3E3E3E",
-      linediv: 60,
+      linediv: 15,
     },
     linewidth: function(){return this.size()/30},
   }
@@ -39,9 +58,9 @@ function Canvas(){
     context: b,
     sides: 6,
     radius_div: 8,
-    size: function(){return logo_size/5  * Math.random()},
-    xcenter: function(){return c_logo.width * Math.random()},
-    ycenter: function(){return c_logo.height * Math.random()},
+    size: function(){return logo_size/10 * Math.random()},
+    xcenter: function(){return iW * Math.random()},
+    ycenter: function(){return iH * Math.random()},
     fill: {
       on: true,
       color:  "#3E3E3E",
@@ -62,7 +81,7 @@ function Canvas(){
     context: cl,
     sides: 6,
     radius_div: 8,
-    size: function(){return (logo_size)*1.02},
+    size: function(){return (logo_size/2)*1.02},
     xcenter: function(){return c_logo.width/2},
     ycenter: function(){return c_logo.height/2},
     fill: {
@@ -80,7 +99,7 @@ function Canvas(){
     context: cl,
     sides: 6,
     radius_div: 8,
-    size: function(){return (logo_size)*0.97},
+    size: function(){return (logo_size/2)*0.97},
     xcenter: function(){return c_logo.width/2},
     ycenter: function(){return c_logo.height/2},
     fill: {
