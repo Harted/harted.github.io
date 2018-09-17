@@ -30,14 +30,13 @@
 	<script src='script/main.js'></script>
 	<script src='script/main_child.js'></script>
 	<script src='script/pages.js'></script>
-	<script src='script/canvas.js'></script>
 
 </head>
 <body>
 	<div class='fade'>
 
 		<!--CANVAS-->
-		<canvas id="background" style='z-index:1;'></canvas>
+		<canvas id="background" style='z-index:0;'></canvas>
 		<canvas id="center_logo" style='z-index:10;'></canvas>
 
 		<!--NAMECALLING-->
@@ -46,7 +45,7 @@
 		</div>
 
 		<div id='art_box'>
-			<img src='image/vlek.png' style='z-index:0'>
+			<img src='image/vlek.png' style='z-index:1'>
 		</div>
 
 		<!-- Reference box in centerof window -->
@@ -127,7 +126,6 @@
 		MakeLogo('#3E3E3E'); //---------------------------------------------------------------- |F| main.js
 		LinkLogos('#3E3E3E'); //--------------------------------------------------------------- |F| main.js
 		BoxContentFormat(); //-------------------------------------------------------- |F| main.js
-		Canvas();
 	};
 
 	// Actions when document is ready--------------------------------------------------------------------------------------------------
@@ -166,5 +164,9 @@
 	});
 
 </script>
+<script src='script/canvas/init.js'></script>
+<script src='script/canvas/object_properties.js'></script>
+<script src='script/canvas/object.js'></script>
+<script src='script/canvas/draw.js'></script>
 </body >
 </html>

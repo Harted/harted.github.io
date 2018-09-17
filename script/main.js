@@ -199,7 +199,6 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 			'background-color': eval('color_' + MS_ref) + '80',
 		});
 	};
-
 	// if small screen or iphone no hover animation and clicktrough immediately
 	if (screen_small == true || touch == true) {
 		$(MS_id).off('mouseenter mouseleave click').on('click', function() {
@@ -225,10 +224,13 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 			})
 			//$(MS_id + ' h2').css('color',color_back)
 			// logo animation
-			$('#logo').css({
-				'fill': eval('color_' + MS_ref),
-				'transition': MS_animation_speed
-			})
+			// $('#logo').css({
+			// 	'fill': eval('color_' + MS_ref),
+			// 	'transition': MS_animation_speed
+			// })
+			cl.clearRect(0,0,iW,iH);
+			AnimationTrigger(CL_fill,true)
+			AnimationTrigger(CL_border,true)
 		})
 		// MOUSE LEAVE
 		.mouseleave(function() {
@@ -243,10 +245,13 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 				'background-color': eval('color_' + MS_ref) + '80',
 			}).off('transitionend')
 			// logo animation
-			$('#logo').css({
-				'fill': '#3E3E3E',
-				'transition': MS_animation_speed
-			});
+			// $('#logo').css({
+			// 	'fill': '#3E3E3E',
+			// 	'transition': MS_animation_speed
+			// });
+			cl.clearRect(0,0,iW,iH);
+			AnimationTrigger(CL_fill,false)
+			AnimationTrigger(CL_border,false)
 			//$(MS_id + ' h2').css('color',color_1)
 		});
 	};
@@ -325,6 +330,7 @@ function MouseMove() {
 					// affect squares with proximity data
 					Proximities(); //------------------------------------------------------- |F| main_child.js
 					AffectSquares(); //----------------------------------------------------- |F| main_child.js
+					MouseMoveCanvas();
 				};
 			};
 			//console.log('-') DEBUG LOG

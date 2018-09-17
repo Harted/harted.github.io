@@ -64,3 +64,11 @@ var HL = {}; // header logo
 
 // Soundcloud
 var playing_global = false;
+
+
+
+//CANVAS
+
+var over = {
+  cl: false,
+}
