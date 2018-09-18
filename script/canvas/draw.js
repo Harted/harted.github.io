@@ -9,10 +9,10 @@ background.style.width = iW + 'px'
 background.height = iHdPR
 background.style.height = iH + 'px'
 
-c_logo.width = iWdPR
-c_logo.style.width = iW + 'px'
-c_logo.height = iHdPR
-c_logo.style.height = iH + 'px'
+c_logo.width = logo_size * 2
+c_logo.style.width = logo_size * 2 + 'px'
+c_logo.height = logo_size * 2
+c_logo.style.height = logo_size * 2 + 'px'
 
 
 //pixelRatio compensation
@@ -27,7 +27,7 @@ b.translate(-b.width/2,-b.height/2)
 //cl.globalCompositeOperation = 'lighter'
 
 var LA_array = [];
-for (var i = 0; i < 30; i++) {
+for (var i = 0; i < 15; i++) {
   LA_array.push(new DrawHex(LogoAnim))
 }
 
@@ -52,11 +52,13 @@ CL_border.draw();
 
 
 function MouseMoveCanvas(){
-  id = cl.getImageData(mouse_left || 0 ,mouse_top || 0,1,1).data
+  id = cl.getImageData(mouse_left - cl.canvas.offsetLeft ,mouse_top - cl.canvas.offsetTop,1,1).data
   if (id[3] > 0 && over.cl == false){
     over.cl = true
+    $('#center_logo').css('pointer-events', 'auto');
   } else if (id[3] == 0 && over.cl == true){
     over.cl = false
+    $('#center_logo').css('pointer-events', 'none');
   }
 }
 

@@ -9,12 +9,14 @@ var LogoAnim = {
     return {
       x: iW/2, //Math.random() * (iW - this.size() * 2) + this.size(),
       y: iH/2, //Math.random() * (iH - this.size() * 2) + this.size(),
+      spawnradius: 100,
     };
   },
+  velocity_factor: 1,
   getVelocity: function(){
     return {
-      x: 1/dPR * (Math.random() - 0.5) * 5,
-      y: 1/dPR * (Math.random() - 0.5) * 5,
+      x: 1/dPR * (Math.random() - 0.5) * this.velocity_factor,
+      y: 1/dPR * (Math.random() - 0.5) * this.velocity_factor,
     };
   },
   getFill: function () {
@@ -33,8 +35,8 @@ var LogoAnim = {
   animation: function() {
     return {
       func: 'circlereset',//'bounce',
-      startframe: 0, //Math.floor(Math.random() * 1000),
-      circleradius: min_window_size/2*0.9,
+      startframe: Math.floor(Math.random() * 500/this.velocity_factor),
+      circleradius: min_window_size/2*0.95,
     }
   },
 }
@@ -48,8 +50,9 @@ var CenterLogo_fill = {
   },
   getCenter: function(){
     return {
-      x: iW/2,
-      y: iH/2,
+      x: logo_size,
+      y: logo_size,
+      spawnradius: 0,
     };
   },
   getVelocity: function(){
@@ -76,7 +79,7 @@ var CenterLogo_fill = {
   animation: function() {
     return {
       func: undefined,
-      startframe: undefined,
+      startframe: 0,
     }
   },
 }
@@ -90,8 +93,9 @@ var CenterLogo_border = {
   },
   getCenter: function(){
     return {
-      x: iW/2,
-      y: iH/2,
+      x: logo_size,
+      y: logo_size,
+      spawnradius: 0,
     };
   },
   getVelocity: function(){
@@ -118,7 +122,7 @@ var CenterLogo_border = {
   animation: function() {
     return {
       func: undefined,
-      startframe: undefined,
+      startframe: 0,
     }
   },
 }
@@ -131,4 +135,8 @@ function ranum (a,b) {
 }
 function twoPointDist(x1,x2,y1,y2) {
   return Math.pow((Math.pow(x2-x1,2) + Math.pow(y2-y1,2)),0.5)
+}
+
+function valBetween(v, min, max) {
+    return (Math.min(max, Math.max(min, v)));
 }
