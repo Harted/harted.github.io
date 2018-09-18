@@ -73,7 +73,6 @@ function DrawHex(id){
       }
       this.c.closePath()
 
-      this.c.fillStyle = this.variableOpacity
       if (this.border.on == true) { this.c.stroke() }
       if (this.fill.on == true) { this.c.fill() }
 
