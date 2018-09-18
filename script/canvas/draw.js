@@ -3,15 +3,16 @@ iW = window.innerWidth
 iH = window.innerHeight
 iWdPR = window.innerWidth*dPR
 iHdPR = window.innerHeight*dPR
+console.log('devicePixelRatio: ' + dPR);
 
 background.width = iWdPR
 background.style.width = iW + 'px'
 background.height = iHdPR
 background.style.height = iH + 'px'
 
-c_logo.width = logo_size * 2
+c_logo.width = logo_size * 2 * dPR
 c_logo.style.width = logo_size * 2 + 'px'
-c_logo.height = logo_size * 2
+c_logo.height = logo_size * 2 * dPR
 c_logo.style.height = logo_size * 2 + 'px'
 
 
