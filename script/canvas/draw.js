@@ -27,7 +27,7 @@ b.translate(-b.width/2,-b.height/2)
 //cl.globalCompositeOperation = 'lighter'
 
 var LA_array = [];
-for (var i = 0; i < 50; i++) {
+for (var i = 0; i < 30; i++) {
   LA_array.push(new DrawHex(LogoAnim))
 }
 
@@ -48,10 +48,6 @@ var CL_border = new DrawHex(CenterLogo_border)
 CL_fill.draw();
 CL_border.draw();
 
-dood(cl)
-function dood(lala){
-  console.log(eval(lala))
-}
 
 
 

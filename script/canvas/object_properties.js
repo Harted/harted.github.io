@@ -13,8 +13,8 @@ var LogoAnim = {
   },
   getVelocity: function(){
     return {
-      x: 1/dPR * (Math.random() - 0.5) * 1,
-      y: 1/dPR * (Math.random() - 0.5) * 1,
+      x: 1/dPR * (Math.random() - 0.5) * 5,
+      y: 1/dPR * (Math.random() - 0.5) * 5,
     };
   },
   getFill: function () {
@@ -32,8 +32,9 @@ var LogoAnim = {
   },
   animation: function() {
     return {
-      func: 'borderreset',//'bounce',
-      startframe: Math.floor(Math.random() * 1000)
+      func: 'circlereset',//'bounce',
+      startframe: 0, //Math.floor(Math.random() * 1000),
+      circleradius: min_window_size/2*0.9,
     }
   },
 }
@@ -120,7 +121,6 @@ var CenterLogo_border = {
       startframe: undefined,
     }
   },
-  mouseover: false,
 }
 
 
@@ -128,4 +128,7 @@ var CenterLogo_border = {
 function ranum (a,b) {
   let x = Math.floor(((Math.random() * (b - a)) + a + 0.5))
   return x
+}
+function twoPointDist(x1,x2,y1,y2) {
+  return Math.pow((Math.pow(x2-x1,2) + Math.pow(y2-y1,2)),0.5)
 }
