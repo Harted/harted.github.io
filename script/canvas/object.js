@@ -6,8 +6,9 @@ function DrawHex(id, array, i){
   this.sides = id.sides
   this.size = id.getSize().s
   this.roundiv = id.roundiv
-  this.mass = id.getSize().s/id.getSize().max
-  console.log('size: ' + this.size, 'mass: ' + this.mass)
+  this.mass = 1
+  this.linedist = id.linedist
+  //console.log('size: ' + this.size, 'mass: ' + this.mass)
   this.init = function(){
     this.velocity = {
       x: id.getVelocity().x,
@@ -25,9 +26,14 @@ function DrawHex(id, array, i){
   }
   this.anti_overlap = function(){
     if (i !== 0 && array !== undefined) {
+      this.respawn = 0
       for (let j = 0; j < array.length; j++) {
         if (twoPointDist(this.startcenter.x, array[j].center.x, this.startcenter.y, array[j].center.y) - (this.size + array[j].size) < 0 && j !== i) {
-          console.log('respawn');
+          this.respawn = this.respawn + 1
+          if (this.respawn == 100) {
+            console.log('nohex')
+            return false
+          }
           this.init()
           j = -1;
         }
@@ -93,15 +99,13 @@ function DrawHex(id, array, i){
 
       //RESTORE the canvas state
       this.c.restore()
-
-      if (this.c == b && this.disttomouse < 500 && this.distobjtocenter > id.getCenter().spawnradius){
+      if (this.c == b && this.disttomouse < this.linedist && this.distobjtocenter > id.getCenter().spawnradius){
         this.c.beginPath()
         this.c.moveTo(this.center.x, this.center.y)
         this.c.lineTo(mouse_left, mouse_top)
         this.c.closePath()
-
-        this.variableOpacity = "rgba(50,50,50," + valBetween(Math.pow((10/(this.disttomouse))*2,2),0,1) +")"
-        this.c.strokeStyle = this.variableOpacity
+        this.lineOpacity = "rgba(50,50,50," + (-Math.pow(this.disttomouse/this.linedist,2)+1) + ")"
+        this.c.strokeStyle = this.lineOpacity
         this.c.stroke()
       }
     }
@@ -149,6 +153,10 @@ function DrawHex(id, array, i){
         this.center.y += this.velocity.y;
 
       }
+
+      //slowdown
+      // this.velocity.x = (Math.abs(this.velocity.x)-0.001)*(this.velocity.x/Math.abs(this.velocity.x))
+      // this.velocity.y = (Math.abs(this.velocity.y)-0.001)*(this.velocity.y/Math.abs(this.velocity.y))
 
       if (i !== 0 && array !== undefined) {
         for (let j = 0; j < array.length; j++) {

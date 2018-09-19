@@ -28,7 +28,7 @@ b.translate(-b.width/2,-b.height/2)
 //cl.globalCompositeOperation = 'lighter'
 
 var LA_array = [];
-for (var i = 0; i < 20; i++) {
+for (var i = 0; i < 30; i++) {
   LA_array.push(new DrawHex(LogoAnim, LA_array, i))
 }
 

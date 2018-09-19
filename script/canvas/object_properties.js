@@ -2,20 +2,21 @@ var LogoAnim = {
   context: b,
   sides: 6,
   roundiv: 8,
+  linedist: 100,
   getSize: function(){
     return {
-      s: (logo_size/6)*0.97 * (Math.random()),
-      max: (logo_size/6)*0.97,
+      s: (logo_size/12)*0.97 * (Math.random()/2+0.5),
+      max: (logo_size/12)*0.97,
     }
   },
   getCenter: function(){
     return {
       x: iW/2, //Math.random() * (iW - this.size() * 2) + this.size(),
       y: iH/2, //Math.random() * (iH - this.size() * 2) + this.size(),
-      spawnradius: 100,
+      spawnradius: min_window_size/6,
     };
   },
-  velocity_factor: 3,
+  velocity_factor: 1,
   getVelocity: function(){
     return {
       x: 1/dPR * (Math.random() - 0.5) * this.velocity_factor,
@@ -37,8 +38,8 @@ var LogoAnim = {
   },
   animation: function() {
     return {
-      func: 'bounce',//'bounce',
-      startframe: 0, // Math.floor(Math.random() * 500,
+      func: 'circlereset',//'bounce',
+      startframe: Math.floor(Math.random() * 1000),
       circleradius: min_window_size/2*0.95,
     }
   },
@@ -148,4 +149,12 @@ function twoPointDist(x1,x2,y1,y2) {
 
 function valBetween(v, min, max) {
     return (Math.min(max, Math.max(min, v)));
+}
+
+function looplog() {
+  setTimeout(function() {
+    console.log(((Math.random()/2)+0.5));
+    loop()
+  }, 250);
+
 }
