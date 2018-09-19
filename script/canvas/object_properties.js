@@ -2,8 +2,11 @@ var LogoAnim = {
   context: b,
   sides: 6,
   roundiv: 8,
-  size: function(){
-    return (logo_size/12)*0.97 * (Math.random()/2+0.5);
+  getSize: function(){
+    return {
+      s: (logo_size/6)*0.97 * (Math.random()),
+      max: (logo_size/6)*0.97,
+    }
   },
   getCenter: function(){
     return {
@@ -12,7 +15,7 @@ var LogoAnim = {
       spawnradius: 100,
     };
   },
-  velocity_factor: 1,
+  velocity_factor: 3,
   getVelocity: function(){
     return {
       x: 1/dPR * (Math.random() - 0.5) * this.velocity_factor,
@@ -34,8 +37,8 @@ var LogoAnim = {
   },
   animation: function() {
     return {
-      func: 'circlereset',//'bounce',
-      startframe: Math.floor(Math.random() * 500/this.velocity_factor),
+      func: 'bounce',//'bounce',
+      startframe: 0, // Math.floor(Math.random() * 500,
       circleradius: min_window_size/2*0.95,
     }
   },
@@ -45,8 +48,11 @@ var CenterLogo_fill = {
   context: cl,
   sides: 6,
   roundiv: 8,
-  size: function(){
-    return logo_size / 2 * 0.97;
+  getSize: function(){
+    return {
+      s: logo_size / 2 * 0.97,
+      max: undefined,
+    }
   },
   getCenter: function(){
     return {
@@ -88,8 +94,11 @@ var CenterLogo_border = {
   context: cl,
   sides: 6,
   roundiv: 8,
-  size: function(){
-    return logo_size / 2 * 1.02;
+  getSize: function(){
+    return {
+      s: logo_size / 2 * 1.02,
+      max: undefined,
+    }
   },
   getCenter: function(){
     return {

@@ -28,8 +28,8 @@ b.translate(-b.width/2,-b.height/2)
 //cl.globalCompositeOperation = 'lighter'
 
 var LA_array = [];
-for (var i = 0; i < 15; i++) {
-  LA_array.push(new DrawHex(LogoAnim))
+for (var i = 0; i < 20; i++) {
+  LA_array.push(new DrawHex(LogoAnim, LA_array, i))
 }
 
 
@@ -40,7 +40,7 @@ function animate(){
   frame = frame + 1
   b.clearRect(0,0,iW,iH);
   for (var i = 0; i < LA_array.length; i++) {
-    LA_array[i].update();
+    LA_array[i].update(LA_array);
   }
 }
 
