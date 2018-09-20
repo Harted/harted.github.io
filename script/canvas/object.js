@@ -7,7 +7,6 @@ function DrawHex(id, array, i){
   this.size = id.getSize().s
   this.roundiv = id.roundiv
   this.mass = 1
-  this.linedist = id.linedist
   //console.log('size: ' + this.size, 'mass: ' + this.mass)
   this.init = function(){
     this.velocity = {
@@ -53,9 +52,12 @@ function DrawHex(id, array, i){
     secondary_color: id.getBorder().secondary_color,
     linediv: id.getBorder().linediv,
   }
+  this.mouseline = {
+    dist: id.getMouseLine().dist,
+  }
   this.animation = {
     func: id.animation().func,
-    startframe: id.animation().startframe,
+    startframe: id.animation().startframe || 0,
     circleradius: id.animation().circleradius,
     trigger: false,
   }
@@ -66,9 +68,9 @@ function DrawHex(id, array, i){
 
   this.draw = function() {
 
-    if (frame > this.animation.startframe) {
+    if (frame >= this.animation.startframe) {
 
-      this.disttomouse = twoPointDist(this.center.x,mouse_left,this.center.y,mouse_top)
+      this.disttomouse = twoPointDist(this.center.x,mouse.x,this.center.y,mouse.y)
       this.distobjtocenter = twoPointDist(id.getCenter().x,this.center.x,id.getCenter().y,this.center.y)
 
       //SAVE the canvas state
@@ -99,12 +101,12 @@ function DrawHex(id, array, i){
 
       //RESTORE the canvas state
       this.c.restore()
-      if (this.c == b && this.disttomouse < this.linedist && this.distobjtocenter > id.getCenter().spawnradius){
+      if (this.c == b && this.disttomouse < this.mouseline.dist && this.distobjtocenter > id.getCenter().spawnradius){
         this.c.beginPath()
         this.c.moveTo(this.center.x, this.center.y)
-        this.c.lineTo(mouse_left, mouse_top)
+        this.c.lineTo(mouse.x, mouse.y)
         this.c.closePath()
-        this.lineOpacity = "rgba(50,50,50," + (-Math.pow(this.disttomouse/this.linedist,2)+1) + ")"
+        this.lineOpacity = "rgba(50,50,50," + (-Math.pow(this.disttomouse/this.mouseline.dist,2)+1) + ")"
         this.c.strokeStyle = this.lineOpacity
         this.c.stroke()
       }
