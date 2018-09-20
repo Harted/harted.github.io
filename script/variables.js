@@ -28,7 +28,11 @@ var ref_box_size;
 var ref_box_offset_top_center, ref_box_offset_left_center;
 
 // BoxProximity & mousemove variables
-var mouse_top, mouse_left, touch;
+var mouse = {
+  x: undefined,
+  y: undefined
+};
+var touch;
 var mousemove_enable = true; // to lower move move event rate
 
 var box_corner_offset, proximity_margin;

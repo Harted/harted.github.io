@@ -229,8 +229,8 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 			// 	'transition': MS_animation_speed
 			// })
 			cl.clearRect(0,0,iW,iH);
-			AnimationTrigger(CL_fill,true)
-			AnimationTrigger(CL_border,true)
+			ExtAnimTrigger(CL_fill,true)
+			ExtAnimTrigger(CL_border,true)
 		})
 		// MOUSE LEAVE
 		.mouseleave(function() {
@@ -250,8 +250,8 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 			// 	'transition': MS_animation_speed
 			// });
 			cl.clearRect(0,0,iW,iH);
-			AnimationTrigger(CL_fill,false)
-			AnimationTrigger(CL_border,false)
+			ExtAnimTrigger(CL_fill,false)
+			ExtAnimTrigger(CL_border,false)
 			//$(MS_id + ' h2').css('color',color_1)
 		});
 	};
@@ -321,12 +321,14 @@ function MouseMove() {
 	$(window).off('mousemove').on('mousemove', function(event) {
 		if (mousemove_enable == true) {
 			if (screen_small == false && touch == false) {
-				mouse_left = event.clientX;
-				mouse_top = event.clientY;
+				mouse = {
+					x: event.clientX,
+					y: event.clientY,
+				};
 				//filter double mouse event
-				if (mouse_left != mouse_left_old || mouse_top != mouse_top_old) {
-					var mouse_left_old = mouse_left;
-					varmouse_top_old = mouse_top;
+				if (mouse.x != mouse.x_old || mouse.y != mouse.y_old) {
+					mouse.x_old = mouse.x;
+					mouse.y_old = mouse.y;
 					// affect squares with proximity data
 					Proximities(); //------------------------------------------------------- |F| main_child.js
 					AffectSquares(); //----------------------------------------------------- |F| main_child.js

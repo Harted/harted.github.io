@@ -194,10 +194,10 @@ function Proximities() {
 function BoxProximity(BP_ref, BP_offset_top_center, BP_offset_left_center, BP_proximity_box_size) {
 	if (eval('BoxProximity_' + BP_ref + '_enable') == true) {
 		//value vert. & hor. from center of window (0: center / >0: out of center)
-		var mouse_vertical_from_center = Math.abs(mouse_top - BP_offset_top_center);
-		var mouse_horizontal_from_center = Math.abs(mouse_left - BP_offset_left_center);
-		var pos_neg_vertical = parseFloat(-(mouse_top - BP_offset_top_center) / mouse_vertical_from_center) || 1;
-		var pos_neg_horizontal = parseFloat(-(mouse_left - BP_offset_left_center) / mouse_horizontal_from_center) || 1;
+		var mouse_vertical_from_center = Math.abs(mouse.y - BP_offset_top_center);
+		var mouse_horizontal_from_center = Math.abs(mouse.x - BP_offset_left_center);
+		var pos_neg_vertical = parseFloat(-(mouse.y - BP_offset_top_center) / mouse_vertical_from_center) || 1;
+		var pos_neg_horizontal = parseFloat(-(mouse.x - BP_offset_left_center) / mouse_horizontal_from_center) || 1;
 		//value to center = half min_window_size, value at border of virtual minimum window size square = 0
 		var to_center_vertical_raw = (mouse_vertical_from_center - (BP_proximity_box_size / 2));
 		var to_center_vertical
