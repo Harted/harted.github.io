@@ -8,3 +8,13 @@ function ranum (a,b) {
 function twoPointDist(x1,x2,y1,y2) {
   return Math.pow((Math.pow(x2-x1,2) + Math.pow(y2-y1,2)),0.5)
 }
+
+// chance
+function chance(percentage){
+  var v = Math.random()*100
+  if (v < percentage){
+    return true
+  } else {
+    return false
+  }
+}

@@ -1,8 +1,10 @@
 const deg = Math.PI / 180
+const rad = 180 / Math.PI
 const cir = Math.PI * 2
 
 //global window variables
 var dPR = window.devicePixelRatio
+console.log('devicePixelRatio: '+ dPR);
 var iW = window.innerWidth
 var iH = window.innerHeight
 
@@ -19,7 +21,6 @@ img.onload = function() {
   art.drawImage(img,0,0, ref_box_size, ref_box_size)
 }
 img.src = 'image/vlek.png'
-console.log(img);
 
 
 // Global canvas generator with devicePixelRatio compensation

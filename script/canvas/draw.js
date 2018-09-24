@@ -6,7 +6,7 @@ CL_border.draw();
 
 //push object array for animation
 var LA_array = [];
-for (var i = 0; i < 30; i++) {
+for (var i = 0; i < 20; i++) {
   LA_array.push(new DrawHex(LogoAnim, LA_array, i))
 }
 

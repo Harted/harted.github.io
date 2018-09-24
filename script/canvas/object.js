@@ -6,8 +6,7 @@ function DrawHex(id, array, i){
   this.sides = id.sides
   this.size = id.getSize().s
   this.roundiv = id.roundiv
-  this.mass = 1
-  //console.log('size: ' + this.size, 'mass: ' + this.mass)
+  this.chance = id.chance
   this.init = function(){
     this.velocity = {
       x: id.getVelocity().x,
@@ -21,16 +20,14 @@ function DrawHex(id, array, i){
       x: this.startcenter.x,
       y: this.startcenter.y,
     }
-
   }
   this.anti_overlap = function(){
-    if (i !== 0 && array !== undefined) {
+    if (i > 0 && array !== undefined) {
       this.respawn = 0
       for (let j = 0; j < array.length; j++) {
         if (twoPointDist(this.startcenter.x, array[j].center.x, this.startcenter.y, array[j].center.y) - (this.size + array[j].size) < 0 && j !== i) {
           this.respawn = this.respawn + 1
-          if (this.respawn == 100) {
-            console.log('nohex')
+          if (this.respawn == 10000) {
             return false
           }
           this.init()
@@ -40,7 +37,12 @@ function DrawHex(id, array, i){
     }
   }
   this.init();
-  this.anti_overlap();
+  if (this.anti_overlap() == false) {
+    console.log("nohex", i)
+    this.update = function(){
+    }
+    return false
+  }
   this.fill = {
     on: id.getFill().on,
     color: id.getFill().color,
@@ -51,6 +53,7 @@ function DrawHex(id, array, i){
     color: id.getBorder().color,
     secondary_color: id.getBorder().secondary_color,
     linediv: id.getBorder().linediv,
+    ifnofill:id.getBorder().ifnofill,
   }
   this.mouseline = {
     dist: id.getMouseLine().dist,
@@ -61,6 +64,12 @@ function DrawHex(id, array, i){
     circleradius: id.animation().circleradius,
     trigger: false,
   }
+
+  //chance
+  if (chance(10) && this.chance == true) {
+    this.size = this.size * 4
+  }
+
 
   this.c.strokeStyle = this.border.color
   this.c.lineWidth = this.size/this.border.linediv
@@ -96,7 +105,11 @@ function DrawHex(id, array, i){
       }
       this.c.closePath()
 
-      if (this.border.on == true) { this.c.stroke() }
+      if (this.border.ifnofill){
+        if (this.fill.on == false) {this.c.stroke()}
+      } else if (this.border.on == true){
+        this.c.stroke()
+      }
       if (this.fill.on == true) { this.c.fill() }
 
       //RESTORE the canvas state
@@ -189,72 +202,49 @@ function DrawHex(id, array, i){
     }
   }
 
+function resolveCollision(obj1, obj2){
 
+  const xVelocityDiff = obj1.velocity.x - obj2.velocity.x;
+  const yVelocityDiff = obj1.velocity.y - obj2.velocity.y;
 
+  const xDist = obj2.center.x - obj1.center.x;
+  const yDist = obj2.center.y - obj1.center.y;
 
+  // Prevent accidental overlap of particles
+  if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
 
-  /**
- * Rotates coordinate system for velocities
- *
- * Takes velocities and alters them as if the coordinate system they're on was rotated
- *
- * @param  Object | velocity | The velocity of an individual particle
- * @param  Float  | angle    | The angle of collision between two objects in radians
- * @return Object | The altered x and y velocities after the coordinate system has been rotated
- */
+    //calculate mass
+    const m1 = Math.pow(obj1.size,2) * Math.PI
+    const m2 = Math.pow(obj2.size,2) * Math.PI
 
-function rotate(velocity, angle) {
-    const rotatedVelocities = {
-        x: velocity.x * Math.cos(angle) - velocity.y * Math.sin(angle),
-        y: velocity.x * Math.sin(angle) + velocity.y * Math.cos(angle)
-    };
+    //calculate speed vector
+    const v1 = Math.pow(Math.pow(obj1.velocity.x,2)+Math.pow(obj1.velocity.y,2),1/2)
+    const v2 = Math.pow(Math.pow(obj2.velocity.x,2)+Math.pow(obj2.velocity.y,2),1/2)
 
-    return rotatedVelocities;
-}
+    //calculate movement angles
+    const A1 = Math.atan(obj1.velocity.y/obj1.velocity.x)+(1-(Math.abs(obj1.velocity.x)/obj1.velocity.x))*90*deg || 90*deg*(Math.abs(obj1.velocity.y)/obj1.velocity.y)
+    const A2 = Math.atan(obj2.velocity.y/obj2.velocity.x)+(1-(Math.abs(obj2.velocity.x)/obj2.velocity.x))*90*deg || 90*deg*(Math.abs(obj2.velocity.y)/obj2.velocity.y)
 
-/**
- * Swaps out two colliding particles' x and y velocities after running through
- * an elastic collision reaction equation
- *
- * @param  Object | particle      | A particle object with x and y coordinates, plus velocity
- * @param  Object | otherParticle | A particle object with x and y coordinates, plus velocity
- * @return Null | Does not return a value
- */
+    //calculate collision angle
+    const B = Math.atan((obj1.center.y - obj2.center.y)/(obj1.center.x - obj2.center.x))
 
-function resolveCollision(particle, otherParticle) {
-    const xVelocityDiff = particle.velocity.x - otherParticle.velocity.x;
-    const yVelocityDiff = particle.velocity.y - otherParticle.velocity.y;
+    //cos and sin
+    const cA1B = Math.cos(A1-B)
+    const cA2B = Math.cos(A2-B)
+    const sA1B = Math.sin(A1-B)
+    const sA2B = Math.sin(A2-B)
+    const cB = Math.cos(B)
+    const sB = Math.sin(B)
 
-    const xDist = otherParticle.center.x - particle.center.x;
-    const yDist = otherParticle.center.y - particle.center.y;
+    //velocities
+    const obj1VelPart = (v1 * cA1B * (m1 - m2) + 2 * m2 * v2 * cA2B) / (m1 + m2)
+    obj1.velocity.x = obj1VelPart * cB - v1 * sA1B * sB
+    obj1.velocity.y = obj1VelPart * sB + v1 * sA1B * cB
 
-    // Prevent accidental overlap of particles
-    if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
+    const obj2VelPart = (v2 * cA2B * (m2 - m1) + 2 * m1 * v1 * cA1B) / (m2 + m1)
+    obj2.velocity.x = obj2VelPart * cB - v2 * sA2B * sB
+    obj2.velocity.y = obj2VelPart * sB + v2 * sA2B * cB
 
-        // Grab angle between the two colliding particles
-        const angle = -Math.atan2(otherParticle.center.y - particle.center.y, otherParticle.center.x - particle.center.x);
+  }
 
-        // Store mass in var for better readability in collision equation
-        const m1 = particle.mass;
-        const m2 = otherParticle.mass;
-
-        // Velocity before equation
-        const u1 = rotate(particle.velocity, angle);
-        const u2 = rotate(otherParticle.velocity, angle);
-
-        // Velocity after 1d collision equation
-        const v1 = { x: u1.x * (m1 - m2) / (m1 + m2) + u2.x * 2 * m2 / (m1 + m2), y: u1.y };
-        const v2 = { x: u2.x * (m1 - m2) / (m1 + m2) + u1.x * 2 * m2 / (m1 + m2), y: u2.y };
-
-        // Final velocity after rotating axis back to original location
-        const vFinal1 = rotate(v1, -angle);
-        const vFinal2 = rotate(v2, -angle);
-
-        // Swap particle velocities for realistic bounce effect
-        particle.velocity.x = vFinal1.x;
-        particle.velocity.y = vFinal1.y;
-
-        otherParticle.velocity.x = vFinal2.x;
-        otherParticle.velocity.y = vFinal2.y;
-    }
 }
