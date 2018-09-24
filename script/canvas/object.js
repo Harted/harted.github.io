@@ -204,44 +204,44 @@ function DrawHex(id, array, i){
 
 function resolveCollision(obj1, obj2){
 
-  const xVelocityDiff = obj1.velocity.x - obj2.velocity.x;
-  const yVelocityDiff = obj1.velocity.y - obj2.velocity.y;
+  var xVelocityDiff = obj1.velocity.x - obj2.velocity.x;
+  var yVelocityDiff = obj1.velocity.y - obj2.velocity.y;
 
-  const xDist = obj2.center.x - obj1.center.x;
-  const yDist = obj2.center.y - obj1.center.y;
+  var xDist = obj2.center.x - obj1.center.x;
+  var yDist = obj2.center.y - obj1.center.y;
 
   // Prevent accidental overlap of particles
   if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
 
     //calculate mass
-    const m1 = Math.pow(obj1.size,2) * Math.PI
-    const m2 = Math.pow(obj2.size,2) * Math.PI
+    var m1 = Math.pow(obj1.size,2) * Math.PI
+    var m2 = Math.pow(obj2.size,2) * Math.PI
 
     //calculate speed vector
-    const v1 = Math.pow(Math.pow(obj1.velocity.x,2)+Math.pow(obj1.velocity.y,2),1/2)
-    const v2 = Math.pow(Math.pow(obj2.velocity.x,2)+Math.pow(obj2.velocity.y,2),1/2)
+    var v1 = Math.pow(Math.pow(obj1.velocity.x,2)+Math.pow(obj1.velocity.y,2),1/2)
+    var v2 = Math.pow(Math.pow(obj2.velocity.x,2)+Math.pow(obj2.velocity.y,2),1/2)
 
     //calculate movement angles
-    const A1 = Math.atan(obj1.velocity.y/obj1.velocity.x)+(1-(Math.abs(obj1.velocity.x)/obj1.velocity.x))*90*deg || 90*deg*(Math.abs(obj1.velocity.y)/obj1.velocity.y)
-    const A2 = Math.atan(obj2.velocity.y/obj2.velocity.x)+(1-(Math.abs(obj2.velocity.x)/obj2.velocity.x))*90*deg || 90*deg*(Math.abs(obj2.velocity.y)/obj2.velocity.y)
+    var A1 = Math.atan(obj1.velocity.y/obj1.velocity.x)+(1-(Math.abs(obj1.velocity.x)/obj1.velocity.x))*90*deg || 90*deg*(Math.abs(obj1.velocity.y)/obj1.velocity.y)
+    var A2 = Math.atan(obj2.velocity.y/obj2.velocity.x)+(1-(Math.abs(obj2.velocity.x)/obj2.velocity.x))*90*deg || 90*deg*(Math.abs(obj2.velocity.y)/obj2.velocity.y)
 
     //calculate collision angle
-    const B = Math.atan((obj1.center.y - obj2.center.y)/(obj1.center.x - obj2.center.x))
+    var B = Math.atan((obj1.center.y - obj2.center.y)/(obj1.center.x - obj2.center.x))
 
     //cos and sin
-    const cA1B = Math.cos(A1-B)
-    const cA2B = Math.cos(A2-B)
-    const sA1B = Math.sin(A1-B)
-    const sA2B = Math.sin(A2-B)
-    const cB = Math.cos(B)
-    const sB = Math.sin(B)
+    var cA1B = Math.cos(A1-B)
+    var cA2B = Math.cos(A2-B)
+    var sA1B = Math.sin(A1-B)
+    var sA2B = Math.sin(A2-B)
+    var cB = Math.cos(B)
+    var sB = Math.sin(B)
 
     //velocities
-    const obj1VelPart = (v1 * cA1B * (m1 - m2) + 2 * m2 * v2 * cA2B) / (m1 + m2)
+    var obj1VelPart = (v1 * cA1B * (m1 - m2) + 2 * m2 * v2 * cA2B) / (m1 + m2)
     obj1.velocity.x = obj1VelPart * cB - v1 * sA1B * sB
     obj1.velocity.y = obj1VelPart * sB + v1 * sA1B * cB
 
-    const obj2VelPart = (v2 * cA2B * (m2 - m1) + 2 * m1 * v1 * cA1B) / (m2 + m1)
+    var obj2VelPart = (v2 * cA2B * (m2 - m1) + 2 * m1 * v1 * cA1B) / (m2 + m1)
     obj2.velocity.x = obj2VelPart * cB - v2 * sA2B * sB
     obj2.velocity.y = obj2VelPart * sB + v2 * sA2B * cB
 
