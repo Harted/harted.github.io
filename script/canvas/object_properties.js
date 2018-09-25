@@ -2,7 +2,7 @@ var LogoAnim = {
   context: b,
   sides: 6,
   roundiv: 8,
-  velocity_factor: 1,
+  velocity_factor: 10,
   chance: true,
   getSize: function(){
     if (chance(90)){
@@ -48,7 +48,7 @@ var LogoAnim = {
   },
   animation: function() {
     return {
-      func: 'circlereset',//'bounce',
+      func: 'bounce',//'bounce',
       startframe: Math.floor(Math.random() * 1000),
       circleradius: min_window_size/2*0.9, //circlereset
     }
