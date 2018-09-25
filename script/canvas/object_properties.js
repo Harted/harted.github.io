@@ -2,11 +2,13 @@ var LogoAnim = {
   context: b,
   sides: 6,
   roundiv: 8,
-  velocity_factor: 10,
+  velocity_factor: 1,
   chance: true,
   getSize: function(){
-    return {
-      s: (logo_size/6)*0.97 * (Math.random()/2+0.5),
+    if (chance(90)){
+      return (logo_size/12)*0.97 * (Math.random()/2+0.50)
+    } else {
+      return logo_size/4
     }
   },
   getCenter: function(){
@@ -34,18 +36,19 @@ var LogoAnim = {
       on: undefined,
       color: '#3E3E3E',
       secondary_color: undefined,
-      linediv: 20,
+      linediv: 30,
       ifnofill: true,
     };
   },
   getMouseLine: function() {
     return{
-      dist: 150,
+      dist: 200,
+      linewidth: 0.2,
     }
   },
   animation: function() {
     return {
-      func: 'bounce',//'bounce',
+      func: 'circlereset',//'bounce',
       startframe: Math.floor(Math.random() * 1000),
       circleradius: min_window_size/2*0.9, //circlereset
     }
@@ -59,9 +62,7 @@ var CenterLogo_fill = {
   velocity_factor: undefined,
   chance: false,
   getSize: function(){
-    return {
-      s: logo_size / 2 * 0.97,
-    }
+    return logo_size / 2 * 0.97
   },
   getCenter: function(){
     return {
@@ -112,10 +113,7 @@ var CenterLogo_border = {
   velocity_factor: undefined,
   chance: false,
   getSize: function(){
-    return {
-      s: logo_size / 2 * 1.02,
-      max: undefined,
-    }
+    return logo_size / 2 * 1.02
   },
   getCenter: function(){
     return {

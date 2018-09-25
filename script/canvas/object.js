@@ -2,9 +2,10 @@
 function DrawHex(id, array, i){
 
   //variables
+  this._id = i
   this.c = id.context
   this.sides = id.sides
-  this.size = id.getSize().s
+  this.size = id.getSize()
   this.roundiv = id.roundiv
   this.chance = id.chance
   this.init = function(){
@@ -27,8 +28,8 @@ function DrawHex(id, array, i){
       for (let j = 0; j < array.length; j++) {
         if (twoPointDist(this.startcenter.x, array[j].center.x, this.startcenter.y, array[j].center.y) - (this.size + array[j].size) < 0 && j !== i) {
           this.respawn = this.respawn + 1
-          if (this.respawn == 10000) {
-            return false
+          if (this.respawn == 100) {
+            return true
           }
           this.init()
           j = -1;
@@ -37,12 +38,7 @@ function DrawHex(id, array, i){
     }
   }
   this.init();
-  if (this.anti_overlap() == false) {
-    console.log("nohex", i)
-    this.update = function(){
-    }
-    return false
-  }
+  this.overlap = this.anti_overlap()
   this.fill = {
     on: id.getFill().on,
     color: id.getFill().color,
@@ -57,33 +53,29 @@ function DrawHex(id, array, i){
   }
   this.mouseline = {
     dist: id.getMouseLine().dist,
+    linewidth: id.getMouseLine().linewidth,
   }
   this.animation = {
     func: id.animation().func,
-    startframe: id.animation().startframe || 0,
+    startframe: id.animation().startframe,
     circleradius: id.animation().circleradius,
     trigger: false,
   }
 
-  //chance
-  if (chance(10) && this.chance == true) {
-    this.size = this.size * 4
-  }
-
-
   this.c.strokeStyle = this.border.color
-  this.c.lineWidth = this.size/this.border.linediv
   this.c.fillStyle = this.fill.color
 
   this.draw = function() {
 
-    if (frame >= this.animation.startframe) {
+    if (frame >= this.animation.startframe || this.animation.startframe == undefined) {
 
       this.disttomouse = twoPointDist(this.center.x,mouse.x,this.center.y,mouse.y)
       this.distobjtocenter = twoPointDist(id.getCenter().x,this.center.x,id.getCenter().y,this.center.y)
 
       //SAVE the canvas state
       this.c.save()
+
+      this.c.lineWidth = this.size/this.border.linediv
 
       this.c.translate(this.center.x,this.center.y)
       this.c.scale(1.05,1)
@@ -110,16 +102,18 @@ function DrawHex(id, array, i){
       } else if (this.border.on == true){
         this.c.stroke()
       }
-      if (this.fill.on == true) { this.c.fill() }
+      if (this.fill.on) { this.c.fill() }
 
       //RESTORE the canvas state
       this.c.restore()
+      //mouse lines
       if (this.c == b && this.disttomouse < this.mouseline.dist && this.distobjtocenter > id.getCenter().spawnradius){
         this.c.beginPath()
         this.c.moveTo(this.center.x, this.center.y)
         this.c.lineTo(mouse.x, mouse.y)
         this.c.closePath()
         this.lineOpacity = "rgba(50,50,50," + (-Math.pow(this.disttomouse/this.mouseline.dist,2)+1) + ")"
+        this.c.lineWidth = this.mouseline.linewidth
         this.c.strokeStyle = this.lineOpacity
         this.c.stroke()
       }
@@ -210,16 +204,20 @@ function resolveCollision(obj1, obj2){
   var xDist = obj2.center.x - obj1.center.x;
   var yDist = obj2.center.y - obj1.center.y;
 
+  //console.log(obj1._id, obj2._id);
+
   // Prevent accidental overlap of particles
   if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
+
+
 
     //calculate mass
     var m1 = Math.pow(obj1.size,2) * Math.PI
     var m2 = Math.pow(obj2.size,2) * Math.PI
 
     //calculate speed vector
-    var v1 = Math.pow(Math.pow(obj1.velocity.x,2)+Math.pow(obj1.velocity.y,2),1/2)
-    var v2 = Math.pow(Math.pow(obj2.velocity.x,2)+Math.pow(obj2.velocity.y,2),1/2)
+    var v1 = phyt_a(obj1.velocity.x,obj1.velocity.y)
+    var v2 = phyt_a(obj2.velocity.x,obj2.velocity.y)
 
     //calculate movement angles
     var A1 = Math.atan(obj1.velocity.y/obj1.velocity.x)+(1-(Math.abs(obj1.velocity.x)/obj1.velocity.x))*90*deg || 90*deg*(Math.abs(obj1.velocity.y)/obj1.velocity.y)

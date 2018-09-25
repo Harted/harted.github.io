@@ -1,4 +1,4 @@
-#center_logo, #background, #art {
+#center_logo, #background, #art, #tree {
   position: absolute;
   margin: auto;
   top: 0;
@@ -7,4 +7,13 @@
   right: 0;
   /* border: 1px solid #000; */
   pointer-events: none;
+}
+
+#tree {
+  /* border: 1px solid #000; */
+}
+
+/*temp*/
+#reference_box {
+  /* visibility: hidden; */
 }
