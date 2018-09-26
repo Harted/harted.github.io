@@ -4,6 +4,7 @@ const cir = Math.PI * 2
 
 //global window variables
 var dPR = window.devicePixelRatio
+//dPR = 1
 console.log('devicePixelRatio: '+ dPR);
 var iW = window.innerWidth
 var iH = window.innerHeight
