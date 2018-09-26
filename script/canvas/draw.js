@@ -1,13 +1,13 @@
 //draw static objects
 var CL_fill = new DrawHex(CenterLogo_fill)
-//CL_fill.draw();
+CL_fill.draw();
 var CL_border = new DrawHex(CenterLogo_border)
-//CL_border.draw();
+CL_border.draw();
 
 //IMG -----------------------------------------------------------------------------------------------------------------------------------
 var img = new Image();
 img.onload = function() {
-  //art.drawImage(img,0,0, ref_box_size, ref_box_size)
+  art.drawImage(img,0,0, ref_box_size, ref_box_size)
 }
 img.src = 'image/vlek.png'
 
@@ -166,7 +166,7 @@ function animate(){
   frame = requestAnimationFrame(animate)
   b.clearRect(0,0,iW,iH);
   for (var i = 0; i < LA_array.length; i++) {
-    //LA_array[i].update(LA_array);
+    LA_array[i].update(LA_array);
   }
 }
 
