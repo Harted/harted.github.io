@@ -2,7 +2,7 @@ var LogoAnim = {
   context: b,
   sides: 6,
   roundiv: 8,
-  velocity_factor: 10,
+  velocity_factor: 2,
   chance: true,
   getSize: function(){
     if (chance(90)){
