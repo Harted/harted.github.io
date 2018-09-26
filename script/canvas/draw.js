@@ -25,24 +25,24 @@ function MakeTree(c){
     c.beginPath()
     c.moveTo(this.start.x,this.start.y)
     ypoint = ((Math.random()/4)+0.5)*tree.canvas.height/dPR
-    xpoint = Math.random()*100
+    xpoint = Math.random()*100 - 50
 
-    c.lineTo(this.start.x-xpoint,ypoint)
-    c.lineWidth = 1/dPR/5
+    c.lineTo(this.start.x+xpoint,ypoint)
+    c.lineWidth = 1/dPR
     c.closePath()
     c.stroke()
 
     c.beginPath()
-    c.moveTo(this.start.x-xpoint,ypoint)
-    c.lineTo(this.start.x+100,ypoint-100)
-    c.lineWidth = 1/dPR/5
+    c.moveTo(this.start.x+xpoint,ypoint)
+    c.lineTo(this.start.x+xpoint,ypoint-100)
+    c.lineWidth = 1/dPR
     c.closePath()
     c.stroke()
 
     c.beginPath()
-    c.moveTo(this.start.x-xpoint,ypoint)
-    c.lineTo(this.start.x-100,ypoint-100)
-    c.lineWidth = 1/dPR/5
+    c.moveTo(this.start.x+xpoint,ypoint)
+    c.lineTo(this.start.x-xpoint,ypoint-100)
+    c.lineWidth = 1/dPR
     c.closePath()
     c.stroke()
   }
@@ -92,7 +92,7 @@ function findpixel(i){
     //console.log('1')
     //console.log(pixel)
     i++
-    //findpixel(i) DEBUG
+    findpixel(i)
   } else if (pixel.hue == 0) {
     //console.log('2')
     i++
@@ -100,30 +100,26 @@ function findpixel(i){
   } else {
     found = true
   }
-  //console.log(pixel)
-  return [i, found]
+  return found
 }
 
-for (var i = 0; i < treehuedata.length; i+=dPR) {
+for (var i = 0; i < treehuedata.length; i++) {
   if (treehuedata[i] > 0 && pixelfound < 2000) {
-
-    retval = findpixel(i)
-    //console.log(retval)
-    i = retval[0]
-    if (retval[1]) {
+    if (findpixel(i)) {
+      i++
       pixelfound++
       pixelarray.push(pixel)
     }
   }
 }
 
-console.log(pixelarray);
+//console.log(pixelarray);
 
 tree.fillStyle = '#3E3E3E'
 
 for (var i = 0; i < pixelarray.length; i++) {
   tree.beginPath()
-  tree.arc(pixelarray[i].x/dPR,pixelarray[i].y/dPR,(Math.random()/2*(i/50)+1),0,Math.PI*2)
+  tree.arc(pixelarray[i].x/dPR,pixelarray[i].y/dPR,((Math.random()/2+0.5)*(i/50))/dPR,0,Math.PI*2)
   tree.closePath()
   tree.fill()
 }
