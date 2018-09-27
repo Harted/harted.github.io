@@ -11,6 +11,7 @@
 
 #tree {
   border: 1px solid #000;
+  visibility: hidden;
 }
 
 /*temp*/
