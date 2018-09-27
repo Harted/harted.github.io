@@ -1,53 +1,28 @@
 //draw static objects
 var CL_fill = new DrawHex(CenterLogo_fill)
-CL_fill.draw();
+//CL_fill.draw();
 var CL_border = new DrawHex(CenterLogo_border)
-CL_border.draw();
+//CL_border.draw();
 
 //IMG -----------------------------------------------------------------------------------------------------------------------------------
 var img = new Image();
 img.onload = function() {
-  art.drawImage(img,0,0, ref_box_size, ref_box_size)
+  //art.drawImage(img,0,0, ref_box_size, ref_box_size)
 }
 img.src = 'image/vlek.png'
 
 //TREE -----------------------------------------------------------------------------------------------------------------------------------
-var tree_start = {
-  x: ref_box_size/2,
-  y: ref_box_size,
-}
-var Tree = new MakeTree(tree)
-Tree.draw()
+var tree1 = new DrawTree(tree)
+var tree2 = new DrawTree(tree)
+tree1.draw()
+tree2.draw()
+// console.log(tree1.tree_arr);
+// console.log(tree2.tree_arr);
 
-function MakeTree(c){
-  this.start = tree_start
-  this.draw = function(){
-    c.beginPath()
-    c.moveTo(this.start.x,this.start.y)
-    ypoint = ((Math.random()/4)+0.5)*tree.canvas.height/dPR
-    xpoint = Math.random()*100 - 50
 
-    c.lineTo(this.start.x+xpoint,ypoint)
-    c.lineWidth = 1/dPR
-    c.closePath()
-    c.stroke()
 
-    c.beginPath()
-    c.moveTo(this.start.x+xpoint,ypoint)
-    c.lineTo(this.start.x+xpoint,ypoint-100)
-    c.lineWidth = 1/dPR
-    c.closePath()
-    c.stroke()
 
-    c.beginPath()
-    c.moveTo(this.start.x+xpoint,ypoint)
-    c.lineTo(this.start.x-xpoint,ypoint-100)
-    c.lineWidth = 1/dPR
-    c.closePath()
-    c.stroke()
-  }
-}
-
+// PIXEL finder
 var treehuedata = []
 for (var i = 0; i < tree.canvas.height; i++) {
   var treedatarow = tree.getImageData(0,i,tree.canvas.width,1).data
@@ -60,51 +35,68 @@ var pixel = {}
 var pixelarray = []
 var pixelsur= []
 
+
+
 function findpixel(i){
   pixel = {
-    hue: treehuedata[i],
     x: i % tree.canvas.height,
     y: (i - i % tree.canvas.height) / tree.canvas.width,
-    arr_loc: i,
+    hue: treehuedata[i],
+    direction: undefined,
     sur: [],
     surmax: 0,
-    direction: undefined,
+    arr_loc: i,
   }
 
-  var l = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
+  var l = [
+    [2,0],[2,1],[2,2],[1,2],[0,2],[-1,2],[-2,2],[-2,1],
+    [-2,0],[-2,-1],[-2,-2],[-1,-2],[0,-2],[1,-2],[2,-2],[2,-1],
+
+  ]
 
   for (let i = 0; i < l.length; i++) {
     pixel.sur.push(treehuedata[xy(pixel.x+l[i][0],pixel.y+l[i][1],tree.canvas.width)],)
   }
 
-
-
+  pixel.surcount = 0
+  pixel.surcountnextto = 0
   for (let i = 0; i < pixel.sur.length; i++) {
     if (pixel.sur[i] > pixel.surmax ) {
       pixel.surmax = pixel.sur[i]
-      pixel.direction = i + 1
+      pixel.direction = i
+    }
+    if (pixel.sur[i] > 0) {
+      pixel.surcount++
+      if (pixel.sur[i-1] == 0 || pixel.sur[i-1] == undefined){
+        pixel.surcountnextto++
+      }
     }
   }
 
-  var found = false
+  var found = true
 
-  if (pixel.hue < treehuedata[i+1] && treehuedata[i+1] != 0) {
-    //console.log('1')
-    //console.log(pixel)
-    i++
-    findpixel(i)
-  } else if (pixel.hue == 0) {
-    //console.log('2')
-    i++
+  if (pixel.surcount > 2) {
+    found = false
+  } else if (pixel.surcountnextto > 1) {
+    found = false
+  } else if (pixel.y > tree.canvas.height - 10){
     found = false
   } else {
-    found = true
+    //check if not lying next to previously found
+    for (let i = 0; i < pixelarray.length; i++) {
+      cond1 = pixel.y == pixelarray[i].y + 1
+      cond2 = pixel.x < pixelarray[i].x + 2 && pixel.x > pixelarray[i].x - 2
+      if (cond1 && cond2){
+        found = false
+      }
+    }
   }
-  return found
+
+return found
 }
 
 for (var i = 0; i < treehuedata.length; i++) {
-  if (treehuedata[i] > 0 && pixelfound < 2000) {
+  if (treehuedata[i] > 0 && pixelfound < 10) {
     if (findpixel(i)) {
       i++
       pixelfound++
@@ -113,20 +105,37 @@ for (var i = 0; i < treehuedata.length; i++) {
   }
 }
 
-//console.log(pixelarray);
+console.log(pixelarray);
 
-tree.fillStyle = '#3E3E3E'
+tree.strokeStyle = 'red'
 
 for (var i = 0; i < pixelarray.length; i++) {
   tree.beginPath()
-  tree.arc(pixelarray[i].x/dPR,pixelarray[i].y/dPR,((Math.random()/2+0.5)*(i/50))/dPR,0,Math.PI*2)
+  tree.arc(pixelarray[i].x/dPR,pixelarray[i].y/dPR,10/dPR,0,Math.PI*2)
   tree.closePath()
-  tree.fill()
+  tree.stroke()
 }
 
 function xy(x,y,width){
   return width * y + x
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -166,7 +175,7 @@ function animate(){
   frame = requestAnimationFrame(animate)
   b.clearRect(0,0,iW,iH);
   for (var i = 0; i < LA_array.length; i++) {
-    LA_array[i].update(LA_array);
+    //LA_array[i].update(LA_array);
   }
 }
 

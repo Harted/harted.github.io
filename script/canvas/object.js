@@ -196,6 +196,7 @@ function DrawHex(id, array, i){
     }
   }
 
+//Resolve Collision ------------------------------------------------------------------------------------------------------------------------------------
 function resolveCollision(obj1, obj2){
 
   var xVelocityDiff = obj1.velocity.x - obj2.velocity.x;
@@ -245,4 +246,52 @@ function resolveCollision(obj1, obj2){
 
   }
 
+}
+
+//Draw Tree ------------------------------------------------------------------------------------------------------------------------------------
+function DrawTree(c){
+  this.c = c
+
+  this.tree_arr = []
+
+  var root = {
+    start: {
+      x: ref_box_size/2,
+      y: ref_box_size,
+    },
+  }
+  root.end = {
+    x: root.start.x + 50 * (Math.random()-0.5),
+    y: root.start.y - 50,
+  },
+
+  this.tree_arr.push(root)
+
+  for (var i = 1; i < 10; i++) {
+
+    root = {
+      start: {
+        x: this.tree_arr[i-1].end.x,
+        y: this.tree_arr[i-1].end.y,
+      },
+    }
+    root.end = {
+      x: root.start.x + 50 * (Math.random()-0.5),
+      y: root.start.y - 50/Math.pow(i,1/2) * (Math.random()/2+0.5),
+    },
+
+    this.tree_arr.push(root)
+
+  }
+
+  this.draw = function(){
+    for (var i = 0; i < this.tree_arr.length; i++) {
+      this.c.beginPath()
+      this.c.moveTo(this.tree_arr[i].start.x,this.tree_arr[i].start.y)
+      this.c.lineTo(this.tree_arr[i].end.x,this.tree_arr[i].end.y)
+      this.c.lineWidth = 1/dPR
+      this.c.closePath()
+      this.c.stroke()
+    }
+  }
 }
