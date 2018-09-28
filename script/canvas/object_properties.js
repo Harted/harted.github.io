@@ -219,8 +219,8 @@ var TreeTopLeft = {
 
 var MainBranch = {
   grow_factor: 0.5,
-  base_length: 1,
-  max_angle: 10,
+  base_length: 30,
+  max_angle: 25,
   start: {
     x: tree.canvas.width/2/dPR,
     y: tree.canvas.width/dPR,

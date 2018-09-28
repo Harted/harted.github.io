@@ -284,7 +284,7 @@ function DrawTree(id){
       this.draw()
 
     }
-    FillTree()
+    //FillTree()
   }
 }
 
@@ -320,7 +320,7 @@ function Branch(id){
 
   for (var i = 1; i < 10; i++) {
 
-    var decl_length_factor = Math.pow(i+1,1/2) * Math.random()/4+0.75
+    var decl_length_factor = Math.pow(i+1,1/2) * (Math.random()/4+0.75)
 
     branch = {
       start: {
@@ -338,8 +338,8 @@ function Branch(id){
     }
 
     branch.grow = {
-      x: this.arr[i-1].grow.x + Math.sin(this.angle) * this.grow_factor / decl_length_factor * (Math.abs(x_length)/x_length),
-      y: this.arr[i-1].grow.y + Math.cos(this.angle) * this.grow_factor / decl_length_factor * (Math.abs(y_length)/y_length),
+      x: this.arr[i-1].grow.x*3/4 + Math.sin(this.angle) * this.grow_factor / decl_length_factor * (Math.abs(x_length)/x_length),
+      y: this.arr[i-1].grow.y*3/4 + Math.cos(this.angle) * this.grow_factor / decl_length_factor * (Math.abs(y_length)/y_length),
     }
 
     this.arr.push(branch)
