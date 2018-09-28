@@ -261,8 +261,8 @@ function DrawTree(c){
     },
   }
   root.end = {
-    x: root.start.x + 50 * (Math.random()-0.5),
-    y: root.start.y - 50,
+    x: root.start.x + 75 * (Math.random()-0.5),
+    y: root.start.y - 75,
   },
 
   this.tree_arr.push(root)
@@ -276,8 +276,8 @@ function DrawTree(c){
       },
     }
     root.end = {
-      x: root.start.x + 50 * (Math.random()-0.5),
-      y: root.start.y - 50/Math.pow(i,1/2) * (Math.random()/2+0.5),
+      x: root.start.x + 75 * (Math.random()-0.5),
+      y: root.start.y - 75/Math.pow(i,1/2) * (Math.random()/2+0.5),
     },
 
     this.tree_arr.push(root)

@@ -23,11 +23,3 @@ function chance(percentage){
 function phyt_a(b,c){
   return Math.pow(Math.pow(b,2)+Math.pow(c,2),1/2)
 }
-
-//looplog()
-function looplog(){
-  setTimeout(function() {
-      console.log(performance);
-      requestAnimationFrame(looplog)
-  }, 1000);
-}
