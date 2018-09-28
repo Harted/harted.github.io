@@ -103,6 +103,8 @@ for (var i = 0; i < alphadata.length; i++) {
   }
 }
 
+console.log(pixel_end_array);
+
 for (var i = 0; i < pixel_end_array.length; i++) {
   pixel_array.push(pixel_end_array[i])
   findPixelPath(pixel_end_array[i])
@@ -155,14 +157,19 @@ function findPathEndPixel(id, i){
   findSurroundingPixels(id)
   //check if pixel is path end
   var path_end = true
-  if (pixel.sur_count > 2) { path_end = false } //if more than 2 surrounding pixels
-  else if (pixel.sur_count_groups > 1) { path_end = false } //if more than 1 group of next to eachother lying pixels
-  else if (pixel.y > id.canvas.height - 10) { path_end = false }  //if 10 px from bottom..
+  if (getUserAgent() == 'Safari') {
+    var sur_count_max = 4
+  } else {
+    var sur_count_max = 2
+  }
+  if (pixel.sur_count > sur_count_max) { path_end = false; console.log('sur_count: ', pixel.sur_count, pixel)} //if more than 2 surrounding pixels
+  else if (pixel.sur_count_groups > 1) { path_end = false; console.log('sur_count_groups: ', pixel.sur_count_groups, pixel) } //if more than 1 group of next to eachother lying pixels
+  else if (pixel.y > id.canvas.height - 10) { path_end = false; console.log('id.canvas.height: ', id.canvas.height, pixel) }  //if 10 px from bottom..
   else { //check if pixel is not a neighbor of previously path_end pixels
     for (let i = 0; i < pixel_end_array.length; i++) {
       cond_y = pixel.y < pixel_end_array[i].y + 2 && pixel.y > pixel_end_array[i].y - 2
       cond_x = pixel.x < pixel_end_array[i].x + 2 && pixel.x > pixel_end_array[i].x - 2
-      if (cond_y && cond_x) { path_end = false }
+      if (cond_y && cond_x) { path_end = false; console.log('path_end: ', path_end, pixel)}
     }
   };
   return path_end;

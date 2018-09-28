@@ -1,7 +1,7 @@
 // Get user agent ---------------------------------------------------------------------------------------------------------------------
 function getUserAgent() {
 	var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-	console.log (userAgent)
+	//console.log (userAgent)
 
 	if (/windows phone/i.test(userAgent)) {
 		return "WindowsPhone";
