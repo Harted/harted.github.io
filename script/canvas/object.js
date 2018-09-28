@@ -249,49 +249,102 @@ function resolveCollision(obj1, obj2){
 }
 
 //Draw Tree ------------------------------------------------------------------------------------------------------------------------------------
-function DrawTree(c){
-  this.c = c
+function DrawTree(id){
 
-  this.tree_arr = []
+  this.c = id.context
+  this.slow_down_factor = id.slow_down_factor
 
-  var root = {
-    start: {
-      x: ref_box_size/2,
-      y: ref_box_size,
-    },
-  }
-  root.end = {
-    x: root.start.x + 75 * (Math.random()-0.5),
-    y: root.start.y - 75,
-  },
-
-  this.tree_arr.push(root)
-
-  for (var i = 1; i < 10; i++) {
-
-    root = {
-      start: {
-        x: this.tree_arr[i-1].end.x,
-        y: this.tree_arr[i-1].end.y,
-      },
-    }
-    root.end = {
-      x: root.start.x + 75 * (Math.random()-0.5),
-      y: root.start.y - 75/Math.pow(i,1/2) * (Math.random()/2+0.5),
-    },
-
-    this.tree_arr.push(root)
-
-  }
+  this.main = Branch(MainBranch)
 
   this.draw = function(){
-    for (var i = 0; i < this.tree_arr.length; i++) {
+    for (var i = 0; i < this.main.length; i++) {
       this.c.beginPath()
-      this.c.moveTo(this.tree_arr[i].start.x,this.tree_arr[i].start.y)
-      this.c.lineTo(this.tree_arr[i].end.x,this.tree_arr[i].end.y)
+      this.c.moveTo(this.main[i].start.x,this.main[i].start.y)
+      this.c.lineTo(this.main[i].end.x,this.main[i].end.y)
       this.c.lineWidth = 1/dPR
       this.c.closePath()
       this.c.stroke()
     }
   }
+
+  this.update = function(){
+
+    for (var i = 0; i < this.main.length; i++) {
+
+      this.main[i].end.x += this.main[i].grow.x
+      this.main[i].end.y -= this.main[i].grow.y
+      if (i < this.main.length-1) {
+        this.main[i+1].start.x = this.main[i].end.x
+        this.main[i+1].start.y = this.main[i].end.y
+      }
+
+      this.main[i].grow.x = this.main[i].grow.x - this.main[i].grow.x/this.slow_down_factor
+      this.main[i].grow.y = this.main[i].grow.y - this.main[i].grow.y/this.slow_down_factor
+
+      this.draw()
+
+    }
+    FillTree()
+  }
+}
+
+
+function Branch(id){
+  this.arr = []
+  this.grow_factor = id.grow_factor
+  this.slow_down_factor = id.slow_down_factor
+  this.base_length = id.base_length
+  this.angle = id.max_angle * deg
+
+  var branch = {
+    start: {
+      x: id.start.x,
+      y: id.start.y,
+    },
+  }
+
+  var y_length = this.base_length
+  var x_length = Math.atan(this.angle) * y_length * 2 * (Math.random()-0.5)
+
+  branch.end = {
+    x: branch.start.x + x_length,
+    y: branch.start.y - y_length,
+  }
+
+  branch.grow = {
+    x: Math.sin(this.angle) * this.grow_factor * (Math.abs(x_length)/x_length),
+    y: Math.cos(this.angle) * this.grow_factor * (Math.abs(y_length)/y_length),
+  }
+
+  this.arr.push(branch)
+
+  for (var i = 1; i < 10; i++) {
+
+    var decl_length_factor = Math.pow(i+1,1/2) * Math.random()/4+0.75
+
+    branch = {
+      start: {
+        x: this.arr[i-1].end.x,
+        y: this.arr[i-1].end.y,
+      },
+    }
+
+    y_length = this.base_length/decl_length_factor
+    x_length = Math.atan(this.angle) * y_length * 2 * (Math.random()-0.5)
+
+    branch.end = {
+      x: branch.start.x + x_length,
+      y: branch.start.y - y_length,
+    }
+
+    branch.grow = {
+      x: this.arr[i-1].grow.x + Math.sin(this.angle) * this.grow_factor / decl_length_factor * (Math.abs(x_length)/x_length),
+      y: this.arr[i-1].grow.y + Math.cos(this.angle) * this.grow_factor / decl_length_factor * (Math.abs(y_length)/y_length),
+    }
+
+    this.arr.push(branch)
+  }
+
+  console.log(arr)
+  return arr
 }
