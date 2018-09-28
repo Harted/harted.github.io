@@ -284,7 +284,7 @@ function DrawTree(id){
       this.draw()
 
     }
-    //FillTree()
+    FillTree()
   }
 }
 
