@@ -19,12 +19,13 @@ var iH = window.innerHeight
 var frame
 
 var alphadata = []
+var imagedata = []
 //init pixel_end_array and pixel object
 var pixel_end_array = []; var pixel_array = []; var pixel = {}
-var ran_circle_arr = []
+var ran_rect_arr = []
 
 for (var i = 0; i < 1000; i++) {
-  ran_circle_arr.push((100*i/2000*(Math.random()/4+0.75)/dPR)+0.5)
+  ran_rect_arr.push((100*i/1500*(Math.random()/4+0.75)/dPR)+0.5)
 }
 
 
@@ -32,8 +33,8 @@ for (var i = 0; i < 1000; i++) {
 Canvas('#background', 'b', iW, iH)
 Canvas('#center_logo', 'cl', logo_size * 2, logo_size * 2)
 Canvas('#art', 'art', ref_box_size, ref_box_size)
-Canvas('#tree', 'tree', ref_box_size/2, ref_box_size/2)
-Canvas('#treebug', 'treebug', ref_box_size/2, ref_box_size/2)
+Canvas('#tree', 'tree', ref_box_size, ref_box_size)
+Canvas('#treebug', 'treebug', ref_box_size, ref_box_size)
 
 
 

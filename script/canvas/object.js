@@ -253,74 +253,112 @@ function resolveCollision(obj1, obj2){
 function DrawTree(id){
 
   this.c = id.context
+  this.c.lineWidth = 1/dPR
+  this.ba = this.branch_angle
   this.bpm = id.branch_parts_max
-  this.bpbl = id.branch_part_base_lenght
+  this.bs = id.branches
   this.s = {
     x: id.start.x,
     y: id.start.y,
   }
-  this.grow = id.grow
+  this.sd = id.slowdown
 
-  var angle_index = 0
-  this.angle_arr = []
-  for (var i = 0; i < this.bpm*(this.bpm+1)/2; i++) {
-    this.angle_arr.push(
-      id.branch_part_max_angle * 2 * (Math.random()-0.5) * deg
-    )
+  var angle_index
+  this.newTree = function(){
+    this.grow = id.grow
+    this.bpbl = id.branch_part_base_lenght
+    angle_index = 0
+    this.angle_arr = []
+    for (var i = 0; i < this.bpm*(this.bpm+1)/2 + 1; i++) {
+      this.angle_arr.push(
+        id.branch_part_max_angle * 2 * (Math.random()-0.5) * deg
+      )
+    }
   }
+  this.newTree()
 
-  this.tree = []
+  this.line = function(x,y,i,t){
 
-  this.c.lineWidth = 1/dPR
+    if (t > 0 && i == 0) {
+      var angle = Math.abs(this.angle_arr[angle_index]) * (-1) * (Math.abs(this.tree[0][t].angle)/this.tree[0][t].angle)
+    } else if (t == 0 && i == 0) {
+      var angle = this.angle_arr[angle_index]/4
+    } else {
+      var angle = this.angle_arr[angle_index]
+    }
+    angle_index++
 
-  this.line = function(x,y,i){
+    if (t > 0) {
+      angle += 30*deg * (-1)*(Math.abs(this.tree[0][t].angle)/this.tree[0][t].angle)
+    }
+
     var l = {
-      lenght: (1/Math.pow(i+1,1/2) * this.bpbl),
+      lenght: (1/Math.pow(i+1,1/2) * 1/Math.pow(t+1,1/2) * this.bpbl),
       start: {
         x: x,
         y: y,
       },
-      angle: this.angle_arr[angle_index],
+      angle: angle,
       end: {
         x: undefined,
         y: undefined,
       },
     }
-    angle_index++
+
     l.end.y = l.start.y - l.lenght
     l.end.x = l.start.x + l.lenght * Math.atan(l.angle)
     return l
   }
 
   this.init = function(){
+    this.tree = []
     angle_index = 0
-    var branch = []
-    var i = 0; l = branch.push(this.line(this.s.x, this.s.y, i)); i++
-    for (i ; i < this.bpm; i++) {
-      branch.push(this.line(branch[i-1].end.x, branch[i-1].end.y, i))
+    for (var t = 0; t < this.bs; t++) {
+      var branch = []
+      if (t == 0) {
+        var i = 0; l = branch.push(this.line(this.s.x, this.s.y, i,t)); i++
+      } else {
+        var i = 0; l = branch.push(this.line(this.tree[0][t].start.x, this.tree[0][t].start.y, i,t)); i++
+      }
+
+      for (i ; i < (this.bpm-t); i++) {
+        branch.push(this.line(branch[i-1].end.x, branch[i-1].end.y, i, t))
+      }
+      this.tree.push(branch)
     }
-    this.branch = branch
   }
   this.init()
 
-  this.draw = function(){
-    this.c.beginPath()
-    this.c.arc(this.branch[1].end.x,this.branch[1].end.y,10,0,Math.PI*2)
-    this.c.fill()
 
-    this.c.beginPath()
-    this.c.moveTo(this.branch[0].start.x,this.branch[0].start.y)
-    this.c.lineTo(this.branch[0].end.x,this.branch[0].end.y)
-    for (let i = 1; i < this.branch.length; i++) {
-      this.c.lineTo(this.branch[i].end.x,this.branch[i].end.y)
+  this.draw = function(){
+    // this.c.beginPath()  //debug collision
+    // this.c.arc(this.tree[0][1].end.x,this.tree[0][1].end.y,10,0,Math.PI*2)
+    // this.c.fill()
+    for (var t = 0; t < this.bs; t++) {
+      if (t > 0 && t % 2 == 0) {} else {
+        this.c.beginPath()
+        this.c.moveTo(this.tree[t][0].start.x,this.tree[t][0].start.y)
+        this.c.lineTo(this.tree[t][0].end.x,this.tree[t][0].end.y)
+        for (let i = 1; i < this.tree[t].length; i++) {
+          this.c.lineTo(this.tree[t][i].end.x,this.tree[t][i].end.y)
+        }
+        this.c.stroke()
+      }
     }
-    this.c.stroke()
   }
 
   this.update = function(){
     this.bpbl += this.grow
+    this.grow -= this.grow/this.sd
+    console.time('init')
     this.init()
+    console.timeEnd('init')
+    console.time('draw')
     this.draw()
+    console.timeEnd('draw')
+    console.time('fill')
+    FillTree()
+    console.timeEnd('fill')
   }
 
 }

@@ -218,9 +218,12 @@ var DrawHex_Dummy = {
 var tree_1 = {
   context: tree,
   branch_parts_max: 10,
+  branches: 10,
   branch_part_base_lenght: 1,
-  branch_part_max_angle: 60,
-  grow: 0.1,
+  branch_part_max_angle: 40,
+  branch_angle: 60,
+  grow: 9,
+  slowdown: 14,
   start: {
     x: tree.canvas.width/2/dPR,
     y: tree.canvas.height/2,

@@ -39,10 +39,10 @@ var FR = 60
 framerate()
 function framerate(){
   setTimeout(function () {
-    console.log('AVG_framerate(10s): ' +(frame - frame_old)/10)
+    console.log('AVG_framerate: ' +(frame - frame_old))
     frame_old = frame
     framerate();
-  }, 10000);
+  }, 1000);
 }
 
 animate();
@@ -53,11 +53,16 @@ function animate(){
     //LA_array[i].update(LA_array);
   }
 
-  if (tree_tl.branch[tree_tl.branch.length-1].end.y > 20){
+  if (tree_tl.tree[0][tree_tl.tree[0].length-1].end.y > 20){
     tree.clearRect(0,0,tree.canvas.width, tree.canvas.height)
     treebug.clearRect(0,0,tree.canvas.width, tree.canvas.height)
+    console.log('UPDATE------------------------------')
+    console.time('UPDATE')
     tree_tl.update()
-    FillTree()
+    console.timeEnd('UPDATE')
+  } else {
+    tree_tl.newTree()
+    tree_tl.update()
   }
 }
 
@@ -91,68 +96,76 @@ function ExtAnimTrigger(object_id, trigger){
 
 
 function FillTree(){
-//get image data from complete canvas and extract alpha to array
-var imagedata = []
-alphadata = []
-imagedata = tree.getImageData(0,0,tree.canvas.width,tree.canvas.width).data
+  //get image data from complete canvas and extract alpha to array
 
-for (var y = 0; y < imagedata.length; y+=4) { alphadata.push(imagedata[y+3]) }
-
+  imagedata = []
+  console.time('getImageData')
+  imagedata = tree.getImageData(0,0,tree.canvas.width,tree.canvas.width).data
+  console.timeEnd('getImageData')
   //init pixel_end_array and pixel object
   pixel_end_array = []; pixel_array = []; pixel = {}
 
-
-  for (var i = 0; i < alphadata.length; i++) {
-    if (alphadata[i] > 0) {
+  console.time('findEndPixel')
+  for (var i = 0; i < imagedata.length/4 ; i++) {
+    if (imagedata[(i*4)-1] > 0) {
       initPixel(tree, i)
       if (findPathEndPixel(tree,i)) {   //pixelpath_end true or false
         pixel_end_array.push(pixel)    //pixel object
+        if (pixel_end_array.length == (tree_1.branches+2)/2){break;}
       }
     }
   }
+  console.timeEnd('findEndPixel')
 
   //console.log(pixel_end_array);
 
+  console.time('findPixelPath')
   for (var i = 0; i < pixel_end_array.length; i++) {
     pixel_array.push(pixel_end_array[i])
     findPixelPath(pixel_end_array[i])
   }
-
+  console.timeEnd('findPixelPath')
   //temp red circle to point pixel
+  console.time('Path complete')
+  var arc = 0
+  console.time('rect')
   for (var i = 0; i < pixel_array.length; i++) {
-    tree.beginPath()
-    tree.arc(
-      pixel_array[i].x/dPR,
-      pixel_array[i].y/dPR,
-      ran_circle_arr[i],
-      0,Math.PI*2
-    )
-    tree.closePath()
-    tree.fill()
+    for (var j = 0; j < pixel_end_array.length; j++) {
+      if (pixel_array[i].y == pixel_end_array[j].y && pixel_array[i].x == pixel_end_array[j].x) {
+        arc = 0
+      }
+    }
+    x = pixel_array[i].x/dPR
+    y = pixel_array[i].y/dPR
+    w = ran_rect_arr[arc]
+    h = ran_rect_arr[arc]
+    tree.fillRect(x-w/2,y-h/2,w,h)
+    arc++
   }
-
+  console.timeEnd('rect')
+  console.timeEnd('Path complete')
 }
 
 function findPixelPath(end_pixel){
   var temp_pixel = end_pixel
   var collision = false
   this.searching = function() {
+    if (loc_arr[temp_pixel.direction] == undefined){debugger}
     x = temp_pixel.x + loc_arr[temp_pixel.direction][0]
     y = temp_pixel.y + loc_arr[temp_pixel.direction][1]
     initPixel(tree, y * tree.canvas.width + x)
     pixel.x = x
     pixel.y = y
     findSurroundingPixels(tree)
-    if (pixel.sur_count > 8) {
+    if (pixel.sur_count > 12) {
       treebug.fillStyle = 'red'
       treebug.beginPath()
-      treebug.arc(pixel.x/dPR,pixel.y/dPR,1,0,Math.PI*2)
+      treebug.arc(pixel.x/dPR,pixel.y/dPR,2,0,Math.PI*2)
       treebug.fill()
       collision = true
     }
     if (pixel.direction == -1){
-      console.log(pixel, temp_pixel);
-      debugger
+      //debugger
       return false
     }
     pixel_array.push(pixel)
@@ -164,14 +177,13 @@ function findPixelPath(end_pixel){
   }
 
   this.searching()
-
 }
 
 function initPixel(id, i){
   pixel = {
     x: i % id.canvas.height,
     y: (i - i % id.canvas.height) / id.canvas.width,
-    alpha: alphadata[i],
+    alpha: imagedata[(i*4)-1], //alphadata[i],
     alpha_max: 0,
     direction: undefined,
     directions: [],
@@ -207,16 +219,17 @@ function findPathEndPixel(id, i){
 function findSurroundingPixels(id){
   for (let i = 0; i < loc_arr.length; i++) {
     //push surrounding pixel data in object
-    pixel.surrounding.push( alphadata[
-      (pixel.x + loc_arr[i][0]) + (pixel.y + loc_arr[i][1]) * id.canvas.width
+    pixel.surrounding.push( imagedata[
+      ((pixel.x + loc_arr[i][0]) + (pixel.y + loc_arr[i][1]) * id.canvas.width)*4-1
     ])
     //check alpha max
     if (pixel.surrounding[i] > pixel.alpha_max) {
-      var alreadyfound = angle_ok = false
-      var angle
+      var alreadyfound = false;
+      var angle_ok = i < 9
+      //var angle
       pixel.alpha_max = pixel.surrounding[i]
       if (pixel_array.length < 1){
-        pixel.direction = i
+        if (angle_ok){ pixel.direction = i }
       } else {
         for (let j = 0; j < pixel_array.length; j++) {
           if (
@@ -230,13 +243,13 @@ function findSurroundingPixels(id){
         }
         if (alreadyfound) { pixel.alpha_max = 0 }
         //check angle
-        angle = Math.abs(i - pixel_array[pixel_array.length-1].direction)
-        angle_ok = angle < 6
+        // angle = Math.abs(i - pixel_array[pixel_array.length-1].direction)
+        // angle_ok = angle < 6
         if (alreadyfound == false && angle_ok) {
           pixel.direction = i
         }
       }
-      pixel.directions.push([i, 'already:', alreadyfound, 'angle:', angle, 'ok:', angle_ok, 'alpha: ', pixel.surrounding[i] ])
+      pixel.directions.push([i, 'already:', alreadyfound, 'angle:', undefined, 'ok:', angle_ok, 'alpha: ', pixel.surrounding[i] ])
     }
     //count pixels and pixel groups
     if (pixel.surrounding[i] > 0) {
