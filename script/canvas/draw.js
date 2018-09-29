@@ -111,7 +111,7 @@ function FillTree(){
       initPixel(tree, i)
       if (findPathEndPixel(tree,i)) {   //pixelpath_end true or false
         pixel_end_array.push(pixel)    //pixel object
-        if (pixel_end_array.length == (tree_1.branches+2)/2){break;}
+        if (pixel_end_array.length == (tree_1.branches+2)/2){break;}  //branches mod %2 in object for less branches
       }
     }
   }
