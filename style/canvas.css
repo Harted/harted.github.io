@@ -1,4 +1,4 @@
-#center_logo, #background, #art, #tree, #treebug {
+#center_logo, #background, #art, #tree_tl {
   position: absolute;
   margin: auto;
   top: 0;
@@ -9,12 +9,12 @@
   pointer-events: none;
 }
 
-#tree {
-  border: 1px solid #000;
+#tree_tl {
+  /* border: 1px solid #000; */
   /* visibility: hidden; */
 }
 
 /*temp*/
 #reference_box {
-  visibility: hidden;
+  /* visibility: hidden; */
 }

@@ -5,7 +5,7 @@ var LogoAnim = {
   velocity_factor: 2,
   chance: true,
   getSize: function(){
-    if (chance(90)){
+    if (chance(100)){
       return (logo_size/12)*0.97 * (Math.random()/2+0.50)
     } else {
       return logo_size/4
@@ -48,7 +48,7 @@ var LogoAnim = {
   },
   animation: function() {
     return {
-      func: 'bounce',//'bounce',
+      func: 'circlereset',//'bounce',
       startframe: Math.floor(Math.random() * 1000),
       circleradius: min_window_size/2*0.9, //circlereset
     }
@@ -209,23 +209,5 @@ var DrawHex_Dummy = {
       startframe: undefined,
       circleradius: undefined, //for circlereset
     }
-  },
-}
-
-
-
-
-var tree_1 = {
-  context: tree,
-  branch_parts_max: 10,
-  branches: 10,
-  branch_part_base_lenght: 1,
-  branch_part_max_angle: 40,
-  branch_angle: 60,
-  grow: 9,
-  slowdown: 14,
-  start: {
-    x: tree.canvas.width/2/dPR,
-    y: tree.canvas.height/2,
   },
 }
