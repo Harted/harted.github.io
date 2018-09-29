@@ -12,8 +12,8 @@ img.onload = function() {
 img.src = 'image/vlek.png'
 
 //TREE -----------------------------------------------------------------------------------------------------------------------------------
-var tree_tl = new DrawTree(TreeTopLeft)
-tree_tl.draw()
+var tree_tl = new DrawTree(tree_1)
+//tree_tl.draw()
 
 //push object array for animation
 var LA_array = [];
@@ -53,9 +53,11 @@ function animate(){
     //LA_array[i].update(LA_array);
   }
 
-  if (tree_tl.main[tree_tl.main.length-1].end.y > 20){
+  if (tree_tl.branch[tree_tl.branch.length-1].end.y > 20){
     tree.clearRect(0,0,tree.canvas.width, tree.canvas.height)
+    treebug.clearRect(0,0,tree.canvas.width, tree.canvas.height)
     tree_tl.update()
+    FillTree()
   }
 }
 
@@ -96,7 +98,6 @@ imagedata = tree.getImageData(0,0,tree.canvas.width,tree.canvas.width).data
 
 for (var y = 0; y < imagedata.length; y+=4) { alphadata.push(imagedata[y+3]) }
 
-
   //init pixel_end_array and pixel object
   pixel_end_array = []; pixel_array = []; pixel = {}
 
@@ -134,6 +135,7 @@ for (var y = 0; y < imagedata.length; y+=4) { alphadata.push(imagedata[y+3]) }
 
 function findPixelPath(end_pixel){
   var temp_pixel = end_pixel
+  var collision = false
   this.searching = function() {
     x = temp_pixel.x + loc_arr[temp_pixel.direction][0]
     y = temp_pixel.y + loc_arr[temp_pixel.direction][1]
@@ -141,14 +143,22 @@ function findPixelPath(end_pixel){
     pixel.x = x
     pixel.y = y
     findSurroundingPixels(tree)
+    if (pixel.sur_count > 8) {
+      treebug.fillStyle = 'red'
+      treebug.beginPath()
+      treebug.arc(pixel.x/dPR,pixel.y/dPR,1,0,Math.PI*2)
+      treebug.fill()
+      collision = true
+    }
     if (pixel.direction == -1){
       console.log(pixel, temp_pixel);
+      debugger
       return false
     }
     pixel_array.push(pixel)
     temp_pixel = pixel
 
-    if (y < tree.canvas.height - 4){
+    if (y < tree.canvas.height - 4 && collision == false){
       this.searching()
     }
   }

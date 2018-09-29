@@ -5,6 +5,8 @@ const loc_arr = [
   [2,0],[2,1],[2,2],[1,2],[0,2],[-1,2],[-2,2],[-2,1],
   [-2,0],[-2,-1],[-2,-2],[-1,-2],[0,-2],[1,-2],[2,-2],[2,-1],
 ]
+//used in branches for calculation on small sizes
+const cc = 30
 
 //global window variables
 var dPR = window.devicePixelRatio
@@ -31,6 +33,7 @@ Canvas('#background', 'b', iW, iH)
 Canvas('#center_logo', 'cl', logo_size * 2, logo_size * 2)
 Canvas('#art', 'art', ref_box_size, ref_box_size)
 Canvas('#tree', 'tree', ref_box_size/2, ref_box_size/2)
+Canvas('#treebug', 'treebug', ref_box_size/2, ref_box_size/2)
 
 
 

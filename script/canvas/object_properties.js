@@ -212,17 +212,17 @@ var DrawHex_Dummy = {
   },
 }
 
-var TreeTopLeft = {
-  context: tree,
-  slow_down_factor: 45,
-}
 
-var MainBranch = {
-  grow_factor: 0.5,
-  base_length: 30,
-  max_angle: 25,
+
+
+var tree_1 = {
+  context: tree,
+  branch_parts_max: 10,
+  branch_part_base_lenght: 1,
+  branch_part_max_angle: 60,
+  grow: 0.1,
   start: {
     x: tree.canvas.width/2/dPR,
-    y: tree.canvas.width/dPR,
-  }
+    y: tree.canvas.height/2,
+  },
 }
