@@ -18,11 +18,11 @@ function SizesByRefBoxMobile() {
 	box2_size = '50%'; //180;
 	box3_size = '50%'; //140;
 	box4_size = '50%'; //100;
-	hover_size = (min_window_size / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
-	box_title_margin = (min_window_size * 0.08); //25;
-	box_title_font_size = (min_window_size * 0.08); //20;
+	hover_size = (iMin / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
+	box_title_margin = (iMin * 0.08); //25;
+	box_title_font_size = (iMin * 0.08); //20;
 	//logo sizes
-	logo_size = (min_window_size * 0.30); //80;
+	logo_size = (iMin * 0.30); //80;
 };
 
 // Set margins of squars based on position --------------------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 	};
 
 	// Get current position and set margins for squares in reference to the window for to_banner animation
-	var margins_to_header = SetMarginsToHeader(CF_id); //------------------------- |F| main_child.js
+	var margins_to_header = SetMarginsToHeader(CF_id); //------------------------- [F] main_child.js
 	var top = margins_to_header[0];
 	var right = margins_to_header[1];
 	var bottom = margins_to_header[2];
@@ -89,7 +89,7 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 	$('#reference_box').css({
 		'transition': 'none',
 		'width': $('body').innerWidth(), // window changes by scroll bar on windows
-		'height': window_height,
+		'height': iH,
 		'top': 0,
 		'left': 0,
 		'bottom': 0,
@@ -157,8 +157,8 @@ function SetMarginsToHeader(SMTH_id) {
 
 	var top = offset_top + 'px';
 	var left = offset_left + 'px';
-	var bottom = (window_height - offset_top - height) + 'px';
-	var right = (window_width - offset_left - width); + 'px'
+	var bottom = (iH - offset_top - height) + 'px';
+	var right = (iW - offset_left - width); + 'px'
 
 	return [top, right, bottom, left];
 };
@@ -178,7 +178,7 @@ function BoxProximityEnable(ref, Bool) {
 
 // Create offset to corner farthest from the center of the reference box ----------------------------------------------------------------
 function Proximities() {
-	// BoxProximity(); //--------------------------------------------------------- |F| main_child.js
+	// BoxProximity(); //--------------------------------------------------------- [F] main_child.js
 	box1_proximity = BoxProximity(1, box1_offset_top_center - box_corner_offset, box1_offset_left_center - box_corner_offset, proximity_margin);
 	box2_proximity = BoxProximity(2, box2_offset_top_center + box_corner_offset, box2_offset_left_center - box_corner_offset, proximity_margin);
 	box3_proximity = BoxProximity(3, box3_offset_top_center + box_corner_offset, box3_offset_left_center + box_corner_offset, proximity_margin);
@@ -198,7 +198,7 @@ function BoxProximity(BP_ref, BP_offset_top_center, BP_offset_left_center, BP_pr
 		var mouse_horizontal_from_center = Math.abs(mouse.x - BP_offset_left_center);
 		var pos_neg_vertical = parseFloat(-(mouse.y - BP_offset_top_center) / mouse_vertical_from_center) || 1;
 		var pos_neg_horizontal = parseFloat(-(mouse.x - BP_offset_left_center) / mouse_horizontal_from_center) || 1;
-		//value to center = half min_window_size, value at border of virtual minimum window size square = 0
+		//value to center = half iMin, value at border of virtual minimum window size square = 0
 		var to_center_vertical_raw = (mouse_vertical_from_center - (BP_proximity_box_size / 2));
 		var to_center_vertical
 		if (to_center_vertical_raw <= 0) {
@@ -221,17 +221,17 @@ function BoxProximity(BP_ref, BP_offset_top_center, BP_offset_left_center, BP_pr
 
 // Affect squares bundle ----------------------------------------------------------------------------------------------------------------
 function AffectSquares() {
-	AffectSquare('#top_left', 1, box1_proximity_size); //------------------------- |F| main_child.js
-	AffectSquare('#bottom_left', 2, box2_proximity_size); //---------------------- |F| main_child.js
-	AffectSquare('#bottom_right', 3, box3_proximity_size); //--------------------- |F| main_child.js
-	AffectSquare('#top_right', 4, box4_proximity_size); //------------------------ |F| main_child.js
+	AffectSquare('#top_left', 1, box1_proximity_size); //------------------------- [F] main_child.js
+	AffectSquare('#bottom_left', 2, box2_proximity_size); //---------------------- [F] main_child.js
+	AffectSquare('#bottom_right', 3, box3_proximity_size); //--------------------- [F] main_child.js
+	AffectSquare('#top_right', 4, box4_proximity_size); //------------------------ [F] main_child.js
 };
 
 // Affect squares (+ ease out animation)-------------------------------------------------------------------------------------------------
 function AffectSquare(AS_id, AS_ref, AS_size) {
 	var AS_margin = hover_size - AS_size;
 	var AS_right, AS_bottom;
-	var margins_array = SetMargins(AS_ref, hover_size, AS_margin); //------------- |F| main_child.js
+	var margins_array = SetMargins(AS_ref, hover_size, AS_margin); //------------- [F] main_child.js
 	AS_right = margins_array[0];
 	AS_bottom = margins_array[1];
 	$(AS_id).css({

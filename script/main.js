@@ -1,113 +1,115 @@
-// Get user agent ---------------------------------------------------------------------------------------------------------------------
-function getUserAgent() {
-	var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-	//console.log (userAgent)
+// Browser and window data ------------------------------------------------------------------------------------------------------------
+function getWindowData(){
 
-	if (/windows phone/i.test(userAgent)) {
-		return "WindowsPhone";
-	} else if (/android/i.test(userAgent)) {
-		return "Android";
-	} else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-		return "iOS";
-	} else if (/Chrome/.test(userAgent)) {
-		return "Chrome";
-	} else if (/Safari/.test(userAgent)) {
-		return "Safari";
-	} else if (/Firefox/.test(userAgent)) {
-		return "Firefox"
+	this.getUserAgent = function(){
+		var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+		if (/windows phone/i.test(userAgent)) 																			{return "WindowsPhone";}
+		else if (/android/i.test(userAgent)) 																				{return "Android"			;}
+		else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) 						{return "iOS"					;}
+		else if (/Chrome/.test(userAgent)) 																					{return "Chrome"			;}
+		else if (/Safari/.test(userAgent)) 																					{return "Safari"			;}
+		else if (/Firefox/.test(userAgent)) 																				{return "Firefox"			;}
+		else {console.log('unknown userAgent: ' + userAgent); return "unknown";};
 	};
 
-	console.log('OTHER userAgent: ' + userAgent)
-	return "unknown";
-};
-
-// Determine if the user is working on a touch or desktop interface -------------------------------------------------------------------
-function DetermineTouch(){
-	touch = false;
-	$(window).on('touchstart', function() {
-		touch = true;
-		Squares(); //on first touch immediat clicktrough
-		$(this).off('touchstart mousemove');
-	});
-};
-
-// Make alignment classes for box content ---------------------------------------------------------------------------------------------
-/*function MakeAlignmentClasses() {
-	$('.top_left_align').css({'position': 'absolute'});
-	$('.bottom_left_align').css({'position': 'absolute','bottom': '0'});
-	$('.bottom_right_align').css({'position': 'absolute','bottom': '0','right': '0'});
-	$('.top_right_align').css({'position': 'absolute','right': '0'});
-};*/
-
-// Get minimum window size ------------------------------------------------------------------------------------------------------------
-function GetMinWindowSize() {
-	window_width = $(window).innerWidth();
-	window_height = $(window).innerHeight();
-	if (window_width <= window_height) {
-		min_window_size = window_width;
-	} else {
-		min_window_size = window_height;
+	this.determineTouch = function(){
+		$(window).on('touchstart', function() {
+			touch = true; Squares(); //reset square interaction method when feeling a touch :D
+			$(this).off('touchstart mousemove');
+		});
 	};
-};
+
+	dPR = window.devicePixelRatio;
+	iW = window.innerWidth;
+	iH = window.innerHeight;
+
+	this.minWindowSize = function(){
+		if (iW <= iH) {return iW;} else {return iH;};
+	};
+
+	this.determineTouch(); //glabal var touch set inside
+	userAgent = this.getUserAgent();
+	iMin = this.minWindowSize();
+
+	scr_size = {
+		L: 1026, M: 770, S: 416,	//iPad pro = 1024	| iPad = 768 | iPhone plus = 414 	< SETTING
+		wX: false, wL: false, wM: false, wS: false, //width sizer
+		sX: false, sL: false, sM: false, sS: false,	//screen size 									NOTE maybe width is enough?
+	}
+
+	this.setScrSize = function(size, str){
+		debugger
+		if (size < scr_size.S) { scr_size[str+'S'] = true }
+		else if (size < scr_size.M) { scr_size[str+'M'] = true }
+		else if (size < scr_size.L) { scr_size[str+'L'] = true }
+		else { scr_size[str+'X'] = true }
+	}
+
+	this.setScrSize(iMin, 's')
+	this.setScrSize(iW, 'w')
+
+	console.log(scr_size)
+
+}
 
 // Responsive -------------------------------------------------------------------------------------------------------------------------
-function Responsive() { // this should only work with min_window_size.. make seperate for content containt window width!!!!!!!!!!!!!!!!!!!!!!!
-	if (min_window_size < screen_large_size & min_window_size >= screen_medium_size) {
-		screen_large = true;
-		screen_medium = false;
-		screen_small = false;
-	} else if (min_window_size < screen_medium_size & min_window_size >= screen_small_size) {
-		screen_large = false;
-		screen_medium = true;
-		screen_small = false;
-	} else if (min_window_size < screen_small_size) {
-		screen_large = false;
-		screen_medium = false;
-		screen_small = true;
-	} else {
-		screen_large = false;
-		screen_medium = false;
-		screen_small = false;
-	};
-
-	if (window_width < screen_large_size & window_width >= screen_medium_size) {
-		width_large = true;
-		width_medium = false;
-		width_small = false;
-	} else if (window_width < screen_medium_size & window_width >= screen_small_size) {
-		width_large = false;
-		width_medium = true;
-		width_small = false;
-	} else if (window_width < screen_small_size) {
-		width_large = false;
-		width_medium = false;
-		width_small = true;
-	} else {
-		width_large = false;
-		width_medium = false;
-		width_small = false;
-	};
-
-	if (width_large == false && width_medium == false && width_small == false){
-		width_big = true
-	} else {
-		width_big = false
-	};
-
-};
+// function Responsive() { // this should only work with iMin.. make seperate for content containt window width!!!!!!!!!!!!!!!!!!!!!!!
+// 	if (iMin < screen_large_size & iMin >= screen_medium_size) {
+// 		scr_size.sL = true;
+// 		scr_size.sM = false;
+// 		scr_size.sS = false;
+// 	} else if (iMin < screen_medium_size & iMin >= screen_small_size) {
+// 		scr_size.sL = false;
+// 		scr_size.sM = true;
+// 		scr_size.sS = false;
+// 	} else if (iMin < screen_small_size) {
+// 		scr_size.sL = false;
+// 		scr_size.sM = false;
+// 		scr_size.sS = true;
+// 	} else {
+// 		scr_size.sL = false;
+// 		scr_size.sM = false;
+// 		scr_size.sS = false;
+// 	};
+//
+// 	if (iW < screen_large_size & iW >= screen_medium_size) {
+// 		scr_size.wL = true;
+// 		scr_size.wM = false;
+// 		scr_size.wS = false;
+// 	} else if (iW < screen_medium_size & iW >= screen_small_size) {
+// 		scr_size.wL = false;
+// 		scr_size.wM = true;
+// 		scr_size.wS = false;
+// 	} else if (iW < screen_small_size) {
+// 		scr_size.wL = false;
+// 		scr_size.wM = false;
+// 		scr_size.wS = true;
+// 	} else {
+// 		scr_size.wL = false;
+// 		scr_size.wM = false;
+// 		scr_size.wS = false;
+// 	};
+//
+// 	if (scr_size.wL == false && scr_size.wM == false && scr_size.wS == false){
+// 		scr_size.wX = true
+// 	} else {
+// 		scr_size.wX = false
+// 	};
+//
+// };
 
 // Calculate sizes by ref_box_size (3/2 minimum window size)---------------------------------------------------------------------------
 function CalculateSizes() {
 	//reference box size and styling
-	if (screen_medium == true) {
-		ref_box_size = Math.round(min_window_size / (2 + Math.pow(min_window_size / screen_medium_size, 3)) * 2);
-		SizesByRefBox(); //--------------------------------------------------------- |F| main_child.js
-	} else if (screen_small == true) {
+	if (scr_size.sM == true) {
+		ref_box_size = Math.round(iMin / (2 + Math.pow(iMin / screen_medium_size, 3)) * 2);
+		SizesByRefBox(); //--------------------------------------------------------- [F] main_child.js
+	} else if (scr_size.sS == true) {
 		ref_box_size = '100%';
-		SizesByRefBoxMobile(); //--------------------------------------------------- |F| main_child.js
+		SizesByRefBoxMobile(); //--------------------------------------------------- [F] main_child.js
 	} else {
-		ref_box_size = Math.round(min_window_size / 3 * 2);
-		SizesByRefBox(); //--------------------------------------------------------- |F| main_child.js
+		ref_box_size = Math.round(iMin / 3 * 2);
+		SizesByRefBox(); //--------------------------------------------------------- [F] main_child.js
 	}
 };
 
@@ -128,7 +130,7 @@ function MakeRefBox() {
 
 // Art box ----------------------------------------------------------------------------------------------------------------------------
 function MakeArtBox() {
-	if (screen_small == true) {
+	if (scr_size.sS == true) {
 		$('#art_box').css({
 			'display': 'none'
 		})
@@ -160,10 +162,10 @@ function MakeArtBox() {
 // Make squares bundle ----------------------------------------------------------------------------------------------------------------
 function Squares() {
 	// (#id | number_counter_clockwise_starting_top_left(1-4) | size(width & height) | href_on click | mouse_enable)
-	MakeSquare('#top_left', 1, box1_size, 'about.html'); //---------------------- |F| main
-	MakeSquare('#bottom_left', 2, box2_size, 'music.html'); //------------------- |F| main
-	MakeSquare('#bottom_right', 3, box3_size, 'video.html'); //------------------ |F| main
-	MakeSquare('#top_right', 4, box4_size, 'shows.html'); //--------------------- |F| main
+	MakeSquare('#top_left', 1, box1_size, 'about.html'); //---------------------- [F] main.js
+	MakeSquare('#bottom_left', 2, box2_size, 'music.html'); //------------------- [F] main.js
+	MakeSquare('#bottom_right', 3, box3_size, 'video.html'); //------------------ [F] main.js
+	MakeSquare('#top_right', 4, box4_size, 'shows.html'); //--------------------- [F] main.js
 };
 
 // Make squares -----------------------------------------------------------------------------------------------------------------------
@@ -174,10 +176,10 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 	var MS_animation_speed = (anim_speed_factor * (hover_size - MS_size) * (800 / ref_box_size)) + 'ms';
 
 	// set margins (artwork on desktop and ipad/ fullscreen squares on iphone)
-	if (screen_small == true) {
-		var margins_array = SetMargins(MS_ref, '50%', 0); //------------------------ |F| main_child.js
+	if (scr_size.sS == true) {
+		var margins_array = SetMargins(MS_ref, '50%', 0); //------------------------ [F] main_child.js
 	} else {
-		var margins_array = SetMargins(MS_ref, hover_size, MS_margin); //----------- |F| main_child.js
+		var margins_array = SetMargins(MS_ref, hover_size, MS_margin); //----------- [F] main_child.js
 	};
 	var MS_right = margins_array[0];
 	var MS_bottom = margins_array[1];
@@ -194,20 +196,20 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 		'background-color': eval('color_' + MS_ref) + '80',
 		'transition': MS_animation_speed,
 	});
-	if (screen_small == true) {
+	if (scr_size.sS == true) {
 		$(MS_id).css({
 			'background-color': eval('color_' + MS_ref) + '80',
 		});
 	};
 	// if small screen or iphone no hover animation and clicktrough immediately
-	if (screen_small == true || touch == true) {
+	if (scr_size.sS == true || touch == true) {
 		$(MS_id).off('mouseenter mouseleave click').on('click', function() {
-			ClickFunction(MS_id, MS_href, eval('color_' + MS_ref)) //----------------- |F| main_child.js
+			ClickFunction(MS_id, MS_href, eval('color_' + MS_ref)) //----------------- [F] main_child.js
 		});
 	} else {
 		// MOUSE ENTER
 		$(MS_id).off('click mouseenter mouseleave').on('mouseenter', function() {
-			BoxProximityEnable(MS_ref, false) //-------------------------------------- |F| main_child.js
+			BoxProximityEnable(MS_ref, false) //-------------------------------------- [F] main_child.js
 			$(this).css({
 				'width': hover_size,
 				'height': hover_size,
@@ -219,7 +221,7 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 				$(this).css({
 					'cursor': 'pointer'
 				}).off('click').on('click', function() {
-					ClickFunction(MS_id, MS_href) //-------------------------------------- |F| main_child.js
+					ClickFunction(MS_id, MS_href) //-------------------------------------- [F] main_child.js
 				})
 			})
 			//$(MS_id + ' h2').css('color',color_back)
@@ -228,13 +230,14 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 			// 	'fill': eval('color_' + MS_ref),
 			// 	'transition': MS_animation_speed
 			// })
-			cl.clearRect(0,0,iW,iH);
-			ExtAnimTrigger(CL_fill,true)
-			ExtAnimTrigger(CL_border,true)
+			if (MS_ref == 1) {
+				ExtAnimTrigger(cl, [CL_fill, CL_border],true)
+			}
+
 		})
 		// MOUSE LEAVE
 		.mouseleave(function() {
-			BoxProximityEnable(MS_ref, true) //--------------------------------------- |F| main_child.js
+			BoxProximityEnable(MS_ref, true) //--------------------------------------- [F] main_child.js
 			$(this).off('click').css({
 				'width': MS_size,
 				'height': MS_size,
@@ -249,9 +252,9 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 			// 	'fill': '#3E3E3E',
 			// 	'transition': MS_animation_speed
 			// });
-			cl.clearRect(0,0,iW,iH);
-			ExtAnimTrigger(CL_fill,false)
-			ExtAnimTrigger(CL_border,false)
+			if (MS_ref == 1) {
+				ExtAnimTrigger(cl, [CL_fill, CL_border],false)
+			}
 			//$(MS_id + ' h2').css('color',color_1)
 		});
 	};
@@ -259,7 +262,7 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 
 // Shadow -----------------------------------------------------------------------------------------------------------------------------
 function Shadow() {
-	if (screen_small == true) {
+	if (scr_size.sS == true) {
 		$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
 	} else {
 		$('.shadow').css('box-shadow', '0px 0px 12px rgba(0,0,0,.35)')
@@ -320,19 +323,15 @@ setInterval(function(){mousemove_enable = true},32); //mousemove rate
 function MouseMove() {
 	$(window).off('mousemove').on('mousemove', function(event) {
 		if (mousemove_enable == true) {
-			if (screen_small == false && touch == false) {
-				mouse = {
-					x: event.clientX,
-					y: event.clientY,
-				};
+			if (scr_size.sS == false && touch == false) {
+				mouse.x = event.clientX; mouse.y = event.clientY;
 				//filter double mouse event
 				if (mouse.x != mouse.x_old || mouse.y != mouse.y_old) {
-					mouse.x_old = mouse.x;
-					mouse.y_old = mouse.y;
-					// affect squares with proximity data
-					Proximities(); //------------------------------------------------------- |F| main_child.js
-					AffectSquares(); //----------------------------------------------------- |F| main_child.js
-					MouseMoveCanvas();
+					mouse.x_old = mouse.x;	mouse.y_old = mouse.y;
+					//MousemoveFunction triggered with
+					Proximities(); //------------------------------------------------------- [F] main_child.js
+					AffectSquares(); //----------------------------------------------------- [F] main_child.js
+					MM_Canvas(cl, 'cl')
 				};
 			};
 			//console.log('-') DEBUG LOG
@@ -357,7 +356,7 @@ function TransitionOn() {
 
 // link_logos -------------------------------------------------------------------------------------------------------------------------
 function LinkLogos(LL_color){
-	if (screen_small == true && width_big == false) {
+	if (scr_size.sS == true && scr_size.wX == false) {
 		var LLS = {
 			logo: {
 				opacity: 0.25,
@@ -373,10 +372,10 @@ function LinkLogos(LL_color){
 			width: logo_size*2,
 			height: logo_size*2,
 			right: function(){
-				return (window_width - this.width)/2
+				return (iW - this.width)/2
 			},
 			top: function(){
-				return (window_height - this.width)/2
+				return (iH - this.width)/2
 			},
 		};
 	} else {
@@ -387,10 +386,10 @@ function LinkLogos(LL_color){
 				color: LL_color,
 				width: HL.width,
 				margin: HL.margin(),
-				padding_bottom: window_width*0.02,
+				padding_bottom: iW*0.02,
 				position: 'static'
 			},
-			margin_right: window_width*0.03,
+			margin_right: iW*0.03,
 			padding_top: '3%',
 			width: 'auto',
 			height: 'auto',
@@ -398,7 +397,7 @@ function LinkLogos(LL_color){
 			top: function(){return 0},
 		};
 	};
-	if (page == true && (width_small == true || width_medium == true || width_large == true || (screen_small == true && width_big == true))) {
+	if (page == true && (scr_size.wS == true || scr_size.wM == true || scr_size.wL == true || (scr_size.sS == true && scr_size.wX == true))) {
 		$('#link_logos').css({
 			'display': 'none'
 		})
@@ -422,7 +421,7 @@ function LinkLogos(LL_color){
 			'position': LLS.logo.position,
 		});
 
-		// LinkLogo() & Mailto () ---------------------------------------------------- |F| main_child.js
+		// LinkLogo() & Mailto () ---------------------------------------------------- [F] main_child.js
 		LinkLogo('#facebook use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/facebook.html');
 		LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/soundcloud.html');
 		LinkLogo('#instagram use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/instagram.html');
@@ -435,15 +434,5 @@ function LinkLogos(LL_color){
 
 // GLOBAL FUNCTIONS -------------------------------------------------------------------------------------------------------------------
 function valBetween(v, min, max) {
-    return (Math.min(max, Math.max(min, v)));
-}
-
-var mem;
-function Change(val){
-	if (val == mem) {
-		return false
-	} else {
-		mem = val
-		return true
-	}
+	return (Math.min(max, Math.max(min, v)));
 }

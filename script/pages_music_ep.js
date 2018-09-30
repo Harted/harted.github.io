@@ -1,9 +1,9 @@
 // Flexbox script for albums ----------------------------------------------------------------------------------------------------------
 function EpHeader(header_color, link_color){
 
-  var width_larger_then_large = valBetween(window_width - screen_large_size,0,1024);
-  var em_add = Math.round(width_larger_then_large/10.24/4)/100;
-  var base_em = 1 + em_add;
+  //var width_larger_then_large = valBetween(iW - screen_large_size,0,1024);    NOTE: this was for making font size larger
+  //var em_add = Math.round(width_larger_then_large/10.24/4)/100;               TODO: use the boolean large size instead
+  var base_em = 1; // + em_add;
 
   var ep = {
     'display': 'flex',
@@ -91,15 +91,15 @@ function EpHeader(header_color, link_color){
   }
 
   // width small & medium changes
-  if (width_small == true || width_medium == true) {
+  if (scr_size.wS == true || scr_size.wM == true) {
     ep.flex_direction = 'column-reverse'
     ep.text_holder.width = '100%'
     ep.img.width = '100%'
     ep.text.padding_top = 0 + 'px'
     ep.text.padding_right = HL.center_right() + 'px'
-    if (window_height - header_height < window_width/3*2){ //ep banner image is 2/3 ratio
+    if (iH - header_height < iW/3*2){ //ep banner image is 2/3 ratio
       // precentage left of window height 2/3 of witdht make banner fit iphone landscape
-      ep.img._img.width = Math.round((window_height - header_height) / (window_width/3*2) * 100) + '%'
+      ep.img._img.width = Math.round((iH - header_height) / (iW/3*2) * 100) + '%'
     }
   }
 
@@ -219,7 +219,7 @@ function Soundcloud(info, color){
 
 function scRefresh(){
   $('.sc_player_holder').css({
-    'width': window_width + 'px',
+    'width': iW + 'px',
   });
 }
 

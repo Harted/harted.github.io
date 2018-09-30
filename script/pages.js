@@ -16,10 +16,10 @@ function Header(color) {
 	})
 	$('#header_forcescrollspace').css({
 		'position': 'fixed',
-		'width': window_width*3,
-		'left': -(window_width),
-		'height': window_height,
-		'bottom': -(window_height) + header_height,
+		'width': iW*3,
+		'left': -(iW),
+		'height': iH,
+		'bottom': -(iH) + header_height,
 		'background-color': color,
 	})
 };
@@ -30,7 +30,7 @@ function HeaderLogo(HL_color) {
 		color: HL_color || color_back,
 		width: header_height* 3/5,
 		margin: function(){return (header_height - this.width)/2},
-		right: window_width*0.03,
+		right: iW*0.03,
 		bottom: 0,
 		load: {
 			width: 0,
@@ -116,7 +116,7 @@ function HeaderMenu(text_color) {
 	})*/
 
 	var menu_size = Math.round((($('#header_menu li').width() + padding_right)*4) + HL.center_right());
-	var menu_space = Math.round((window_width - (HL.center_right()*2)));
+	var menu_space = Math.round((iW - (HL.center_right()*2)));
 	var menu_overlap = menu_space - menu_size
 
 	var padding_right_new = Math.round(padding_right + (menu_overlap/4))
@@ -194,11 +194,11 @@ function MenuItem(MI_id, MI_href, MI_color) {
 
 // Make content container -------------------------------------------------------------------------------------------------------------
 function ContentContainer(){
-	if (width_medium == true || width_small == true) {
+	if (scr_size.wM == true || scr_size.wS == true) {
 		$('.content_container').css({
 				'margin': '0px',
 		})
-	} else if (width_large == true){
+	} else if (scr_size.wL == true){
 		$('.content_container').css({
 				'margin': '0px ' + (HL.center_right()) + 'px',
 		})
@@ -247,7 +247,7 @@ function PageBanner(){
 function PageBannerPosition(){
 
 	var scroll_top = $(window).scrollTop();
-	var viewport_height = window_height - header_height;
+	var viewport_height = iH - header_height;
 	var image_height = $('#banner_img_holder').height()
 	var h1_height = $('#page_banner_scroll h1').height();
 	var banner_height = image_height + h1_height

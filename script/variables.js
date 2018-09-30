@@ -13,15 +13,15 @@ var color_4 = '#FFFFFF';//'#F4C700';
 var color_back = '#FFFFFF';
 
 // Window width variables
-var window_width, window_height, min_window_size;
+var iW, iH, iMin;
 
 // Responsive
 var page = false;
-var screen_large, screen_medium , screen_small;
-var width_big, width_large, width_medium , width_small;
-var screen_large_size = 1026; //iPad pro = 1024
-var screen_medium_size = 770; //iPad = 768
-var screen_small_size = 416; //iPhone plus = 414
+var scr_size = {}
+// var scr_size.wX, scr_size.wL, scr_size.wM , scr_size.wS;
+// var screen_large_size = 1026; //iPad pro = 1024
+// var screen_medium_size = 770; //iPad = 768
+// var screen_small_size = 416; //iPhone plus = 414
 
 // Reference box variables
 var ref_box_size;
@@ -32,7 +32,7 @@ var mouse = {
   x: undefined,
   y: undefined
 };
-var touch;
+var touch = false;
 var mousemove_enable = true; // to lower move move event rate
 
 var box_corner_offset, proximity_margin;
@@ -60,8 +60,8 @@ var logo_size, logo_ref_center_tl;
 // Header
 var header_height = 50;
 
-// User agent
-var UserAgent;
+// Window data
+var userAgent, dPR, iW, iH, iMin
 
 // Global objects
 var HL = {}; // header logo
@@ -72,7 +72,4 @@ var playing_global = false;
 
 
 //CANVAS
-
-var over = {
-  cl: false,
-}
+var over = {}

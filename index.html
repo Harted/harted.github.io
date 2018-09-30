@@ -3,8 +3,8 @@
 <head>
 	<meta charset='utf-8'>
 
-  	<!-- IE  is it needed?? -->
-  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- IE  is it needed?? -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<!-- Responsive -->
 	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
@@ -32,24 +32,21 @@
 	<script src='script/pages.js'></script>
 
 </head>
-<body>
+<body class='color_back'>
 	<div class='fade'>
+
+		<!--HEADER-->
+		<div id="harted" class='top_left_align top_left_margin'>
+			<h2>HARTED</h2>
+		</div>
 
 		<!--CANVAS-->
 		<canvas id="background" style='z-index:0;'></canvas>
 		<canvas id="center_logo" style='z-index:10;'></canvas>
 		<canvas id="art" style='z-index:1;'></canvas>
 		<canvas id="tree_tl" style='z-index:9;'></canvas>
-		<!--NAMECALLING-->
-		<div id="harted" class='top_left_align top_left_margin'>
-			<h2>HARTED</h2>
-		</div>
 
-		<!-- <div id='art_box'>
-			<img src='image/vlek.png' style='z-index:1'>
-		</div> -->
-
-		<!-- Reference box in centerof window -->
+		<!-- Reference box in center of window -->
 		<div id='reference_box'>
 			<!-- Square in top left corner -->
 			<div id='top_left' class='shadow' style='z-index:2'>
@@ -75,9 +72,6 @@
 					<h2>Shows</h2>
 				</div>
 			</div>
-			<!--<svg id='logo' viewbox='0 0 500 500' style='z-index:4'>
-				<use xlink:href='svg/logo.svg#logo'></use>
-			</svg>-->
 		</div>
 
 
@@ -106,27 +100,25 @@
 	</div>
 
 	<script type='text/javascript'>
-	// script
 	page = false;
-	UserAgent = getUserAgent(); //-------------------------------------------------- |F| main.js
-	$('body').css({'background-color': color_back})
+	//userAgent = getUserAgent(); //------------------------------------------------ [F] main.js
 
-	DetermineTouch(); //------------------------------------------------------------ |F| main.js
-	//MakeAlignmentClasses(); // probably something for css file.. ------------------- |F| main.js
-	MakeThings(); //---------------------------------------------------------------- |F| index.html <script>
+	//DetermineTouch(); //---------------------------------------------------------- [F] main.js
+	MakeThings(); //-------------------------------------------------------------- [F] index.html <script>
 
 	function MakeThings() {
-		GetMinWindowSize(); //-------------------------------------------------------- |F| main.js
-		Responsive(); //-------------------------------------------------------------- |F| main.js
-		CalculateSizes(); //---------------------------------------------------------- |F| main.js
-		HeaderLogo() //--------------------------------------------------------------- |F| pages.js (needed for link logo size - var HL)
-		MakeRefBox(); //-------------------------------------------------------------- |F| main.js
-		MakeArtBox(); //-------------------------------------------------------------- |F| main.js
-		Squares(); //----------------------------------------------------------------- |F| main.js
+		getWindowData(); //--------------------------------------------------------- [F] main.js
+		//GetMinWindowSize(); //------------------------------------------------------ [F] main.js
+		//Responsive(); //------------------------------------------------------------ [F] main.js
+		CalculateSizes(); //-------------------------------------------------------- [F] main.js
+		HeaderLogo() //------------------------------------------------------------- [F] pages.js (needed for link logo size - var HL)
+		MakeRefBox(); //------------------------------------------------------------ [F] main.js
+		MakeArtBox(); //------------------------------------------------------------ [F] main.js
+		Squares(); //--------------------------------------------------------------- [F] main.js
 		Shadow();
-		MakeLogo('#3E3E3E'); //---------------------------------------------------------------- |F| main.js
-		LinkLogos('#3E3E3E'); //--------------------------------------------------------------- |F| main.js
-		BoxContentFormat(); //-------------------------------------------------------- |F| main.js
+		MakeLogo('#3E3E3E'); //----------------------------------------------------- [F] main.js
+		LinkLogos('#3E3E3E'); //---------------------------------------------------- [F] main.js
+		BoxContentFormat(); //------------------------------------------------------ [F] main.js
 	};
 
 	// Actions when document is ready--------------------------------------------------------------------------------------------------
@@ -135,32 +127,32 @@
 			'opacity': 1,
 			'transition': anim_speed_factor * 500 + 'ms',
 		})
-		MouseMoveOfsets(); //--------------------------------------------------------- |F| main.js
-		MouseMove(); //--------------------------------------------------------------- |F| main.js
+		MouseMoveOfsets(); //------------------------------------------------------- [F] main.js
+		MouseMove(); //------------------------------------------------------------- [F] main.js
 	});
 
 	// Actions when window is resized -------------------------------------------------------------------------------------------------
 	$(window).on('resize', function() {
 		setTimeout(function(){
-			MakeThings(); //------------------------------------------------------------ |F| index.html <script>
+			MakeThings(); //---------------------------------------------------------- [F] index.html
 			// transitions off when resizing
-			TransitionOff( //----------------------------------------------------------- |F| main.js
+			TransitionOff( //--------------------------------------------------------- [F] main.js
 				'#top_left',
 				'#bottom_left',
 				'#bottom_right',
 				'#top_right',
 				'#logo'
 			);
-			MouseMoveOfsets(); //------------------------------------------------------- |F| main.js
+			MouseMoveOfsets(); //----------------------------------------------------- [F] main.js
 			// switch transitions back on after resizing (300ms)
-			TransitionOn( //------------------------------------------------------------ |F| main.js
+			TransitionOn( //---------------------------------------------------------- [F] main.js
 				'#top_left',
 				'#bottom_left',
 				'#bottom_right',
 				'#top_right',
 				'#logo'
 			);
-			MouseMove();//-------------------------------------------------------------- |F| main.js
+			MouseMove();//------------------------------------------------------------ [F] main.js
 		}, 50)
 	});
 

@@ -15,7 +15,7 @@ var LogoAnim = {
     return {
       x: iW/2,
       y: iH/2,
-      spawnradius: min_window_size/6,
+      spawnradius: iMin/6,
     };
   },
   getVelocity: function(){
@@ -50,7 +50,7 @@ var LogoAnim = {
     return {
       func: 'circlereset',//'bounce',
       startframe: Math.floor(Math.random() * 1000),
-      circleradius: min_window_size/2*0.9, //circlereset
+      circleradius: iMin/2*0.9, //circlereset
     }
   },
 }
