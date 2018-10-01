@@ -18,16 +18,14 @@ function getWindowData(){
 			$(this).off('touchstart mousemove');
 		});
 	};
+	this.determineTouch(); //glabal var touch set inside
 
 	dPR = window.devicePixelRatio;
 	iW = window.innerWidth;
 	iH = window.innerHeight;
 
-	this.minWindowSize = function(){
-		if (iW <= iH) {return iW;} else {return iH;};
-	};
+	this.minWindowSize = function(){if (iW <= iH) {return iW;} else {return iH;};};
 
-	this.determineTouch(); //glabal var touch set inside
 	userAgent = this.getUserAgent();
 	iMin = this.minWindowSize();
 
@@ -38,7 +36,6 @@ function getWindowData(){
 	}
 
 	this.setScrSize = function(size, str){
-		debugger
 		if (size < scr_size.S) { scr_size[str+'S'] = true }
 		else if (size < scr_size.M) { scr_size[str+'M'] = true }
 		else if (size < scr_size.L) { scr_size[str+'L'] = true }
@@ -52,57 +49,11 @@ function getWindowData(){
 
 }
 
-// Responsive -------------------------------------------------------------------------------------------------------------------------
-// function Responsive() { // this should only work with iMin.. make seperate for content containt window width!!!!!!!!!!!!!!!!!!!!!!!
-// 	if (iMin < screen_large_size & iMin >= screen_medium_size) {
-// 		scr_size.sL = true;
-// 		scr_size.sM = false;
-// 		scr_size.sS = false;
-// 	} else if (iMin < screen_medium_size & iMin >= screen_small_size) {
-// 		scr_size.sL = false;
-// 		scr_size.sM = true;
-// 		scr_size.sS = false;
-// 	} else if (iMin < screen_small_size) {
-// 		scr_size.sL = false;
-// 		scr_size.sM = false;
-// 		scr_size.sS = true;
-// 	} else {
-// 		scr_size.sL = false;
-// 		scr_size.sM = false;
-// 		scr_size.sS = false;
-// 	};
-//
-// 	if (iW < screen_large_size & iW >= screen_medium_size) {
-// 		scr_size.wL = true;
-// 		scr_size.wM = false;
-// 		scr_size.wS = false;
-// 	} else if (iW < screen_medium_size & iW >= screen_small_size) {
-// 		scr_size.wL = false;
-// 		scr_size.wM = true;
-// 		scr_size.wS = false;
-// 	} else if (iW < screen_small_size) {
-// 		scr_size.wL = false;
-// 		scr_size.wM = false;
-// 		scr_size.wS = true;
-// 	} else {
-// 		scr_size.wL = false;
-// 		scr_size.wM = false;
-// 		scr_size.wS = false;
-// 	};
-//
-// 	if (scr_size.wL == false && scr_size.wM == false && scr_size.wS == false){
-// 		scr_size.wX = true
-// 	} else {
-// 		scr_size.wX = false
-// 	};
-//
-// };
-
 // Calculate sizes by ref_box_size (3/2 minimum window size)---------------------------------------------------------------------------
 function CalculateSizes() {
 	//reference box size and styling
 	if (scr_size.sM == true) {
-		ref_box_size = Math.round(iMin / (2 + Math.pow(iMin / screen_medium_size, 3)) * 2);
+		ref_box_size = Math.round(iMin / (2 + Math.pow(iMin / scr_size.M, 3)) * 2);
 		SizesByRefBox(); //--------------------------------------------------------- [F] main_child.js
 	} else if (scr_size.sS == true) {
 		ref_box_size = '100%';

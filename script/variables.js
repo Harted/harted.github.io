@@ -19,9 +19,9 @@ var iW, iH, iMin;
 var page = false;
 var scr_size = {}
 // var scr_size.wX, scr_size.wL, scr_size.wM , scr_size.wS;
-// var screen_large_size = 1026; //iPad pro = 1024
-// var screen_medium_size = 770; //iPad = 768
-// var screen_small_size = 416; //iPhone plus = 414
+// var scr_size.L = 1026; //iPad pro = 1024
+// var scr_size.M = 770; //iPad = 768
+// var scr_size.S = 416; //iPhone plus = 414
 
 // Reference box variables
 var ref_box_size;

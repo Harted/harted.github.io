@@ -1,7 +1,7 @@
 // Flexbox script for albums ----------------------------------------------------------------------------------------------------------
 function EpHeader(header_color, link_color){
 
-  //var width_larger_then_large = valBetween(iW - screen_large_size,0,1024);    NOTE: this was for making font size larger
+  //var width_larger_then_large = valBetween(iW - scr_size.L,0,1024);    NOTE: this was for making font size larger
   //var em_add = Math.round(width_larger_then_large/10.24/4)/100;               TODO: use the boolean large size instead
   var base_em = 1; // + em_add;
 
