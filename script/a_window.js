@@ -1,3 +1,5 @@
+console.time('a_window')
+
 // VARIABLES --------------------------------------------------------------------------------------------------------------------------
 var userAgent = getUserAgent();
 var touch = false
@@ -29,6 +31,7 @@ $(window).on('touchstart', function() {
 
 // Window data function ---------------------------------------------------------------------------------------------------------------
 function getWindowData(){
+  console.time('getWindowData')
   //set window size and device pixel ratio
   win.dPR = window.devicePixelRatio;
   win.iW = window.innerWidth; win.iH = window.innerHeight;
@@ -48,6 +51,6 @@ function getWindowData(){
   this.setScrSize(win.iMin, 'min_size'); //set minimum size booleans
   this.setScrSize(win.iW, 'width'); //set minimum width booleans
   this.setScrSize(win.iH, 'height'); //set minimum height booleans
-  console.log(win)
-  console.log(ref_box_size)
+  console.timeEnd('getWindowData')
 }
+console.timeEnd('a_window')
