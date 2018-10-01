@@ -46,10 +46,10 @@ function framerate(){
 function MM_Canvas(id, id_str){
   over[id_str] = false //ADD id to over object
   this.x = id.canvas.offsetLeft ;  this.y = id.canvas.offsetTop  ;
-  this.w = id.canvas.width/dPR  ;  this.h = id.canvas.height/dPR ;
+  this.w = id.canvas.width/win.dPR  ;  this.h = id.canvas.height/win.dPR ;
   //only fire when over canvas
   if(mouse.x > this.x && mouse.y > this.y && mouse.x < this.x + this.w && mouse.y < this.y + this.w){
-    id = id.getImageData((mouse.x - id.canvas.offsetLeft)*dPR ,(mouse.y - id.canvas.offsetTop)*dPR,1,1).data
+    id = id.getImageData((mouse.x - id.canvas.offsetLeft)*win.dPR ,(mouse.y - id.canvas.offsetTop)*win.dPR,1,1).data
     if (id[3] > 0 && over[id_str] == false){
       over[id_str]= true
       $('#center_logo').css('pointer-events', 'initial');
@@ -62,7 +62,7 @@ function MM_Canvas(id, id_str){
 
 // External animation trigger function --------------------------------------------------------------------------------------------------
 function ExtAnimTrigger(id, object_id_arr, trigger){
-  id.clearRect(0,0,iW,iH);
+  id.clearRect(0,0,win.iW,win.iH);
   for (var i = 0; i < object_id_arr.length; i++) {
     object_id_arr[i].animation.trigger = trigger
     object_id_arr[i].update()
@@ -72,7 +72,7 @@ function ExtAnimTrigger(id, object_id_arr, trigger){
 
 //Animations ----------------------------------------------------------------------------------------------------------------------------
 function b_animation(){
-  b.clearRect(0,0,iW,iH);
+  b.clearRect(0,0,win.iW,win.iH);
   for (var i = 0; i < LA_array.length; i++) {
     LA_array[i].update(LA_array);
   }

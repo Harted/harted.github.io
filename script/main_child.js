@@ -18,11 +18,11 @@ function SizesByRefBoxMobile() {
 	box2_size = '50%'; //180;
 	box3_size = '50%'; //140;
 	box4_size = '50%'; //100;
-	hover_size = (iMin / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
-	box_title_margin = (iMin * 0.08); //25;
-	box_title_font_size = (iMin * 0.08); //20;
+	hover_size = (win.iMin / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
+	box_title_margin = (win.iMin * 0.08); //25;
+	box_title_font_size = (win.iMin * 0.08); //20;
 	//logo sizes
-	logo_size = (iMin * 0.30); //80;
+	logo_size = (win.iMin * 0.30); //80;
 };
 
 // Set margins of squars based on position --------------------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ function ClickFunction(CF_id, CF_href, CF_logo_color) {
 	$('#reference_box').css({
 		'transition': 'none',
 		'width': $('body').innerWidth(), // window changes by scroll bar on windows
-		'height': iH,
+		'height': win.iH,
 		'top': 0,
 		'left': 0,
 		'bottom': 0,
@@ -157,8 +157,8 @@ function SetMarginsToHeader(SMTH_id) {
 
 	var top = offset_top + 'px';
 	var left = offset_left + 'px';
-	var bottom = (iH - offset_top - height) + 'px';
-	var right = (iW - offset_left - width); + 'px'
+	var bottom = (win.iH - offset_top - height) + 'px';
+	var right = (win.iW - offset_left - width); + 'px'
 
 	return [top, right, bottom, left];
 };
@@ -198,7 +198,7 @@ function BoxProximity(BP_ref, BP_offset_top_center, BP_offset_left_center, BP_pr
 		var mouse_horizontal_from_center = Math.abs(mouse.x - BP_offset_left_center);
 		var pos_neg_vertical = parseFloat(-(mouse.y - BP_offset_top_center) / mouse_vertical_from_center) || 1;
 		var pos_neg_horizontal = parseFloat(-(mouse.x - BP_offset_left_center) / mouse_horizontal_from_center) || 1;
-		//value to center = half iMin, value at border of virtual minimum window size square = 0
+		//value to center = half win.iMin, value at border of virtual minimum window size square = 0
 		var to_center_vertical_raw = (mouse_vertical_from_center - (BP_proximity_box_size / 2));
 		var to_center_vertical
 		if (to_center_vertical_raw <= 0) {

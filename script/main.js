@@ -1,65 +1,17 @@
-// Browser and window data ------------------------------------------------------------------------------------------------------------
-function getWindowData(){
-
-	this.getUserAgent = function(){
-		var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-		if (/windows phone/i.test(userAgent)) 																			{return "WindowsPhone";}
-		else if (/android/i.test(userAgent)) 																				{return "Android"			;}
-		else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) 						{return "iOS"					;}
-		else if (/Chrome/.test(userAgent)) 																					{return "Chrome"			;}
-		else if (/Safari/.test(userAgent)) 																					{return "Safari"			;}
-		else if (/Firefox/.test(userAgent)) 																				{return "Firefox"			;}
-		else {console.log('unknown userAgent: ' + userAgent); return "unknown";};
-	};
-
-	this.determineTouch = function(){
-		$(window).on('touchstart', function() {
-			touch = true; Squares(); //reset square interaction method when feeling a touch :D
-			$(this).off('touchstart mousemove');
-		});
-	};
-	this.determineTouch(); //glabal var touch set inside
-
-	dPR = window.devicePixelRatio;
-	iW = window.innerWidth;
-	iH = window.innerHeight;
-
-	this.minWindowSize = function(){if (iW <= iH) {return iW;} else {return iH;};};
-
-	userAgent = this.getUserAgent();
-	iMin = this.minWindowSize();
-
-	scr_size = {
-		L: 1026, M: 770, S: 416,	//iPad pro = 1024	| iPad = 768 | iPhone plus = 414 	< SETTING
-		wX: false, wL: false, wM: false, wS: false, //width sizer
-		sX: false, sL: false, sM: false, sS: false,	//screen size 									NOTE maybe width is enough?
-	}
-
-	this.setScrSize = function(size, str){
-		if (size < scr_size.S) { scr_size[str+'S'] = true }
-		else if (size < scr_size.M) { scr_size[str+'M'] = true }
-		else if (size < scr_size.L) { scr_size[str+'L'] = true }
-		else { scr_size[str+'X'] = true }
-	}
-
-	this.setScrSize(iMin, 's')
-	this.setScrSize(iW, 'w')
-
-	console.log(scr_size)
-
-}
-
 // Calculate sizes by ref_box_size (3/2 minimum window size)---------------------------------------------------------------------------
 function CalculateSizes() {
 	//reference box size and styling
-	if (scr_size.sM == true) {
-		ref_box_size = Math.round(iMin / (2 + Math.pow(iMin / scr_size.M, 3)) * 2);
+	if (win.min_size.M == true) {
+		console.log('1')
+		ref_box_size = Math.round(win.iMin / (2 + Math.pow(win.iMin / win.size_setting.M, 3)) * 2);
 		SizesByRefBox(); //--------------------------------------------------------- [F] main_child.js
-	} else if (scr_size.sS == true) {
+	} else if (win.min_size.S == true) {
+		console.log('2')
 		ref_box_size = '100%';
 		SizesByRefBoxMobile(); //--------------------------------------------------- [F] main_child.js
 	} else {
-		ref_box_size = Math.round(iMin / 3 * 2);
+		console.log('3')
+		ref_box_size = Math.round(win.iMin / 3 * 2);
 		SizesByRefBox(); //--------------------------------------------------------- [F] main_child.js
 	}
 };
@@ -81,7 +33,7 @@ function MakeRefBox() {
 
 // Art box ----------------------------------------------------------------------------------------------------------------------------
 function MakeArtBox() {
-	if (scr_size.sS == true) {
+	if (win.min_size.S == true) {
 		$('#art_box').css({
 			'display': 'none'
 		})
@@ -127,7 +79,7 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 	var MS_animation_speed = (anim_speed_factor * (hover_size - MS_size) * (800 / ref_box_size)) + 'ms';
 
 	// set margins (artwork on desktop and ipad/ fullscreen squares on iphone)
-	if (scr_size.sS == true) {
+	if (win.min_size.S == true) {
 		var margins_array = SetMargins(MS_ref, '50%', 0); //------------------------ [F] main_child.js
 	} else {
 		var margins_array = SetMargins(MS_ref, hover_size, MS_margin); //----------- [F] main_child.js
@@ -147,13 +99,13 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 		'background-color': eval('color_' + MS_ref) + '80',
 		'transition': MS_animation_speed,
 	});
-	if (scr_size.sS == true) {
+	if (win.min_size.S == true) {
 		$(MS_id).css({
 			'background-color': eval('color_' + MS_ref) + '80',
 		});
 	};
 	// if small screen or iphone no hover animation and clicktrough immediately
-	if (scr_size.sS == true || touch == true) {
+	if (win.min_size.S == true || touch == true) {
 		$(MS_id).off('mouseenter mouseleave click').on('click', function() {
 			ClickFunction(MS_id, MS_href, eval('color_' + MS_ref)) //----------------- [F] main_child.js
 		});
@@ -166,7 +118,7 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 				'height': hover_size,
 				'right': MS_right_h,
 				'bottom': MS_bottom_h,
-				'background-color': eval('color_' + MS_ref) + "B0",
+				'background-color': eval('color_' + MS_ref) + 'B0',
 			}) //actions on end of transisition:
 			.off('transitionend').one('transitionend', function() {
 				$(this).css({
@@ -213,31 +165,31 @@ function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
 
 // Shadow -----------------------------------------------------------------------------------------------------------------------------
 function Shadow() {
-	if (scr_size.sS == true) {
+	if (win.min_size.S == true) {
 		$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
 	} else {
 		$('.shadow').css('box-shadow', '0px 0px 12px rgba(0,0,0,.35)')
 	}
 }
 
-// Make logo --------------------------------------------------------------------------------------------------------------------------
-function MakeLogo(color) {
-	$('#logo').css({
-		'position': 'absolute',
-		'width': logo_size,
-		'height': logo_size,
-		//place in absolute center
-		'transition': 'none',
-		'margin': 'auto', // fix at work
-		'position': 'absolute',
-		'top': 0,
-		'left': 0,
-		'bottom': 0,
-		'right': 0,
-		//color
-		'fill': color
-	});
-};
+// // Make logo --------------------------------------------------------------------------------------------------------------------------
+// function MakeLogo(color) {
+// 	$('#logo').css({
+// 		'position': 'absolute',
+// 		'width': logo_size,
+// 		'height': logo_size,
+// 		//place in absolute center
+// 		'transition': 'none',
+// 		'margin': 'auto', // fix at work
+// 		'position': 'absolute',
+// 		'top': 0,
+// 		'left': 0,
+// 		'bottom': 0,
+// 		'right': 0,
+// 		//color
+// 		'fill': color
+// 	});
+// };
 
 // Box content formatting -------------------------------------------------------------------------------------------------------------
 function BoxContentFormat() {
@@ -274,7 +226,7 @@ setInterval(function(){mousemove_enable = true},32); //mousemove rate
 function MouseMove() {
 	$(window).off('mousemove').on('mousemove', function(event) {
 		if (mousemove_enable == true) {
-			if (scr_size.sS == false && touch == false) {
+			if (win.min_size.S == false && touch == false) {
 				mouse.x = event.clientX; mouse.y = event.clientY;
 				//filter double mouse event
 				if (mouse.x != mouse.x_old || mouse.y != mouse.y_old) {
@@ -307,7 +259,7 @@ function TransitionOn() {
 
 // link_logos -------------------------------------------------------------------------------------------------------------------------
 function LinkLogos(LL_color){
-	if (scr_size.sS == true && scr_size.wX == false) {
+	if (win.min_size.S == true && win.width.XL == false) {
 		var LLS = {
 			logo: {
 				opacity: 0.25,
@@ -323,10 +275,10 @@ function LinkLogos(LL_color){
 			width: logo_size*2,
 			height: logo_size*2,
 			right: function(){
-				return (iW - this.width)/2
+				return (win.iW - this.width)/2
 			},
 			top: function(){
-				return (iH - this.width)/2
+				return (win.iH - this.width)/2
 			},
 		};
 	} else {
@@ -337,10 +289,10 @@ function LinkLogos(LL_color){
 				color: LL_color,
 				width: HL.width,
 				margin: HL.margin(),
-				padding_bottom: iW*0.02,
+				padding_bottom: win.iW*0.02,
 				position: 'static'
 			},
-			margin_right: iW*0.03,
+			margin_right: win.iW*0.03,
 			padding_top: '3%',
 			width: 'auto',
 			height: 'auto',
@@ -348,7 +300,7 @@ function LinkLogos(LL_color){
 			top: function(){return 0},
 		};
 	};
-	if (page == true && (scr_size.wS == true || scr_size.wM == true || scr_size.wL == true || (scr_size.sS == true && scr_size.wX == true))) {
+	if (page == true && (win.width.S == true || win.width.M == true || win.width.L == true || (win.min_size.S == true && win.width.XL == true))) {
 		$('#link_logos').css({
 			'display': 'none'
 		})

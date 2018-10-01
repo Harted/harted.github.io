@@ -1,4 +1,3 @@
-// VARIABLES -----------------------------------------------------------------------------------------------------------------------
 // Factors
 var anim_speed_factor = 1;
 var action_area_corner_offset_factor = 0.1; //(1 = 100%)
@@ -12,16 +11,8 @@ var color_3 = '#FFFFFF';//'#3BDB83';
 var color_4 = '#FFFFFF';//'#F4C700';
 var color_back = '#FFFFFF';
 
-// Window width variables
-var iW, iH, iMin;
-
 // Responsive
 var page = false;
-var scr_size = {}
-// var scr_size.wX, scr_size.wL, scr_size.wM , scr_size.wS;
-// var scr_size.L = 1026; //iPad pro = 1024
-// var scr_size.M = 770; //iPad = 768
-// var scr_size.S = 416; //iPhone plus = 414
 
 // Reference box variables
 var ref_box_size;
@@ -60,8 +51,7 @@ var logo_size, logo_ref_center_tl;
 // Header
 var header_height = 50;
 
-// Window data
-var userAgent, dPR, iW, iH, iMin
+
 
 // Global objects
 var HL = {}; // header logo

@@ -1,7 +1,7 @@
 // Flexbox script for albums ----------------------------------------------------------------------------------------------------------
 function EpHeader(header_color, link_color){
 
-  //var width_larger_then_large = valBetween(iW - scr_size.L,0,1024);    NOTE: this was for making font size larger
+  //var width_larger_then_large = valBetween(win.iW - win.L,0,1024);    NOTE: this was for making font size larger
   //var em_add = Math.round(width_larger_then_large/10.24/4)/100;               TODO: use the boolean large size instead
   var base_em = 1; // + em_add;
 
@@ -91,15 +91,15 @@ function EpHeader(header_color, link_color){
   }
 
   // width small & medium changes
-  if (scr_size.wS == true || scr_size.wM == true) {
+  if (win.width.S == true || win.width.M == true) {
     ep.flex_direction = 'column-reverse'
     ep.text_holder.width = '100%'
     ep.img.width = '100%'
     ep.text.padding_top = 0 + 'px'
     ep.text.padding_right = HL.center_right() + 'px'
-    if (iH - header_height < iW/3*2){ //ep banner image is 2/3 ratio
+    if (win.iH - header_height < win.iW/3*2){ //ep banner image is 2/3 ratio
       // precentage left of window height 2/3 of witdht make banner fit iphone landscape
-      ep.img._img.width = Math.round((iH - header_height) / (iW/3*2) * 100) + '%'
+      ep.img._img.width = Math.round((win.iH - header_height) / (win.iW/3*2) * 100) + '%'
     }
   }
 
@@ -219,7 +219,7 @@ function Soundcloud(info, color){
 
 function scRefresh(){
   $('.sc_player_holder').css({
-    'width': iW + 'px',
+    'width': win.iW + 'px',
   });
 }
 
@@ -235,7 +235,7 @@ function SCMiniTrackPlayer(iframe_id, track_id, color, inverse_bool, auto_play_b
 
   //link making
   var link =
-  'https://w.soundcloud.com/player/' +
+  'https://win.soundcloud.com/player/' +
   '?url=' +
   'https%3A//api.soundcloud.com/tracks/' + track_id +
   '&amp;color=' + color +

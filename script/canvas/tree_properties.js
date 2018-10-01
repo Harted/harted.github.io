@@ -9,7 +9,7 @@ var TreeTopLeft = {
   grow: 0.2,
   slowdown: 180,
   start: {
-    x: tree_tl.canvas.width/dPR,
-    y: tree_tl.canvas.height/dPR,
+    x: tree_tl.canvas.width/win.dPR,
+    y: tree_tl.canvas.height/win.dPR,
   },
 }
