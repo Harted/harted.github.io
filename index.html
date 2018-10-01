@@ -4,7 +4,7 @@
 	<meta charset='utf-8'>
 
 	<!-- IE  is it needed?? -->
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 
 	<!-- Responsive -->
 	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
@@ -24,27 +24,30 @@
 	<link href='style/styles.css' rel='stylesheet' type='text/css'>
 	<link href='style/canvas.css' rel='stylesheet' type='text/css'>
 
+	<!-- jQuery -->
+	<script src='script/jQuery/jquery.js' charset='utf-8'></script>
+
 	<!-- scripts -->
-	<script src='script/jQuery/jquery-3.2.1.js'></script>
-	<script src='script/variables.js'></script>
-	<script src='script/main.js'></script>
-	<script src='script/main_child.js'></script>
-	<script src='script/pages.js'></script>
+	<script src='script/a_window.js' charset='utf-8'></script>
+	<script src='script/variables.js' charset='utf-8'></script>
+	<script src='script/main.js' charset='utf-8'></script>
+	<script src='script/main_child.js' charset='utf-8'></script>
+	<script src='script/pages.js' charset='utf-8'></script>
 
 </head>
 <body class='color_back'>
 	<div class='fade'>
 
 		<!--HEADER-->
-		<div id="harted" class='top_left_align top_left_margin'>
+		<div id='harted' class='top_left_align top_left_margin'>
 			<h2>HARTED</h2>
 		</div>
 
 		<!--CANVAS-->
-		<canvas id="background" style='z-index:0;'></canvas>
-		<canvas id="center_logo" style='z-index:10;'></canvas>
-		<canvas id="art" style='z-index:1;'></canvas>
-		<canvas id="tree_tl" style='z-index:9;'></canvas>
+		<canvas id='background' style='z-index:0;'></canvas>
+		<canvas id='center_logo' style='z-index:10;'></canvas>
+		<canvas id='art' style='z-index:1;'></canvas>
+		<canvas id='tree_tl' style='z-index:9;'></canvas>
 
 		<!-- Reference box in center of window -->
 		<div id='reference_box'>
@@ -101,22 +104,16 @@
 
 	<script type='text/javascript'>
 	page = false;
-	//userAgent = getUserAgent(); //------------------------------------------------ [F] main.js
-
-	//DetermineTouch(); //---------------------------------------------------------- [F] main.js
 	MakeThings(); //-------------------------------------------------------------- [F] index.html <script>
 
 	function MakeThings() {
 		getWindowData(); //--------------------------------------------------------- [F] main.js
-		//GetMinWindowSize(); //------------------------------------------------------ [F] main.js
-		//Responsive(); //------------------------------------------------------------ [F] main.js
 		CalculateSizes(); //-------------------------------------------------------- [F] main.js
 		HeaderLogo() //------------------------------------------------------------- [F] pages.js (needed for link logo size - var HL)
 		MakeRefBox(); //------------------------------------------------------------ [F] main.js
 		MakeArtBox(); //------------------------------------------------------------ [F] main.js
 		Squares(); //--------------------------------------------------------------- [F] main.js
 		Shadow();
-		MakeLogo('#3E3E3E'); //----------------------------------------------------- [F] main.js
 		LinkLogos('#3E3E3E'); //---------------------------------------------------- [F] main.js
 		BoxContentFormat(); //------------------------------------------------------ [F] main.js
 	};
@@ -158,7 +155,7 @@
 
 </script>
 <script src='script/canvas/init.js'></script>
-<script src="script/canvas/utilities.js"></script>
+<script src='script/canvas/utilities.js'></script>
 <script src='script/canvas/hex_properties.js'></script>
 <script src='script/canvas/hex.js'></script>
 <script src='script/canvas/tree_properties.js'></script>

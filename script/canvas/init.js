@@ -12,8 +12,8 @@ var canvas_properties = [
   {
     html_id: '#background',
     context_id: 'b',
-    width: iW,
-    height: iH,
+    width: win.iW,
+    height: win.iH,
   },
   {
     html_id: '#center_logo',
@@ -34,6 +34,7 @@ var canvas_properties = [
     height: ref_box_size/2,
   },
 ];
+console.log(canvas_properties)
 
 //Generate canvasses  --------------------------------------------------------------------------------------------------------------------------
 GenerateCanvas(canvas_properties)                                               //NOTE: to implement in window resize later
@@ -43,13 +44,13 @@ function GenerateCanvas(obj){
     let canvas = $(obj.html_id)[0];
     window[obj.context_id] = canvas.getContext('2d');
     //set width & height with devicePixelRatio
-    canvas.width = obj.width * dPR;
+    canvas.width = obj.width * win.dPR;
     canvas.style.width = obj.width + 'px';
-    canvas.height = obj.height * dPR;
+    canvas.height = obj.height * win.dPR;
     canvas.style.height = obj.height + 'px';
     //compensate devicePixelRatio
     window[obj.context_id].translate(b.width/2,b.height/2)
-    window[obj.context_id].scale(dPR,dPR);
+    window[obj.context_id].scale(win.dPR,win.dPR);
     window[obj.context_id].translate(-b.width/2,-b.height/2);
   }
   for (var i = 0; i < obj.length; i++) {this.setContext(obj[i])}                //generate canvasses

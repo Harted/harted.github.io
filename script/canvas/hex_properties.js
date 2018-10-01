@@ -13,15 +13,15 @@ var LogoAnim = {
   },
   getCenter: function(){
     return {
-      x: iW/2,
-      y: iH/2,
-      spawnradius: iMin/6,
+      x: win.iW/2,
+      y: win.iH/2,
+      spawnradius: win.iMin/6,
     };
   },
   getVelocity: function(){
     return {
-      x: 1/dPR * (Math.random() - 0.5) * this.velocity_factor,
-      y: 1/dPR * (Math.random() - 0.5) * this.velocity_factor,
+      x: 1/win.dPR * (Math.random() - 0.5) * this.velocity_factor,
+      y: 1/win.dPR * (Math.random() - 0.5) * this.velocity_factor,
     };
   },
   getFill: function () {
@@ -48,9 +48,9 @@ var LogoAnim = {
   },
   animation: function() {
     return {
-      func: 'circlereset',//'bounce',
+      func: 'bounce',//'bounce',
       startframe: Math.floor(Math.random() * 1000),
-      circleradius: iMin/2*0.9, //circlereset
+      circleradius: win.iMin/2*0.9, //circlereset
     }
   },
 }

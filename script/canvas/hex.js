@@ -129,11 +129,11 @@ function DrawHex(id, array, i){
 
       if (this.animation.func == 'bounce'){
 
-        if (this.center.x + this.size > iW || this.center.x - this.size < 0) {
+        if (this.center.x + this.size > win.iW || this.center.x - this.size < 0) {
           this.velocity.x = -this.velocity.x;
         };
 
-        if (this.center.y + this.size > iH || this.center.y - this.size < 0) {
+        if (this.center.y + this.size > win.iH || this.center.y - this.size < 0) {
           this.velocity.y = -this.velocity.y;
         };
 
@@ -143,7 +143,7 @@ function DrawHex(id, array, i){
 
       if (this.animation.func == 'borderreset'){
 
-        if (this.center.x - this.size > iW || this.center.x + this.size < 0 || this.center.y - this.size > iH || this.center.y + this.size < 0) {
+        if (this.center.x - this.size > win.iW || this.center.x + this.size < 0 || this.center.y - this.size > win.iH || this.center.y + this.size < 0) {
           this.init()
           this.anti_overlap()
         };

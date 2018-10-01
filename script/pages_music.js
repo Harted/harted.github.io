@@ -51,12 +51,12 @@ function AlbumFlexByID(AF_ID, important) {
   var article = {}
   var article_count = $(AF_ID + ' .album_container > article').length;
 
-  if (scr_size.wS == true) {
+  if (win.width.S == true) {
     article = {
       'width': $('.container_child').width(),
       'padding': 0,
     }
-  } else if (scr_size.wM == true || scr_size.wL == true || (scr_size.wS == false && article_count < 3 && important == true)) {
+  } else if (win.width.M == true || win.width.L == true || (win.width.S == false && article_count < 3 && important == true)) {
     article = {
       'width': $('.container_child').width() * 0.45,
       'padding': $('.container_child').width() * 0.024, // -0.001 for firefox (otherwise album gets wrapped)
@@ -69,7 +69,7 @@ function AlbumFlexByID(AF_ID, important) {
   }
 
   article.margin_bottom = 30
-  article.img_max_dimension = iH/2
+  article.img_max_dimension = win.iH/2
 
   $(AF_ID + ' .album_container').css({
     'display': 'flex',
@@ -107,7 +107,7 @@ function AlbumFlexByID(AF_ID, important) {
 
   $(AF_ID + ' .album_container').addClass('after')
 
-  if (scr_size.wM == false && scr_size.wL == false && article_count < 2 ) {
+  if (win.width.M == false && win.width.L == false && article_count < 2 ) {
     $(AF_ID + ' .album_container').addClass('fore')
   } else {
     $(AF_ID + ' .album_container').removeClass('fore')

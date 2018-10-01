@@ -7,7 +7,7 @@ var pixel = {}
 //random rectangles to make tree organic
 var ran_rect_arr = []
 for (var i = 0; i < 1000; i++) {
-  ran_rect_arr.push((100*i/1500*(Math.random()/4+0.75)/dPR)+0.5)
+  ran_rect_arr.push((100*i/1500*(Math.random()/4+0.75)/win.dPR)+0.5)
 }
 
 $('#tree_tl').css('transform', 'translate(' + (-ref_box_size/4-logo_size/4) + 'px,' + (-ref_box_size/4-logo_size/4) + 'px)')
@@ -17,7 +17,7 @@ function DrawTree(id){
 
   this.c = id.context
   this.c.fillStyle = "#3E3E3E"
-  this.c.lineWidth = 1/dPR
+  this.c.lineWidth = 1/win.dPR
   this.ba = this.branch_angle
   this.bpm = id.branch_parts_max
   this.bs = id.branches
@@ -167,8 +167,8 @@ function FillTree(id){
         arc = 0
       }
     }
-    x = pixel_array[i].x/dPR
-    y = pixel_array[i].y/dPR
+    x = pixel_array[i].x/win.dPR
+    y = pixel_array[i].y/win.dPR
     w = ran_rect_arr[arc]
     h = ran_rect_arr[arc]
     id.context.fillRect(x-w/2,y-h/2,w,h)
@@ -225,7 +225,7 @@ function findPathEndPixel(id, i){
   findSurroundingPixels(id)
   //check if pixel is path end
   var path_end = true
-  if (getUserAgent() == 'Safari') {
+  if (userAgent == 'Safari') {
     var sur_count_max = 4
   } else {
     var sur_count_max = 3
