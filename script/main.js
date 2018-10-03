@@ -1,167 +1,108 @@
-// Calculate sizes by ref_box_size (3/2 minimum window size)---------------------------------------------------------------------------
-function CalculateSizes() {
-	//reference box size and styling
-	if (win.min_size.M == true) {
-		console.log('1')
-		ref_box_size = Math.round(win.iMin / (2 + Math.pow(win.iMin / win.size_setting.M, 3)) * 2);
-		SizesByRefBox(); //--------------------------------------------------------- [F] main_child.js
-	} else if (win.min_size.S == true) {
-		console.log('2')
-		ref_box_size = '100%';
-		SizesByRefBoxMobile(); //--------------------------------------------------- [F] main_child.js
-	} else {
-		console.log('3')
-		ref_box_size = Math.round(win.iMin / 3 * 2);
-		SizesByRefBox(); //--------------------------------------------------------- [F] main_child.js
-	}
-};
 
-// Reference box ----------------------------------------------------------------------------------------------------------------------
-function MakeRefBox() {
-	$('#reference_box').css({
-		'width': ref_box_size,
-		'height': ref_box_size,
-		//place in absolute center
-		'margin': 'auto',
-		'position': 'absolute',
-		'top': 0,
-		'left': 0,
-		'bottom': 0,
-		'right': 0,
-	})
-};
 
-// Art box ----------------------------------------------------------------------------------------------------------------------------
-function MakeArtBox() {
-	if (win.min_size.S == true) {
-		$('#art_box').css({
-			'display': 'none'
-		})
-	} else {
-		$('#art_box').css({
-			'display' : 'block',
-			'width': ref_box_size,
-			'height': ref_box_size,
-			//place in absolute center
-			'margin': 'auto',
-			'position': 'absolute',
-			'top': 0,
-			'left': 0,
-			'bottom': 0,
-			'right': 0,
-		})
-		$('#art_box img').css({
-			'width': '100%',
-			'margin': 'auto',
-			'position': 'absolute',
-			'top': 0,
-			'left': 0,
-			'bottom': 0,
-			'right': 0,
-		})
-	};
-};
 
 // Make squares bundle ----------------------------------------------------------------------------------------------------------------
-function Squares() {
-	// (#id | number_counter_clockwise_starting_top_left(1-4) | size(width & height) | href_on click | mouse_enable)
-	MakeSquare('#top_left', 1, box1_size, 'about.html'); //---------------------- [F] main.js
-	MakeSquare('#bottom_left', 2, box2_size, 'music.html'); //------------------- [F] main.js
-	MakeSquare('#bottom_right', 3, box3_size, 'video.html'); //------------------ [F] main.js
-	MakeSquare('#top_right', 4, box4_size, 'shows.html'); //--------------------- [F] main.js
-};
+// function Squares() {
+// 	// Make squares -----------------------------------------------------------------------------------------------------------------------
+// 	this.MakeSquare = function(MS_id, MS_ref, MS_size, MS_href) {
+// 		var MS_margin = box.hover_size - MS_size;
+// 		var MS_right, MS_bottom, MS_right_h, MS_bottom_h;;
+// 		var MS_leave_enable = true;
+// 		var MS_animation_speed = (anim_speed_factor * (box.hover_size - MS_size) * (800 / ref_box)) + 'ms';
+//
+// 		// set margins (artwork on desktop and ipad/ fullscreen squares on iphone)
+// 		if (win.min_size.S == true) {
+// 			var margins_array = SetMargins(MS_ref, '50%', 0); //------------------------ [F] main_child.js
+// 		} else {
+// 			var margins_array = SetMargins(MS_ref, box.hover_size, MS_margin); //----------- [F] main_child.js
+// 		};
+// 		var MS_right = margins_array[0];
+// 		var MS_bottom = margins_array[1];
+// 		var MS_right_h = margins_array[2];
+// 		var MS_bottom_h = margins_array[3];
+//
+// 		// set square starting size, position and color (animation based on size so acceleration of hover animation is equal)
+// 		$(MS_id).css({
+// 			'position': 'absolute',
+// 			'width': MS_size,
+// 			'height': MS_size,
+// 			'right': MS_right,
+// 			'bottom': MS_bottom,
+// 			'background-color': eval('color_' + MS_ref) + '80',
+// 			'transition': MS_animation_speed,
+// 		});
+// 		if (win.min_size.S == true) {
+// 			$(MS_id).css({
+// 				'background-color': eval('color_' + MS_ref) + '80',
+// 			});
+// 		};
+// 		// if small screen or iphone no hover animation and clicktrough immediately
+// 		if (win.min_size.S == true || touch == true) {
+// 			$(MS_id).off('mouseenter mouseleave click').on('click', function() {
+// 				ClickFunction(MS_id, MS_href, eval('color_' + MS_ref)) //----------------- [F] main_child.js
+// 			});
+// 		} else {
+// 			// MOUSE ENTER
+// 			$(MS_id).off('click mouseenter mouseleave').on('mouseenter', function() {
+// 				BoxProximityEnable(MS_ref, false) //-------------------------------------- [F] main_child.js
+// 				$(this).css({
+// 					'width': box.hover_size,
+// 					'height': box.hover_size,
+// 					'right': MS_right_h,
+// 					'bottom': MS_bottom_h,
+// 					'background-color': eval('color_' + MS_ref) + 'B0',
+// 				}) //actions on end of transisition:
+// 				.off('transitionend').one('transitionend', function() {
+// 					$(this).css({
+// 						'cursor': 'pointer'
+// 					}).off('click').on('click', function() {
+// 						ClickFunction(MS_id, MS_href) //-------------------------------------- [F] main_child.js
+// 					})
+// 				})
+// 				//$(MS_id + ' h2').css('color',color_back)
+// 				// logo animation
+// 				// $('#logo').css({
+// 				// 	'fill': eval('color_' + MS_ref),
+// 				// 	'transition': MS_animation_speed
+// 				// })
+// 				if (MS_ref == 1) {
+// 					C_AnimTrigger(cl, [CL_fill, CL_border],true)
+// 				}
+//
+// 			})
+// 			// MOUSE LEAVE
+// 			.mouseleave(function() {
+// 				BoxProximityEnable(MS_ref, true) //--------------------------------------- [F] main_child.js
+// 				$(this).off('click').css({
+// 					'width': MS_size,
+// 					'height': MS_size,
+// 					'right': MS_right,
+// 					'bottom': MS_bottom,
+// 					'transition': MS_animation_speed,
+// 					'cursor': 'initial',
+// 					'background-color': eval('color_' + MS_ref) + '80',
+// 				}).off('transitionend')
+// 				// logo animation
+// 				// $('#logo').css({
+// 				// 	'fill': '#3E3E3E',
+// 				// 	'transition': MS_animation_speed
+// 				// });
+// 				if (MS_ref == 1) {
+// 					C_AnimTrigger(cl, [CL_fill, CL_border],false)
+// 				}
+// 				//$(MS_id + ' h2').css('color',color_1)
+// 			});
+// 		};
+// 	};
+// 	// (#id | number_counter_clockwise_starting_top_left(1-4) | size(width & height) | href_on click | mouse_enable)
+// 	this.MakeSquare('#top_left', 1, box[1].size, 'about.html'); //---------------------- [F] main.js
+// 	this.MakeSquare('#bottom_left', 2, box[2].size, 'music.html'); //------------------- [F] main.js
+// 	this.MakeSquare('#bottom_right', 3, box[3].size, 'video.html'); //------------------ [F] main.js
+// 	this.MakeSquare('#top_right', 4, box[4].size, 'shows.html'); //--------------------- [F] main.js
+//
+// };
+//
 
-// Make squares -----------------------------------------------------------------------------------------------------------------------
-function MakeSquare(MS_id, MS_ref, MS_size, MS_href) {
-	var MS_margin = hover_size - MS_size;
-	var MS_right, MS_bottom, MS_right_h, MS_bottom_h;;
-	var MS_leave_enable = true;
-	var MS_animation_speed = (anim_speed_factor * (hover_size - MS_size) * (800 / ref_box_size)) + 'ms';
-
-	// set margins (artwork on desktop and ipad/ fullscreen squares on iphone)
-	if (win.min_size.S == true) {
-		var margins_array = SetMargins(MS_ref, '50%', 0); //------------------------ [F] main_child.js
-	} else {
-		var margins_array = SetMargins(MS_ref, hover_size, MS_margin); //----------- [F] main_child.js
-	};
-	var MS_right = margins_array[0];
-	var MS_bottom = margins_array[1];
-	var MS_right_h = margins_array[2];
-	var MS_bottom_h = margins_array[3];
-
-	// set square starting size, position and color (animation based on size so acceleration of hover animation is equal)
-	$(MS_id).css({
-		'position': 'absolute',
-		'width': MS_size,
-		'height': MS_size,
-		'right': MS_right,
-		'bottom': MS_bottom,
-		'background-color': eval('color_' + MS_ref) + '80',
-		'transition': MS_animation_speed,
-	});
-	if (win.min_size.S == true) {
-		$(MS_id).css({
-			'background-color': eval('color_' + MS_ref) + '80',
-		});
-	};
-	// if small screen or iphone no hover animation and clicktrough immediately
-	if (win.min_size.S == true || touch == true) {
-		$(MS_id).off('mouseenter mouseleave click').on('click', function() {
-			ClickFunction(MS_id, MS_href, eval('color_' + MS_ref)) //----------------- [F] main_child.js
-		});
-	} else {
-		// MOUSE ENTER
-		$(MS_id).off('click mouseenter mouseleave').on('mouseenter', function() {
-			BoxProximityEnable(MS_ref, false) //-------------------------------------- [F] main_child.js
-			$(this).css({
-				'width': hover_size,
-				'height': hover_size,
-				'right': MS_right_h,
-				'bottom': MS_bottom_h,
-				'background-color': eval('color_' + MS_ref) + 'B0',
-			}) //actions on end of transisition:
-			.off('transitionend').one('transitionend', function() {
-				$(this).css({
-					'cursor': 'pointer'
-				}).off('click').on('click', function() {
-					ClickFunction(MS_id, MS_href) //-------------------------------------- [F] main_child.js
-				})
-			})
-			//$(MS_id + ' h2').css('color',color_back)
-			// logo animation
-			// $('#logo').css({
-			// 	'fill': eval('color_' + MS_ref),
-			// 	'transition': MS_animation_speed
-			// })
-			if (MS_ref == 1) {
-				ExtAnimTrigger(cl, [CL_fill, CL_border],true)
-			}
-
-		})
-		// MOUSE LEAVE
-		.mouseleave(function() {
-			BoxProximityEnable(MS_ref, true) //--------------------------------------- [F] main_child.js
-			$(this).off('click').css({
-				'width': MS_size,
-				'height': MS_size,
-				'right': MS_right,
-				'bottom': MS_bottom,
-				'transition': MS_animation_speed,
-				'cursor': 'initial',
-				'background-color': eval('color_' + MS_ref) + '80',
-			}).off('transitionend')
-			// logo animation
-			// $('#logo').css({
-			// 	'fill': '#3E3E3E',
-			// 	'transition': MS_animation_speed
-			// });
-			if (MS_ref == 1) {
-				ExtAnimTrigger(cl, [CL_fill, CL_border],false)
-			}
-			//$(MS_id + ' h2').css('color',color_1)
-		});
-	};
-};
 
 // Shadow -----------------------------------------------------------------------------------------------------------------------------
 function Shadow() {
@@ -176,8 +117,8 @@ function Shadow() {
 // function MakeLogo(color) {
 // 	$('#logo').css({
 // 		'position': 'absolute',
-// 		'width': logo_size,
-// 		'height': logo_size,
+// 		'width': logo.size,
+// 		'height': logo.size,
 // 		//place in absolute center
 // 		'transition': 'none',
 // 		'margin': 'auto', // fix at work
@@ -194,12 +135,12 @@ function Shadow() {
 // Box content formatting -------------------------------------------------------------------------------------------------------------
 function BoxContentFormat() {
 	//margin class for box content
-	$('.top_left_margin').css({'margin': box_title_margin + 'px 0px 0px ' + box_title_margin + 'px'});
-	$('.bottom_left_margin').css({'margin': '0px 0px ' + box_title_margin + 'px ' + box_title_margin + 'px'});
-	$('.bottom_right_margin').css({'margin': '0px ' + box_title_margin + 'px ' + box_title_margin + 'px 0px'});
-	$('.top_right_margin').css({'margin': box_title_margin + 'px ' + box_title_margin + 'px 0px 0px'});
+	$('.top_left_margin').css({'margin': box.title_margin + 'px 0px 0px ' + box.title_margin + 'px'});
+	$('.bottom_left_margin').css({'margin': '0px 0px ' + box.title_margin + 'px ' + box.title_margin + 'px'});
+	$('.bottom_right_margin').css({'margin': '0px ' + box.title_margin + 'px ' + box.title_margin + 'px 0px'});
+	$('.top_right_margin').css({'margin': box.title_margin + 'px ' + box.title_margin + 'px 0px 0px'});
 	//box title font size
-	$('h2').css({'font-size': box_title_font_size + 'px'});
+	$('h2').css({'font-size': box.font_size + 'px'});
 };
 
 // Ofsets for mouse move interaction --------------------------------------------------------------------------------------------------
@@ -215,33 +156,14 @@ function MouseMoveOfsets() {
 	box4_offset_left_center = ($('#top_right').offset().left + ($('#top_right').width() / 2));
 	box4_offset_top_center = ($('#top_right').offset().top + ($('#top_right').height() / 2));
 	//Action area (Calculate the area the mouse move has effect on the object)
-	box_corner_offset = Math.round(hover_size * action_area_corner_offset_factor);
-	proximity_margin = Math.round(hover_size * action_area_base_size_factor);
+	box_corner_offset = Math.round(box.hover_size * action_area_corner_offset_factor);
+	proximity_margin = Math.round(box.hover_size * action_area_base_size_factor);
 };
 
 // Actions by mouse move --------------------------------------------------------------------------------------------------------------
-setInterval(function(){mousemove_enable = true},32); //mousemove rate
-//setInterval(function(){console.log('---')},1000); DEBUG LOG
 
-function MouseMove() {
-	$(window).off('mousemove').on('mousemove', function(event) {
-		if (mousemove_enable == true) {
-			if (win.min_size.S == false && touch == false) {
-				mouse.x = event.clientX; mouse.y = event.clientY;
-				//filter double mouse event
-				if (mouse.x != mouse.x_old || mouse.y != mouse.y_old) {
-					mouse.x_old = mouse.x;	mouse.y_old = mouse.y;
-					//MousemoveFunction triggered with
-					Proximities(); //------------------------------------------------------- [F] main_child.js
-					AffectSquares(); //----------------------------------------------------- [F] main_child.js
-					MM_Canvas(cl, 'cl')
-				};
-			};
-			//console.log('-') DEBUG LOG
-			mousemove_enable = false;
-		}
-	});
-};
+
+
 
 // Transition off ---------------------------------------------------------------------------------------------------------------------
 function TransitionOff() {
@@ -265,15 +187,15 @@ function LinkLogos(LL_color){
 				opacity: 0.25,
 				opacity_click: 1,
 				color: LL_color,
-				width: logo_size/2,
+				width: logo.size/2,
 				margin: 0,
 				padding_bottom: 0,
 				position: 'absolute'
 			},
 			margin_right: 0,
 			padding_top: 0,
-			width: logo_size*2,
-			height: logo_size*2,
+			width: logo.size*2,
+			height: logo.size*2,
 			right: function(){
 				return (win.iW - this.width)/2
 			},

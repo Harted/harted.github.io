@@ -15,7 +15,6 @@ var color_back = '#FFFFFF';
 var page = false;
 
 // Reference box variables
-var ref_box_size;
 var ref_box_offset_top_center, ref_box_offset_left_center;
 
 // BoxProximity & mousemove variables
@@ -23,8 +22,6 @@ var mouse = {
   x: undefined,
   y: undefined
 };
-var touch = false;
-var mousemove_enable = true; // to lower move move event rate
 
 var box_corner_offset, proximity_margin;
 var box1_proximity, box2_proximity, box3_proximity, box4_proximity;
@@ -35,9 +32,9 @@ BoxProximity_3_enable = true;
 BoxProximity_4_enable = true;
 
 // Square/Box variables
-var box1_size, box2_size, box3_size, box4_size;
-var hover_size;
-var box_title_margin, box_title_font_size;
+// var box[1].size, box[2].size, box[3].size, box[4].size;
+// var box.hover_size;
+// var box.title_margin, box.font_size;
 var box1_offset_top_center, box1_offset_left_center;
 var box2_offset_top_center, box2_offset_left_center;
 var box3_offset_top_center, box3_offset_left_center;
@@ -46,7 +43,7 @@ var BoxProximity_1_enable, BoxProximity_2_enable, BoxProximity_3_enable, BoxProx
 var MS_animation_speed
 
 // Logo variables
-var logo_size, logo_ref_center_tl;
+// var logo.size, logo_ref_center_tl;
 
 // Header
 var header_height = 50;

@@ -1,5 +1,6 @@
 /* Fonts -----------------------------------------------------------------------*/
 @import url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,500');
+/* https://www.paulirish.com/2009/bulletproof-font-face-implementation-syntax/ */
 
 /* Colors ----------------------------------------------------------------------*/
 .color_1 { background-color: #FFFFFF; }
@@ -46,35 +47,28 @@
 .bottom_right_align {bottom:0; right:0}
 .top_right_align {right:0;}
 
-/* Scrollbar -------------------------------------------------------------------*/
-html {
-  -ms-overflow-style: -ms-autohiding-scrollbar; /*hide scrollbar in IE11*/
+/* Absolute center -------------------------------------------------------------*/
+.center {
+	margin: auto; position:absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
 }
 
-body::-webkit-scrollbar { /*hide scrollbar in windows chrome*/
-	display: none;
-}
+/*hide scrollbars*/
+html { -ms-overflow-style: -ms-autohiding-scrollbar;} /* IE11 */
+body::-webkit-scrollbar { display: none;} /* Windows Chrome */
 
 /* BODY ------------------------------------------------------------------------*/
 body {
-  /* uniform font-family */
-  font-family: 'Nunito', sans-serif;
-  font-size: 16px;
-  /* zero margin ofcourse */
+  font-family: 'Nunito', sans-serif; font-size: 16px;
   margin: 0;
 }
 /* everything that has to fade on load */
-.fade {
-  opacity: 0;
-}
+.fade {opacity: 0;}
 /* everything that's not fading but has to be hided before objects are made */
-/* Header text will show as a list and headerlogo svg big black */
-.hide_on_load {
-  opacity: 0;
-}
+/* Header text would show as a list and headerlogo svg big black */
+.hide_on_load {opacity: 0;}
 
 /* TEXT ------------------------------------------------------------------------*/
-
 h1 {
   font-weight: 200;
   margin: 0;
@@ -117,7 +111,7 @@ div {
 .after:after {content: ''; width: 33%;} /* 33% is the width of 1 object when 3 objects are next to eachother (defined in AlbumFlexByID), */
 .fore:before {content: ''; width: 33%;} /* so if its added before or after it alignes perfectly                                          */
 
-/* Prevent items from being selected */
+/* Prevent items from being selected NOTE: does it work? */
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */

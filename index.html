@@ -24,11 +24,16 @@
 	<link href='style/styles.css' rel='stylesheet' type='text/css'>
 	<link href='style/canvas.css' rel='stylesheet' type='text/css'>
 
+	<link href='style/c_objects.css' rel='stylesheet' type='text/css'>
+
 	<!-- jQuery -->
 	<script src='script/jQuery/jquery.js' charset='utf-8'></script>
 
 	<!-- scripts -->
-	<script src='script/a_window.js' charset='utf-8'></script>
+	<script src='script/a_init.js' charset='utf-8'></script>
+	<script src='script/b_size.js' charset='utf-8'></script>
+
+
 	<script src='script/variables.js' charset='utf-8'></script>
 	<script src='script/main.js' charset='utf-8'></script>
 	<script src='script/main_child.js' charset='utf-8'></script>
@@ -50,7 +55,7 @@
 		<canvas id='tree_tl' style='z-index:9;'></canvas>
 
 		<!-- Reference box in center of window -->
-		<div id='reference_box'>
+		<div id='reference_box' class='center'>
 			<!-- Square in top left corner -->
 			<div id='top_left' class='shadow' style='z-index:2'>
 				<div class='top_left_align top_left_margin'>
@@ -102,21 +107,35 @@
 		</div>
 	</div>
 
+	<script src="script/c_set.js" charset="utf-8"></script>
 	<script type='text/javascript'>
 	page = false;
-	MakeThings(); //-------------------------------------------------------------- [F] index.html <script>
 
-	function MakeThings() {
-		getWindowData(); //--------------------------------------------------------- [F] main.js
-		CalculateSizes(); //-------------------------------------------------------- [F] main.js
+	function TempInit() {
 		HeaderLogo() //------------------------------------------------------------- [F] pages.js (needed for link logo size - var HL)
-		MakeRefBox(); //------------------------------------------------------------ [F] main.js
-		MakeArtBox(); //------------------------------------------------------------ [F] main.js
-		Squares(); //--------------------------------------------------------------- [F] main.js
+		SetSize(); //------------------------------------------------------------ [F] main.js
+		//MakeArtBox(); //------------------------------------------------------------ [F] main.js
+		//Square(); //--------------------------------------------------------------- [F] main.js
+		//SquareTest();
 		Shadow();
 		LinkLogos('#3E3E3E'); //---------------------------------------------------- [F] main.js
 		BoxContentFormat(); //------------------------------------------------------ [F] main.js
 	};
+
+	TempInit();
+
+	var Responsive_afterResize = debounce(function(){
+		getWindowData(); //--------------------------------------------------------- [F] main.js
+		SetSize(); //-------------------------------------------------------- [F] main.js
+		HeaderLogo() //------------------------------------------------------------- [F] pages.js (needed for link logo size - var HL)
+		SetObjects(); //------------------------------------------------------------ [F] main.js
+		//MakeArtBox(); //------------------------------------------------------------ [F] main.js
+		//Square(); //--------------------------------------------------------------- [F] main.js
+		//SquareTest();
+		Shadow();
+		LinkLogos('#3E3E3E'); //---------------------------------------------------- [F] main.js
+		BoxContentFormat(); //------------------------------------------------------ [F] main.js
+	}, 250, false)  //-------------------------------------------------------------- [F] index.html <script>
 
 	// Actions when document is ready--------------------------------------------------------------------------------------------------
 	$(document).ready(function() {
@@ -124,33 +143,12 @@
 			'opacity': 1,
 			'transition': anim_speed_factor * 500 + 'ms',
 		})
-		MouseMoveOfsets(); //------------------------------------------------------- [F] main.js
-		MouseMove(); //------------------------------------------------------------- [F] main.js
+		//MouseMoveOfsets(); //------------------------------------------------------- [F] main.js
 	});
 
 	// Actions when window is resized -------------------------------------------------------------------------------------------------
 	$(window).on('resize', function() {
-		setTimeout(function(){
-			MakeThings(); //---------------------------------------------------------- [F] index.html
-			// transitions off when resizing
-			TransitionOff( //--------------------------------------------------------- [F] main.js
-				'#top_left',
-				'#bottom_left',
-				'#bottom_right',
-				'#top_right',
-				'#logo'
-			);
-			MouseMoveOfsets(); //----------------------------------------------------- [F] main.js
-			// switch transitions back on after resizing (300ms)
-			TransitionOn( //---------------------------------------------------------- [F] main.js
-				'#top_left',
-				'#bottom_left',
-				'#bottom_right',
-				'#top_right',
-				'#logo'
-			);
-			MouseMove();//------------------------------------------------------------ [F] main.js
-		}, 50)
+			Responsive_afterResize(); //---------------------------------------------------------- [F] index.html
 	});
 
 </script>

@@ -18,24 +18,22 @@ var canvas_properties = [
   {
     html_id: '#center_logo',
     context_id: 'cl',
-    width: logo_size * 2,
-    height: logo_size * 2,
+    width: logo.size * 2,
+    height: logo.size * 2,
   },
   {
     html_id: '#art',
     context_id: 'art',
-    width: ref_box_size,
-    height: ref_box_size,
+    width: ref_box,
+    height: ref_box,
   },
   {
     html_id: '#tree_tl',
     context_id: 'tree_tl',
-    width: ref_box_size/2,
-    height: ref_box_size/2,
+    width: ref_box/2,
+    height: ref_box/2,
   },
 ];
-console.log(canvas_properties)
-
 //Generate canvasses  --------------------------------------------------------------------------------------------------------------------------
 GenerateCanvas(canvas_properties)                                               //NOTE: to implement in window resize later
 function GenerateCanvas(obj){

@@ -5,7 +5,7 @@ var CL_border = new DrawHex(CenterLogo_border);   CL_border.draw();             
 //IMG -----------------------------------------------------------------------------------------------------------------------------------------
 var img = new Image();
 img.onload = function() {
-  art.drawImage(img,0,0, ref_box_size, ref_box_size);                           //background artwork
+  art.drawImage(img,0,0, ref_box, ref_box);                           //background artwork
 };
 img.src = 'image/vlek.png';
 
@@ -28,9 +28,11 @@ var frame; var frame_old = 0;
 
 animate();
 function animate(){
+  //console.time('animate')
   b_animation();
   tree_tl_animation();
   frame = requestAnimationFrame(animate);
+  //console.timeEnd('animate')
 }
 
 framerate()
@@ -43,25 +45,26 @@ function framerate(){
 
 // Mouse animation function -------------------------------------------------------------------------------------------------------------------
 // See MouseMove() ------------------------------------------------------------- [F] main.js
-function MM_Canvas(id, id_str){
-  over[id_str] = false //ADD id to over object
-  this.x = id.canvas.offsetLeft ;  this.y = id.canvas.offsetTop  ;
-  this.w = id.canvas.width/win.dPR  ;  this.h = id.canvas.height/win.dPR ;
+function overCanvas(id_str, css_on, css_off){
+  this.id = window[id_str];
+  this.x = this.id.canvas.offsetLeft ;  this.y = this.id.canvas.offsetTop  ;
+  this.w = this.id.canvas.width/win.dPR  ;  this.h = this.id.canvas.height/win.dPR ;
   //only fire when over canvas
   if(mouse.x > this.x && mouse.y > this.y && mouse.x < this.x + this.w && mouse.y < this.y + this.w){
-    id = id.getImageData((mouse.x - id.canvas.offsetLeft)*win.dPR ,(mouse.y - id.canvas.offsetTop)*win.dPR,1,1).data
-    if (id[3] > 0 && over[id_str] == false){
-      over[id_str]= true
-      $('#center_logo').css('pointer-events', 'initial');
-    } else if (id[3] == 0 && over[id_str] == true){
-      over[id_str]= false
-      $('#center_logo').css('pointer-events', 'none');
-    }
-  }
-}
+    imd = id.getImageData((mouse.x - this.id.canvas.offsetLeft)*win.dPR ,(mouse.y - this.id.canvas.offsetTop)*win.dPR,1,1).data;
+    if (imd[3] > 0 && (over[id_str] == false || over[id_str] == undefined)){
+      over[id_str] = true; console.log(over);
+      $('#' + this.id.canvas.id).css(css_off);
+    } else if (imd[3] == 0 && over[id_str] == true){
+      over[id_str] = false; console.log(over);
+      $('#' + this.id.canvas.id).css(css_on);
+    };
+  };
+};
+
 
 // External animation trigger function --------------------------------------------------------------------------------------------------
-function ExtAnimTrigger(id, object_id_arr, trigger){
+function C_AnimTrigger(id, object_id_arr, trigger){
   id.clearRect(0,0,win.iW,win.iH);
   for (var i = 0; i < object_id_arr.length; i++) {
     object_id_arr[i].animation.trigger = trigger

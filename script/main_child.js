@@ -1,151 +1,124 @@
-// Sizes by reference box
-function SizesByRefBox() {
-	box1_size = (ref_box_size * 0.36); //220;
-	box2_size = (ref_box_size * 0.3); //180;
-	box3_size = (ref_box_size * 0.24); //140;
-	box4_size = (ref_box_size * 0.18); //100;
-	hover_size = (ref_box_size / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
-	box_title_margin = (ref_box_size * 0.041); //25;
-	box_title_font_size = (ref_box_size * 0.033); //20;
-	//logo sizes
-	logo_size = (ref_box_size * 0.15); //80;
-	logo_ref_center = (hover_size - (logo_size / 2));
-};
+// // Set margins of squars based on position --------------------------------------------------------------------------------------------
+// function SetMargins(ref, SM_common_margin, SM_margin) {
+// 	if (ref == 1) {
+// 		var right = SM_common_margin;
+// 		var bottom = SM_common_margin;
+// 		var right_h = SM_common_margin;
+// 		var bottom_h = SM_common_margin;
+// 	} else if (ref == 2) {
+// 		var right = SM_common_margin
+// 		var bottom = SM_margin
+// 		var right_h = SM_common_margin;
+// 		var bottom_h = 0;
+// 	} else if (ref == 3) {
+// 		var right = SM_margin
+// 		var bottom = SM_margin
+// 		var right_h = 0;
+// 		var bottom_h = 0;
+// 	} else if (ref == 4) {
+// 		var right = SM_margin
+// 		var bottom = SM_common_margin
+// 		var right_h = 0;
+// 		var bottom_h = SM_common_margin;
+// 	};
+// 	return [right, bottom, right_h, bottom_h];
+// };
 
-// Sizes on mobile
-function SizesByRefBoxMobile() {
-	box1_size = '50%'; //220;
-	box2_size = '50%'; //180;
-	box3_size = '50%'; //140;
-	box4_size = '50%'; //100;
-	hover_size = (win.iMin / 2); // Make hover_size an argument in MakeSquare.. only local variables in functions for easy editing!!!!
-	box_title_margin = (win.iMin * 0.08); //25;
-	box_title_font_size = (win.iMin * 0.08); //20;
-	//logo sizes
-	logo_size = (win.iMin * 0.30); //80;
-};
+// //Function when a box is clicked after transition -------------------------------------------------------------------------------------
+// function ClickFunction(CF_id, CF_href, CF_logo_color) {
+// 	$(window).off('resize mousemove touchstart');
+// 	var CF_array = [];
+// 	// Make an array for each div (square) in the reference box
+// 	$('#reference_box > div').each(function() {
+// 		CF_array[CF_array.length] = '#' + $(this).attr('id');
+// 	});
+// 	// Hide the squares you didn't click
+// 	for (n = 0; n < CF_array.length; n++) {
+// 		if (CF_id != CF_array[n]) {
+// 			$(CF_array[n]).css({
+// 				'display': 'none',
+// 			}).off('mouseenter mouseleave');
+// 		} else {
+// 			$(CF_array[n]).off('mouseenter mouseleave transitionend click').css({
+// 				'cursor': 'initial'
+// 			});
+// 		};
+// 	};
 
-// Set margins of squars based on position --------------------------------------------------------------------------------------------
-function SetMargins(ref, SM_common_margin, SM_margin) {
-	if (ref == 1) {
-		var right = SM_common_margin;
-		var bottom = SM_common_margin;
-		var right_h = SM_common_margin;
-		var bottom_h = SM_common_margin;
-	} else if (ref == 2) {
-		var right = SM_common_margin
-		var bottom = SM_margin
-		var right_h = SM_common_margin;
-		var bottom_h = 0;
-	} else if (ref == 3) {
-		var right = SM_margin
-		var bottom = SM_margin
-		var right_h = 0;
-		var bottom_h = 0;
-	} else if (ref == 4) {
-		var right = SM_margin
-		var bottom = SM_common_margin
-		var right_h = 0;
-		var bottom_h = SM_common_margin;
-	};
-	return [right, bottom, right_h, bottom_h];
-};
-
-//Function when a box is clicked after transition -------------------------------------------------------------------------------------
-function ClickFunction(CF_id, CF_href, CF_logo_color) {
-	$(window).off('resize mousemove touchstart');
-	var CF_array = [];
-	// Make an array for each div (square) in the reference box
-	$('#reference_box > div').each(function() {
-		CF_array[CF_array.length] = '#' + $(this).attr('id');
-	});
-	// Hide the squares you didn't click
-	for (n = 0; n < CF_array.length; n++) {
-		if (CF_id != CF_array[n]) {
-			$(CF_array[n]).css({
-				'display': 'none',
-			}).off('mouseenter mouseleave');
-		} else {
-			$(CF_array[n]).off('mouseenter mouseleave transitionend click').css({
-				'cursor': 'initial'
-			});
-		};
-	};
-
-	// Get current position and set margins for squares in reference to the window for to_banner animation
-	var margins_to_header = SetMarginsToHeader(CF_id); //------------------------- [F] main_child.js
-	var top = margins_to_header[0];
-	var right = margins_to_header[1];
-	var bottom = margins_to_header[2];
-	var left = margins_to_header[3];
-	$(CF_id).css({
-		'right': right,
-		'bottom': bottom,
-		'left': left,
-		'top': top,
-	});
-
-	// Make reference box fullscreen (has to come after position check!!)
-	$('#reference_box').css({
-		'transition': 'none',
-		'width': $('body').innerWidth(), // window changes by scroll bar on windows
-		'height': win.iH,
-		'top': 0,
-		'left': 0,
-		'bottom': 0,
-		'right': 0,
-		'margin': '0px',
-	});
-	$('#art_box').css('display', 'none');
-	//$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)');
-
-	// Transition logo color on touch devices
-	$('#logo').css({
-		'transition': 300 * anim_speed_factor + 'ms',
-		'fill': CF_logo_color,
-	});
-
-	// Fade out text in squares
-	$('h2, #link_logos').css({
-		'opacity': 0,
-		'transition': 50 * anim_speed_factor + 'ms',
-	});
-
-	//$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0.35)')
-
-	// Set timeout for logo to fade to color on touch devices
-	if (touch == true) {
-		var Timeout = 300; //mobile
-	} else {
-		var Timeout = 25; //desktop
-	};
-
-	// Animation to header
-	setTimeout(function() {
-		$(CF_id).css({
-			'transition': 300 * anim_speed_factor + 'ms',
-			'width': '100%',
-			'height': header_height,
-			'position':'fixed',
-			'margin': 0,
-			'top': 'auto',
-			'right': 0,
-			'bottom': 0,
-			'left': 0,
-		});
-		setTimeout(function() {
-			$('#logo').css({
-				'transition': 200 * anim_speed_factor + 'ms',
-				'width': 0,
-				'height': 0,
-			});
-			$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
-			setTimeout(function() {
-				window.location = CF_href;
-			}, 300 * anim_speed_factor)
-		}, 300 * anim_speed_factor)
-	}, Timeout);
-};
+// 	// Get current position and set margins for squares in reference to the window for to_banner animation
+// 	var margins_to_header = SetMarginsToHeader(CF_id); //------------------------- [F] main_child.js
+// 	var top = margins_to_header[0];
+// 	var right = margins_to_header[1];
+// 	var bottom = margins_to_header[2];
+// 	var left = margins_to_header[3];
+// 	$(CF_id).css({
+// 		'right': right,
+// 		'bottom': bottom,
+// 		'left': left,
+// 		'top': top,
+// 	});
+//
+// 	// Make reference box fullscreen (has to come after position check!!)
+// 	$('#reference_box').css({
+// 		'transition': 'none',
+// 		'width': $('body').innerWidth(), // window changes by scroll bar on windows
+// 		'height': win.iH,
+// 		'top': 0,
+// 		'left': 0,
+// 		'bottom': 0,
+// 		'right': 0,
+// 		'margin': '0px',
+// 	});
+// 	$('#art_box').css('display', 'none');
+// 	//$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)');
+//
+// 	// Transition logo color on touch devices
+// 	$('#logo').css({
+// 		'transition': 300 * anim_speed_factor + 'ms',
+// 		'fill': CF_logo_color,
+// 	});
+//
+// 	// Fade out text in squares
+// 	$('h2, #link_logos').css({
+// 		'opacity': 0,
+// 		'transition': 50 * anim_speed_factor + 'ms',
+// 	});
+//
+// 	//$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0.35)')
+//
+// 	// Set timeout for logo to fade to color on touch devices
+// 	if (touch == true) {
+// 		var Timeout = 300; //mobile
+// 	} else {
+// 		var Timeout = 25; //desktop
+// 	};
+//
+// 	// Animation to header
+// 	setTimeout(function() {
+// 		$(CF_id).css({
+// 			'transition': 300 * anim_speed_factor + 'ms',
+// 			'width': '100%',
+// 			'height': header_height,
+// 			'position':'fixed',
+// 			'margin': 0,
+// 			'top': 'auto',
+// 			'right': 0,
+// 			'bottom': 0,
+// 			'left': 0,
+// 		});
+// 		setTimeout(function() {
+// 			$('#logo').css({
+// 				'transition': 200 * anim_speed_factor + 'ms',
+// 				'width': 0,
+// 				'height': 0,
+// 			});
+// 			$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
+// 			setTimeout(function() {
+// 				window.location = CF_href;
+// 			}, 300 * anim_speed_factor)
+// 		}, 300 * anim_speed_factor)
+// 	}, Timeout);
+// };
 
 // Set margins before transitioning to header -----------------------------------------------------------------------------------------
 function SetMarginsToHeader(SMTH_id) {
@@ -184,10 +157,10 @@ function Proximities() {
 	box3_proximity = BoxProximity(3, box3_offset_top_center + box_corner_offset, box3_offset_left_center + box_corner_offset, proximity_margin);
 	box4_proximity = BoxProximity(4, box4_offset_top_center - box_corner_offset, box4_offset_left_center + box_corner_offset, proximity_margin);
 
-	box1_proximity_size = box1_size + (hover_size / 2 * box1_proximity);
-	box2_proximity_size = box2_size + (hover_size / 2 * box2_proximity);
-	box3_proximity_size = box3_size + (hover_size / 2 * box3_proximity);
-	box4_proximity_size = box4_size + (hover_size / 2 * box4_proximity);
+	box1_proximity_size = box[1].size + (box.hover_size / 2 * box1_proximity);
+	box2_proximity_size = box[2].size + (box.hover_size / 2 * box2_proximity);
+	box3_proximity_size = box[3].size + (box.hover_size / 2 * box3_proximity);
+	box4_proximity_size = box[4].size + (box.hover_size / 2 * box4_proximity);
 };
 
 // Calculate proximities - when cursor is getting closer to the ofsettet point things get funny -----------------------------------------
@@ -229,9 +202,9 @@ function AffectSquares() {
 
 // Affect squares (+ ease out animation)-------------------------------------------------------------------------------------------------
 function AffectSquare(AS_id, AS_ref, AS_size) {
-	var AS_margin = hover_size - AS_size;
+	var AS_margin = box.hover_size - AS_size;
 	var AS_right, AS_bottom;
-	var margins_array = SetMargins(AS_ref, hover_size, AS_margin); //------------- [F] main_child.js
+	var margins_array = SetMargins(AS_ref, box.hover_size, AS_margin); //------------- [F] main_child.js
 	AS_right = margins_array[0];
 	AS_bottom = margins_array[1];
 	$(AS_id).css({

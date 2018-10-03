@@ -22,4 +22,13 @@ function chance(percentage){
 //phytagoras
 function phyt_a(b,c){
   return Math.pow(Math.pow(b,2)+Math.pow(c,2),1/2)
+};
+
+
+
+
+function Test(){
+  console.log('ja!')
 }
+
+var lala = debounce(function(){Test()},250, false)

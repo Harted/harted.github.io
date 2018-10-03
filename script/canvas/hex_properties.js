@@ -6,9 +6,9 @@ var LogoAnim = {
   chance: true,
   getSize: function(){
     if (chance(100)){
-      return (logo_size/12)*0.97 * (Math.random()/2+0.50)
+      return (logo.size/12)*0.97 * (Math.random()/2+0.50)
     } else {
-      return logo_size/4
+      return logo.size/4
     }
   },
   getCenter: function(){
@@ -62,12 +62,12 @@ var CenterLogo_fill = {
   velocity_factor: undefined,
   chance: false,
   getSize: function(){
-    return logo_size / 2 * 0.97
+    return logo.size / 2 * 0.97
   },
   getCenter: function(){
     return {
-      x: logo_size,
-      y: logo_size,
+      x: logo.size,
+      y: logo.size,
       spawnradius: undefined,
     };
   },
@@ -113,12 +113,12 @@ var CenterLogo_border = {
   velocity_factor: undefined,
   chance: false,
   getSize: function(){
-    return logo_size / 2 * 1.02
+    return logo.size / 2 * 1.02
   },
   getCenter: function(){
     return {
-      x: logo_size,
-      y: logo_size,
+      x: logo.size,
+      y: logo.size,
       spawnradius: undefined,
     };
   },
