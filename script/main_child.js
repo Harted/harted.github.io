@@ -24,7 +24,7 @@
 // 	return [right, bottom, right_h, bottom_h];
 // };
 
-// //Function when a box is clicked after transition -------------------------------------------------------------------------------------
+//Function when a box is clicked after transition -------------------------------------------------------------------------------------
 // function ClickFunction(CF_id, CF_href, CF_logo_color) {
 // 	$(window).off('resize mousemove touchstart');
 // 	var CF_array = [];
@@ -70,7 +70,7 @@
 // 		'margin': '0px',
 // 	});
 // 	$('#art_box').css('display', 'none');
-// 	//$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)');
+// 	//$('.box').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)');
 //
 // 	// Transition logo color on touch devices
 // 	$('#logo').css({
@@ -84,7 +84,7 @@
 // 		'transition': 50 * anim_speed_factor + 'ms',
 // 	});
 //
-// 	//$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0.35)')
+// 	//$('.box').css('box-shadow', '0px 0px 0px rgba(0,0,0,0.35)')
 //
 // 	// Set timeout for logo to fade to color on touch devices
 // 	if (touch == true) {
@@ -112,7 +112,7 @@
 // 				'width': 0,
 // 				'height': 0,
 // 			});
-// 			$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
+// 			$('.box').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
 // 			setTimeout(function() {
 // 				window.location = CF_href;
 // 			}, 300 * anim_speed_factor)
@@ -136,18 +136,18 @@ function SetMarginsToHeader(SMTH_id) {
 	return [top, right, bottom, left];
 };
 
-// Box proximity enable ---------------------------------------------------------------------------------------------------------------
-function BoxProximityEnable(ref, Bool) {
-	if (ref == 1) {
-		BoxProximity_1_enable = Bool;
-	} else if (ref == 2) {
-		BoxProximity_2_enable = Bool;
-	} else if (ref == 3) {
-		BoxProximity_3_enable = Bool;
-	} else if (ref == 4) {
-		BoxProximity_4_enable = Bool;
-	};
-};
+// // Box proximity enable ---------------------------------------------------------------------------------------------------------------
+// function BoxProximityEnable(ref, Bool) {
+// 	if (ref == 1) {
+// 		BoxProximity_1_enable = Bool;
+// 	} else if (ref == 2) {
+// 		BoxProximity_2_enable = Bool;
+// 	} else if (ref == 3) {
+// 		BoxProximity_3_enable = Bool;
+// 	} else if (ref == 4) {
+// 		BoxProximity_4_enable = Bool;
+// 	};
+// };
 
 // Create offset to corner farthest from the center of the reference box ----------------------------------------------------------------
 function Proximities() {

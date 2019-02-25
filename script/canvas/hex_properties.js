@@ -48,7 +48,7 @@ var LogoAnim = {
   },
   animation: function() {
     return {
-      func: 'bounce',//'bounce',
+      func: 'circlereset',//'bounce',
       startframe: Math.floor(Math.random() * 1000),
       circleradius: win.iMin/2*0.9, //circlereset
     }
@@ -90,6 +90,7 @@ var CenterLogo_fill = {
       color: '#3E3E3E',
       secondary_color: '#FFFFFF',
       linediv: 60,
+      ifnofill: undefined,
     };
   },
   getMouseLine: function() {

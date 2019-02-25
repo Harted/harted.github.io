@@ -107,9 +107,9 @@
 // Shadow -----------------------------------------------------------------------------------------------------------------------------
 function Shadow() {
 	if (win.min_size.S == true) {
-		$('.shadow').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
+		$('.box').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
 	} else {
-		$('.shadow').css('box-shadow', '0px 0px 12px rgba(0,0,0,.35)')
+		$('.box').css('box-shadow', '0px 0px 12px rgba(0,0,0,.35)')
 	}
 }
 
@@ -133,32 +133,32 @@ function Shadow() {
 // };
 
 // Box content formatting -------------------------------------------------------------------------------------------------------------
-function BoxContentFormat() {
-	//margin class for box content
-	$('.top_left_margin').css({'margin': box.title_margin + 'px 0px 0px ' + box.title_margin + 'px'});
-	$('.bottom_left_margin').css({'margin': '0px 0px ' + box.title_margin + 'px ' + box.title_margin + 'px'});
-	$('.bottom_right_margin').css({'margin': '0px ' + box.title_margin + 'px ' + box.title_margin + 'px 0px'});
-	$('.top_right_margin').css({'margin': box.title_margin + 'px ' + box.title_margin + 'px 0px 0px'});
-	//box title font size
-	$('h2').css({'font-size': box.font_size + 'px'});
-};
+// function BoxContentFormat() {
+// 	//margin class for box content
+// 	// $('.top_left_margin').css({'margin': box.title_margin + 'px 0px 0px ' + box.title_margin + 'px'});
+// 	// $('.bottom_left_margin').css({'margin': '0px 0px ' + box.title_margin + 'px ' + box.title_margin + 'px'});
+// 	// $('.bottom_right_margin').css({'margin': '0px ' + box.title_margin + 'px ' + box.title_margin + 'px 0px'});
+// 	// $('.top_right_margin').css({'margin': box.title_margin + 'px ' + box.title_margin + 'px 0px 0px'});
+// 	//box title font size
+// 	$('h2').css({'font-size': box.font_size + 'px'});
+// };
 
 // Ofsets for mouse move interaction --------------------------------------------------------------------------------------------------
-function MouseMoveOfsets() {
-	ref_box_offset_left_center = ($('#reference_box').offset().left + ($('#reference_box').width() / 2));
-	ref_box_offset_top_center = ($('#reference_box').offset().top + ($('#reference_box').height() / 2));
-	box1_offset_left_center = ($('#top_left').offset().left + ($('#top_left').width() / 2));
-	box1_offset_top_center = ($('#top_left').offset().top + ($('#top_left').height() / 2));
-	box2_offset_left_center = ($('#bottom_left').offset().left + ($('#bottom_left').width() / 2));
-	box2_offset_top_center = ($('#bottom_left').offset().top + ($('#bottom_left').height() / 2));
-	box3_offset_left_center = ($('#bottom_right').offset().left + ($('#bottom_right').width() / 2));
-	box3_offset_top_center = ($('#bottom_right').offset().top + ($('#bottom_right').height() / 2));
-	box4_offset_left_center = ($('#top_right').offset().left + ($('#top_right').width() / 2));
-	box4_offset_top_center = ($('#top_right').offset().top + ($('#top_right').height() / 2));
-	//Action area (Calculate the area the mouse move has effect on the object)
-	box_corner_offset = Math.round(box.hover_size * action_area_corner_offset_factor);
-	proximity_margin = Math.round(box.hover_size * action_area_base_size_factor);
-};
+// function MouseMoveOfsets() {
+// 	ref_box_offset_left_center = ($('#reference_box').offset().left + ($('#reference_box').width() / 2));
+// 	ref_box_offset_top_center = ($('#reference_box').offset().top + ($('#reference_box').height() / 2));
+// 	box1_offset_left_center = ($('#top_left').offset().left + ($('#top_left').width() / 2));
+// 	box1_offset_top_center = ($('#top_left').offset().top + ($('#top_left').height() / 2));
+// 	box2_offset_left_center = ($('#bottom_left').offset().left + ($('#bottom_left').width() / 2));
+// 	box2_offset_top_center = ($('#bottom_left').offset().top + ($('#bottom_left').height() / 2));
+// 	box3_offset_left_center = ($('#bottom_right').offset().left + ($('#bottom_right').width() / 2));
+// 	box3_offset_top_center = ($('#bottom_right').offset().top + ($('#bottom_right').height() / 2));
+// 	box4_offset_left_center = ($('#top_right').offset().left + ($('#top_right').width() / 2));
+// 	box4_offset_top_center = ($('#top_right').offset().top + ($('#top_right').height() / 2));
+// 	//Action area (Calculate the area the mouse move has effect on the object)
+// 	box_corner_offset = Math.round(box.hover_size * action_area_corner_offset_factor);
+// 	proximity_margin = Math.round(box.hover_size * action_area_base_size_factor);
+// };
 
 // Actions by mouse move --------------------------------------------------------------------------------------------------------------
 

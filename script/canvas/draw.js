@@ -33,6 +33,9 @@ function animate(){
   tree_tl_animation();
   frame = requestAnimationFrame(animate);
   //console.timeEnd('animate')
+  b.beginPath()
+  b.arc(mouse.x, mouse.y,1,0,cir)
+  b.fill()
 }
 
 framerate()

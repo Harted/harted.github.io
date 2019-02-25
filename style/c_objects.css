@@ -1,10 +1,13 @@
-#top_left, #bottom_left, #bottom_right, #top_right{
-  position: absolute; transition: 1000ms;
+.box {
+  position: absolute; transition: 500ms;
   background-color: #ffffff50;
+}
+.box h2 {
+  /* transition: inherit; */
 }
 #top_left { right: 50%; bottom: 50%; }
 #bottom_left { right: 50%; top: 50%; }
 #bottom_right { left: 50%; top: 50%; }
 #top_right { left: 50%; bottom: 50%; }
 
-/*#reference_box {border: 1px solid #000;}*/
+#reference_box {transition: 300ms;}

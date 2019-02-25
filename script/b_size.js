@@ -6,7 +6,9 @@ const ref_box_p = {
 	XL:	function(){return Math.round(win.iMin * 2 / 3);},
 };
 const box_p = {
-	html_ids: ['#top_left', '#bottom_left', '#bottom_right', '#top_right'],
+	html_id: ['#top_left', '#bottom_left', '#bottom_right', '#top_right'],
+	link: ['about.html', 'music.html', 'video.html', 'shows.html'],
+	actdist: 50,
 	desktop: {
 		size: [0.36, 0.30, 0.24, 0.18],
 		hover_size: 2,
@@ -30,7 +32,7 @@ const logo_p = {
 var ref_box, box = {}, logo = {}
 
 // Calculate sizes --------------------------------------------------------------------------------------------------------------------
-function GetSize() {
+function getSize() {
 	//Functions
 	this.getRefBoxSize = function(reference, properties){
 		for(key in reference){
@@ -53,4 +55,4 @@ function GetSize() {
 	box.title_margin = box_p[platform].reference() * box_p[platform].title_margin
 	box.font_size = box_p[platform].reference() * box_p[platform].font_size
 	logo.size = box_p[platform].reference() * logo_p[platform].size
-}; GetSize(); //trigger on launch
+}; getSize(); //trigger on launch

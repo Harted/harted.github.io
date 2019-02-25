@@ -6,6 +6,7 @@ const win_p  = {
 // VARIABLES --------------------------------------------------------------------------------------------------------------------------
 var touch = false
 var win = {};
+var mouse = {}
 // Get user agent function ------------------------------------------------------------------------------------------------------------
 function getUserAgent(){
   var UA = navigator.userAgent || navigator.vendor || window.opera;
@@ -57,7 +58,7 @@ $(window).on('touchstart', function() {
     //Proximities(); //------------------------------------------------------- [F] main_child.js
     //AffectSquares(); //----------------------------------------------------- [F] main_child.js
     overCanvas('cl', {'pointer-events': 'none',}, {'pointer-events': 'auto',})
-    for (var i = 0; i < squares.length; i++) {squares[i].update()}
+    // for (var i = 0; i < squares.length; i++) {squares[i].mousemove()}
   };
 });
 

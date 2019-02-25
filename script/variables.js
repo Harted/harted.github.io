@@ -17,11 +17,7 @@ var page = false;
 // Reference box variables
 var ref_box_offset_top_center, ref_box_offset_left_center;
 
-// BoxProximity & mousemove variables
-var mouse = {
-  x: undefined,
-  y: undefined
-};
+
 
 var box_corner_offset, proximity_margin;
 var box1_proximity, box2_proximity, box3_proximity, box4_proximity;

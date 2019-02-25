@@ -40,13 +40,18 @@
 	<script src='script/pages.js' charset='utf-8'></script>
 
 </head>
-<body class='color_back'>
+<body class='color_back nocursor'>
 	<div class='fade'>
 
 		<!--HEADER-->
 		<div id='harted' class='top_left_align top_left_margin'>
 			<h2>HARTED</h2>
 		</div>
+		<script type="text/javascript">
+			$('#harted').css({
+				'margin': box.title_margin + 'px',
+			})
+		</script>
 
 		<!--CANVAS-->
 		<canvas id='background' style='z-index:0;'></canvas>
@@ -57,28 +62,20 @@
 		<!-- Reference box in center of window -->
 		<div id='reference_box' class='center'>
 			<!-- Square in top left corner -->
-			<div id='top_left' class='shadow' style='z-index:2'>
-				<div class='top_left_align top_left_margin'>
-					<h2>About</h2>
-				</div>
+			<div id='top_left' class='box' style='z-index:2'>
+				<h2 class='top_left_align'>About</h2>
 			</div>
 			<!-- Square in bottom left corner -->
-			<div id='bottom_left' class='shadow' style='z-index:3'>
-				<div class='bottom_left_align bottom_left_margin'>
-					<h2>Music</h2>
-				</div>
+			<div id='bottom_left' class='box' style='z-index:3'>
+				<h2 class='bottom_left_align'>Music</h2>
 			</div>
 			<!-- Square in bottom right corner -->
-			<div id='bottom_right' class='shadow' style='z-index:2'>
-				<div class='bottom_right_align bottom_right_margin'>
-					<h2>Video</h2>
-				</div>
+			<div id='bottom_right' class='box' style='z-index:2'>
+				<h2 class='bottom_right_align'>Video</h2>
 			</div>
 			<!-- Square in top right corner -->
-			<div id='top_right' class='shadow' style='z-index:3'>
-				<div class='top_right_align top_right_margin'>
-					<h2>Shows</h2>
-				</div>
+			<div id='top_right' class='box' style='z-index:3'>
+				<h2 class='top_right_align'>Shows</h2>
 			</div>
 		</div>
 
@@ -113,20 +110,21 @@
 
 	function TempInit() {
 		HeaderLogo() //------------------------------------------------------------- [F] pages.js (needed for link logo size - var HL)
-		SetSize(); //------------------------------------------------------------ [F] main.js
+		//SetSize(); //------------------------------------------------------------ [F] main.js
 		//MakeArtBox(); //------------------------------------------------------------ [F] main.js
 		//Square(); //--------------------------------------------------------------- [F] main.js
 		//SquareTest();
 		Shadow();
 		LinkLogos('#3E3E3E'); //---------------------------------------------------- [F] main.js
-		BoxContentFormat(); //------------------------------------------------------ [F] main.js
+		//BoxContentFormat(); //------------------------------------------------------ [F] main.js
 	};
 
 	TempInit();
 
 	var Responsive_afterResize = debounce(function(){
 		getWindowData(); //--------------------------------------------------------- [F] main.js
-		SetSize(); //-------------------------------------------------------- [F] main.js
+		getSize();
+		setSize(); //-------------------------------------------------------- [F] main.js
 		HeaderLogo() //------------------------------------------------------------- [F] pages.js (needed for link logo size - var HL)
 		//SetObjects(); //------------------------------------------------------------ [F] main.js
 		//MakeArtBox(); //------------------------------------------------------------ [F] main.js
@@ -134,7 +132,7 @@
 		//SquareTest();
 		Shadow();
 		LinkLogos('#3E3E3E'); //---------------------------------------------------- [F] main.js
-		BoxContentFormat(); //------------------------------------------------------ [F] main.js
+		//BoxContentFormat(); //------------------------------------------------------ [F] main.js
 	}, 250, false)  //-------------------------------------------------------------- [F] index.html <script>
 
 	// Actions when document is ready--------------------------------------------------------------------------------------------------
@@ -148,16 +146,16 @@
 
 	// Actions when window is resized -------------------------------------------------------------------------------------------------
 	$(window).on('resize', function() {
-			Responsive_afterResize(); //---------------------------------------------------------- [F] index.html
+		Responsive_afterResize(); //---------------------------------------------------------- [F] index.html
 	});
 
-</script>
-<script src='script/canvas/init.js'></script>
-<script src='script/canvas/utilities.js'></script>
-<script src='script/canvas/hex_properties.js'></script>
-<script src='script/canvas/hex.js'></script>
-<script src='script/canvas/tree_properties.js'></script>
-<script src='script/canvas/tree.js'></script>
-<script src='script/canvas/draw.js'></script>
+	</script>
+	<script src='script/canvas/init.js'></script>
+	<script src='script/canvas/utilities.js'></script>
+	<script src='script/canvas/hex_properties.js'></script>
+	<script src='script/canvas/hex.js'></script>
+	<script src='script/canvas/tree_properties.js'></script>
+	<script src='script/canvas/tree.js'></script>
+	<script src='script/canvas/draw.js'></script>
 </body >
 </html>
