@@ -20,6 +20,7 @@ const logo_s = {
 
 // box settings ----------------------------------------------------------------
 const box_s = {
+  group: 'squares',
 	html_id: ['#top_left', '#bottom_left', '#bottom_right', '#top_right'],
 	link: ['about.html', 'music.html', 'video.html', 'shows.html'],
 	actdist: 50,
@@ -39,10 +40,11 @@ const box_s = {
 	},
   css: {
     click : {
-      ref_box: {'width': '100%', 'height': '100%'},
+      ref_box: {'width': '100%', 'height': '100%', /*'top': 'auto'*/},
       div: {
         'width': '100%', 'height': '100%',
         'right': 0, 'left': 0, 'top': 0, 'bottom': 0,
+        'box-shadow': '0px 0px 0px rgba(0,0,0,0)',
       },
       h2: {'transition':'none', 'color' : '#FFFFFF00'},
       not: {

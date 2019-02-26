@@ -16,7 +16,7 @@ function getSize() {
 	this.getBoxSize = function(reference, settings){
 		var obj = {};
 		for (var i = 0; i < settings.length; i++) {
-			obj[i+1] = {}; obj[i+1].size = ref_box * settings[i] || settings[i];
+			obj[i] = {}; obj[i].size = ref_box * settings[i] || settings[i];
 		}; return obj;
 	}
 
