@@ -1,12 +1,11 @@
 // CONSTANTS --------------------------------------------------------------------------------------------------------------------------
 const userAgent = getUserAgent();
-const win_p  = {
-  L: 1026, M: 770, S: 416, // < SETTING based on common screensizes
-};
+
 // VARIABLES --------------------------------------------------------------------------------------------------------------------------
 var touch = false
 var win = {};
 var mouse = {}
+
 // Get user agent function ------------------------------------------------------------------------------------------------------------
 function getUserAgent(){
   var UA = navigator.userAgent || navigator.vendor || window.opera;
@@ -18,33 +17,38 @@ function getUserAgent(){
   else if (/Firefox/.test(UA)) {return 'Firefox';}
   else {console.log('unknown userAgent: '+ UA); return 'unknown';};
 };
+
 // Window data function ---------------------------------------------------------------------------------------------------------------
 function getWindowData(){
   //set window size and device pixel ratio
   win.iW = window.innerWidth; win.iH = window.innerHeight;
   win.dPR = window.devicePixelRatio;
+
   //set minimum window size in portrait or landscape rotation
   this.MinMaxSize = function(){if (win.iW <= win.iH) {return [win.iW,win.iH];} else {return [win.iH,win.iW];};};
   win.iMin = this.MinMaxSize()[0]; win.iMax = this.MinMaxSize()[1];
+
   //set screen size booleans ---------------------------------------------------
   this.setScrSize = function(s, str){
     win[str] = {S:false, M:false, L:false, XL:false};
     for (key in win[str]) { win[str][key] = false } //reset to false
-    if (s < win_p.S) { win[str].S = true }
-    else if (s < win_p.M) { win[str].M = true }
-    else if (s < win_p.L) { win[str].L = true }
+    if (s < win_s.S) { win[str].S = true }
+    else if (s < win_s.M) { win[str].M = true }
+    else if (s < win_s.L) { win[str].L = true }
     else { win[str].XL = true };
   };
-  this.setScrSize(win.iMin, 'min_size'); //set minimum size booleans
-  this.setScrSize(win.iMin, 'max_size'); //set minimum size booleans
-  this.setScrSize(win.iW, 'width'); //set minimum width booleans
-  this.setScrSize(win.iH, 'height'); //set minimum height booleans
+  this.setScrSize(win.iMin, 'min_size'); //set minimum size bool
+  this.setScrSize(win.iMax, 'max_size'); //set maximum size bool
+  this.setScrSize(win.iW, 'width'); //set minimum width bool
+  this.setScrSize(win.iH, 'height'); //set minimum height bool
+
 }; getWindowData()
 
 // eventlisteners ---------------------------------------------------------------------------------------------------------------------
 $(window).on('touchstart', function() {
   touch = true; Squares(); //reset square interaction method on touch
   $(this).off('touchstart'); //remove the eventlistener
+
 }).on('mousemove', function(event) {
   mouse.x = event.pageX; mouse.y = event.pageY;
   if (mouse.x != mouse.x_old || mouse.y != mouse.y_old) {
@@ -80,3 +84,35 @@ function debounce(func, wait, immediate) {
     if (callNow) func.apply(context, args);
   };
 };
+
+// Deep link --------------------------------------------------------------------------------------------------------------------------
+function DeepLink(web_link, ios_link, android_link) {
+	var UA_local = getUserAgent();
+	console.log(UA_local);
+
+	this.AppSiteFallback = function(sitelink, applink){
+		setTimeout(function() {
+			window.location = sitelink;
+		}, 10);
+		//app?
+		window.location = applink;
+	}
+
+	if (UA_local == 'iOS') {
+		this.AppSiteFallback(web_link, ios_link);
+	} else if (UA_local == 'Android'){
+		this.AppSiteFallback(web_link, android_link);
+	} else {
+		window.location = web_link;
+	};
+
+};
+
+// shift array left retain size -------------------------------------------------------------------------------------------------------
+//(not used yet)
+function shiftLeftRetain(array, times){
+	for (var i = 0; i < times; i++) {
+		var e = array.shift();
+		array.push(e);
+	}; return array;
+}

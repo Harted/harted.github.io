@@ -41,7 +41,7 @@ function animate(){
 framerate()
 function framerate(){
   setTimeout(function () {
-    console.log('AVG_framerate: ' +(frame - frame_old)/10)
+    //console.log('AVG_framerate: ' +(frame - frame_old)/10)
     frame_old = frame; framerate();
   }, 10000);
 }
