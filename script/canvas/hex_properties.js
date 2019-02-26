@@ -48,7 +48,7 @@ var LogoAnim = {
   },
   animation: function() {
     return {
-      func: 'circlereset',//'bounce',
+      func: 'borderreset',//'bounce',
       startframe: Math.floor(Math.random() * 1000),
       circleradius: win.iMin/2*0.9, //circlereset
     }

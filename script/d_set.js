@@ -35,25 +35,33 @@ function setSize(){
 		this.init = function(){
 			over['box'+ i] = false
 			div.css({'width': s1, 'height':s1 })
+			.css(box.css)
+
+			if (win.min_size.S == true || touch == true) {
+				div.off('click').on('click', function(){
+					window[box_s.group][i].click()
+				})
+			} else {
+				//desktop animation and clicktrough --------------------------------------
+				div.on('mouseenter', function(){
+					over['box'+ i] = true
+					$(this).css({'width': s2, 'height':s2 })
+					.off('transitionend').on('transitionend', function(){
+						$(this).css('cursor','pointer')
+						.off('click').on('click', function(){
+							window[box_s.group][i].click()
+						})
+					});
+					//C_AnimTrigger(cl, [CL_fill, CL_border], true)
+				}).on('mouseleave', function(){
+					over['box'+ i] = false
+					$(this).css({'width': s1, 'height':s1 , 'cursor': 'initial'})
+					.off('click transitionend');
+					//C_AnimTrigger(cl, [CL_fill, CL_border], false)
+				})
+			}
 
 
-			//desktop animation and clicktrough --------------------------------------
-			.on('mouseenter', function(){
-				over['box'+ i] = true
-				$(this).css({'width': s2, 'height':s2 })
-				.off('transitionend').on('transitionend', function(){
-					$(this).css('cursor','pointer')
-					.off('click').on('click', function(){
-						squares[i].click()              																		// CHANGE!!! squares name is variable!!!!!
-					})
-				});
-				//C_AnimTrigger(cl, [CL_fill, CL_border], true)
-			}).on('mouseleave', function(){
-				over['box'+ i] = false
-				$(this).css({'width': s1, 'height':s1 , 'cursor': 'initial'})
-				.off('click transitionend');
-				//C_AnimTrigger(cl, [CL_fill, CL_border], false)
-			})
 
 
 
@@ -90,10 +98,10 @@ function setSize(){
 		};
 	};
 
-	squaresb = []  // REMOVE b (this is test for making click not variable)
+	window[box_s.group] = []
 	for (var i = 0; i < box_s.html_id.length; i++) {
-		squaresb.push(new this.square(i))
-		squaresb[i].init()
+		window[box_s.group].push(new this.square(i))
+		window[box_s.group][i].init()
 	}
 
 }; setSize(); //trigger on launch

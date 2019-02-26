@@ -31,6 +31,7 @@ function getSize() {
 	box.hover_size = box_s[platform].reference() / box_s[platform].hover_size
 	box.title_margin = box_s[platform].reference() * box_s[platform].title_margin
 	box.font_size = box_s[platform].reference() * box_s[platform].font_size
+	box.css = box_s[platform].css
 	logo.size = box_s[platform].reference() * logo_s[platform].size
 
 }; getSize(); //trigger on launch

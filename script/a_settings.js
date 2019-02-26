@@ -6,7 +6,7 @@ const win_s  = {
 
 // reference box settings ------------------------------------------------------
 const ref_box_s = {
-	S: 	function(){return '100%';},
+	S: 	function(){return Math.round(win.iMin * 0.92);},
 	M:  function(){return Math.round(win.iMin * 2 / (2 + Math.pow(win.iMin / win_s.M, 3)));},
 	L: 	function(){return Math.round(win.iMin * 2 / 3);},
 	XL:	function(){return Math.round(win.iMin * 2 / 3);},
@@ -30,13 +30,19 @@ const box_s = {
 		title_margin: 0.041,
 		font_size: 0.033,
 		reference: function(){return ref_box;},
+    css: {
+      'box-shadow': '0px 0px 12px rgba(0,0,0,0.35)',
+    },
 	},
 	mobile: {
 		size: ['50%', '50%', '50%', '50%'],
 		hover_size: 2,
 		title_margin: 0.08,
-		font_size: 0.08,
-		reference: function(){return win.iMin;},
+		font_size: 0.06,
+		reference: function(){return ref_box;},
+    css: {
+      'box-shadow': '0px 0px 0px rgba(0,0,0,0)',
+    },
 	},
   css: {
     click : {
@@ -45,6 +51,7 @@ const box_s = {
         'width': '100%', 'height': '100%',
         'right': 0, 'left': 0, 'top': 0, 'bottom': 0,
         'box-shadow': '0px 0px 0px rgba(0,0,0,0)',
+        'background-color': '#FFFFFF00',
       },
       h2: {'transition':'none', 'color' : '#FFFFFF00'},
       not: {
