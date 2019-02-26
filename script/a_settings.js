@@ -20,7 +20,6 @@ const logo_s = {
 
 // box settings ----------------------------------------------------------------
 const box_s = {
-   group_name: 'squares',
 	html_id: ['#top_left', '#bottom_left', '#bottom_right', '#top_right'],
 	link: ['about.html', 'music.html', 'video.html', 'shows.html'],
 	actdist: 50,
