@@ -8,7 +8,7 @@ const loc_arr = [           //location array used in fillTree (starting right go
 ];
 
 //canvas properties
-var canvas_properties = [
+const canvas_properties = [
   {
     html_id: '#background',
     context_id: 'b',

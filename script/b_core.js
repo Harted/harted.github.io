@@ -116,3 +116,8 @@ function shiftLeftRetain(array, times){
 		array.push(e);
 	}; return array;
 }
+
+// value between min max --------------------------------------------------------------------------------------------------------------
+function valBetween(v, min, max) {
+	return (Math.min(max, Math.max(min, v)));
+}

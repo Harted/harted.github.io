@@ -65,3 +65,31 @@ const box_s = {
     },
   },
 }
+
+// link logo settings
+const linklogo_s = {
+  group: 'linklogos',
+  mobile: {
+    portrait: {
+
+    },
+    landscape: {
+
+    },
+  },
+  desktop: {
+    logo: {
+      size: '50px', // width: 2/3, margin: 1/3
+			// width: '33px',
+			// margin: '17px',
+			padding_bottom: 0.02, //*winIW
+			position: 'static'
+		},
+		margin_right: 0.03, //*win.IW
+		padding_top: '3%',
+		width: 'auto',
+		height: 'auto',
+		right: function(){return 0},
+		top: function(){return 0},
+  }
+}

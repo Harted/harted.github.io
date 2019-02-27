@@ -105,13 +105,13 @@
 
 
 // Shadow -----------------------------------------------------------------------------------------------------------------------------
-function Shadow() {
-	// if (win.min_size.S == true) {
-	// 	$('.box').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
-	// } else {
-	// 	$('.box').css('box-shadow', '0px 0px 12px rgba(0,0,0,.35)')
-	// }
-}
+// function Shadow() {
+// 	if (win.min_size.S == true) {
+// 		$('.box').css('box-shadow', '0px 0px 0px rgba(0,0,0,0)')
+// 	} else {
+// 		$('.box').css('box-shadow', '0px 0px 12px rgba(0,0,0,.35)')
+// 	}
+// }
 
 // // Make logo --------------------------------------------------------------------------------------------------------------------------
 // function MakeLogo(color) {
@@ -166,62 +166,37 @@ function Shadow() {
 
 
 // Transition off ---------------------------------------------------------------------------------------------------------------------
-function TransitionOff() {
-	for (n = 0; n < arguments.length; n++) {
-		$(arguments[n]).css('transition', 'none');
-	};
-};
-
-// Transition on ----------------------------------------------------------------------------------------------------------------------
-function TransitionOn() {
-	for (n = 0; n < arguments.length; n++) {
-		$(arguments[n]).css('transition', anim_speed_factor * 300 + 'ms');
-	};
-};
+// function TransitionOff() {
+// 	for (n = 0; n < arguments.length; n++) {
+// 		$(arguments[n]).css('transition', 'none');
+// 	};
+// };
+//
+// // Transition on ----------------------------------------------------------------------------------------------------------------------
+// function TransitionOn() {
+// 	for (n = 0; n < arguments.length; n++) {
+// 		$(arguments[n]).css('transition', anim_speed_factor * 300 + 'ms');
+// 	};
+// };
 
 // link_logos -------------------------------------------------------------------------------------------------------------------------
 function LinkLogos(LL_color){
-	if (win.min_size.S == true && win.width.XL == false) {
-		var LLS = {
-			logo: {
-				opacity: 0.25,
-				opacity_click: 1,
-				color: LL_color,
-				width: logo.size/2,
-				margin: 0,
-				padding_bottom: 0,
-				position: 'absolute'
-			},
-			margin_right: 0,
-			padding_top: 0,
-			width: logo.size*2,
-			height: logo.size*2,
-			right: function(){
-				return (win.iW - this.width)/2
-			},
-			top: function(){
-				return (win.iH - this.width)/2
-			},
-		};
-	} else {
-		var LLS = {
-			logo: {
-				opacity: 0.25,
-				opacity_click: 1,
-				color: LL_color,
-				width: HL.width,
-				margin: HL.margin(),
-				padding_bottom: win.iW*0.02,
-				position: 'static'
-			},
-			margin_right: win.iW*0.03,
-			padding_top: '3%',
-			width: 'auto',
-			height: 'auto',
-			right: function(){return 0},
-			top: function(){return 0},
-		};
+
+	var LLS = {
+		logo: {
+			width: '33px',
+			margin: HL.margin(),
+			padding_bottom: win.iW*0.02,
+			position: 'static'
+		},
+		margin_right: win.iW*0.03,
+		padding_top: '3%',
+		width: 'auto',
+		height: 'auto',
+		right: function(){return 0},
+		top: function(){return 0},
 	};
+
 	if (page == true && (win.width.S == true || win.width.M == true || win.width.L == true || (win.min_size.S == true && win.width.XL == true))) {
 		$('#link_logos').css({
 			'display': 'none'
@@ -247,17 +222,9 @@ function LinkLogos(LL_color){
 		});
 
 		// LinkLogo() & Mailto () ---------------------------------------------------- [F] main_child.js
-		LinkLogo('#facebook use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/facebook.html');
-		LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/soundcloud.html');
-		LinkLogo('#instagram use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/instagram.html');
-		LinkLogo('#mail use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, MailTo('hartedmusic@gmail.com','Contact:', '','',''));
+		// LinkLogo('#facebook use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/facebook.html');
+		// LinkLogo('#soundcloud use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/soundcloud.html');
+		// LinkLogo('#instagram use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, './/links/instagram.html');
+		// LinkLogo('#mail use', LLS.logo.color, LLS.logo.opacity, LLS.logo.opacity_click, MailTo('hartedmusic@gmail.com','Contact:', '','',''));
 	}
 };
-
-
-
-
-// GLOBAL FUNCTIONS -------------------------------------------------------------------------------------------------------------------
-function valBetween(v, min, max) {
-	return (Math.min(max, Math.max(min, v)));
-}

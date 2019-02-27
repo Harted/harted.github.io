@@ -1,10 +1,24 @@
 .box {
   position: absolute; transition: 500ms;
-  background-color: #ffffff50;
+  background-color: #ffffff70;
 }
 .box h2 {
   /* transition: inherit; */
 }
+
+.link_logo use {
+  fill: #3E3E3E;
+  opacity: .25;
+  transition: 50ms;
+  cursor: initial;
+}
+.link_logo use:hover {
+  opacity: 1;
+  transition: 500ms;
+  cursor: pointer;
+}
+
+
 #top_left { right: 50%; bottom: 50%; }
 #bottom_left { right: 50%; top: 50%; }
 #bottom_right { left: 50%; top: 50%; }

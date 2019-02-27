@@ -30,14 +30,13 @@
 	<script src='script/jQuery/jquery.js' charset='utf-8'></script>
 
 	<!-- scripts -->
-	<script src='script/a_settings.js' charset="utf-8"></script>
+	<script src='script/a_settings.js' charset='utf-8'></script>
 	<script src='script/b_core.js' charset='utf-8'></script>
 	<script src='script/c_get.js' charset='utf-8'></script>
 
 
 	<script src='script/variables.js' charset='utf-8'></script>
 	<script src='script/main.js' charset='utf-8'></script>
-	<script src='script/main_child.js' charset='utf-8'></script>
 	<script src='script/pages.js' charset='utf-8'></script>
 
 </head>
@@ -48,10 +47,10 @@
 		<div id='harted' class='top_left_align top_left_margin'>
 			<h2>HARTED</h2>
 		</div>
-		<script type="text/javascript">
-			$('#harted').css({
-				'margin': box.title_margin + 'px',
-			})
+		<script type='text/javascript'>
+		$('#harted').css({
+			'margin': box.title_margin + 'px',
+		})
 		</script>
 
 		<!--CANVAS-->
@@ -82,30 +81,39 @@
 
 
 		<div id='link_logos' style='z-index:3'>
-			<div class='link_logo top_left_align'>
+			<!-- <div class='link_logo top_left_align'> -->
+			<div class='link_logo' >
 				<svg id='facebook' viewbox='0 0 500 500'>
-					<use xlink:href='svg/link_logo.svg#facebook'></use>
+					<a href='.//links/facebook.html' target='_blank'>
+						<use xlink:href='svg/link_logo.svg#facebook'></use>
+					</a>
 				</svg>
 			</div>
-			<div class='link_logo bottom_left_align'>
+			<div class='link_logo'>
 				<svg id='soundcloud' viewbox='0 0 500 500'>
-					<use xlink:href='svg/link_logo.svg#soundcloud'></use>
+					<a href='.//links/soundcloud.html' target='_blank'>
+						<use xlink:href='svg/link_logo.svg#soundcloud'></use>
+					</a>
 				</svg>
 			</div>
-			<div class='link_logo bottom_right_align'>
+			<div class='link_logo'>
 				<svg id='instagram' viewbox='0 0 500 500'>
-					<use xlink:href='svg/link_logo.svg#instagram'></use>
+					<a href='.//links/instagram.html' target='_blank'>
+						<use xlink:href='svg/link_logo.svg#instagram'></use>
+					</a>
 				</svg>
 			</div>
-			<div class='link_logo top_right_align'>
+			<div class='link_logo'>
 				<svg id='mail' viewbox='0 0 500 500'>
-					<use xlink:href='svg/link_logo.svg#mail'></use>
+					<a href='mailto:hartedmusic@gmail.com?Subject=Contact' target='_blank'>
+						<use xlink:href='svg/link_logo.svg#mail'></use>
+					</a>
 				</svg>
 			</div>
 		</div>
 	</div>
 
-	<script src="script/d_set.js" charset="utf-8"></script>
+	<script src='script/d_set.js' charset='utf-8'></script>
 
 	<script type='text/javascript'>
 	page = false;
@@ -116,7 +124,7 @@
 		//MakeArtBox(); //------------------------------------------------------------ [F] main.js
 		//Square(); //--------------------------------------------------------------- [F] main.js
 		//SquareTest();
-		Shadow();
+		//Shadow();
 		LinkLogos('#3E3E3E'); //---------------------------------------------------- [F] main.js
 		//BoxContentFormat(); //------------------------------------------------------ [F] main.js
 	};

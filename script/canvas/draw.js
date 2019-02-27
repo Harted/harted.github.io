@@ -4,10 +4,20 @@ var CL_border = new DrawHex(CenterLogo_border);   CL_border.draw();             
 
 //IMG -----------------------------------------------------------------------------------------------------------------------------------------
 var img = new Image();
+var resize_art = 1;
+var x_art = 0
+var y_art = 0;
 img.onload = function() {
+  art.transform(
+    resize_art,0,0,
+    resize_art,
+    (1-resize_art)*ref_box/2 + (ref_box/50) * x_art,
+    (1-resize_art)*ref_box/2 + (ref_box/50) * y_art
+  )
   art.drawImage(img,0,0, ref_box, ref_box);                           //background artwork
 };
 img.src = 'image/vlek.png';
+
 
 //TREE ----------------------------------------------------------------------------------------------------------------------------------------
 var tree_top_left = new DrawTree(TreeTopLeft);    tree_top_left.draw();         //tree top left (About)
@@ -30,7 +40,7 @@ animate();
 function animate(){
   //console.time('animate')
   b_animation();
-  tree_tl_animation();
+  // tree_tl_animation();
   frame = requestAnimationFrame(animate);
   //console.timeEnd('animate')
   b.beginPath()
