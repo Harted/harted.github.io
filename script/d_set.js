@@ -20,16 +20,16 @@ function setSize(){
 			$(window).off('resize mousemove touchstart');
 			for (var j = 0; j < box_s.html_id.length; j++) {
 				if(j != i){
-					$(box_s.html_id[j]).css(box_s.css.click.not.div)
-					$(box_s.html_id[j] + ' h2').css(box_s.css.click.not.h2)
+					$(box_s.html_id[j]).css(box_s.click.css.not.div)
+					$(box_s.html_id[j] + ' h2').css(box_s.click.css.not.h2)
 				};
 			};
-			$('#reference_box').css(box_s.css.click.ref_box)
+			$('#reference_box').css(box_s.click.css.ref_box)
 			div.off('mouseenter mouseleave transitionend click')
-			.css(box_s.css.click.div).one('transitionend', function(){
+			.css(box_s.click.css.div).one('transitionend', function(){
 				//window.location = box_s.link[i];
 			});
-			h2.css(box_s.css.click.h2)
+			h2.css(box_s.click.css.h2)
 		}
 
 		this.init = function(){
