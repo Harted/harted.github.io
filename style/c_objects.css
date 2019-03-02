@@ -6,13 +6,13 @@
   /* transition: inherit; */
 }
 
-.link_logo use {
+.link_logo a {
   fill: #3E3E3E;
   opacity: .25;
   transition: 50ms;
   cursor: initial;
 }
-.link_logo use:hover {
+.link_logo a:hover {
   opacity: 1;
   transition: 500ms;
   cursor: pointer;
