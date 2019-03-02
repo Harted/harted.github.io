@@ -46,22 +46,27 @@ function getWindowData(){
 
 // eventlisteners ---------------------------------------------------------------------------------------------------------------------
 $(window).on('touchstart', function() {
-  touch = true; Squares(); //reset square interaction method on touch
+  touch = true;
   $(this).off('touchstart'); //remove the eventlistener
 
 }).on('mousemove', function(event) {
   mouse.x = event.pageX; mouse.y = event.pageY;
   if (mouse.x != mouse.x_old || mouse.y != mouse.y_old) {
     mouse.x_old = mouse.x;	mouse.y_old = mouse.y;
+
+    // mousemove on index
     var obj = $('#reference_box')[0]
-    mouse.ref_box = {
-      x: mouse.x - obj.offsetLeft,
-      y: mouse.y - obj.offsetTop,
+    if (obj != undefined) {
+      mouse.ref_box = {
+        x: mouse.x - obj.offsetLeft,
+        y: mouse.y - obj.offsetTop,
+      }
+      overCanvas('cl', {'pointer-events': 'none',}, {'pointer-events': 'auto',})
     }
     // FUNCTIONS
     //Proximities(); //------------------------------------------------------- [F] main_child.js
     //AffectSquares(); //----------------------------------------------------- [F] main_child.js
-    overCanvas('cl', {'pointer-events': 'none',}, {'pointer-events': 'auto',})
+
     // for (var i = 0; i < squares.length; i++) {squares[i].mousemove()}
   };
 });

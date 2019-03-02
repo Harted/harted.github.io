@@ -27,7 +27,7 @@ function setSize(){
 			$('#reference_box').css(box_s.click.css.ref_box)
 			div.off('mouseenter mouseleave transitionend click')
 			.css(box_s.click.css.div).one('transitionend', function(){
-				//window.location = box_s.link[i];
+				window.location = box_s.link[i];
 			});
 			h2.css(box_s.click.css.h2)
 		}

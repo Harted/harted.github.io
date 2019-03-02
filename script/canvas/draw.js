@@ -43,9 +43,6 @@ function animate(){
   // tree_tl_animation();
   frame = requestAnimationFrame(animate);
   //console.timeEnd('animate')
-  b.beginPath()
-  b.arc(mouse.x, mouse.y,1,0,cir)
-  b.fill()
 }
 
 framerate()
@@ -66,10 +63,10 @@ function overCanvas(id_str, css_on, css_off){
   if(mouse.x > this.x && mouse.y > this.y && mouse.x < this.x + this.w && mouse.y < this.y + this.w){
     imd = id.getImageData((mouse.x - this.id.canvas.offsetLeft)*win.dPR ,(mouse.y - this.id.canvas.offsetTop)*win.dPR,1,1).data;
     if (imd[3] > 0 && (over[id_str] == false || over[id_str] == undefined)){
-      over[id_str] = true; console.log(over);
+      over[id_str] = true;
       $('#' + this.id.canvas.id).css(css_off);
     } else if (imd[3] == 0 && over[id_str] == true){
-      over[id_str] = false; console.log(over);
+      over[id_str] = false;
       $('#' + this.id.canvas.id).css(css_on);
     };
   };

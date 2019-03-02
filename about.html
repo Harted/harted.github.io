@@ -19,11 +19,21 @@
 	<!-- Title -->
 	<title>Harted | About</title>
 	<link href='style/styles.css' rel='stylesheet' type='text/css'>
+<link href='style/c_objects.css' rel='stylesheet' type='text/css'>
+
+	<!-- jQuery -->
+	<script src='script/jQuery/jquery.js' charset='utf-8'></script>
+
 	<!-- scripts -->
-	<script src='script/jQuery/jquery.js'></script>
+	<script src='script/a_settings.js' charset='utf-8'></script>
+	<script src='script/b_core.js' charset='utf-8'></script>
+	<script src='script/c_get.js' charset='utf-8'></script>
+
+
+	<!--  TO BE REPLACED -->
+
 	<script src='script/variables.js'></script>
 	<script src='script/main.js'></script>
-	<script src='script/main_child.js'></script>
 	<script src='script/pages.js'></script>
 
 </head>
@@ -32,7 +42,8 @@
 	<!-- Header -->
 
 	<div id='header' class='color_1 shadow' style='z-index:99'>
-		<h5 style='position:absolute;right:6%;bottom:-23px;'>HARTED</h5>
+<!-- MAYBE -->
+		<!-- <h5 style='position:absolute;right:7%;bottom:-23px;'>HARTED</h5> -->
 		<ul id='header_menu'>
 			<li id='menu_about'>About</li>
 			<li id='menu_music'>Music</li>
@@ -83,28 +94,41 @@
 				</p>
 			</div>
 		</div>
+
+
 		<div id='link_logos' style='z-index:3'>
-			<div class='link_logo top_left_align'>
+			<!-- <div class='link_logo top_left_align'> -->
+			<div class='link_logo' >
 				<svg id='facebook' viewbox='0 0 500 500'>
-					<use xlink:href='svg/link_logo.svg#facebook'></use>
+					<a xlink:href='links/facebook.html' target='_blank'>
+						<use xlink:href='svg/link_logo.svg#facebook'></use>
+					</a>
 				</svg>
 			</div>
-			<div class='link_logo bottom_left_align'>
+			<div class='link_logo'>
 				<svg id='soundcloud' viewbox='0 0 500 500'>
-					<use xlink:href='svg/link_logo.svg#soundcloud'></use>
+					<a xlink:href='links/soundcloud.html' target='_blank'>
+						<use xlink:href='svg/link_logo.svg#soundcloud'></use>
+					</a>
 				</svg>
 			</div>
-			<div class='link_logo bottom_right_align'>
+			<div class='link_logo'>
 				<svg id='instagram' viewbox='0 0 500 500'>
-					<use xlink:href='svg/link_logo.svg#instagram'></use>
+					<a xlink:href='links/instagram.html' target='_blank'>
+						<use xlink:href='svg/link_logo.svg#instagram'></use>
+					</a>
 				</svg>
 			</div>
-			<div class='link_logo top_right_align'>
+			<div class='link_logo'>
 				<svg id='mail' viewbox='0 0 500 500'>
-					<use xlink:href='svg/link_logo.svg#mail'></use>
+					<a xlink:href='mailto:hartedmusic@gmail.com?Subject=Contact' target='_blank'>
+						<use xlink:href='svg/link_logo.svg#mail'></use>
+					</a>
 				</svg>
 			</div>
 		</div>
+
+
 	</div>
 
 	<div id='header_whitespace'>
@@ -112,21 +136,23 @@
 	<div id='header_forcescrollspace'>
 	</div>
 
+	<script src='script/d_set.js' charset='utf-8'></script>
+
 	<script>
 	// script
 	page = true;
-	userAgent = getUserAgent(); //-------------------------------------------------- [F] main.js
-	$('body').css({'background-color': color_back})
+	// userAgent = getUserAgent(); //-------------------------------------------------- [F] main.js
+	// $('body').css({'background-color': color_back})
 
-	DetermineTouch(); //------------------------------------------------------------ [F] main.js
+	// DetermineTouch(); //------------------------------------------------------------ [F] main.js
 	MakeThings(); //---------------------------------------------------------------- [F] about.html <script>
 
 	$('.hide_on_load').css('opacity',1);
 
 	function MakeThings(){
-		GetMinWindowSize(); //-------------------------------------------------------- [F] main.js
-		Responsive(); //-------------------------------------------------------------- [F] main.js
-		Sizes(); //---------------------------------------------------------- [F] main.js
+		// GetMinWindowSize(); //-------------------------------------------------------- [F] main.js
+		// Responsive(); //-------------------------------------------------------------- [F] main.js
+		// Sizes(); //---------------------------------------------------------- [F] main.js
 		Header(color_back); //----------------------------------------------------------- [F] pages.js ------------------- COLOR SETTING!
 		HeaderLogo(color_1); //---------------------------------------------------- [F] pages.js
 		HeaderMenu(color_1); //-------------------------------------------------------------- [F] pages.js
