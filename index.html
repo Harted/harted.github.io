@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang='en'>
 <head>
+
+	<script type="text/javascript">
+		console.time('document_ready')
+	</script>
+
 	<meta charset='utf-8'>
 
 	<!-- IE  is it needed?? -->
@@ -24,7 +29,7 @@
 	<link href='style/styles.css' rel='stylesheet' type='text/css'>
 	<link href='style/canvas.css' rel='stylesheet' type='text/css'>
 
-	<link href='style/c_objects.css' rel='stylesheet' type='text/css'>
+	<link href='style/objects.css' rel='stylesheet' type='text/css'>
 
 	<!-- jQuery -->
 	<script src='script/jQuery/jquery.js' charset='utf-8'></script>
@@ -36,12 +41,12 @@
 
 	<!--  TO BE REPLACED -->
 	<script src='script/variables.js' charset='utf-8'></script>
-	<script src='script/main.js' charset='utf-8'></script>
-	<script src='script/pages.js' charset='utf-8'></script>
 
 </head>
-<body class='color_back nocursor'>
-	<div class='fade'>
+<body class='color_back'>
+
+	<!-- Fade in div -->
+	<div class='fade noselect'>
 
 		<!--HEADER-->
 		<div id='harted' class='top_left_align top_left_margin'>
@@ -118,40 +123,16 @@
 	<script type='text/javascript'>
 	page = false;
 
-	function TempInit() {
-		HeaderLogo() //------------------------------------------------------------- [F] pages.js (needed for link logo size - var HL)
-		//SetSize(); //------------------------------------------------------------ [F] main.js
-		//MakeArtBox(); //------------------------------------------------------------ [F] main.js
-		//Square(); //--------------------------------------------------------------- [F] main.js
-		//SquareTest();
-		//Shadow();
-		LinkLogos('#3E3E3E'); //---------------------------------------------------- [F] main.js
-		//BoxContentFormat(); //------------------------------------------------------ [F] main.js
-	};
-
-	TempInit();
-
 	var Responsive_afterResize = debounce(function(){
 		getWindowData(); //--------------------------------------------------------- [F] main.js
 		getSize();
 		setSize(); //-------------------------------------------------------- [F] main.js
-		HeaderLogo() //------------------------------------------------------------- [F] pages.js (needed for link logo size - var HL)
-		//SetObjects(); //------------------------------------------------------------ [F] main.js
-		//MakeArtBox(); //------------------------------------------------------------ [F] main.js
-		//Square(); //--------------------------------------------------------------- [F] main.js
-		//SquareTest();
-		//Shadow();
-		LinkLogos('#3E3E3E'); //---------------------------------------------------- [F] main.js
-		//BoxContentFormat(); //------------------------------------------------------ [F] main.js
-	}, 250, false)  //-------------------------------------------------------------- [F] index.html <script>
+	}, 200, false)  //-------------------------------------------------------------- [F] index.html <script>
 
-	// Actions when document is ready--------------------------------------------------------------------------------------------------
+	// Fade when ready--------------------------------------------------------------------------------------------------
 	$(document).ready(function() {
-		$('.fade').css({
-			'opacity': 1,
-			'transition': anim_speed_factor * 500 + 'ms',
-		})
-		//MouseMoveOfsets(); //------------------------------------------------------- [F] main.js
+		$('.fade').css({'opacity': 1, 'transition': '500ms',})
+		console.timeEnd('document_ready')
 	});
 
 	// Actions when window is resized -------------------------------------------------------------------------------------------------

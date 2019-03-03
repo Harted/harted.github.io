@@ -37,7 +37,7 @@ function setSize(){
 			div.css({'width': s1, 'height':s1 })
 			.css(box.css)
 
-			if (win.min_size.S == true || touch == true) {
+			if (win.min_size_bool.S == true || touch == true) {
 				div.off('click').on('click', function(){
 					window[box_s.group][i].click()
 				})
@@ -103,5 +103,22 @@ function setSize(){
 		window[box_s.group].push(new this.square(i))
 		window[box_s.group][i].init()
 	}
+
+	//link logos
+	$('#link_logos').css({
+		'position': linklogo.position,
+		'margin-top': linklogo.margin,
+		'margin-right': linklogo.margin,
+		'display': linklogo.display(),
+	}).addClass(linklogo.class)
+
+	$('.link_logo').css({
+		'width': linklogo.logo.width(),
+		'height': linklogo.logo.height(),
+		'margin': linklogo.logo.margin(),
+		'padding-bottom': linklogo.logo.padding_bottom(),
+	})
+
+
 
 }; setSize(); //trigger on launch

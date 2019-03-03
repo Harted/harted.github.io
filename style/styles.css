@@ -39,20 +39,6 @@
 	transition: 0ms;
 }
 
-/* MakeAlignmentClasses --------------------------------------------------------*/
-.top_left_align, .bottom_left_align, .bottom_right_align, .top_right_align {
-	position: absolute;
-}
-.bottom_left_align {bottom:0;}
-.bottom_right_align {bottom:0; right:0}
-.top_right_align {right:0;}
-
-/* Absolute center -------------------------------------------------------------*/
-.center {
-	margin: auto; position:absolute;
-	top: 0; left: 0; bottom: 0; right: 0;
-}
-
 /*hide scrollbars*/
 html { -ms-overflow-style: -ms-autohiding-scrollbar;} /* IE11 */
 body::-webkit-scrollbar { display: none;} /* Windows Chrome */
@@ -114,7 +100,7 @@ div {
 .after:after {content: ''; width: 33%;} /* 33% is the width of 1 object when 3 objects are next to eachother (defined in AlbumFlexByID), */
 .fore:before {content: ''; width: 33%;} /* so if its added before or after it alignes perfectly                                          */
 
-/* Prevent items from being selected NOTE: does it work? */
+/* Prevent items from being selected */
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */

@@ -37,10 +37,10 @@ function getWindowData(){
     else if (s < win_s.L) { win[str].L = true }
     else { win[str].XL = true };
   };
-  this.setScrSize(win.iMin, 'min_size'); //set minimum size bool
-  this.setScrSize(win.iMax, 'max_size'); //set maximum size bool
-  this.setScrSize(win.iW, 'width'); //set minimum width bool
-  this.setScrSize(win.iH, 'height'); //set minimum height bool
+  this.setScrSize(win.iMin, 'min_size_bool'); //set minimum size bool
+  this.setScrSize(win.iMax, 'max_size_bool'); //set maximum size bool
+  this.setScrSize(win.iW, 'width_size_bool'); //set minimum width bool
+  this.setScrSize(win.iH, 'height_size_bool'); //set minimum height bool
 
 }; getWindowData()
 
@@ -54,9 +54,9 @@ $(window).on('touchstart', function() {
   if (mouse.x != mouse.x_old || mouse.y != mouse.y_old) {
     mouse.x_old = mouse.x;	mouse.y_old = mouse.y;
 
-    // mousemove on index
+    // mousemove on index.html
     var obj = $('#reference_box')[0]
-    if (obj != undefined) {
+    if (obj != undefined && overCanvas != undefined) {
       mouse.ref_box = {
         x: mouse.x - obj.offsetLeft,
         y: mouse.y - obj.offsetTop,

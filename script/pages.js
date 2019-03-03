@@ -194,11 +194,11 @@ function MenuItem(MI_id, MI_href, MI_color) {
 
 // Make content container -------------------------------------------------------------------------------------------------------------
 function ContentContainer(){
-	if (win.width.M == true || win.width.S == true) {
+	if (win.width_size_bool.M == true || win.width_size_bool.S == true) {
 		$('.content_container').css({
 				'margin': '0px',
 		})
-	} else if (win.width.L == true){
+	} else if (win.width_size_bool.L == true){
 		$('.content_container').css({
 				'margin': '0px ' + (HL.center_right()) + 'px',
 		})
