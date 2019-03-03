@@ -6,10 +6,10 @@ const win_s  = {
 
 // reference box settings ------------------------------------------------------
 const ref_box_s = {
-  S: 	function(){return Math.round(win.iMin * 0.92);},
-  M:  function(){return Math.round(win.iMin * 2 / (2 + Math.pow(win.iMin / win_s.M, 3)));},
-  L: 	function(){return Math.round(win.iMin * 2 / 3);},
-  XL:	function(){return Math.round(win.iMin * 2 / 3);},
+  S: 	() => Math.round(win.iMin * 0.92) ,
+  M:  () => Math.round(win.iMin * 2 / (2 + Math.pow(win.iMin / win_s.M, 3))),
+  L: 	() => Math.round(win.iMin * 2 / 3),
+  XL:	() => Math.round(win.iMin * 2 / 3),
 };
 
 // logo settings ---------------------------------------------------------------
@@ -29,7 +29,7 @@ const box_s = {
     hover_size: 2,
     title_margin: 0.041,
     font_size: 0.033,
-    reference: function(){return ref_box;},
+    reference: () => ref_box,
     css: {
       'box-shadow': '0px 0px 12px rgba(0,0,0,0.35)',
     },
@@ -39,7 +39,7 @@ const box_s = {
     hover_size: 2,
     title_margin: 0.08,
     font_size: 0.06,
-    reference: function(){return ref_box;},
+    reference: () => ref_box,
     css: {
       'box-shadow': '0px 0px 0px rgba(0,0,0,0)',
     },
@@ -71,21 +71,17 @@ const linklogo_s = {
   desktop: {
     logo: {
       position: 'static',
-      size: function(){return 50},
+      size: () => 50,
       size_factor: 2/3,
-      width: function(){return (this.size() * this.size_factor)},
-      height: function(){return (this.width())},
-      margin: function(){return (this.size() * (1 - this.size_factor)/2)},
-      padding_bottom: function(){return win.iW * 0.02},
+      width: function() {return this.size() * this.size_factor},
+      height: function() {return this.width()},
+      margin: function() {return this.size() * (1 - this.size_factor) / 2},
+      padding_bottom: () => win.iW * 0.02,
     },
     position: 'fixed',
     class: 'top_right_align',
     margin: '3%',
-    display: function(){
-      if (page == true && (win.width_size_bool.XL == false || (win.min_size_bool.S == true && win.width_size_bool.XL == true))){
-        return 'none' } else { return 'block'
-      }
-    },
+    display: () => (page == true && (win.width_size_bool.XL == false || (win.min_size_bool.S == true && win.width_size_bool.XL == true))) ? 'none' : 'block',
   },
   mobile: {
 

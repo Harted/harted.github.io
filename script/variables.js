@@ -11,8 +11,7 @@ var color_3 = '#FFFFFF';//'#3BDB83';
 var color_4 = '#FFFFFF';//'#F4C700';
 var color_back = '#FFFFFF';
 
-// Responsive
-var page = false;
+
 
 // Reference box variables
 var ref_box_offset_top_center, ref_box_offset_left_center;
