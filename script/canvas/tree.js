@@ -10,7 +10,7 @@ for (var i = 0; i < 1000; i++) {
   ran_rect_arr.push((100*i/1500*(Math.random()/4+0.75)/win.dPR)+0.5)
 }
 
-$('#tree_tl').css('transform', 'translate(' + (-ref_box/4-logo.size/4) + 'px,' + (-ref_box/4-logo.size/4) + 'px)')
+$('#tree_tl').css('transform', 'translate(' + (-refbox/4-logo.size/4) + 'px,' + (-refbox/4-logo.size/4) + 'px)')
 
 //Tree
 function DrawTree(id){

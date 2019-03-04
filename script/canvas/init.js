@@ -24,14 +24,14 @@ const canvas_properties = [
   {
     html_id: '#art',
     context_id: 'art',
-    width: ref_box,
-    height: ref_box,
+    width: refbox,
+    height: refbox,
   },
   {
     html_id: '#tree_tl',
     context_id: 'tree_tl',
-    width: ref_box/2,
-    height: ref_box/2,
+    width: refbox/2,
+    height: refbox/2,
   },
 ];
 //Generate canvasses  --------------------------------------------------------------------------------------------------------------------------

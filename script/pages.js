@@ -1,3 +1,13 @@
+// Soundcloud
+var playing_global = false;
+
+// Header
+var header_height = 50;
+
+// Global objects
+var HL = {}; // header logo
+
+
 // Make header ------------------------------------------------------------------------------------------------------------------------
 function Header(color) {
 
@@ -194,11 +204,11 @@ function MenuItem(MI_id, MI_href, MI_color) {
 
 // Make content container -------------------------------------------------------------------------------------------------------------
 function ContentContainer(){
-	if (win.width_size_bool.M == true || win.width_size_bool.S == true) {
+	if (win.width_b.M == true || win.width_b.S == true) {
 		$('.content_container').css({
 				'margin': '0px',
 		})
-	} else if (win.width_size_bool.L == true){
+	} else if (win.width_b.L == true){
 		$('.content_container').css({
 				'margin': '0px ' + (HL.center_right()) + 'px',
 		})

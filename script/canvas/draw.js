@@ -11,10 +11,10 @@ img.onload = function() {
   art.transform(
     resize_art,0,0,
     resize_art,
-    (1-resize_art)*ref_box/2 + (ref_box/50) * x_art,
-    (1-resize_art)*ref_box/2 + (ref_box/50) * y_art
+    (1-resize_art)*refbox/2 + (refbox/50) * x_art,
+    (1-resize_art)*refbox/2 + (refbox/50) * y_art
   )
-  art.drawImage(img,0,0, ref_box, ref_box);                           //background artwork
+  art.drawImage(img,0,0, refbox, refbox);                           //background artwork
 };
 img.src = 'image/vlek.png';
 
@@ -39,7 +39,7 @@ var frame; var frame_old = 0;
 animate();
 function animate(){
   //console.time('animate')
-  b_animation();
+  //b_animation();
   // tree_tl_animation();
   frame = requestAnimationFrame(animate);
   //console.timeEnd('animate')

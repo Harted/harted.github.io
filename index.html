@@ -35,8 +35,21 @@
 
 	<!-- scripts -->
 	<script src='script/a_settings.js' charset='utf-8'></script>
+	<!-- ...NOTE: will be replaced by: -->
+	<script src='script/global_1_settings.js' charset='utf-8'></script>
+	<script src='script/index_1_settings.js' charset='utf-8'></script>
+
 	<script src='script/b_core.js' charset='utf-8'></script>
+	<!-- ...NOTE: will be replaced by: -->
+	<script src='script/global_2_window.js' charset='utf-8'></script>
+	<script src='script/index_2_window.js' charset='utf-8'></script>
+
 	<script src='script/c_get.js' charset='utf-8'></script>
+	<!-- ...NOTE: will be replaced by: -->
+
+
+
+
 
 </head>
 
@@ -108,21 +121,26 @@
 		</div>
 	</div>
 
+
+	<script src='script/global_3_set.js' charset='utf-8'></script>
+	<script src='script/index_3_set.js' charset='utf-8'></script>
+	<!-- ...NOTE: will be replaced by above -->
 	<script src='script/d_set.js' charset='utf-8'></script>
+
 
 	<script type='text/javascript'>
 
 	// Actions when window is resized -------------------------------------------------------------------------------------------------
 	var onResize = debounce(function(){
-	  getWindowData();
-	  getSize();
-	  setSize();
+		getWindowData();
+		indexSet();
+		setSize();
 	}, 200, false)
 
 
 	//GLOBAL OR LOCAL?????
 	$(window).on('resize', function() {
-	  onResize();
+		onResize();
 	});
 
 	</script>

@@ -91,7 +91,7 @@ function EpHeader(header_color, link_color){
   }
 
   // width small & medium changes
-  if (win.width_size_bool.S == true || win.width_size_bool.M == true) {
+  if (win.width_b.S == true || win.width_b.M == true) {
     ep.flex_direction = 'column-reverse'
     ep.text_holder.width = '100%'
     ep.img.width = '100%'
