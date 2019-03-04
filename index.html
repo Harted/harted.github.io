@@ -2,13 +2,7 @@
 <html lang='en'>
 <head>
 
-	<script type="text/javascript">
-		console.time('document_ready')
-	</script>
-
 	<meta charset='utf-8'>
-
-	<!-- IE  is it needed?? -->
 	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 
 	<!-- Responsive -->
@@ -26,15 +20,14 @@
 
 	<!-- Title -->
 	<title>Harted</title>
+
+	<!-- Styles -->
 	<link href='style/styles.css' rel='stylesheet' type='text/css'>
 	<link href='style/canvas.css' rel='stylesheet' type='text/css'>
-
 	<link href='style/objects.css' rel='stylesheet' type='text/css'>
 
 	<!-- jQuery -->
 	<script src='script/jQuery/jquery.js' charset='utf-8'></script>
-
-	<script type="text/javascript">var page = false;</script>
 
 	<!-- scripts -->
 	<script src='script/a_settings.js' charset='utf-8'></script>
@@ -124,24 +117,22 @@
 
 	<script type='text/javascript'>
 
-	var Responsive_afterResize = debounce(function(){
-		getWindowData(); //--------------------------------------------------------- [F] main.js
-		getSize();
-		setSize(); //-------------------------------------------------------- [F] main.js
-	}, 200, false)  //-------------------------------------------------------------- [F] index.html <script>
-
-	// Fade when ready--------------------------------------------------------------------------------------------------
-	$(document).ready(function() {
-		$('.fade').css({'opacity': 1, 'transition': '500ms',})
-		console.timeEnd('document_ready')
-	});
-
 	// Actions when window is resized -------------------------------------------------------------------------------------------------
+	var onResize = debounce(function(){
+	  getWindowData();
+	  getSize();
+	  setSize();
+	}, 200, false)
+
+
+	//GLOBAL OR LOCAL?????
 	$(window).on('resize', function() {
-		Responsive_afterResize(); //---------------------------------------------------------- [F] index.html
+	  onResize();
 	});
 
 	</script>
+
+	<!-- Canvas scripts -->
 	<script src='script/canvas/init.js'></script>
 	<script src='script/canvas/utilities.js'></script>
 	<script src='script/canvas/hex_properties.js'></script>
@@ -149,5 +140,6 @@
 	<script src='script/canvas/tree_properties.js'></script>
 	<script src='script/canvas/tree.js'></script>
 	<script src='script/canvas/draw.js'></script>
+
 </body >
 </html>

@@ -55,7 +55,7 @@ body {
 .fade {opacity: 0;}
 /* everything that's not fading but has to be hided before objects are made */
 /* Header text would show as a list and headerlogo svg big black */
-.hide_on_load {opacity: 0;}
+/* .hide_on_load {opacity: 0;} */
 
 /* TEXT ------------------------------------------------------------------------*/
 h1 {

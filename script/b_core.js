@@ -5,6 +5,10 @@ const userAgent = getUserAgent();
 var touch = false
 var win = {};
 var mouse = {}
+var page = false
+
+// Check if page ----------------------------------------------------------------------------------------------------------------------
+page = (window.location.pathname.split('/').pop() == 'index.html') ? false : true;
 
 // Get user agent function ------------------------------------------------------------------------------------------------------------
 function getUserAgent(){
@@ -56,7 +60,7 @@ $(window).on('touchstart', function() {
 
     // mousemove on index.html
     var obj = $('#reference_box')[0]
-    if (obj != undefined && overCanvas != undefined) {
+    if (page == false) {
       mouse.ref_box = {
         x: mouse.x - obj.offsetLeft,
         y: mouse.y - obj.offsetTop,
@@ -71,6 +75,10 @@ $(window).on('touchstart', function() {
   };
 });
 
+// Fade when ready--------------------------------------------------------------------------------------------------
+$(document).ready(function() {
+  $('.fade').css({'opacity': 1, 'transition': '500ms',})
+});
 
 // UTILITIES --------------------------------------------------------------------------------------------------------------------------
 // Debounce by David Walsh (https://davidwalsh.name/javascript-debounce-function)

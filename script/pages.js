@@ -35,10 +35,10 @@ function HeaderLogo(HL_color) {
 		load: {
 			width: 0,
 			margin: header_height/2,
-			transition: anim_speed_factor * 250,
+			transition: 1 * 250,
 		},
 		click: {
-			transition: anim_speed_factor * 100,
+			transition: 1 * 100,
 		},
 		center_right: function(){
 			return this.right + (this.width/2) + this.margin();
