@@ -7,6 +7,7 @@ var win = {};
 var mouse = {}
 var mouse_update = false
 var platform
+var ready = false
 
 // Determine user agent --------------------------------------------------------
 function getUserAgent(){
@@ -30,7 +31,7 @@ function getWindowData(){
 
   //set window size and device pixel ratio
   win.iW = window.innerWidth; win.iH = window.innerHeight;
-  win.dPR = window.devicePixelRatio;
+  win.dPR = 1//window.devicePixelRatio;
 
   //set minimum window size in portrait or landscape rotation
   let minMaxSizeArray = (win.iW <= win.iH) ? [win.iW,win.iH]:[win.iH,win.iW];
@@ -60,6 +61,7 @@ function getWindowData(){
 // Fade when ready--------------------------------------------------------------
 $(document).ready(function() {
   $('.fade').css({'opacity': 1, 'transition': '500ms',})
+  ready = true
 });
 
 

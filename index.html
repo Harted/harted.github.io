@@ -22,10 +22,8 @@
 	<link rel='mask-icon' href='icons/safari-pinned-tab.svg' color='#5bbad5'>
 	<link rel='shortcut icon' href='icons/favicon.ico'>
 
-	<!-- Set if page (not index) -->
-	<script type="text/javascript"> var page = false; </script>
-
 	<!-- Styles -->
+	<!-- TODO: organize style  -->
 	<link href='style/styles.css' rel='stylesheet' type='text/css'>
 	<link href='style/canvas.css' rel='stylesheet' type='text/css'>
 	<link href='style/objects.css' rel='stylesheet' type='text/css'>
@@ -33,23 +31,13 @@
 	<!-- jQuery -->
 	<script src='script/jQuery/jquery.js' charset='utf-8'></script>
 
-	<!-- scripts -->
-	<script src='script/a_settings.js' charset='utf-8'></script>
-	<!-- ...NOTE: will be replaced by: -->
+	<!-- Settings -->
 	<script src='script/global_1_settings.js' charset='utf-8'></script>
 	<script src='script/index_1_settings.js' charset='utf-8'></script>
 
-	<script src='script/b_core.js' charset='utf-8'></script>
-	<!-- ...NOTE: will be replaced by: -->
+	<!-- Window data -->
 	<script src='script/global_2_window.js' charset='utf-8'></script>
 	<script src='script/index_2_window.js' charset='utf-8'></script>
-
-	<script src='script/c_get.js' charset='utf-8'></script>
-	<!-- ...NOTE: will be replaced by: -->
-
-
-
-
 
 </head>
 
@@ -87,7 +75,7 @@
 			</div>
 		</div>
 
-
+		<!-- Link logos -->
 		<div id='link_logos' style='z-index:3'>
 			<!-- <div class='link_logo top_left_align'> -->
 			<div class='link_logo' >
@@ -121,29 +109,9 @@
 		</div>
 	</div>
 
-
+	<!-- Style application -->
 	<script src='script/global_3_set.js' charset='utf-8'></script>
 	<script src='script/index_3_set.js' charset='utf-8'></script>
-	<!-- ...NOTE: will be replaced by above -->
-	<script src='script/d_set.js' charset='utf-8'></script>
-
-
-	<script type='text/javascript'>
-
-	// Actions when window is resized -------------------------------------------------------------------------------------------------
-	var onResize = debounce(function(){
-		getWindowData();
-		indexSet();
-		setSize();
-	}, 200, false)
-
-
-	//GLOBAL OR LOCAL?????
-	$(window).on('resize', function() {
-		onResize();
-	});
-
-	</script>
 
 	<!-- Canvas scripts -->
 	<script src='script/canvas/init.js'></script>

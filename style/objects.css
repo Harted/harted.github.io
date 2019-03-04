@@ -1,10 +1,6 @@
-/* REFERENCE BOX ------------------------------------------------------------ */
-#reference_box {transition: 300ms;}
-
-
 /* BOXES -------------------------------------------------------------------- */
 .box {
-  position: absolute; transition: 500ms;
+  position: absolute; transition: 300ms;
   background-color: #ffffff70;
 }
 

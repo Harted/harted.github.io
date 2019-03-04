@@ -1,3 +1,6 @@
+// PAGE ------------------------------------------------------------------------
+const page = false
+
 // REFERENCE BOX ---------------------------------------------------------------
 const refbox_s = {
   S: 	() => Math.round(win.iMin * 0.92) ,
@@ -8,7 +11,6 @@ const refbox_s = {
 
 // BOX IN REFERENCE BOX --------------------------------------------------------
 const box_s = {
-  group: 'squares',
   html_id: ['#top_left', '#bottom_left', '#bottom_right', '#top_right'],
   link: ['about.html', 'music.html', 'video.html', 'shows.html'],
   desktop: {
@@ -31,7 +33,7 @@ const box_s = {
   },
   click: {
     css : {
-      refbox: {'width': '100%', 'height': '100%', /*'top': 'auto'*/},
+      refbox: {'transition':'500ms', 'width': '100%', 'height': '100%'},
       div: {
         'width': '100%', 'height': '100%',
         'right': 0, 'left': 0, 'top': 0, 'bottom': 0,

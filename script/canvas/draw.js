@@ -1,20 +1,14 @@
-//HEXAGONS ------------------------------------------------------------------------------------------------------------------------------
-var CL_fill = new DrawHex(CenterLogo_fill);       CL_fill.draw();               //Center logo fill object
-var CL_border = new DrawHex(CenterLogo_border);   CL_border.draw();             //Center logo border object
+//CENTER LOGO ------------------------------------------------------------------------------------------------------------------------------
+var CL_fill = new DrawHex(CenterLogo_fill);
+var CL_border = new DrawHex(CenterLogo_border);
+
+CL_fill.draw();
+CL_border.draw();
 
 //IMG -----------------------------------------------------------------------------------------------------------------------------------------
 var img = new Image();
-var resize_art = 1;
-var x_art = 0
-var y_art = 0;
 img.onload = function() {
-  art.transform(
-    resize_art,0,0,
-    resize_art,
-    (1-resize_art)*refbox/2 + (refbox/50) * x_art,
-    (1-resize_art)*refbox/2 + (refbox/50) * y_art
-  )
-  art.drawImage(img,0,0, refbox, refbox);                           //background artwork
+  art.drawImage(img,0,0,refbox,refbox);                           //background artwork
 };
 img.src = 'image/vlek.png';
 

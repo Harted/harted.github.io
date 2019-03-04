@@ -36,6 +36,7 @@ const canvas_properties = [
 ];
 //Generate canvasses  --------------------------------------------------------------------------------------------------------------------------
 GenerateCanvas(canvas_properties)                                               //NOTE: to implement in window resize later
+
 function GenerateCanvas(obj){
   this.setContext = function(obj){
     //set canvas and context
