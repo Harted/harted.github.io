@@ -5,10 +5,6 @@ const userAgent = getUserAgent();
 var touch = false
 var win = {};
 var mouse = {}
-var page = false
-
-// Check if page ----------------------------------------------------------------------------------------------------------------------
-page = (window.location.pathname.split('/').pop() == 'index.html') ? false : true;
 
 // Get user agent function ------------------------------------------------------------------------------------------------------------
 function getUserAgent(){
