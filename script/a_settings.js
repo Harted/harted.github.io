@@ -84,6 +84,18 @@ const linklogo_s = {
     display: () => (page == true && (win.width_size_bool.XL == false || (win.min_size_bool.S == true && win.width_size_bool.XL == true))) ? 'none' : 'block',
   },
   mobile: {
-
+    logo: {
+      position: 'static',
+      size: () => 50,
+      size_factor: 2/3,
+      width: function() {return this.size() * this.size_factor},
+      height: function() {return this.width()},
+      margin: function() {return this.size() * (1 - this.size_factor) / 2},
+      padding_bottom: () => win.iW * 0.02,
+    },
+    position: 'fixed',
+    class: 'top_right_align',
+    margin: '3%',
+    display: () => (page == true && (win.width_size_bool.XL == false || (win.min_size_bool.S == true && win.width_size_bool.XL == true))) ? 'none' : 'block',
   },
 }

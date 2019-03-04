@@ -153,9 +153,21 @@
 			PageBanner();
 		};
 
+		// Actions when window is resized -------------------------------------------------------------------------------------------------
+		var onResize = debounce(function(){
+			getWindowData();
+			getSize();
+			setSize();
+
+			MakeThings();
+
+		}, 200, false)
+
 		$(window).on('resize', function() {
+			onResize();
 			MakeThings(); //-------------------------------------------------------------- [F] about.html <script>
 		});
+
 
 		</script>
 	</body>
