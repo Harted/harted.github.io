@@ -119,6 +119,8 @@ function setSize(){
 		'padding-bottom': linklogo.logo.padding_bottom(),
 	})
 
+	$('#harted').css('margin', linklogo.margin)
+
 
 
 }; setSize(); //trigger on launch
