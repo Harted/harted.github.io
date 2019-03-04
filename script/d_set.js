@@ -119,6 +119,7 @@ function setSize(){
 		'padding-bottom': linklogo.logo.padding_bottom(),
 	})
 
+	//harted on index
 	$('#harted').css('margin', linklogo.margin)
 
 
