@@ -6,6 +6,8 @@ var color_3 = "#FFFFFF";
 var color_4 = "#FFFFFF";
 var color_back = "#FFFFFF";
 
+// (#[0-F]{8})|(#[0-F]{6})   // NOTE: regex to find colors
+
 // WINDOW ----------------------------------------------------------------------
 var win_s = {
   L: 1026,

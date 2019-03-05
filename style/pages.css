@@ -15,14 +15,14 @@
   font-weight: 400;
   display: inline-block;
   padding-right: 20px;
-  color: #4E4E4E;/*#FFF;*/
+  color: #3E3E3E;/*#FFF;*/
 }
 #headerlogo {
 	position: absolute;
 	width: 30px;
 	height: 30px;
 	margin: 10px;
-	fill: #4E4E4E;/*#FFF;*/
+	fill: #3E3E3E;/*#FFF;*/
 	right: 3%;
 	bottom: 0;
 	transition: 0ms;

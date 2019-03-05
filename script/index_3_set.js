@@ -52,6 +52,8 @@ function indexSet() {
     let s2 = box.hover_size
 
     let click = function(){
+      $('#link_logos, h2').css('display','none')
+      art.clearRect(0,0,win.iW,win.iH)
       $(window).off('resize mousemove touchstart');
       for (var j = 0; j < box_s.html_id.length; j++) {
         if(j != i){
@@ -62,7 +64,10 @@ function indexSet() {
       $('#reference_box').css(box_s.click.css.refbox)
       div.off('mouseenter mouseleave transitionend click')
       .css(box_s.click.css.div).one('transitionend', function(){
-        window.location = box_s.link[i];
+        $('#center_logo').css({'transition':'250ms','width':0,'height':0})
+        .one('transitionend', function(){
+          window.location = box_s.link[i];
+        });
       });
       h2.css(box_s.click.css.h2)
     }

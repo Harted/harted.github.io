@@ -46,7 +46,7 @@ function getWindowData() {
   //set window size and device pixel ratio
   win.iW = window.innerWidth;
   win.iH = window.innerHeight;
-  win.dPR = 1; //window.devicePixelRatio;
+  win.dPR = window.devicePixelRatio;
   //set minimum window size in portrait or landscape rotation
 
   var minMaxSizeArray = win.iW <= win.iH ? [win.iW, win.iH] : [win.iH, win.iW];
