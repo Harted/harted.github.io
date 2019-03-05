@@ -20,14 +20,6 @@ function globalSet() {
     'height': linklogo.logo.height(),
     'margin': linklogo.logo.margin(),
     'padding-bottom': linklogo.logo.padding_bottom(),
-  }).on('click', function(){
-    setTimeout(function () {
-      $('.link_logo a').css({
-        'opacity' : '.25',
-        'transition' : '50ms',
-        'cursor' : 'initial'
-      });
-    }, 500);
   });
 
 } globalSet()
