@@ -89,11 +89,6 @@ a {
   transition: 500ms;
   cursor: pointer;
 }
-.link_logo:active {
-  opacity: .25;
-  transition: 50ms;
-  cursor: initial;
-}
 
 #link_logos {
   position: absolute;
