@@ -1,69 +1,41 @@
-// Soundcloud
-var playing_global = false;
+
 
 // Header
 var header_height = 50;
 
 // Global objects
-var HL = {}; // header logo
+// NOTE: TEMPORARY transfer
+var HL = headerlogo_s; // header logo
 
 
-// Make header ------------------------------------------------------------------------------------------------------------------------
-function Header(color) {
-
-	//placed in css to prevent inter page flicker
-	/*$('#header').css({
-		'position': 'fixed',
-		'width': '100%',
-		'height': header_height,
-		'line-height': header_height + 'px',
-		'bottom': 0,
-		'background-color': color,
-	})*/
-	$('#header_whitespace').css({
-		'width': '100%',
-		'height': header_height * 2,
-	})
-	$('#header_forcescrollspace').css({
-		'position': 'fixed',
-		'width': win.iW*3,
-		'left': -(win.iW),
-		'height': win.iH,
-		'bottom': -(win.iH) + header_height,
-		'background-color': color,
-	})
-};
+// // Make header ------------------------------------------------------------------------------------------------------------------------
+// function Header(color) {
+//
+// 	//placed in css to prevent inter page flicker
+// 	/*$('#header').css({
+// 		'position': 'fixed',
+// 		'width': '100%',
+// 		'height': header_height,
+// 		'line-height': header_height + 'px',
+// 		'bottom': 0,
+// 		'background-color': color,
+// 	})*/
+// 	// $('#header_whitespace').css({
+// 	// 	'width': '100%',
+// 	// 	'height': header_height * 2,
+// 	// })
+// 	// $('#header_forcescrollspace').css({
+// 	// 	'position': 'fixed',
+// 	// 	'width': win.iW*3,
+// 	// 	'left': -(win.iW),
+// 	// 	'height': win.iH,
+// 	// 	'bottom': -(win.iH) + header_height,
+// 	// 	'background-color': 'black',
+// 	// })
+// };
 // Make headerlogo --------------------------------------------------------------------------------------------------------------------
 function HeaderLogo(HL_color) {
 
-	HL = {
-		color: HL_color || color_back,
-		width: header_height* 3/5,
-		margin: function(){return (header_height - this.width)/2},
-		right: win.iW*0.03,
-		bottom: 0,
-		load: {
-			width: 0,
-			margin: header_height/2,
-			transition: 1 * 250,
-		},
-		click: {
-			transition: 1 * 100,
-		},
-		center_right: function(){
-			return this.right + (this.width/2) + this.margin();
-		},
-	};
-
-	/*$('#headerlogo').css({
-		'position': 'absolute',
-		'width': HL.width, //HL.load.width,
-		'height': HL.width,//HL.load.width,
-		'margin': HL.margin(),//HL.load.margin,
-		'fill': HL.color,
-		'right': HL.right,
-		'bottom': HL.bottom,
-	})*/
 	$('#header_menu').css({
 		'opacity': 1,  //no fade in
 	})
@@ -73,8 +45,8 @@ function HeaderLogo(HL_color) {
 			'transition': HL.load.transition + 'ms',
 		})
 		$('#headerlogo').css({
-			'height': HL.width,
-			'width': HL.width,
+			'height': HL.width(),
+			'width': HL.width(),
 			'margin': HL.margin(),
 			'transition': HL.load.transition + 'ms',
 		}).off('mouseover').on('mouseover', function(){
@@ -90,7 +62,7 @@ function HeaderLogo(HL_color) {
 					$('#headerlogo').css({
 						'width': HL.load.width,
 						'height': HL.load.width,
-						'margin': HL.load.margin,
+						'margin': HL.load.margin(),
 						'transition': HL.click.transition + 'ms',
 					}).on('transitionend', function(){
 						//future replace by fadebox and go to index

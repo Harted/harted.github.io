@@ -27,6 +27,10 @@
 	bottom: 0;
 	transition: 0ms;
 }
+#header_whitespace {
+	width: 100%;
+	height: 100px;
+}
 
 /* Used in 'AlbumFlexByID' in 'pages_music.js' ------------------------------ */
 .after:after {content: ''; width: 33%;} /* 33% is the width of 1 object when 3 objects are next to eachother (defined in AlbumFlexByID), */
