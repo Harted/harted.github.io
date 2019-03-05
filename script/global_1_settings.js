@@ -1,54 +1,80 @@
 // COLOR -----------------------------------------------------------------------
 // OPTIMIZE: make color object later
-const color_1 = '#FFFFFF';//'#3E3E3E'
-const color_2 = '#FFFFFF';//'#238482';
-const color_3 = '#FFFFFF';//'#3BDB83';
-const color_4 = '#FFFFFF';//'#F4C700';
-const color_back = '#FFFFFF';
+var color_1 = "#FFFFFF";
+var color_2 = "#FFFFFF";
+var color_3 = "#FFFFFF";
+var color_4 = "#FFFFFF";
+var color_back = "#FFFFFF";
 
 // WINDOW ----------------------------------------------------------------------
-const win_s  = {
-  L: 1026, M: 770, S: 416, // < SETTING based on common screensizes
+var win_s = {
+  L: 1026,
+  M: 770,
+  S: 416 // < SETTING based on common screensizes
 };
 
 // LINK LOGOS ------------------------------------------------------------------
-const linklogo_s = {
+var linklogo_s = {
   desktop: {
     logo: {
-      position: 'static',
-      size: () => 50,
-      size_factor: 2/3,
-      width: function() {return this.size() * this.size_factor},
-      height: function() {return this.width()},
-      margin: function() {return this.size() * (1 - this.size_factor) / 2},
-      padding_bottom: () => win.iW * 0.02,
+      position: "static",
+      size_factor: 2 / 3,
+      size: function size() {
+        return 50;
+      },
+      width: function width() {
+        return this.size() * this.size_factor;
+      },
+      height: function height() {
+        return this.width();
+      },
+      margin: function margin() {
+        return (this.size() * (1 - this.size_factor)) / 2;
+      },
+      padding_bottom: function padding_bottom() {
+        return win.iW * 0.02;
+      }
     },
-    position: 'fixed',
-    class: 'top_right_align',
-    margin: '3%',
-    display: () => (page == true
-      && (win.width_b.XL == false ||
-      (win.min_b.S == true && win.width_b.XL == true))) ?
-      'none':
-      'block',
+    position: "fixed",
+    class: "top_right_align",
+    margin: "3%",
+    display: function display() {
+      return page == true &&
+        (win.width_b.XL == false ||
+          (win.min_b.S == true && win.width_b.XL == true))
+        ? "none"
+        : "block";
+    }
   },
   mobile: {
     logo: {
-      position: 'static',
-      size: () => 50,
-      size_factor: 2/3,
-      width: function() {return this.size() * this.size_factor},
-      height: function() {return this.width()},
-      margin: function() {return this.size() * (1 - this.size_factor) / 2},
-      padding_bottom: () => win.iW * 0.02,
+      position: "static",
+      size_factor: 2 / 3,
+      size: function size() {
+        return 50;
+      },
+      width: function width() {
+        return this.size() * this.size_factor;
+      },
+      height: function height() {
+        return this.width();
+      },
+      margin: function margin() {
+        return (this.size() * (1 - this.size_factor)) / 2;
+      },
+      padding_bottom: function padding_bottom() {
+        return win.iW * 0.02;
+      }
     },
-    position: 'fixed',
-    class: 'top_right_align',
-    margin: '3%',
-    display: () => (page == true
-      && (win.width_b.XL == false ||
-      (win.min_b.S == true && win.width_b.XL == true))) ?
-      'none':
-      'block',
-  },
-}
+    position: "fixed",
+    class: "top_right_align",
+    margin: "3%",
+    display: function display() {
+      return page == true &&
+        (win.width_b.XL == false ||
+          (win.min_b.S == true && win.width_b.XL == true))
+        ? "none"
+        : "block";
+    }
+  }
+};

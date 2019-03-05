@@ -5,7 +5,7 @@ var linklogo = {}
 function globalSet() {
 
   // CALCULATIONS ----------------------------------------------------------
-  linklogo = linklogo_s[platform]
+  linklogo = linklogo_s[platform];
 
   // STYLE APPLICATION -----------------------------------------------------
   $('#link_logos').css({
@@ -13,13 +13,15 @@ function globalSet() {
     'margin-top': linklogo.margin,
     'margin-right': linklogo.margin,
     'display': linklogo.display(),
-  }).addClass(linklogo.class)
+  }).addClass(linklogo.class);
 
   $('.link_logo').css({
     'width': linklogo.logo.width(),
     'height': linklogo.logo.height(),
     'margin': linklogo.logo.margin(),
     'padding-bottom': linklogo.logo.padding_bottom(),
-  })
+  }).on('click', function(){
+    console.log($('.link_logo a').css())
+  });
 
 } globalSet()
