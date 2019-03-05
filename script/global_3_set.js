@@ -21,7 +21,11 @@ function globalSet() {
     'margin': linklogo.logo.margin(),
     'padding-bottom': linklogo.logo.padding_bottom(),
   }).on('click', function(){
-    console.log($('.link_logo a').css())
+    $('.link_logo a').css({
+    	'opacity' : '.25',
+    	'transition' : '50ms',
+    	'cursor' : 'initial'
+    });
   });
 
 } globalSet()
