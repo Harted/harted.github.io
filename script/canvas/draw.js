@@ -33,8 +33,8 @@ var frame; var frame_old = 0;
 animate();
 function animate(){
   //console.time('animate')
-  //b_animation();
-  // tree_tl_animation();
+  b_animation();
+  tree_tl_animation();
   frame = requestAnimationFrame(animate);
   //console.timeEnd('animate')
 }
