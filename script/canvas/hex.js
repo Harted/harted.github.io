@@ -70,8 +70,6 @@ function DrawHex(id, array, i){
 
   this.draw = function() {
 
-    this.size = id.getSize()
-
     if (frame >= this.animation.startframe || this.animation.startframe == undefined) {
 
       this.disttomouse = twoPointDist(this.center.x,mouse.x,this.center.y,mouse.y)

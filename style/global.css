@@ -84,6 +84,8 @@ a {
   transition: 50ms;
   cursor: initial;
 }
+
+
 .link_logo a:hover {
   opacity: 1;
   transition: 500ms;

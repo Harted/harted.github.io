@@ -34,7 +34,7 @@ animate();
 function animate(){
   //console.time('animate')
   b_animation();
-  tree_tl_animation();
+  //tree_tl_animation();
   frame = requestAnimationFrame(animate);
   //console.timeEnd('animate')
 }

@@ -23,3 +23,9 @@ function globalSet() {
   });
 
 } globalSet()
+
+for (key in svg_s) {
+  for (sub in svg_s[key]) {
+    $(svg_s[key][sub].id).attr('d',svg_s[key][sub].d)
+  }
+}
