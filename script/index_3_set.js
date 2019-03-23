@@ -116,7 +116,12 @@ function indexSet() {
   }
 
   //harted title
-  $('#harted').css('margin', '3%')//linklogo.margin)
+  $('#harted').css({
+    'margin': $('#link_logos').css('margin-right'),
+    'position': 'fixed',
+    'padding-top': linklogo.logo.padding_bottom(),
+    'font-size': win.iMax/60/16 + 'em'
+  })
 
   // restore transition after resize
   setTimeout(function () {

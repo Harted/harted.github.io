@@ -79,6 +79,6 @@ var logo_s = {
     size: 0.15
   },
   mobile: {
-    size: 0.45
+    size: 0.35
   }
 };
