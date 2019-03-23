@@ -23,7 +23,7 @@ var onResize = debounce(function(){
 
 
   // NOTE: temporary canvas resize stuff
-  
+
   cl.clearRect(0,0,win.iW,win.iH);
   CL_fill.draw();
   CL_border.draw();

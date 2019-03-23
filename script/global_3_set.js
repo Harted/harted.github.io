@@ -4,16 +4,21 @@ var linklogo = {}
 // GLOBAL SET ------------------------------------------------------------------
 function globalSet() {
 
+
+
   // CALCULATIONS ----------------------------------------------------------
   linklogo = linklogo_s[platform];
 
   // STYLE APPLICATION -----------------------------------------------------
   $('#link_logos').css({
     'position': linklogo.position,
-    'margin-top': linklogo.margin,
-    'margin-right': linklogo.margin,
+    'margin': linklogo.margin(),
     'display': linklogo.display(),
-  }).addClass(linklogo.class);
+    'top': linklogo.alignArray()[0],
+    'left': linklogo.alignArray()[1],
+    'bottom': linklogo.alignArray()[2],
+    'right': linklogo.alignArray()[3],
+  });
 
   $('.link_logo').css({
     'width': linklogo.logo.width(),
@@ -24,9 +29,5 @@ function globalSet() {
 
 } globalSet()
 
-// Set paths for link logos
-for (key in svg_s) {
-  for (sub in svg_s[key]) {
-    $(svg_s[key][sub].id).attr('d',svg_s[key][sub].d)
-  }
-}
+// Set paths for svg's
+svgSet(svg_linklogos_s)

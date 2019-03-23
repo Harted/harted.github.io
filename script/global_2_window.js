@@ -27,7 +27,7 @@ function getUserAgent() {
   } else if (/Firefox/.test(UA)) {
     return 'Firefox';
   } else {
-    window.alert('use another browser!')
+    window.alert('Please upgrade to a <a href="http://browsehappy.com/?locale=en">modern browser</a>')
     console.log('unknown userAgent: ' + UA);
     return 'unknown';
   };
