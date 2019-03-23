@@ -13,6 +13,7 @@ img.onload = function() {
 img.src = 'image/vlek.png';
 
 
+
 //TREE ----------------------------------------------------------------------------------------------------------------------------------------
 var tree_top_left = new DrawTree(TreeTopLeft);    tree_top_left.draw();         //tree top left (About)
 

@@ -48,7 +48,10 @@ var linklogo_s = {
       return page == true && (win.width_b.XL == false || (win.min_b.S == true && win.width_b.XL == true))
       ? "none"
       : "block";
-    }
+    },
+    width: function width() {
+      return 'auto'
+    },
   },
   mobile: {
     logo: {
@@ -69,24 +72,29 @@ var linklogo_s = {
       padding_bottom: function padding_bottom() {
         return (win.iMin == win.iH) //check landscape
         ? win.iW * 0.02
-        : 0;
+        : ((win.iH - win.iW)/2) - this.size();
       }
     },
     position: "fixed",
     alignArray: function alignArray() {
       return (win.iMin == win.iH) //check landscape
       ? [0,"auto","auto",0] // [t,l,b,r]
-      : ["auto","auto",0,0];
+      : ["auto",0,0,0];
     },
     margin: function margin() {
       return (win.iMin == win.iH) //check landscape
       ? "3%"
-      : (win.iMin - (linklogo_s.mobile.logo.size() * 4)) / 2;
+      : "auto" //(win.iMin - (linklogo_s.mobile.logo.size() * 4)) / 2;
     },
     display: function display() {
       return (win.iMin == win.iH) //check landscape
       ? "block"
       : "inline-flex";
+    },
+    width: function width() {
+      return (win.iMin == win.iH) //check landscape
+      ? "auto"
+      : (linklogo_s.mobile.logo.size())*4;
     }
   }
 };

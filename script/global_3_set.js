@@ -18,6 +18,7 @@ function globalSet() {
     'left': linklogo.alignArray()[1],
     'bottom': linklogo.alignArray()[2],
     'right': linklogo.alignArray()[3],
+    'width': linklogo.width()
   });
 
   $('.link_logo').css({

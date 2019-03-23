@@ -116,7 +116,7 @@ function indexSet() {
   }
 
   //harted title
-  $('#harted').css('margin', linklogo.margin)
+  $('#harted').css('margin', '3%')//linklogo.margin)
 
   // restore transition after resize
   setTimeout(function () {
