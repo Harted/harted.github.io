@@ -1,5 +1,5 @@
 /* Fonts -------------------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,500');
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,500');
 /* NOTE: https://www.paulirish.com/2009/bulletproof-font-face-implementation-syntax/ */
 
 /* Colors ------------------------------------------------------------------- */
@@ -35,7 +35,7 @@ div {
 /* BODY --------------------------------------------------------------------- */
 body {
 	position: absolute;
-  font-family: 'Futura LT', sans-serif; font-size: 16px;
+  font-family: 'Nunito Sans', sans-serif; font-size: 16px;
 	margin: 0;
 	width: 100%;
 	height: 100%;
@@ -89,7 +89,7 @@ a {
 .link_logo a {
   fill: #3E3E3E;
   opacity: .25;
-  transition: 50ms;
+  transition: 250ms;
   cursor: initial;
 }
 

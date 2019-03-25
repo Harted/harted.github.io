@@ -5,7 +5,7 @@ var page = false;
 
 var refbox_s = {
   S: function S() {
-    return Math.round(win.iMin * 0.92);
+    return Math.round(win.iMin * 0.82);
   },
   M: function M() {
     return Math.round(win.iMin * 2 / (2 + Math.pow(win.iMin / win_s.M, 3)));
@@ -36,7 +36,7 @@ var box_s = {
     title_margin: 0.08,
     font_size: 0.06,
     css: {
-      'box-shadow': '0px 0px 12px rgba(0,0,0,0.25)'
+      'box-shadow': '0px 0px 24px rgba(0,0,0,0.25)'
     }
   },
   click: {
@@ -82,3 +82,18 @@ var logo_s = {
     size: 0.35
   }
 };
+
+var art_s = {
+  desktop: {
+    css: {
+      'visibility':'visible',
+      'padding-left':'0',
+    },
+  },
+  mobile: {
+    css: {
+      'visibility':'visible',
+      'padding-left':'5%',
+    },
+  }
+}

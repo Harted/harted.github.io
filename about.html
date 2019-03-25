@@ -22,9 +22,6 @@
 	<link rel='mask-icon' href='icons/safari-pinned-tab.svg' color='#5bbad5'>
 	<link rel='shortcut icon' href='icons/favicon.ico'>
 
-	<!-- Font -->
-	<link rel="stylesheet" href="futura_lt/style.css">
-
 	<!-- Styles -->
 	<link rel="stylesheet" href="style/global.css">
 	<link rel="stylesheet" href="style/pages.css">
@@ -35,6 +32,7 @@
 	<!-- Settings -->
 	<script src='script/global_1_settings.js' charset='utf-8'></script>
 	<script src='script/pages_1_settings.js' charset='utf-8'></script>
+	<script src='script/svg.js' charset="utf-8"></script>
 
 	<!-- Window data -->
 	<script src='script/global_2_window.js' charset='utf-8'></script>
@@ -104,33 +102,38 @@
 			</div>
 
 
+			<!-- Link logos -->
 			<div id='link_logos' style='z-index:3'>
 				<!-- <div class='link_logo top_left_align'> -->
 				<div class='link_logo' >
 					<svg id='facebook' viewbox='0 0 500 500'>
 						<a xlink:href='links/facebook.html' target='_blank'>
-							<use xlink:href='svg/link_logo.svg#facebook'></use>
+							<path id='fb_fill'/>
+							<path id='fb_transp' style='opacity:0;'/>
 						</a>
 					</svg>
 				</div>
 				<div class='link_logo'>
 					<svg id='soundcloud' viewbox='0 0 500 500'>
 						<a xlink:href='links/soundcloud.html' target='_blank'>
-							<use xlink:href='svg/link_logo.svg#soundcloud'></use>
+							<path id='sc_fill'/>
+							<path id='sc_transp' style='opacity:0;'/>
 						</a>
 					</svg>
 				</div>
 				<div class='link_logo'>
 					<svg id='instagram' viewbox='0 0 500 500'>
 						<a xlink:href='links/instagram.html' target='_blank'>
-							<use xlink:href='svg/link_logo.svg#instagram'></use>
+							<path id='ig_fill'/>
+							<path id='ig_transp' style='opacity:0;'/>
 						</a>
 					</svg>
 				</div>
 				<div class='link_logo'>
 					<svg id='mail' viewbox='0 0 500 500'>
 						<a xlink:href='mailto:hartedmusic@gmail.com?Subject=Contact' target='_blank'>
-							<use xlink:href='svg/link_logo.svg#mail'></use>
+							<path id='ml_fill'/>
+							<path id='ml_transp' style='opacity:0;'/>
 						</a>
 					</svg>
 				</div>

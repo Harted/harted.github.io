@@ -4,6 +4,7 @@ var box = {}, logo = {}
 var boxes = []
 var over = {}
 var box_trans_mem
+var artpic = {}
 
 // INDEX SET -------------------------------------------------------------------
 function indexSet() {
@@ -115,13 +116,17 @@ function indexSet() {
     boxes[i].init()
   }
 
-  //harted title
+  //harted title // NOTE: make settings file
   $('#harted').css({
     'margin': $('#link_logos').css('margin-right'),
     'position': 'fixed',
-    'padding-top': linklogo.logo.padding_bottom(),
-    'font-size': win.iMax/60/16 + 'em'
+    'padding-top': linklogo.logo.margin(),
+    'font-size': 1 + 'em'
   })
+
+  artpic = art_s[platform]
+
+  $('#art').css(artpic.css)
 
   // restore transition after resize
   setTimeout(function () {
