@@ -9,12 +9,12 @@ var mouse_update = false;
 var platform;
 var ready = false;
 
-window.addEventListener('pageshow', function(event) {
-  console.log('pageshow:');
-  window.alert(event);
-});
-
-window.onload = window.alert('onload')
+// Reload page when pressing back ----------------------------------------------
+window.onpageshow = function(event) {
+  if (event.persisted){
+    location.reload()
+  }
+};
 
 // Determine user agent --------------------------------------------------------
 function getUserAgent() {

@@ -74,9 +74,8 @@ var linklogo_s = {
       },
       padding_bottom: function padding_bottom() {
         return (win.iMin == win.iH) //check landscape
-          ?
-          win.iW * 0.02 :
-          ((win.iH - win.iW) / 2) - this.size();
+          ? win.iW * 0.02
+          : ((win.iH - refbox_s.S()) / 2) - this.size() - this.margin();
       }
     },
     position: "fixed",
