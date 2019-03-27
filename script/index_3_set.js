@@ -22,7 +22,7 @@ function indexSet() {
     for (var i = 0; i < settings.length; i++) {
       obj[i] = {}; obj[i].size = refSize * settings[i] || settings[i];
     }; return obj;
-  }
+  };
 
   // CALCULATIONS ----------------------------------------------------------
 
@@ -53,8 +53,10 @@ function indexSet() {
     let s2 = box.hover_size
 
     let click = function(){
-      $('#link_logos, h2').css('display','none')
-      art.clearRect(0,0,win.iW,win.iH)
+
+      $('#link_logos, h2').css('display','none') // NOTE: This should be seperate
+      art.clearRect(0,0,win.iW,win.iH) // NOTE: This too
+
       $(window).off('resize mousemove touchstart');
       for (var j = 0; j < box_s.html_id.length; j++) {
         if(j != i){

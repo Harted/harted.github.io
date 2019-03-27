@@ -8,6 +8,9 @@ var color_back = "#FFFFFF";
 
 // (#[0-F]{8})|(#[0-F]{6})   // NOTE: regex to find colors
 
+// FADE ------------------------------------------------------------------------
+var fadeTime = "500ms" //fade in time after document is ready
+
 // WINDOW ----------------------------------------------------------------------
 var win_s = {
   L: 1026,
@@ -39,15 +42,15 @@ var linklogo_s = {
     },
     position: "fixed",
     alignArray: function alignArray() {
-      return [0,"auto","auto",0]
+      return [0, "auto", "auto", 0]
     },
     margin: function margin() {
       return "3%"
     },
     display: function display() {
-      return page == true && (win.width_b.XL == false || (win.min_b.S == true && win.width_b.XL == true))
-      ? "none"
-      : "block";
+      return page == true && (win.width_b.XL == false || (win.min_b.S == true && win.width_b.XL == true)) ?
+        "none" :
+        "block";
     },
     width: function width() {
       return 'auto'
@@ -58,7 +61,7 @@ var linklogo_s = {
       position: "static",
       size_factor: 5 / 8,
       size: function size() {
-        return win.iMin/5;
+        return win.iMin / 5;
       },
       width: function width() {
         return this.size() * this.size_factor;
@@ -71,30 +74,36 @@ var linklogo_s = {
       },
       padding_bottom: function padding_bottom() {
         return (win.iMin == win.iH) //check landscape
-        ? win.iW * 0.02
-        : ((win.iH - win.iW)/2) - this.size();
+          ?
+          win.iW * 0.02 :
+          ((win.iH - win.iW) / 2) - this.size();
       }
     },
     position: "fixed",
     alignArray: function alignArray() {
       return (win.iMin == win.iH) //check landscape
-      ? [0,"auto","auto",0] // [t,l,b,r]
-      : ["auto",0,0,0];
+        ?
+        [0, "auto", "auto", 0] // [t,l,b,r]
+        :
+        ["auto", 0, 0, 0];
     },
     margin: function margin() {
       return (win.iMin == win.iH) //check landscape
-      ? "3%"
-      : "auto" //(win.iMin - (linklogo_s.mobile.logo.size() * 4)) / 2;
+        ?
+        "3%" :
+        "auto" //(win.iMin - (linklogo_s.mobile.logo.size() * 4)) / 2;
     },
     display: function display() {
       return (win.iMin == win.iH) //check landscape
-      ? "block"
-      : "inline-flex";
+        ?
+        "block" :
+        "inline-flex";
     },
     width: function width() {
       return (win.iMin == win.iH) //check landscape
-      ? "auto"
-      : (linklogo_s.mobile.logo.size())*4;
+        ?
+        "auto" :
+        (linklogo_s.mobile.logo.size()) * 4;
     }
   }
 };

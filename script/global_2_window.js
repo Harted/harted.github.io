@@ -9,6 +9,13 @@ var mouse_update = false;
 var platform;
 var ready = false;
 
+window.addEventListener('pageshow', function(event) {
+  console.log('pageshow:');
+  window.alert(event);
+});
+
+window.onload = window.alert('onload')
+
 // Determine user agent --------------------------------------------------------
 function getUserAgent() {
 
@@ -27,7 +34,6 @@ function getUserAgent() {
   } else if (/Firefox/.test(UA)) {
     return 'Firefox';
   } else {
-    window.alert('Please upgrade to a <a href="http://browsehappy.com/?locale=en">modern browser</a>')
     console.log('unknown userAgent: ' + UA);
     return 'unknown';
   };
@@ -92,7 +98,7 @@ getWindowData();
 $(document).ready(function () {
   $('.fade').css({
     'opacity': 1,
-    'transition': '500ms'
+    'transition': fadeTime
   });
   ready = true;
 });
