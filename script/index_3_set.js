@@ -55,7 +55,11 @@ function indexSet() {
     let click = function(){
 
       $('#link_logos, h2').css('display','none') // NOTE: This should be seperate
-      art.clearRect(0,0,win.iW,win.iH) // NOTE: This too
+      //art.clearRect(0,0,win.iW,win.iH) // NOTE: This too
+      $('#art , #background , #harted').css({
+        'transition': '200ms',
+        'opacity': 0,
+      })
 
       $(window).off('resize mousemove touchstart');
       for (var j = 0; j < box_s.html_id.length; j++) {

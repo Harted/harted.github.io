@@ -85,6 +85,7 @@ function b_animation(){
     LA_array[i].update(LA_array);
   }
 }
+
 function tree_tl_animation(){
   if (tree_top_left.tree[0][tree_top_left.tree[0].length-1].end.y > 100){  //max heigth
     tree_tl.clearRect(0,0,tree_tl.canvas.width, tree_tl.canvas.height)

@@ -50,7 +50,7 @@ var linklogo_s = {
     display: function display() {
       return page == true && (win.width_b.XL == false || (win.min_b.S == true && win.width_b.XL == true)) ?
         "none" :
-        "block";
+        "block" ;
     },
     width: function width() {
       return 'auto'
@@ -96,13 +96,13 @@ var linklogo_s = {
       return (win.iMin == win.iH) //check landscape
         ?
         "block" :
-        "inline-flex";
+        "inline-flex" ;
     },
     width: function width() {
       return (win.iMin == win.iH) //check landscape
         ?
         "auto" :
-        (linklogo_s.mobile.logo.size()) * 4;
+        (linklogo_s.mobile.logo.size()) * 4 ;
     }
   }
 };
