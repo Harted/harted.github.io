@@ -86,20 +86,26 @@ a {
 }
 
 /* LINK LOGOS --------------------------------------------------------------- */
-.link_logo a {
+/* .link_logo a {
   fill: #3E3E3E;
   opacity: .25;
   transition: 250ms;
   cursor: initial;
 }
 
-
 .link_logo a:hover {
   opacity: 1;
   transition: 500ms;
   cursor: pointer;
-}
+} */
 
 #link_logos {
   position: absolute;
+}
+
+
+
+body {
+    position: fixed;
+    overflow: hidden;
 }

@@ -16,7 +16,9 @@ var refbox_s = {
   XL: function XL() {
     return Math.round(win.iMin * 2 / 3);
   }
-}; // BOX IN REFERENCE BOX --------------------------------------------------------
+};
+
+// BOX IN REFERENCE BOX --------------------------------------------------------
 
 var box_s = {
   html_id: ['#top_left', '#bottom_left', '#bottom_right', '#top_right'],
@@ -39,49 +41,79 @@ var box_s = {
       'box-shadow': '0px 0px 24px rgba(0,0,0,0.25)'
     }
   },
+  click_trans_time: 500,
   click: {
     css: {
       refbox: {
-        'transition': '500ms',
+        'transition': function(){return box_s.click_trans_time + 'ms'},
         'width': '100%',
         'height': '100%'
       },
-      div: {
+      div_trans: {
+        'transition': function(){return box_s.click_trans_time + 'ms'},
+      },
+      div_align: {
+        0: {
+          'bottom': 0,
+          'right': 0,
+        },
+        1: {
+          'top': 0,
+          'right': 0,
+        },
+        2: {
+          'top': 0,
+          'left': 0,
+        } ,
+        3: {
+          'bottom': 0,
+          'left': 0,
+        },
+      },
+      div_endpos: {
         'width': '100%',
         'height': '100%',
-        'right': 0,
-        'left': 0,
-        'top': 0,
-        'bottom': 0,
         'box-shadow': '0px 0px 0px rgba(0,0,0,0)',
         'background-color': '#FFFFFF00'
       },
       h2: {
-        'transition': 'none',
         'color': '#FFFFFF00'
       },
-      not: {
-        div: {
-          'transition': 'none',
-          'background-color': '#FFFFFF00',
-          'box-shadow': '0px 0px 0px rgba(0,0,0,0)'
-        },
-        h2: {
-          'color': '#FFFFFF00'
-        }
-      }
     }
-  } // LOGO IN CENTER --------------------------------------------------------------
-
+  },
+  noclick: {
+    css: {
+      div: {
+        'transition': 'none',
+        'background-color': '#FFFFFF00',
+        'box-shadow': '0px 0px 0px rgba(0,0,0,0)'
+      },
+      h2: {
+        'color': '#FFFFFF00'
+      }
+    },
+  },
 };
+
+// LOGO IN CENTER --------------------------------------------------------------
+
 var logo_s = {
   desktop: {
     size: 0.15
   },
   mobile: {
     size: 0.35
-  }
+  },
+  click: {
+    css: {
+      'transition':'250ms',
+      'width':0 ,
+      'height':0 ,
+    },
+  },
 };
+
+// ART IN CENTER ---------------------------------------------------------------
 
 var art_s = {
   desktop: {
@@ -95,5 +127,11 @@ var art_s = {
       'visibility':'visible',
       'padding-left':'5%',
     },
-  }
+  },
+  click: {
+    css: {
+      'transition': '100ms',
+      'opacity': 0,
+    },
+  },
 }

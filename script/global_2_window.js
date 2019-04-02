@@ -41,10 +41,10 @@ function getUserAgent() {
 };
 
 // Determine touch -------------------------------------------------------------
-$(window).on('touchstart', function () {
-  touch = true;
-  $(this).off('touchstart');
-});
+// $(window).on('touchstart', function () {
+//   touch = true;
+//   $(this).off('touchstart');
+// });
 
 // Get window data -------------------------------------------------------------
 function getWindowData() {

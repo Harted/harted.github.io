@@ -54,64 +54,88 @@ function indexSet() {
 
     let click = function(){
 
-      $('#link_logos, h2').css('display','none') // NOTE: This should be seperate
-      //art.clearRect(0,0,win.iW,win.iH) // NOTE: This too
-      $('#art , #background , #harted').css({
-        'transition': '200ms',
-        'opacity': 0,
-      })
-
       $(window).off('resize mousemove touchstart');
+
       for (var j = 0; j < box_s.html_id.length; j++) {
         if(j != i){
-          $(box_s.html_id[j]).css(box_s.click.css.not.div)
-          $(box_s.html_id[j] + ' h2').css(box_s.click.css.not.h2)
+          $(box_s.html_id[j]).css(box_s.noclick.css.div)
+          $(box_s.html_id[j] + ' h2').css(box_s.noclick.css.h2)
         };
       };
+
+      h2.css(box_s.click.css.h2)
+
       $('#reference_box').css(box_s.click.css.refbox)
+
+      // NOTE: temp fade away for all objects
+      $('#art, #background, #harted, #link_logos').css(art_s.click.css)
+
+      // TODO: : All moving hexes should go to center (#background)
+
+      let c = box_s.click.css
+
       div.off('mouseenter mouseleave transitionend click')
-      .css(box_s.click.css.div).one('transitionend', function(){
-        $('#center_logo').css({'transition':'250ms','width':0,'height':0})
+
+      .css(c.div_trans)
+      .css(c.div_align[i])
+      .css(c.div_endpos).one('transitionend', function(){
+        $('#center_logo').css(logo_s.click.css)
         .one('transitionend', function(){
-          window.location = box_s.link[i];
+          location.reload()
+          //window.location = box_s.link[i];
         });
       });
-      h2.css(box_s.click.css.h2)
-    }
+
+
+    };
 
     this.init = function(){
       over['box'+ i] = false
       div.css({'width': s1, 'height':s1 })
       .css(box.css)
 
-      if (win.min_b.S == true || touch == true) {
-        div.off('click').on('click', function(){
+
+
+
+
+      //desktop animation and clicktrough --------------------------------------
+      div.on('mouseenter touchstart', function(){
+        over['box'+ i] = true
+
+        if (win.min_b.S == true) {
           click()
-        })
-      } else {
-        //desktop animation and clicktrough --------------------------------------
-        div.on('mouseenter', function(){
-          over['box'+ i] = true
+        } else {
           $(this).css({'width': s2, 'height':s2 })
-          .off('click transitionend').on('transitionend', function(){
+          .off('click transitionend')
+          .on('touchend', function(){
+            if (touchendOver(box_s.html_id[i])) {
+              click()
+            } else {
+              $(this).css({'width': s1, 'height':s1})
+            }
+          })
+          .on('transitionend', function(){
             $(this).css('cursor','pointer')
             .on('click', function(){
               click()
             })
           });
-          //C_AnimTrigger(cl, [CL_fill, CL_border], true)
-        }).on('mouseleave', function(){
-          over['box'+ i] = false
-          $(this).css({'width': s1, 'height':s1 , 'cursor': 'initial'})
-          .off('click transitionend');
-          //C_AnimTrigger(cl, [CL_fill, CL_border], false)
-        })
-      };
+        };
+        //C_AnimTrigger(cl, [CL_fill, CL_border], true)
+      }).on('mouseleave', function(){
+        over['box'+ i] = false
+        $(this).css({'width': s1, 'height':s1 , 'cursor': 'initial'})
+        .off('click transitionend');
+        //C_AnimTrigger(cl, [CL_fill, CL_border], false)
+      })
+
+
       // box title
       h2.css({
         'margin': box.title_margin + 'px',
         'font-size': box.font_size + 'px',
       })
+
     };
 
   };

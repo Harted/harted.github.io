@@ -18,8 +18,8 @@ const canvas_properties = [
   {
     html_id: '#center_logo',
     context_id: 'cl',
-    width: logo.size * 2,
-    height: logo.size * 2,
+    width: (logo.size * 1.05),
+    height: (logo.size * 1.05),
   },
   {
     html_id: '#art',

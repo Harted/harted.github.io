@@ -20,6 +20,12 @@ var win_s = {
 
 // LINK LOGOS ------------------------------------------------------------------
 var linklogo_s = {
+  link: {
+    facebook: 'links/facebook.html',
+    soundcloud: 'links/soundcloud.html',
+    instagram: 'links/instagram.html',
+    mail: 'mailto:hartedmusic@gmail.com?Subject=Contact',
+  },
   desktop: {
     logo: {
       position: "static",
@@ -104,5 +110,21 @@ var linklogo_s = {
         "auto" :
         (linklogo_s.mobile.logo.size()) * 4 ;
     }
-  }
+  },
+  css: {
+    default: {
+      'fill': '#3E3E3E',
+      'opacity': .25,
+      'transition': '250ms',
+      'cursor': 'initial',
+    },
+    enter: {
+      'opacity': 1,
+      'transition': '500ms',
+      'cursor': 'pointer',
+    },
+    click: {
+      'transition': '100ms'
+    }
+  },
 };

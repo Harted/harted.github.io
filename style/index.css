@@ -1,6 +1,6 @@
 /* BOXES -------------------------------------------------------------------- */
 .box {
-  position: absolute; transition: 300ms;
+  position: absolute; transition: 250ms;
   background-color: #ffffff70;
 }
 
@@ -31,6 +31,8 @@
   left: 0;
   bottom: 0;
   right: 0;
-  /* border: 1px solid #000; */
+}
+
+#background, #art, #tree_tl  {
   pointer-events: none;
 }
