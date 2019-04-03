@@ -16,12 +16,14 @@ $('#tree_tl').css('transform', 'translate(' + (-refbox/6-logo.size/4) + 'px,' + 
 function DrawTree(id){
 
   //local variables ------------------------------------------------------------
-  var angle_index                                                               //start index for the angle array (++ in differen for loops)
+  var angle_index                                                               //index used to put angles in the angle array and get them out
+
 
   //static context variables ---------------------------------------------------
   this.c = id.context                                                           //canvas context name
   this.c.fillStyle = id.color                                                   //branch color
   this.c.lineWidth = 1/win.dPR                                                  //linewidth (1 = best result to find pixel, when dPR is larger there are more pixels so the line width has to be smaller for the pixel finding to work properly)
+
 
   //static context variables ---------------------------------------------------
   this.bpm = id.branch_parts_max                                                //maximum parts for the base branch
@@ -34,14 +36,15 @@ function DrawTree(id){
     y: id.start.y,
   }
 
-  //Create an array of angles who will be a tree later
+
+  //Create an array of angles who will define a tree later ---------------------
   this.newTree = function(){
 
     // variables who need to be reset when new tree is created
     this.bpbl = id.branch_part_base_lenght                                      //how long the longest line (base) of the branch is at start
     this.grow = id.grow                                                         //how fast it grows
     this.angle_arr = []                                                         //array to house the angles
-    angle_index = 0                                                             //0 is start of angle array
+    angle_index = 0                                                             //set to 0 to fill angle array
 
     // adding random angles to the angle array
     for (var i = 0; i < this.bpm*(this.bpm+1)/2 + 1; i++) {
@@ -50,9 +53,9 @@ function DrawTree(id){
       )
     };
 
-  };
+  }; this.newTree();
 
-  this.newTree()
+
 
   this.line = function(x,y,i,t){
 
