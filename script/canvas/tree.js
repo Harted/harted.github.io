@@ -16,7 +16,7 @@ $('#tree_tl').css('transform', 'translate(' + (-refbox/6-logo.size/4) + 'px,' + 
 function DrawTree(id){
 
   //local variables ------------------------------------------------------------
-  var angle_index                                                               //index used to put angles in the angle array and get them out
+  var angle_index                                                               //index used to put angles in the angle array and get them out (used in multiple loops and functions)
 
 
   //static context variables ---------------------------------------------------
@@ -30,6 +30,7 @@ function DrawTree(id){
   // this.ba = this.branch_angle                                                // NOTE: not used!
   this.bs = id.branches                                                         //how many branches there should be // NOTE: to be reviewed.. 2 branches are made and 4 are set..
   this.bpma = id.branch_part_max_angle                                          //maximum angle for a branch to have
+  this.ba = id.branching_angle
   this.sd = id.slowdown                                                         //to slow down the growth
   this.s = {                                                                    //point of origin
     x: id.start.x,
@@ -38,9 +39,10 @@ function DrawTree(id){
 
 
   //Create an array of angles who will define a tree later ---------------------
+  //(fired upon tree creation or when an existing tree has to be recreated)
   this.newTree = function(){
 
-    // variables who need to be reset when new tree is created
+    // variables who need to be reset when new a tree is created
     this.bpbl = id.branch_part_base_lenght                                      //how long the longest line (base) of the branch is at start
     this.grow = id.grow                                                         //how fast it grows
     this.angle_arr = []                                                         //array to house the angles
@@ -56,33 +58,36 @@ function DrawTree(id){
   }; this.newTree();
 
 
+  //
+  this.line = function(x,y,i,j){
 
-  this.line = function(x,y,i,t){
+    var angle
+    var br_p_angle
 
-    if (t > 0 && i == 0) {
-      var angle = Math.abs(this.angle_arr[angle_index]) * (-1) * (Math.abs(this.tree[0][t].angle)/this.tree[0][t].angle)
-    } else if (t == 0 && i == 0) {
-      var angle = this.angle_arr[angle_index]/4
-    } else {
-      var angle = this.angle_arr[angle_index]
+    if (j > 0) {
+      br_p_angle = -Math.sign(this.tree[0][j].angle)
     }
-    angle_index++
 
-    if (t > 0) {
-      angle += 30*deg * (-1)*(Math.abs(this.tree[0][t].angle)/this.tree[0][t].angle)
+    //convert angles at base and branch start points
+    if (j > 0 && i == 0) {
+      angle = Math.abs(this.angle_arr[angle_index]) * br_p_angle                                                              //angle of first point of branch (on base branch) - calculation so the angle goes away from the base branch
+    } else if (j == 0 && i == 0) {
+      angle = this.angle_arr[angle_index]/4                                     //angle of first point (base)
+    } else {
+      angle = this.angle_arr[angle_index]                                       //just the angle in the angle array
+    }
+
+    angle_index++                                                               //take next angle out of angle array
+
+    if (j > 0) {
+      angle += this.ba * deg * br_p_angle
     }
 
     var l = {
-      lenght: (1/Math.pow(i+1,1/2) * 1/Math.pow(t+1,1/2) * this.bpbl),
-      start: {
-        x: x,
-        y: y,
-      },
+      lenght: (1/Math.pow(i+1,1/2) * 1/Math.pow(j+1,1/2) * this.bpbl),
+      start: { x: x, y: y, },
       angle: angle,
-      end: {
-        x: undefined,
-        y: undefined,
-      },
+      end: {},
     }
 
     l.end.y = l.start.y - l.lenght
@@ -90,24 +95,31 @@ function DrawTree(id){
     return l
   }
 
+
+
   this.init = function(){
+
     this.tree = []
     angle_index = 0
-    for (var t = 0; t < this.bs; t++) {
+
+    for (var j = 0; j < this.bs; j++) {
+
       var branch = []
-      if (t == 0) {
-        var i = 0; l = branch.push(this.line(this.s.x, this.s.y, i,t)); i++
+
+      if (j == 0) {
+        var i = 0; l = branch.push(this.line(this.s.x, this.s.y, i,j)); i++
       } else {
-        var i = 0; l = branch.push(this.line(this.tree[0][t].start.x, this.tree[0][t].start.y, i,t)); i++
+        var i = 0; l = branch.push(this.line(this.tree[0][j].start.x, this.tree[0][j].start.y, i,j)); i++
       }
 
-      for (i ; i < (this.bpm-t); i++) {
-        branch.push(this.line(branch[i-1].end.x, branch[i-1].end.y, i, t))
+      for (i ; i < (this.bpm-j); i++) {
+        branch.push(this.line(branch[i-1].end.x, branch[i-1].end.y, i, j))
       }
+
       this.tree.push(branch)
+
     }
-  }
-  this.init()
+  }; this.init();
 
 
   this.draw = function(){
@@ -117,13 +129,13 @@ function DrawTree(id){
     this.c.translate(-this.s.x,-this.s.y);
 
 
-    for (var t = 0; t < this.bs; t++) {
-      if (t > 0 && t % 2 == 0) {} else {
+    for (var j = 0; j < this.bs; j++) {
+      if (j > 0 && j % 2 == 0) {} else {
         this.c.beginPath()
-        this.c.moveTo(this.tree[t][0].start.x,this.tree[t][0].start.y)
-        this.c.lineTo(this.tree[t][0].end.x,this.tree[t][0].end.y)
-        for (let i = 1; i < this.tree[t].length; i++) {
-          this.c.lineTo(this.tree[t][i].end.x,this.tree[t][i].end.y)
+        this.c.moveTo(this.tree[j][0].start.x,this.tree[j][0].start.y)
+        this.c.lineTo(this.tree[j][0].end.x,this.tree[j][0].end.y)
+        for (let i = 1; i < this.tree[j].length; i++) {
+          this.c.lineTo(this.tree[j][i].end.x,this.tree[j][i].end.y)
         }
         this.c.stroke()
       }
