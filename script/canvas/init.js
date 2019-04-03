@@ -30,8 +30,8 @@ const canvas_properties = [
   {
     html_id: '#tree_tl',
     context_id: 'tree_tl',
-    width: refbox/2,
-    height: refbox/2,
+    width: refbox/3,
+    height: refbox/3,
   },
 ];
 //Generate canvasses  --------------------------------------------------------------------------------------------------------------------------

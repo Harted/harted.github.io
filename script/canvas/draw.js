@@ -87,7 +87,8 @@ function b_animation(){
 }
 
 function tree_tl_animation(){
-  if (tree_top_left.tree[0][tree_top_left.tree[0].length-1].end.y > 100){  //max heigth
+  // console.log(tree_top_left)
+  if (tree_top_left.tree[0][tree_top_left.tree[0].length-1].end.y > 10){  //max heigth
     tree_tl.clearRect(0,0,tree_tl.canvas.width, tree_tl.canvas.height)
     tree_top_left.update()
   } else {

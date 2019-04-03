@@ -10,35 +10,48 @@ for (var i = 0; i < 1000; i++) {
   ran_rect_arr.push((100*i/1500*(Math.random()/4+0.75)/win.dPR)+0.5)
 }
 
-$('#tree_tl').css('transform', 'translate(' + (-refbox/4-logo.size/4) + 'px,' + (-refbox/4-logo.size/4) + 'px)')
+$('#tree_tl').css('transform', 'translate(' + (-refbox/6-logo.size/4) + 'px,' + (-refbox/6-logo.size/4) + 'px)')
 
 //Tree
 function DrawTree(id){
 
-  this.c = id.context
-  this.c.fillStyle = "#3E3E3E"
-  this.c.lineWidth = 1/win.dPR
-  this.ba = this.branch_angle
-  this.bpm = id.branch_parts_max
-  this.bs = id.branches
-  this.s = {
+  //local variables ------------------------------------------------------------
+  var angle_index                                                               //start index for the angle array (++ in differen for loops)
+
+  //static context variables ---------------------------------------------------
+  this.c = id.context                                                           //canvas context name
+  this.c.fillStyle = id.color                                                   //branch color
+  this.c.lineWidth = 1/win.dPR                                                  //linewidth (1 = best result to find pixel, when dPR is larger there are more pixels so the line width has to be smaller for the pixel finding to work properly)
+
+  //static context variables ---------------------------------------------------
+  this.bpm = id.branch_parts_max                                                //maximum parts for the base branch
+  // this.ba = this.branch_angle                                                // NOTE: not used!
+  this.bs = id.branches                                                         //how many branches there should be // NOTE: to be reviewed.. 2 branches are made and 4 are set..
+  this.bpma = id.branch_part_max_angle                                          //maximum angle for a branch to have
+  this.sd = id.slowdown                                                         //to slow down the growth
+  this.s = {                                                                    //point of origin
     x: id.start.x,
     y: id.start.y,
   }
-  this.sd = id.slowdown
 
-  var angle_index
+  //Create an array of angles who will be a tree later
   this.newTree = function(){
-    this.grow = id.grow
-    this.bpbl = id.branch_part_base_lenght
-    angle_index = 0
-    this.angle_arr = []
+
+    // variables who need to be reset when new tree is created
+    this.bpbl = id.branch_part_base_lenght                                      //how long the longest line (base) of the branch is at start
+    this.grow = id.grow                                                         //how fast it grows
+    this.angle_arr = []                                                         //array to house the angles
+    angle_index = 0                                                             //0 is start of angle array
+
+    // adding random angles to the angle array
     for (var i = 0; i < this.bpm*(this.bpm+1)/2 + 1; i++) {
       this.angle_arr.push(
-        id.branch_part_max_angle * 2 * (Math.random()-0.5) * deg
+        this.bpma * 2 * (Math.random()-0.5) * deg                               //value in degrees -> (* deg) converts is to radians
       )
-    }
-  }
+    };
+
+  };
+
   this.newTree()
 
   this.line = function(x,y,i,t){

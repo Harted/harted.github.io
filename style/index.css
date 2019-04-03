@@ -36,3 +36,7 @@
 #background, #art, #tree_tl  {
   pointer-events: none;
 }
+
+#tree_tl {
+  /* border: 1px solid #000; */
+}
