@@ -46,7 +46,13 @@ $.ajax({
     //makeTable() function at work
     tables.push(new table(alarmlist_settings, alarms))
     tables.push(new table(alarmlist2_settings, alarms))
-    console.log(tables)
+
+    //update table headsize
+    for (let t in tables) {
+      if (tables.hasOwnProperty(t)) {
+        tables[t].headsize()
+      }
+    }
   }
 });
 
@@ -163,7 +169,9 @@ function table(settings, data){
     };
   };
   //execute on load and on resize
-  this.headsize();
+  // this.headsize(); // NOTE: now triggered outside when all tables are made
+  // this is because flex does things to the sizes, so the final size of the
+  // tables is only known when all the tables are made.
 
   //fixed header - the header seems to be fixed because the 'before' row
   // gets the heigth of the top scroll height
@@ -183,4 +191,30 @@ $(window).on('resize',function(){
       tables[table].headsize()
     }
   }
+
+  //flex box fix!!!!
+  if($('.table-container')[0].offsetTop == $('.table-container')[1].offsetTop){
+    $('.item').css('height', '100%')
+  } else {
+    $('.item').css('height', '50%')
+  }
+
 });
+$(document).ready(function(){
+  console.log($('#header')[0].clientHeight)
+
+  $('.wrapper').css(
+    'height',
+    window.innerHeight
+    - $('#header')[0].clientHeight
+    - $('#footer')[0].clientHeight
+  )
+
+  //flex box fix!!!!
+  if($('.table-container')[0].offsetTop == $('.table-container')[1].offsetTop){
+    $('.item').css('height', '100%')
+  } else {
+    $('.item').css('height', '50%')
+  }
+
+})
