@@ -1,0 +1,74 @@
+@color1: #222;
+@color2: #CCC;
+
+@headerheight: 50px;
+
+@table_fontsize: 11px;
+@table_pad: 8px, 12px, 6px, 6px;
+
+@theadbefore: 0px;
+
+
+body {
+  font-family: sans-serif;
+  margin:0;
+  color: @color1;
+}
+
+#header {
+  position:fixed;
+  background-color: @color1;
+  width: 100%;
+  top: 0;
+}
+
+.header {
+  height: @headerheight;
+}
+
+
+
+
+
+.table-container {
+  width: 100%;
+  height: 300px;
+}
+
+.table-scroll {
+  font-size: @table_fontsize;
+  line-height: @table_fontsize;
+  position: relative;
+  overflow: scroll;
+  height: 100%;
+  width: 100%;
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  thead {
+    background-color: @color2;
+    position: absolute;
+  }
+  tbody {
+    &::before{
+      content: '';
+      display: block;
+      height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+    }
+  }
+  th, td {
+    padding:
+    extract(@table_pad,1)
+    extract(@table_pad,2)
+    extract(@table_pad,3)
+    extract(@table_pad,4);
+    text-align: left;
+    white-space: nowrap;
+    border-left: solid 0.5px #CCC;
+    &:first-child{
+      border-left: none;
+    }
+  }
+}

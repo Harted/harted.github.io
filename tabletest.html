@@ -4,11 +4,12 @@
 <head>
   <meta charset="utf-8">
   <title>Tabletest</title>
-
   <!-- Responsive -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <link rel="stylesheet" href="tabletest.css">
+  <!-- Less -->
+  <link rel="stylesheet/less" type="text/css" href="tabletest.less" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
 
   <!-- jQuery -->
   <script src='script/jQuery/jquery.js' charset='utf-8'></script>
@@ -16,13 +17,15 @@
 
 <body>
 
-  <div class="wrapper">
-    <header class="header">Header</header>
-    <article class="main">
-      <div id='table'></div>
-    </article>
-    <aside class="aside">Aside</aside>
-    <footer class="footer">Footer</footer>
+  <div id='header' class='header' style='z-index:100'></div>
+  <div class='header'></div>
+
+  <div class='table-container'>
+    <div id='alarmlist' class='table-scroll'></div>
+  </div>
+
+  <div class='table-container'>
+    <div id='alarmlist2' class='table-scroll'></div>
   </div>
 
 </body>
