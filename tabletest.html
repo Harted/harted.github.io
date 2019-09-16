@@ -7,6 +7,8 @@
   <!-- Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
+  <link rel="stylesheet" href="tabletest.css">
+
   <!-- Less -->
   <link rel="stylesheet/less" type="text/css" href="tabletest.less" />
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
@@ -17,21 +19,34 @@
 
 <body>
 
-  <div id='header'>
-    <div style='z-index:100'><h1>AlarmListFinalAssembly</h1></div>
+  <div id='header' class='fade'>
+    <div style='z-index:100'><h1><span>A</span>larm <span>L</span>ist <span>F</span>inal <span>A</span>ssembly</h1></div>
   </div>
 
-  <div class='wrapper' style='z-index:10'>
+  <div class='flex-container fade' style='z-index:10'>
 
-    <div id='item1' class='item'>
+    <div class='flex-item flex-table-space'></div>
+
+    <div id='flex-table' class='flex-item'>
       <div class='table-container'>
-        <div id='alarmlist' class='table-scroll'></div>
+        <div class='shadow'></div>
+        <div id='alarmlist' class='table-scroll'>
+
+        </div>
+        <!-- <div id='alarmlist2' class='table-scroll'></div>
+        <div id='alarmlist3' class='table-scroll'></div> -->
       </div>
     </div>
 
-    <div id='item2' class='item'>
-      <div class='table-container'>
-        <div id='alarmlist2' class='table-scroll'></div>
+    <div class='flex-item flex-table-space'></div>
+
+    <div id='flex-form' class='flex-item'>
+      <div class='form-header'>CONTROLS</div>
+      <div class='form-container'>
+
+        <form class="" action="index.html" method="post">
+
+        </form>
       </div>
     </div>
 

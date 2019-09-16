@@ -1,4 +1,31 @@
-//table setting object for table() function
+// CONSTANTS -------------------------------------------------------------------
+var userAgent = getUserAgent();
+
+// Determine user agent --------------------------------------------------------
+function getUserAgent() {
+
+  var UA = navigator.userAgent || navigator.vendor || window.opera;
+
+  if (/windows phone/i.test(UA)) {
+    return 'WindowsPhone';
+  } else if (/android/i.test(UA)) {
+    return 'Android';
+  } else if (/iPad|iPhone|iPod/.test(UA) && !window.MSStream) {
+    return 'iOS';
+  } else if (/Chrome/.test(UA)) {
+    return 'Chrome';
+  } else if (/Safari/.test(UA)) {
+    return 'Safari';
+  } else if (/Firefox/.test(UA)) {
+    return 'Firefox';
+  } else {
+    console.log('unknown userAgent: ' + UA);
+    return 'unknown';
+  };
+
+};
+
+//table setting object for table() function ------------------------------------
 const alarmlist_settings = {
   //fool proof check for object to be compatible with table() function
   obj_type: 'table_t',
@@ -17,23 +44,11 @@ const alarmlist_settings = {
   },
 }
 
-const alarmlist2_settings = {
-  obj_type: 'table_t',
-  id: '#alarmlist2',
-  cols : {
-    datetime: 'DateTime',
-    station: 'Station',
-    // object: 'Object',
-    comment: 'Comment',
-    severity: 'Sev.',
-    // state: 'St.'
-  },
-}
-
+// AJAX ------------------------------------------------------------------------
+// NOTE: try to do alarm fetching and table filling independent of eachother
 var tables = []
-
-// ONLY! table() function should be implemented at work
 var alarms = [];
+
 $.ajax({
   url: 'https://main.xfiddle.com/2efa0c76/arr.php',
   type: "GET", // or "GET"
@@ -45,17 +60,22 @@ $.ajax({
     };
     //makeTable() function at work
     tables.push(new table(alarmlist_settings, alarms))
-    tables.push(new table(alarmlist2_settings, alarms))
+    // tables.push(new table(alarmlist2_settings, alarms))
+    // tables.push(new table(alarmlist3_settings, alarms))
 
-    //update table headsize
-    for (let t in tables) {
-      if (tables.hasOwnProperty(t)) {
-        tables[t].headsize()
-      }
-    }
+    setTimeout(function () {
+      flex();
+      tableformat();
+
+      $('.fade').css({
+        'opacity': 1,
+        'transition': '250ms'
+      });
+    }, 250);
   }
 });
 
+//ALARM FUNCTION ---------------------------------------------------------------
 // DON'settings copy to the script at work!!! alarm() function already present
 // Read comments for adjustments to alarm() function there..
 function alarm(data) {
@@ -77,10 +97,10 @@ function alarm(data) {
   };
 };
 
-// Copy this table function to script at work
+// TABLE FUNCTION --------------------------------------------------------------
 function table(settings, data){
 
-  //FOOLPROOF ------------------------------------------------------------------
+  //FOOLPROOF -------------------------------------------------------------
   //foolproof check for settings object
   if (settings.obj_type != 'table_t') {
     //output the object ant status in console
@@ -91,11 +111,11 @@ function table(settings, data){
     return;
   }
 
-  //VARIABLE -------------------------------------------------------------------
+  //VARIABLE --------------------------------------------------------------
   //table variable to output to html
   var table = ''
 
-  //HEADER ---------------------------------------------------------------------
+  //HEADER ----------------------------------------------------------------
   //table header, seperate table because of fixed header system
   //otherwise scrolling would be glitchy because the before row heigth is
   //constantly changed by scrolling
@@ -108,14 +128,16 @@ function table(settings, data){
   //get collumn header names from settings
   for (var col in settings.cols) {
     if (settings.cols.hasOwnProperty(col)) {
-      table += '<th>' + settings.cols[col] + '</th>'
+      table += '<th>' + settings.cols[col]
+      table += '<div class="th-overlay"></div>'
+      table += '</th>'
     }
   }
   table += '</tr>'
   //close table (header)
   table += '</thead></table>'
 
-  //BODY -----------------------------------------------------------------------
+  //BODY ------------------------------------------------------------------
   //new table for body
   table += '<table><body>'
 
@@ -139,10 +161,10 @@ function table(settings, data){
   //close table (body)
   table += '</body></table>'
 
-  //OUTPUT ---------------------------------------------------------------------
+  //OUTPUT ----------------------------------------------------------------
   $(settings.id).html(table)
 
-  //FORMATTING -----------------------------------------------------------------
+  //FORMATTING ------------------------------------------------------------
   //td min-width = th min width (before th width = td width)
   for (let i = 0; i < $(settings.id + ' th').length; i++) {
     //find the corresponding td (this will be the first row)
@@ -185,36 +207,79 @@ function table(settings, data){
 
 //Responsive -------------------------------------------------------------------
 $(window).on('resize',function(){
+  flex();
+  tableformat();
+});
+
+// TABLE FORMAT -----------------------------------------------------------
+function tableformat(){
+
   //adjust headsize on tables
   for (var table in tables) {
     if (tables.hasOwnProperty(table)) {
       tables[table].headsize()
     }
   }
+  //set table container size to part of 100% according to the amount of tables
+  $('.table-container').css('height', 100/tables.length + '%')
 
-  //flex box fix!!!!
-  if($('.table-container')[0].offsetTop == $('.table-container')[1].offsetTop){
-    $('.item').css('height', '100%')
-  } else {
-    $('.item').css('height', '50%')
+}
+
+// FLEX FORMAT ------------------------------------------------------------
+function flex(){
+
+  // FLEX CONTAINER HEIGHT -------------------------------------------
+  var wiH = window.innerHeight
+  var hcH = $('#header')[0].clientHeight
+  var fcH = $('#footer')[0].clientHeight
+
+  //set container to height between header and footer
+  $('.flex-container').css('height', wiH - hcH - fcH)
+
+  // MOZILLA FIX - minimum size gets locked on content in flex -------
+  if (userAgent == 'Firefox'){
+
+    var fcw = $('.flex-container').width()
+    var tsw = $('.table-scroll thead').width()
+    var fts_obj = $('.flex-table-space')
+    var ft_obj = $('#flex-table')
+
+    // In firefox the overflow scroll is not working because the table keeps
+    // his original width - force the witdh of the flex container to the
+    // table when the flex container is smaller then the table head width
+    // also don't display the table space and force the table space to be 0
+    // because this doens't work as expected too
+    if (fcw < tsw) {
+      fts_obj.css({
+        'display':'none',
+        'max-width': 0,
+      })
+      ft_obj.css('max-width',fcw)
+    } else if (fcw >= tsw) {
+      fts_obj.css({
+        'display':'initial',
+        'max-width': '20px',
+      })
+      ft_obj.css('max-width','initial')
+    };
+
   }
 
-});
-$(document).ready(function(){
-  console.log($('#header')[0].clientHeight)
+  // ITEM FORMAT -----------------------------------------------------
+  //get the width of the table space
+  var ftsw = $('.flex-table-space').width()
 
-  $('.wrapper').css(
-    'height',
-    window.innerHeight
-    - $('#header')[0].clientHeight
-    - $('#footer')[0].clientHeight
-  )
-
-  //flex box fix!!!!
-  if($('.table-container')[0].offsetTop == $('.table-container')[1].offsetTop){
-    $('.item').css('height', '100%')
+  //set size to 100% when next to eachother
+  //also set control padding to flex-table-space width
+  if($('#flex-table')[0].offsetTop == $('#flex-form')[0].offsetTop){
+    $('.flex-item').css('height', '100%')
+    $('#flex-form').css(
+      'padding', '0px ' + ftsw + 'px 0px 0px'
+    )
+    $('.flex-table-space').css('min-width','10px')
   } else {
-    $('.item').css('height', '50%')
+    $('.flex-item').css('height', '40%')
+    $('#flex-form').css('padding', '0px ' + ftsw + 'px')
+    $('.flex-table-space').css('min-width',0)
   }
-
-})
+}
