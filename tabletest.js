@@ -172,9 +172,8 @@ function table(settings, data){
     //set the td min_width to the min width of the th, because the header
     //isn't formated as a table part, otherwise the collumns could be smaller
     //than the header and that's ugly as fuuuucck :p
-
     $($(settings.id + ' td')[i]).css(
-      'min-width', $(settings.id + ' th')[i].offsetWidth
+      'min-width', $($(settings.id + ' th')[i]).width() //NOTE: change at work!
     );
 
   };
@@ -226,7 +225,7 @@ function tableformat(){
 }
 
 // FLEX FORMAT ------------------------------------------------------------
-function flex(){
+function flex(){ // NOTE: Copy new flex function at work
 
   // FLEX CONTAINER HEIGHT -------------------------------------------
   var wiH = window.innerHeight
@@ -236,50 +235,32 @@ function flex(){
   //set container to height between header and footer
   $('.flex-container').css('height', wiH - hcH - fcH)
 
-  // MOZILLA FIX - minimum size gets locked on content in flex -------
-  if (userAgent == 'Firefox'){
 
-    var fcw = $('.flex-container').width()
-    var tsw = $('.table-scroll thead').width()
-    var fts_obj = $('.flex-table-space')
-    var ft_obj = $('#flex-table')
+  // OVERFLOW FIX ----------------------------------------------------
+  // inner width of flex container
+  var fc_iw = $('.flex-container').width()
+  // outer width + margin of flex container
+  var fc_ow = $('.flex-container').outerWidth(true)
+  // subtract inner from outer to get the total lr margin
+  var fc_tot_m = (fc_ow - fc_iw)
+  // margin of flex-container and flex-item are the same
+  // when only using flex-container input there's no confict setting the
+  // max width to the flex-items
+  // | fc_m | fi_m |  <flex-item>  | fi_m | fc_m |  (fc_m = fi_m)
+  var fi_tar_w = fc_iw - fc_tot_m
 
-    // In firefox the overflow scroll is not working because the table keeps
-    // his original width - force the witdh of the flex container to the
-    // table when the flex container is smaller then the table head width
-    // also don't display the table space and force the table space to be 0
-    // because this doens't work as expected too
-    if (fcw < tsw) {
-      fts_obj.css({
-        'display':'none',
-        'max-width': 0,
-      })
-      ft_obj.css('max-width',fcw)
-    } else if (fcw >= tsw) {
-      fts_obj.css({
-        'display':'initial',
-        'max-width': '20px',
-      })
-      ft_obj.css('max-width','initial')
-    };
+  // set max width
+  $('.flex-item').css('max-width',fi_tar_w)
 
-  }
 
-  // ITEM FORMAT -----------------------------------------------------
+  // FLEX ITEM HEIGHT ------------------------------------------------
   //get the width of the table space
   var ftsw = $('.flex-table-space').width()
 
   //set size to 100% when next to eachother
-  //also set control padding to flex-table-space width
   if($('#flex-table')[0].offsetTop == $('#flex-form')[0].offsetTop){
     $('.flex-item').css('height', '100%')
-    $('#flex-form').css(
-      'padding', '0px ' + ftsw + 'px 0px 0px'
-    )
-    $('.flex-table-space').css('min-width','10px')
   } else {
     $('.flex-item').css('height', '40%')
-    $('#flex-form').css('padding', '0px ' + ftsw + 'px')
-    $('.flex-table-space').css('min-width',0)
   }
 }

@@ -35,16 +35,17 @@
 //--table
 @table_fontsize: 12px;
 @table_pad: 8px, 12px, 6px, 6px;
+@flex_margin: 0.8%; // NOTE: solution for flex-space
 
 //body
 body {
   font-family: @inco;
   margin:0;
-  color: @color_dark;
+  color: @color_bright;
   background-color: @color_dark
 }
 
-.fade {opacity: 0;}
+.fade {opacity: 1;}
 
 //header
 .head_foot_common(){
@@ -87,6 +88,9 @@ body {
 }
 #footer{
   .head_foot_common();
+  @media all and (max-width: 500px){
+    height: 15px;
+  }
   height: 30px;
   div{
     bottom:0;
@@ -94,17 +98,13 @@ body {
 }
 
 .flex-container{
+  margin: 0 @flex_margin;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap-reverse;
   align-items: flex-end;
-  .flex-table-space {
-    flex: 1 1;
-    max-width: 20px;
-    min-width: 0;
-    max-height:0px;
-    background-color: red;
-  }
+  // padding: 0 @flex_margin; // NOTE: solution for flex-space
+  //NOTE: remove flextable space
   #flex-table {
     flex: 7;
     min-height: 60%;
@@ -114,8 +114,9 @@ body {
     min-width: 30%;
   }
   .flex-item {
-    width: 100%;
+    width:calc(100%-@flex_margin); // NOTE: solution for flex-space
     height:100%;
+    margin: 0px @flex_margin; // NOTE: solution for flex-space
     display: flex;
     flex-flow: column;
     //form
@@ -177,6 +178,7 @@ body {
             right: 0;
             bottom: 0;
             left: 0;
+            z-index: -1;
           }
         }
         tbody {
