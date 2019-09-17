@@ -67,6 +67,55 @@ $.ajax({
       flex();
       tableformat();
 
+
+      //SVG arrow ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      // NOTE: place outside.. or not.. see later, mude.. :p
+      const arrow_svg = {
+          viewbox : "0 0 100 100",
+          down: "M94.33,25.33c2.75,0,3.41,1.59,1.46,3.54L53.54,71.13c-1.94,1.94-5.13"
+          +",1.94-7.07,0L4.2,28.87c-1.94-1.94-1.29-3.54,1.46-3.54H94.33z",
+          up: "M5.67,74.67c-2.75,0-3.41-1.59-1.46-3.54l42.26-42.26c1.94-1.94,5.13"
+          +"-1.94,7.07,0L95.8,71.13c1.94,1.94,1.29,3.54-1.46,3.54H5.67z",
+      }
+
+      $('#alarmlist th div svg').attr('viewBox',arrow_svg.viewbox)
+      $('#alarmlist th div path').attr('d',arrow_svg.down).addClass('down')
+      //click event
+      $('.th-overlay').click(function(event){
+
+        //populate object with needed info
+        var overlay = {
+          table_id : $(this).closest('.table-scroll').attr('id'),
+          id : $(this).attr('id'),
+        }
+        overlay['alarm_obj_id'] = overlay.id.replace('_overlay','') //needed later for filtering
+        overlay['path'] = '#' + overlay.table_id + ' #' + overlay.id + ' path'
+        overlay['current'] = $(overlay.path).attr('class')
+
+        //change arrow on click -> future show filter div
+        if (overlay.current == 'down'){
+          $(overlay.path).attr('d',arrow_svg.up)
+          .attr('class','up')
+        } else {
+          $(overlay.path).attr('d',arrow_svg.down)
+          .attr('class','down')
+        }
+
+        //change all other arrows to down
+        var other_ol = $('#' + overlay.table_id + ' .th-overlay')
+
+        for (var i = 0; i < other_ol.length; i++) {
+          var id = $(other_ol[i]).attr('id')
+          if ( id != overlay.id){
+            $('#' + overlay.table_id + ' #' + id + ' path')
+            .attr('d',arrow_svg.down).attr('class','down')
+          }
+        }
+
+
+      })
+      //SVG arrow ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
       $('.fade').css({
         'opacity': 1,
         'transition': '250ms'
@@ -128,8 +177,15 @@ function table(settings, data){
   //get collumn header names from settings
   for (var col in settings.cols) {
     if (settings.cols.hasOwnProperty(col)) {
-      table += '<th>' + settings.cols[col]
-      table += '<div class="th-overlay"></div>'
+      table += '<th><span>' + settings.cols[col] + '</span>'
+      //div overlay+++++++++++++++++++++++++++++++++++++++++++++++++++
+      table += '<div class="th-overlay" id="' + col + '_overlay">'
+      table += '<div class="arrow">'
+      table += '<svg><g><path>'
+      table += '</path></g></svg>'
+      table += '</div>'
+      table += '</div>'
+      //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       table += '</th>'
     }
   }
@@ -151,7 +207,7 @@ function table(settings, data){
     //there will be no data in the collumn.
     for (var col in settings.cols) {
       if (data[i].hasOwnProperty(col)) {
-        table += '<td>' + data[i][col] + '</td>'
+        table += '<td><span>' + data[i][col] + '</span></td>'
       } else {
         table += '<td>-n/a-</td>'
       }
@@ -263,4 +319,6 @@ function flex(){ // NOTE: Copy new flex function at work
   } else {
     $('.flex-item').css('height', '40%')
   }
+
+
 }
