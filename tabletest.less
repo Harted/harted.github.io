@@ -34,6 +34,7 @@
 //--table
 @table_fontsize: 12px;
 @table_pad: 8px, 12px, 6px, 6px;
+@flex_margin: 0.8%; // NOTE: solution for flex-space
 
 //body
 body {
@@ -50,7 +51,7 @@ body {
   width: 100%;
   div{
     position:fixed;
-    background-color: @color_dark;
+    // background-color: @color_dark;
     width: inherit;
     height: inherit;
     color: @color_brighter;
@@ -77,33 +78,38 @@ body {
 
 }
 
-#header, #footer {
+#header {
   .head_foot_common();
   @media all and (max-width: 500px) {
     height: @header_h_small;
   }
   height: @header_height;
+  background-image: linear-gradient(
+    180deg,
+    rgba(25,25,25,0.2),
+    rgba(25,25,25,0)
+    );
 }
 #footer{
   .head_foot_common();
+  @media all and (max-width: 500px){
+    height: 15px;
+  }
   height: 30px;
   div{
     bottom:0;
   }
 }
 
+
 .flex-container{
+  margin: 0 @flex_margin;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap-reverse;
   align-items: flex-end;
-  .flex-table-space {
-    flex: 1 1;
-    max-width: 20px;
-    min-width: 0;
-    max-height:0px;
-    background-color: red;
-  }
+  // padding: 0 @flex_margin; // NOTE: solution for flex-space
+  //NOTE: remove flextable space
   #flex-table {
     flex: 7;
     min-height: 60%;
@@ -113,8 +119,9 @@ body {
     min-width: 30%;
   }
   .flex-item {
-    width: 100%;
+    width:calc(100%-@flex_margin); // NOTE: solution for flex-space
     height:100%;
+    margin: 0px @flex_margin; // NOTE: solution for flex-space
     display: flex;
     flex-flow: column;
     //form
@@ -176,6 +183,18 @@ body {
             right: 0;
             bottom: 0;
             left: 0;
+            z-index: 100;
+            .arrow{
+              position:absolute;
+              width:@table_fontsize;
+              height:@table_fontsize;
+              margin:extract(@table_pad,1);
+              right:0;
+              fill: @color_blue;
+              svg {
+                position:absolute;
+              }
+            }
           }
         }
         tbody {
@@ -184,6 +203,11 @@ body {
             content: '';
             display: block;
             height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+          }
+          td {
+            span{
+              background-color: yellow; //for safety objects
+            }
           }
           tr {
             &:hover{
