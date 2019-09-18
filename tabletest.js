@@ -1,29 +1,51 @@
-// CONSTANTS -------------------------------------------------------------------
-var userAgent = getUserAgent();
+function alfaLogo(){
+  var alfa_svg = {
+      viewbox : "0 0 100 100",
+      poly:"9.54,100 43.11,0 57.08,0 90.56,99.75 69.26,83.34 80.31,88.74 "
+      + "52.72,7 47.47,7 19.96,88.54 29.53,83.69 47.24,27.04 34.55,87.78 "
+  }
+  $('#alfa_logo svg').attr('viewBox',alfa_svg.viewbox)
+  $('#alfa_logo polygon').attr('points',alfa_svg.poly)
+}; alfaLogo();
 
-// Determine user agent --------------------------------------------------------
-function getUserAgent() {
 
-  var UA = navigator.userAgent || navigator.vendor || window.opera;
 
-  if (/windows phone/i.test(UA)) {
-    return 'WindowsPhone';
-  } else if (/android/i.test(UA)) {
-    return 'Android';
-  } else if (/iPad|iPhone|iPod/.test(UA) && !window.MSStream) {
-    return 'iOS';
-  } else if (/Chrome/.test(UA)) {
-    return 'Chrome';
-  } else if (/Safari/.test(UA)) {
-    return 'Safari';
-  } else if (/Firefox/.test(UA)) {
-    return 'Firefox';
-  } else {
-    console.log('unknown userAgent: ' + UA);
-    return 'unknown';
-  };
 
-};
+less.pageLoadFinished.then(
+    function() {
+        setTimeout(function () {
+          console.log('Less finished')
+          $('.fade_less').css({
+            'opacity': 1,
+          });
+        }, 250);
+
+    }
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //table setting object for table() function ------------------------------------
 const alarmlist_settings = {
@@ -116,9 +138,9 @@ $.ajax({
       })
       //SVG arrow ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
       $('.fade').css({
         'opacity': 1,
-        'transition': '250ms'
       });
     }, 250);
   }

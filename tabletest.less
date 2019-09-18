@@ -15,9 +15,10 @@
 
 //colors
 @color_dark: #444;
-@color_bright: #AAA;
-@color_brighter: #F5F5F5;
+@color_bright: #F5F5F5;
+@color_gray: #999;
 @color_blue: #A3C4BC;
+
 
 
 
@@ -26,14 +27,13 @@
 @inco: 'Inconsolata', monospace;
 
 //variables
-//--header
+//--header/footer
 @header_height: 80px;
-@header_h_small: 50px;
-@header_transition: 250ms;
+@footer_height: 30px;
 //--table
 @table_fontsize: 12px;
 @table_pad: 8px, 12px, 6px, 6px;
-@flex_margin: 0.8%; // NOTE: solution for flex-space
+@flex_margin: 0.8%;
 
 //body
 body {
@@ -43,7 +43,7 @@ body {
   background-color: @color_dark
 }
 
-.fade {opacity: 0;}
+.fade, .fade_less {opacity: 0; transition: 500ms};
 
 .noselect(){
   -webkit-touch-callout: none;
@@ -54,62 +54,136 @@ body {
   user-select: none;
 }
 
+// NOTE: NEW -------------------------------------------------------------------
+.header500() {
+  @media all and(max-width: 500px){
+    height: calc(@header_height/2);
+  }
+}
+.footer500() {
+  @media all and(max-width: 500px){
+    height: calc(@footer_height/2);
+  }
+}
 
-//header
-.head_foot_common(){
+
+#header_space{
   width: 100%;
-  div{
-    position:fixed;
-    // background-color: @color_dark;
-    width: inherit;
-    height: inherit;
-    color: @color_brighter;
-    text-transform: uppercase;
-    h1{
-      @media all and (max-width: 500px) {
-        font-size: 1em;
-        line-height: @header_h_small;
-        padding-left: @header_height/6;
-        transition: @header_transition;
+  height: @header_height;
+  .header500();
+}
+
+#footer_space{
+  width: 100%;
+  height: @footer_height;
+  .footer500();
+}
+
+.header_div_whm(){
+  width: calc(@header_height / 2);
+  height: calc(@header_height / 2);
+  margin: calc(@header_height / 4);
+}
+.header_div_whm500(){
+  width: calc(@header_height / 4);
+  height: calc(@header_height / 4);
+  margin: calc(@header_height / 8);
+}
+
+.headerpadding(){
+  padding-top: 10px;
+  @media all and (max-width: 500px){
+    padding: 0;
+  }
+}
+
+
+#header{
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: @header_height;
+  top:0;
+  #logo{
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5););
+    .headerpadding();
+    #alfa_logo {
+      display: inline-block;
+      .header_div_whm();
+      margin-left: calc((@header_height / 4) + @flex_margin);
+      // filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5););
+      svg {
+        fill: @color_blue;
       }
-      font-size: 1.6em;
-      letter-spacing: 0.05em;
+      @media all and(max-width: 500px){
+        .header_div_whm500();
+      }
+    }
+    span {
+      font-size: 1.5em;
+      font-weight: bold;
+      pointer-events: none;
+      display: inline-block;
       margin: 0;
-      line-height: @header_height;
-      padding-left: @header_height/3;
-      transition: @header_transition;
-      span{
-        font-size: 1.2em;
-        color: @color_blue;
+      color: @color_bright;
+      @media all and(max-width: 500px){
+        font-size: 0.8em;
       }
     }
   }
-
-}
-
-#header {
-  .head_foot_common();
-  @media all and (max-width: 500px) {
-    height: @header_h_small;
+  #volvo_logo {
+    .header_div_whm();
+    .headerpadding();
+    margin-right: calc((@header_height / 4) + @flex_margin);
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5););
+    float: right;
+    img {
+      width: inherit;
+      height: inherit;
+      opacity: 0.5;
+    }
+    @media all and(max-width: 500px){
+      .header_div_whm500();
+    }
   }
-  height: @header_height;
-  background-image: linear-gradient(
-    180deg,
-    rgba(25,25,25,0.2),
-    rgba(25,25,25,0)
-    );
+  .header500()
 }
+
+.footer_cmn(){
+  height:100%;
+  margin-right: @flex_margin;
+  margin-left: @flex_margin;
+  display:flex;
+  align-items: center;
+}
+
 #footer{
-  .head_foot_common();
-  @media all and (max-width: 500px){
-    height: 15px;
+  position: fixed;
+  width: 100%;
+  height: @footer_height;
+  bottom:0;
+  opacity: 0.5;
+  .footer500();
+  #credit{
+    float:right;
+    .footer_cmn();
   }
-  height: 30px;
-  div{
-    bottom:0;
+  #info{
+    float: left;
+    .footer_cmn();
+  }
+  span{
+    font-size: 0.6em;
+    color: @color_bright;
+    pointer-events: none;
   }
 }
-
+// -----------------------------------------------------------------------------
 
 .flex-container{
   margin: 0 @flex_margin;
@@ -126,14 +200,14 @@ body {
     min-width: 30%;
   }
   .flex-item {
-    width:calc(100%-@flex_margin); // NOTE: solution for flex-space
-    margin: 0px @flex_margin; // NOTE: solution for flex-space
+    width:calc(100%-@flex_margin);
+    margin: 0px @flex_margin;
     height:100%;
     display: flex;
     flex-flow: column;
     //form
     .form-header {
-      color: @color_brighter;
+      color: @color_bright;
       font-size: @table_fontsize;
       font-weight: bold;
       line-height: @table_fontsize;
@@ -143,9 +217,12 @@ body {
       extract(@table_pad,2)
       extract(@table_pad,3)
       extract(@table_pad,4);
+      @media all and (max-width: 500px){
+        display: none;
+      }
     }
     .form-container {
-      background-color: @color_brighter;
+      background-color: @color_bright;
       flex-grow: 1;
       // h-length, v-length, blur, spread, colour
       box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
@@ -179,7 +256,7 @@ body {
         }
         thead {
           background-color: @color_dark;
-          color:@color_blue;
+          color:@color_bright;
           position: absolute;
           th {
             position: relative;
@@ -205,16 +282,11 @@ body {
           }
         }
         tbody {
-          background-color: @color_brighter;
+          background-color: @color_bright;
           &::before{
             content: '';
             display: block;
             height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
-          }
-          td {
-            span{
-              background-color: yellow; //for safety objects
-            }
           }
           tr {
             &:hover{
@@ -230,7 +302,7 @@ body {
           extract(@table_pad,4);
           text-align: left;
           white-space: nowrap;
-          border-left: solid 0.5px @color_bright;
+          border-left: solid 0.5px @color_gray;
           &:first-child{
             border-left: none;
           }

@@ -3,7 +3,20 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Tabletest</title>
+  <title>A L F A</title>
+
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152.png" />
+  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+  <meta name="application-name" content="&nbsp;"/>
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="msapplication-TileImage" content="mstile-144x144.png" />
+
   <!-- Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -19,13 +32,24 @@
 
 <body>
 
-  <div id='header' class='fade'>
-    <div style='z-index:100'><h1><span>A</span>larm <span>L</span>ist <span>F</span>inal <span>A</span>ssembly</h1></div>
+  <!-- NOTE: NEW ------------------------------------------------------------>
+  <div id='header_space'></div>
+  <div id='header'>
+
+    <div id='logo'>
+      <a href='tabletest.html'><div id='alfa_logo'><svg><polygon></polygon></svg></div></a>
+      <span class='fade_less'>A L F A</span>
+    </div>
+
+    <div id='volvo_logo'>
+      <img src="volvo_logo_color.png" alt="">
+    </div>
   </div>
+  <!------------------------------------------------------------------------->
 
   <div class='flex-container fade' style='z-index:10'>
 
-    <div id='flex-table' class='flex-item'> <!-- NOTE: change id name -->
+    <div id='flex-table' class='flex-item'>
       <div class='table-container'>
         <div class='shadow'></div>
         <div id='alarmlist' class='table-scroll'>
@@ -35,8 +59,8 @@
     </div>
 
 
-    <div id='flex-form' class='flex-item'> <!-- NOTE: change id name -->
-      <div class='form-header'>CONTROLS</div>
+    <div id='flex-form' class='flex-item'>
+      <div class='form-header'>Controls</div>
       <div class='form-container'>
 
       </div>
@@ -44,9 +68,17 @@
 
   </div>
 
-  <div id='footer'>
-    <div style='z-index:100'></div>
+  <!-- NOTE: NEW ------------------------------------------------------------>
+  <div id='footer' class='fade_less'>
+    <div id='credit'>
+      <span>Created & designed by Jens De Ketelaere</span>
+    </div>
+    <div id='info'>
+      <span>ALARM LIST FINAL ASSEMBLY - ACM - VCG</span>
+    </div>
   </div>
+  <div id='footer_space'></div>
+  <!------------------------------------------------------------------------->
 
 </body>
 <script src="tabletest.js" charset="utf-8"></script>
