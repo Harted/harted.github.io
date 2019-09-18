@@ -18,7 +18,6 @@
 @color_bright: #AAA;
 @color_brighter: #F5F5F5;
 @color_blue: #A3C4BC;
-@color_peach: #FCD0A1;
 
 
 
@@ -45,6 +44,16 @@ body {
 }
 
 .fade {opacity: 0;}
+
+.noselect(){
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 
 //header
 .head_foot_common(){
@@ -108,8 +117,6 @@ body {
   flex-direction: row;
   flex-wrap: wrap-reverse;
   align-items: flex-end;
-  // padding: 0 @flex_margin; // NOTE: solution for flex-space
-  //NOTE: remove flextable space
   #flex-table {
     flex: 7;
     min-height: 60%;
@@ -120,8 +127,8 @@ body {
   }
   .flex-item {
     width:calc(100%-@flex_margin); // NOTE: solution for flex-space
-    height:100%;
     margin: 0px @flex_margin; // NOTE: solution for flex-space
+    height:100%;
     display: flex;
     flex-flow: column;
     //form
@@ -155,7 +162,7 @@ body {
         left:0;
         right:0;
         box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
-        z-index: 999;
+        z-index: 100;
         pointer-events: none;
       }
       .table-scroll {
@@ -176,23 +183,23 @@ body {
           position: absolute;
           th {
             position: relative;
-          }
-          .th-overlay {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 100;
-            .arrow{
-              position:absolute;
-              width:@table_fontsize;
-              height:@table_fontsize;
-              margin:extract(@table_pad,1);
-              right:0;
-              fill: @color_blue;
-              svg {
+            .th-overlay {
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              z-index: 100;
+              .arrow{
                 position:absolute;
+                width:@table_fontsize;
+                height:@table_fontsize;
+                margin:extract(@table_pad,1);
+                right:0;
+                fill: @color_blue;
+                svg {
+                  position:absolute;
+                }
               }
             }
           }
@@ -212,9 +219,6 @@ body {
           tr {
             &:hover{
               background-color: @color_blue;
-            }
-            &::selection{
-              background-color: @color_peach;
             }
           }
         }

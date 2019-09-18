@@ -228,6 +228,7 @@ function table(settings, data){
     //set the td min_width to the min width of the th, because the header
     //isn't formated as a table part, otherwise the collumns could be smaller
     //than the header and that's ugly as fuuuucck :p
+
     $($(settings.id + ' td')[i]).css(
       'min-width', $($(settings.id + ' th')[i]).width() //NOTE: change at work!
     );
