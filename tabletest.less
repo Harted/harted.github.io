@@ -160,6 +160,7 @@ body {
   margin-left: @flex_margin;
   display:flex;
   align-items: center;
+  opacity: 0.5;
 }
 
 #footer{
@@ -167,7 +168,6 @@ body {
   width: 100%;
   height: @footer_height;
   bottom:0;
-  opacity: 0.5;
   .footer500();
   #credit{
     float:right;
@@ -179,6 +179,9 @@ body {
   }
   span{
     font-size: 0.6em;
+    @media all and (max-width: 500px){
+      font-size: 0.3em;
+    }
     color: @color_bright;
     pointer-events: none;
   }
