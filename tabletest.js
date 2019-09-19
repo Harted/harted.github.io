@@ -29,26 +29,8 @@ less.pageLoadFinished.then(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //table setting object for table() function ------------------------------------
-const alarmlist_settings = {
+var alarmlist_settings = {
   //fool proof check for object to be compatible with table() function
   obj_type: 'table_t',
   //div id to output table
@@ -64,15 +46,16 @@ const alarmlist_settings = {
     severity: 'Sev.',
     state: 'St.'
   },
-}
+  fontwidth: 6,
+  arrow: 14,
+};
 
 // AJAX ------------------------------------------------------------------------
-// NOTE: try to do alarm fetching and table filling independent of eachother
 var tables = []
 var alarms = [];
 
 $.ajax({
-  url: 'https://main.xfiddle.com/2efa0c76/arr.php',
+  url: 'https://main.xfiddle.com/2efa0c76/alarmdata.php',
   type: "GET", // or "GET"
   cache: false,
   dataType: "json",
@@ -86,8 +69,8 @@ $.ajax({
     // tables.push(new table(alarmlist3_settings, alarms))
 
     setTimeout(function () {
-      flex();
-      tableformat();
+      console.time('flex');flex();console.timeEnd('flex');
+      console.time('table');tableformat();console.timeEnd('table')
 
 
       //SVG arrow ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -171,6 +154,7 @@ function alarm(data) {
 // TABLE FUNCTION --------------------------------------------------------------
 function table(settings, data){
 
+
   //FOOLPROOF -------------------------------------------------------------
   //foolproof check for settings object
   if (settings.obj_type != 'table_t') {
@@ -182,9 +166,13 @@ function table(settings, data){
     return;
   }
 
-  //VARIABLE --------------------------------------------------------------
-  //table variable to output to html
-  var table = ''
+
+  //VARIABLES -------------------------------------------------------------
+  var table = '' //table variable to output to html
+  var j = 0 //index to calculate max string lenght of th and td
+  var th_min_w = [] //to store th min-width
+  var td_min_w = [] //to store td min-width
+
 
   //HEADER ----------------------------------------------------------------
   //table header, seperate table because of fixed header system
@@ -193,12 +181,17 @@ function table(settings, data){
   table += '<table><thead>'
   //row before use for fixed header with scrolling
   table += '<tr class="before"></tr>'
-
-  //actual header
+  //visible header ++++
   table += '<tr>'
   //get collumn header names from settings
   for (var col in settings.cols) {
     if (settings.cols.hasOwnProperty(col)) {
+
+      //record string lenght, multiply with font width + arrow space
+      th_min_w[j] =(settings.cols[col].length * settings.fontwidth)
+      + settings.arrow;j++;
+
+      // caption (text)
       table += '<th><span>' + settings.cols[col] + '</span>'
       //div overlay+++++++++++++++++++++++++++++++++++++++++++++++++++
       table += '<div class="th-overlay" id="' + col + '_overlay">'
@@ -215,6 +208,7 @@ function table(settings, data){
   //close table (header)
   table += '</thead></table>'
 
+
   //BODY ------------------------------------------------------------------
   //new table for body
   table += '<table><body>'
@@ -227,58 +221,63 @@ function table(settings, data){
     //header and the data is always the same.
     //If there would be a mistake in the var name in the settings object
     //there will be no data in the collumn.
+
+    j = 0 // reset index for getting th maximum string lenght
+
     for (var col in settings.cols) {
       if (data[i].hasOwnProperty(col)) {
-        table += '<td><span>' + data[i][col] + '</span></td>'
+        // min-width based on th string length
+        table += '<td style="min-width:' + th_min_w[j] + 'px;">'
+        // text
+        table += '<span>' + data[i][col] + '</span></td>'
       } else {
+        // when there's nothing available
         table += '<td>-n/a-</td>'
       }
+      j++
     }
     table += '</tr>'
   }
   //close table (body)
   table += '</body></table>'
 
+
   //OUTPUT ----------------------------------------------------------------
   $(settings.id).html(table)
 
-  //FORMATTING ------------------------------------------------------------
-  //td min-width = th min width (before th width = td width)
-  for (let i = 0; i < $(settings.id + ' th').length; i++) {
-    //find the corresponding td (this will be the first row)
-    //size of the other rows is identical to the first because it's a table...
-    //set the td min_width to the min width of the th, because the header
-    //isn't formated as a table part, otherwise the collumns could be smaller
-    //than the header and that's ugly as fuuuucck :p
 
-    $($(settings.id + ' td')[i]).css(
-      'min-width', $($(settings.id + ' th')[i]).width() //NOTE: change at work!
-    );
-
-  };
-
-  //th width = td width (same size for headers and collumns so they align)
+  //FORMAT ----------------------------------------------------------------
+  //th min-width = td width (same size for headers and collumns so they align)
   this.headsize = function(){
+
+    var td_width = 0
+    var el
+
     for (let i = 0; i < $(settings.id + ' th').length; i++) {
-      $($(settings.id + ' th')[i])
-      //to set the with of the headers
-      .width($($(settings.id + ' td')[i]).width())
-      //to set the min-width of the headers so the headers can't be smaller
-      //then the collumns
-      .css('min-width', $($(settings.id + ' td')[i]).width())
+
+      // Pure js to replace jQuery .width() for faster process time
+      el = document.getElementById(settings.id.replace('#',''))
+      .getElementsByTagName('td')
+      td_width = parseFloat(getComputedStyle(el[i], null).width)
+
+      //set th min-widht
+      $($(settings.id + ' th')[i]).css('min-width', td_width)
+
     };
   };
-  //execute on load and on resize
-  // this.headsize(); // NOTE: now triggered outside when all tables are made
-  // this is because flex does things to the sizes, so the final size of the
-  // tables is only known when all the tables are made.
 
   //fixed header - the header seems to be fixed because the 'before' row
   // gets the heigth of the top scroll height
+
+  var el_id
+  var el_before
+
   $(settings.id).scroll(function(){
-    $(settings.id + ' thead .before')
-    .css('height', $(settings.id).scrollTop())
+    el_id = document.getElementById(settings.id.replace('#',''));
+    el_before = el_id.getElementsByClassName('before')[0]
+    el_before.style.height = el_id.scrollTop + 'px'
   });
+
 
 };
 
@@ -345,3 +344,34 @@ function flex(){ // NOTE: Copy new flex function at work
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// Debounce by David Walsh -----------------------------------------------------
+// (https://davidwalsh.name/javascript-debounce-function)
+function debounce(func, wait, immediate) {
+  var timeout;
+  return function executedFunction() {
+    var context = this;
+    var args = arguments;
+
+    var later = function later() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+};
