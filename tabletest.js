@@ -248,38 +248,42 @@ function table(settings, data){
 
   //FORMAT ----------------------------------------------------------------
   //th min-width = td width (same size for headers and collumns so they align)
-  this.headsize = function(){
+  var el_td = document.getElementById(settings.id.replace('#',''))
+  .getElementsByTagName('td');
+  var el_th = document.getElementById(settings.id.replace('#',''))
+  .getElementsByTagName('th');
 
+  this.headsize = function(){
+    console.time('headsize')
     var td_width = 0
-    var el
 
     for (let i = 0; i < $(settings.id + ' th').length; i++) {
 
-      // Pure js to replace jQuery .width() for faster process time
-      el = document.getElementById(settings.id.replace('#',''))
-      .getElementsByTagName('td')
-      td_width = parseFloat(getComputedStyle(el[i], null).width)
-
+      //get td widht
+      td_width = parseFloat(getComputedStyle(el_td[i], null).width)
       //set th min-widht
-      $($(settings.id + ' th')[i]).css('min-width', td_width)
+      el_th[i].style.minWidth = td_width + 'px'
 
     };
+    console.timeEnd('headsize')
   };
 
   //fixed header - the header seems to be fixed because the 'before' row
   // gets the heigth of the top scroll height
 
-  var el_id
-  var el_before
+  var el_id = document.getElementById(settings.id.replace('#',''));
+  var el_before = el_id.getElementsByClassName('before')[0]
 
   $(settings.id).scroll(function(){
-    el_id = document.getElementById(settings.id.replace('#',''));
-    el_before = el_id.getElementsByClassName('before')[0]
+    console.time('test')
     el_before.style.height = el_id.scrollTop + 'px'
+    console.timeEnd('test')
   });
 
 
 };
+
+
 
 
 //Responsive -------------------------------------------------------------------
