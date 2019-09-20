@@ -64,7 +64,15 @@ function table(settings, data){
 
   //for every record in array
   for (let i = 0; i < data.length; i++){
-    table += '<tr class="' + data[i].severity + ' ' + data[i]._type + '">'
+    table += '<tr class="' + data[i].severity + ' ' + data[i]._type + ' '
+
+    //active
+    if (data[i]._active) {
+      table += 'active '
+    }
+
+    table+= '">'
+
     //var names in settings are the names of which variables you want
     //to fetch and place in table. (col = var name)-> so the order of the
     //header and the data is always the same.
@@ -76,7 +84,7 @@ function table(settings, data){
     for (var col in settings.cols) {
       if (data[i].hasOwnProperty(col)) {
         // min-width based on th string length
-        table += '<td style="min-width:' + th_min_w[j] + 'px;">'
+        table += '<td style="min-width:' + th_min_w[j] + 'px;" '
         // text
         table += '<span>' + data[i][col] + '</span></td>'
       } else {
@@ -125,7 +133,7 @@ function table(settings, data){
   //fixed header - the header seems to be fixed because the 'before' row
   // gets the heigth of the top scroll height
   var el_before = el_id.getElementsByClassName('before')[0]
-  
+
   el_id.addEventListener("scroll", function(){
       el_before.style.height = el_id.scrollTop + 'px'
   });

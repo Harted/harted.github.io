@@ -13,15 +13,39 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+
 //colors
 @color_dark: #444;
 @color_bright: #F5F5F5;
 @color_gray: #999;
 @color_blue: #A3C4BC;
 
+@color_red: #ED1C24;
+@color_green: #44AF69;
+@color_blueM: #067BC2;
+@color_yellow: #FFFF00;
+@color_yellowless: #FFFF7F;
+@color_brown: #B1740F;
 
+@scrolbar: 6px;
 
-
+::-webkit-scrollbar {
+  width: @scrolbar;
+  height: @scrolbar;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: @scrolbar;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: @color_blue;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: @scrolbar;
+  background-color: @color_dark;
+}
+::-webkit-scrollbar-corner {
+  background-color: @color_dark;
+}
 
 //font
 @inco: 'Inconsolata', monospace;
@@ -33,17 +57,18 @@
 //--table
 @table_fontsize: 12px;
 @table_pad: 8px, 12px, 6px, 6px;
-@flex_margin: 0.8%;
+@flex_margin: 0.8%; // NOTE: solution for flex-space
 
 //body
 body {
   font-family: @inco;
   margin:0;
   color: @color_dark;
-  background-color: @color_dark
+  background-color: @color_dark;
+  overflow:hidden;
 }
 
-.fade, .fade_less {opacity: 0; transition: 500ms};
+.fade, .fade_less {opacity: 0; transition: 814ms};
 
 .noselect(){
   -webkit-touch-callout: none;
@@ -55,13 +80,13 @@ body {
 }
 
 // NOTE: NEW -------------------------------------------------------------------
-.header500() {
-  @media all and(max-width: 500px){
+.header814() {
+  @media all and(max-width: 814px){
     height: calc(@header_height/2);
   }
 }
-.footer500() {
-  @media all and(max-width: 500px){
+.footer814() {
+  @media all and(max-width: 814px){
     height: calc(@footer_height/2);
   }
 }
@@ -70,31 +95,24 @@ body {
 #header_space{
   width: 100%;
   height: @header_height;
-  .header500();
+  .header814();
 }
 
 #footer_space{
   width: 100%;
   height: @footer_height;
-  .footer500();
+  .footer814();
 }
 
 .header_div_whm(){
   width: calc(@header_height / 2);
   height: calc(@header_height / 2);
-  margin: calc(@header_height / 4);
+  margin: calc(@header_height / 4) calc(@header_height / 6);
 }
-.header_div_whm500(){
+.header_div_whm814(){
   width: calc(@header_height / 4);
   height: calc(@header_height / 4);
-  margin: calc(@header_height / 8);
-}
-
-.headerpadding(){
-  padding-top: 10px;
-  @media all and (max-width: 500px){
-    padding: 0;
-  }
+  margin: calc(@header_height / 8) calc(@header_height / 12);
 }
 
 
@@ -109,36 +127,37 @@ body {
   #logo{
     display: flex;
     align-items: center;
-    flex: 1 1 auto;
     filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5););
-    .headerpadding();
     #alfa_logo {
       display: inline-block;
+      flex-shrink: 0;
       .header_div_whm();
       margin-left: calc((@header_height / 4) + @flex_margin);
-      // filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5););
       svg {
         fill: @color_blue;
       }
-      @media all and(max-width: 500px){
-        .header_div_whm500();
+      @media all and(max-width: 814px){
+        .header_div_whm814();
       }
     }
-    span {
+    #alfa_txt{
+      display: inline-block;
       font-size: 1.5em;
+      line-height: 1.5em;
       font-weight: bold;
       pointer-events: none;
-      display: inline-block;
-      margin: 0;
       color: @color_bright;
-      @media all and(max-width: 500px){
+      @media all and(max-width: 814px){
         font-size: 0.8em;
+        line-height: 0.8em;
+      }
+      span{
+         white-space: pre;
       }
     }
   }
   #volvo_logo {
     .header_div_whm();
-    .headerpadding();
     margin-right: calc((@header_height / 4) + @flex_margin);
     filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5););
     float: right;
@@ -147,11 +166,11 @@ body {
       height: inherit;
       opacity: 0.5;
     }
-    @media all and(max-width: 500px){
-      .header_div_whm500();
+    @media all and(max-width: 814px){
+      .header_div_whm814();
     }
   }
-  .header500()
+  .header814()
 }
 
 .footer_cmn(){
@@ -168,7 +187,7 @@ body {
   width: 100%;
   height: @footer_height;
   bottom:0;
-  .footer500();
+  .footer814();
   #credit{
     float:right;
     .footer_cmn();
@@ -179,7 +198,7 @@ body {
   }
   span{
     font-size: 0.6em;
-    @media all and (max-width: 500px){
+    @media all and (max-width: 814px){
       font-size: 0.3em;
     }
     color: @color_bright;
@@ -188,23 +207,33 @@ body {
 }
 // -----------------------------------------------------------------------------
 
+.flexen(){
+  flex-shrink: 0;
+  flex-basis: auto;
+}
+
 .flex-container{
   margin: 0 @flex_margin;
+  // width: calc(100%-@flex_margin);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap-reverse;
   align-items: flex-end;
   #flex-table {
-    flex: 7;
+    // flex:7;
+    flex-grow: 7;
+    .flexen();
     min-height: 60%;
   }
   #flex-form {
-    flex: 3;
+    // flex:3;
+    flex-grow: 3;
+    .flexen();
     min-width: 30%;
   }
   .flex-item {
-    width:calc(100%-@flex_margin);
-    margin: 0px @flex_margin;
+    width:calc(100%-@flex_margin); // NOTE: solution for flex-space
+    margin: 0px @flex_margin; // NOTE: solution for flex-space
     height:100%;
     display: flex;
     flex-flow: column;
@@ -220,15 +249,21 @@ body {
       extract(@table_pad,2)
       extract(@table_pad,3)
       extract(@table_pad,4);
-      @media all and (max-width: 500px){
-        display: none;
-      }
     }
     .form-container {
       background-color: @color_blue;
       flex-grow: 1;
       // h-length, v-length, blur, spread, colour
       box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
+      .divbutton {
+        .noselect();
+        cursor: pointer;
+        margin: calc(@flex_margin * 2);
+        color: @color_dark;
+      }
+      #import {
+        visibility: hidden; //// TEMP: disabled
+      }
     }
     //table
     .table-container {
@@ -238,9 +273,9 @@ body {
       .shadow {
         position: absolute;
         top:@table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
-        bottom:0;
+        bottom:@scrolbar;
         left:0;
-        right:0;
+        right:@scrolbar;
         box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
         z-index: 100;
         pointer-events: none;
@@ -252,7 +287,6 @@ body {
         overflow: scroll;
         height: 100%;
         width: 100%;
-
         table {
           border-collapse: collapse;
           width: 100%;
@@ -294,8 +328,58 @@ body {
           tr {
             &:hover{
               background-color: @color_blue;
+              font-weight: bold;
+              color: @color_dark
             }
           }
+          //Conditional formatting ----------------------------------------START
+          .A , .B {
+            background-color: @color_red;
+            color: @color_bright;
+            font-weight: bold;
+          }
+          .C {
+            background-color: @color_yellow;
+            font-weight: bold;
+          }
+          .D {
+            background-color: @color_yellowless;
+          }
+          .safety {
+            font-weight: bold;
+            span{
+              background-color: @color_yellow; //for safety objects
+              color: @color_dark;
+              // h-length, v-length, blur, spread, colour
+              box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, .5);
+            }
+          }
+          .active {
+            td {
+              animation: pulse 1000ms linear infinite;
+            }
+          }
+          @keyframes pulse {
+            40% {opacity:1}
+            50% {opacity:0}
+            70% {opacity:1}
+
+          }
+          .clearformat {
+            background-color: rgba(0, 0, 0, 0);
+            color: @color_dark ;
+            font-weight: normal ;
+            &:hover {
+              // h-length, v-length, blur, spread, colour
+              box-shadow: 0 0px 15px 1px rgba(0, 0, 0, .5);
+            }
+            span{
+              background-color: rgba(0, 0, 0, 0); //for safety objects
+              // h-length, v-length, blur, spread, colour
+              box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, .5);
+            }
+          }
+          //Conditional formatting ------------------------------------------END
         }
         th, td {
           padding:
@@ -313,4 +397,29 @@ body {
       }
     }
   }
+}
+
+
+
+
+
+
+
+
+
+
+#spinner {
+  position: absolute;
+  margin: auto;
+  widht:50%;
+  height: 50%;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index: -1
+}
+.face_reverse{
+  transition: 250ms;
+  opacity: 1;
 }

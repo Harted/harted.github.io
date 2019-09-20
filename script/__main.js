@@ -13,9 +13,9 @@ const alarmlist_settings = {
     zone: 'Zone',
     object: 'Object',
     description: 'Description',
-    comment: 'Comment',
-    severity: 'Sev.',
-    statetxt: 'St.',
+    _duration: 'Comment',
+    _linkID: 'Sev.',
+    statetxt: 'State',
   },
   fontwidth: 6,
   arrow: 14,
@@ -45,7 +45,26 @@ function getData(){
   });
 }
 
-getData()
+function getData_home(){
+  console.time('get data')
+$.ajax({
+  url: 'https://main.xfiddle.com/2efa0c76/alarmdata.php',
+  type: "GET", // or "GET"
+  cache: false,
+  dataType: "json",
+  success: function(data) {
+    console.timeEnd('get data')
+    console.time('process')
+    base_data = data
+    processData(base_data)
+    console.timeEnd('process')
+    //getData()
+  }
+});
+}
+
+
+getData_home()
 // processData(base_data)
 
 function processData(data) {
@@ -57,6 +76,8 @@ function processData(data) {
   for (let i = 0; i < data.length; i++) {
     alarms.push(new alarm(data[i]).alarm)
   }; console.timeEnd('--push alarms');
+
+  active('alarms','_var','statetxt','_state', 'datetime')
 
   console.time('--push tables');
   tables.push(new table(alarmlist_settings, alarms));

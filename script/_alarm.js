@@ -76,4 +76,103 @@ function alarm(data) {
     this.alarm['description'] = this.alarm._var + ' (alarm format nok!!)'
   }
 
+
 };
+
+
+
+
+
+function distinct(alarm_arr){
+
+  var distinct = {}
+  // For all alarm rows
+  for (var i = 0; i < alarm_arr.length; i++) {
+    // For columns in alarm row
+    for (var col in alarm_arr[i]) {
+      // set name of subobject to name of alarmobject (column) once
+      if (distinct[col] == undefined) { distinct[col] = {} }
+      // set var name in subobject null
+      distinct[col][alarm_arr[i][col]] = 1
+    }
+  }
+  return distinct
+}
+
+
+
+
+function active(obj_name, var_name, state_name, state_int_name, dt_name){
+
+  var dist = distinct(window[obj_name]);
+  var link_store = distinct(window[obj_name]);
+  var linkID = 0;
+  var time_store = []
+
+
+  for (var obj in window[obj_name]) {
+    if (window[obj_name].hasOwnProperty(obj)) {
+
+      var a = window[obj_name][obj]
+      var v = a[var_name]
+      var s = a[state_int_name]
+      var dt = a[dt_name]
+
+      if (s == 0){
+        a['_linkID'] = linkID
+        link_store[var_name][v] = linkID
+
+        time_store[linkID] = Date.parse(dt);
+
+        linkID++
+
+      }
+
+      if (s == 1 && dist[var_name][v] == 1){
+        a['_active'] = true
+        a[state_name] = 'ACTIVE'
+        a['_linkID'] = 'none'
+        a['_duration'] = 'none'
+      } else {
+        a['_active'] = false
+        a['_linkID'] = link_store[var_name][v]
+
+        if (s == 1) {
+          var dur = time_store[a['_linkID']] - Date.parse(dt)
+          a['_duration'] = dur
+          time_store[a['_linkID']] = dur
+        }
+
+
+      }
+
+      dist[var_name][v] = 0
+
+
+
+    }
+  }
+
+  for (var obj in window[obj_name]) {
+    if (window[obj_name].hasOwnProperty(obj)) {
+
+      var a = window[obj_name][obj]
+      var s = a[state_int_name]
+
+      if (s == 0 && a['_linkID'] != 'none') {
+        a['_duration'] = time_store[a['_linkID']]
+      } else if ( a['_duration'] == undefined ) {
+        a['_duration'] = 'none'
+      }
+
+    }
+  }
+
+  console.log(time_store)
+
+  console.log(alarms)
+  console.log(dist[var_name]);
+  console.log(link_store[var_name]);
+
+
+}
