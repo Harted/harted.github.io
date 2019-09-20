@@ -139,7 +139,7 @@ function alarm(data) {
   //then this is not needed. it already returns names for the parts
   //use these names
   //also: change variable names of cols in alarmlist settings
-  const alarmparts = [
+  var alarmparts = [
     'datetime', 'station', 'object', 'comment', 'severity', 'state'
   ]
 
@@ -173,7 +173,7 @@ function table(settings, data){
   var th_min_w = [] //to store th min-width
   var td_min_w = [] //to store td min-width
 
-
+  console.time('----header')
   //HEADER ----------------------------------------------------------------
   //table header, seperate table because of fixed header system
   //otherwise scrolling would be glitchy because the before row heigth is
@@ -208,6 +208,8 @@ function table(settings, data){
   //close table (header)
   table += '</thead></table>'
 
+  console.timeEnd('----header')
+  console.time('----body')
 
   //BODY ------------------------------------------------------------------
   //new table for body
@@ -241,10 +243,14 @@ function table(settings, data){
   //close table (body)
   table += '</body></table>'
 
+  console.timeEnd('----body')
+  console.time('----output')
 
   //OUTPUT ----------------------------------------------------------------
   $(settings.id).html(table)
 
+  console.timeEnd('----output')
+  console.time('----formatting')
 
   //FORMAT ----------------------------------------------------------------
   //th min-width = td width (same size for headers and collumns so they align)
@@ -280,6 +286,7 @@ function table(settings, data){
     console.timeEnd('test')
   });
 
+  console.timeEnd('----formatting')
 
 };
 
