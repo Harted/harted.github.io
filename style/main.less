@@ -117,6 +117,8 @@ body {
 
 
 #header{
+  z-index: 100;
+  background-color: @color_dark;
   position: fixed;
   display: flex;
   align-items: center;
@@ -135,6 +137,7 @@ body {
       margin-left: calc((@header_height / 4) + @flex_margin);
       svg {
         fill: @color_blue;
+        // fill: @color_blue;
       }
       @media all and(max-width: 814px){
         .header_div_whm814();
@@ -173,7 +176,7 @@ body {
   .header814()
 }
 
-.footer_cmn(){
+.footer_txt_cmn(){
   height:100%;
   margin-right: @flex_margin;
   margin-left: @flex_margin;
@@ -183,18 +186,20 @@ body {
 }
 
 #footer{
+  z-index: 100;
+  background-color: @color_dark;
   position: fixed;
   width: 100%;
   height: @footer_height;
-  bottom:0;
+  bottom: 0;
   .footer814();
   #credit{
     float:right;
-    .footer_cmn();
+    .footer_txt_cmn();
   }
   #info{
     float: left;
-    .footer_cmn();
+    .footer_txt_cmn();
   }
   span{
     font-size: 0.6em;
@@ -230,6 +235,7 @@ body {
     flex-grow: 3;
     .flexen();
     min-width: 30%;
+    z-index: 20;
   }
   .flex-item {
     width:calc(100%-@flex_margin); // NOTE: solution for flex-space
@@ -277,8 +283,20 @@ body {
         left:0;
         right:@scrolbar;
         box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
-        z-index: 100;
+        z-index: 10;
         pointer-events: none;
+        #line{
+          display: none;
+          width: 12px;
+          position: absolute;
+          -webkit-background-clip: svg;
+            -moz-background-clip: svg;
+              background-clip: svg;
+          svg {
+            fill: @color_blue;
+            stroke: @color_blue;
+          }
+        }
       }
       .table-scroll {
         font-size: @table_fontsize;
@@ -290,11 +308,13 @@ body {
         table {
           border-collapse: collapse;
           width: 100%;
+          .noselect();
         }
         thead {
           background-color: @color_dark;
           color:@color_bright;
           position: absolute;
+          z-index: 20;
           th {
             position: relative;
             .th-overlay {
@@ -324,13 +344,6 @@ body {
             content: '';
             display: block;
             height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
-          }
-          tr {
-            &:hover{
-              background-color: @color_blue;
-              font-weight: bold;
-              color: @color_dark
-            }
           }
           //Conditional formatting ----------------------------------------START
           .A , .B {
@@ -365,20 +378,6 @@ body {
             70% {opacity:1}
 
           }
-          .clearformat {
-            background-color: rgba(0, 0, 0, 0);
-            color: @color_dark ;
-            font-weight: normal ;
-            &:hover {
-              // h-length, v-length, blur, spread, colour
-              box-shadow: 0 0px 15px 1px rgba(0, 0, 0, .5);
-            }
-            span{
-              background-color: rgba(0, 0, 0, 0); //for safety objects
-              // h-length, v-length, blur, spread, colour
-              box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, .5);
-            }
-          }
           //Conditional formatting ------------------------------------------END
         }
         th, td {
@@ -398,6 +397,8 @@ body {
     }
   }
 }
+
+
 
 
 

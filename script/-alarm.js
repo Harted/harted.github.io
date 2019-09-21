@@ -107,72 +107,113 @@ function active(obj_name, var_name, state_name, state_int_name, dt_name){
   var dist = distinct(window[obj_name]);
   var link_store = distinct(window[obj_name]);
   var linkID = 0;
+  var id_set = []
   var time_store = []
 
 
   for (var obj in window[obj_name]) {
     if (window[obj_name].hasOwnProperty(obj)) {
 
-      var a = window[obj_name][obj]
-      var v = a[var_name]
-      var s = a[state_int_name]
-      var dt = a[dt_name]
+      //String referenced VARS  --------------------------------------
+      var a = window[obj_name][obj]   //alarm row
+      var v = a[var_name]             //var name
+      var s = a[state_int_name]       //state integer
+      var dt = a[dt_name]             //datetimestamp
 
+      // OFF event ---------------------------------------------------
+      // - Assign link ID
+      // - Store link ID in distinct object to later assign to ON event
+      // - Store time to link array index to later calculate duration
+      //    at the ON event
+      // - Add 1 to link ID for next event
       if (s == 0){
-        a['_linkID'] = linkID
-        link_store[var_name][v] = linkID
-
+        a['_linkID'] = linkID;
+        a['_active'] = false;
+        link_store[var_name][v] = linkID;
+        id_set[linkID] = false
         time_store[linkID] = Date.parse(dt);
+        linkID++;
 
-        linkID++
-
-      }
-
-      if (s == 1 && dist[var_name][v] == 1){
+      } else if (s == 1 && dist[var_name][v] == 1){
+        // First distinct event is ON event = ACTIVE -------------------
+        // REVIEW: ONLY activate when end date is Date.now()
+        // - Assign active and set true
+        // - Change state text to ACTIVE
+        // - This event has no link and no duration
         a['_active'] = true
         a[state_name] = 'ACTIVE'
-        a['_linkID'] = 'none'
-        a['_duration'] = 'none'
-      } else {
-        a['_active'] = false
+        a['_linkID'] = -1
+        a['_duration'] = -1
+        a['_durtxt'] = 'n/a'
+      } else if (s == 1) {
         a['_linkID'] = link_store[var_name][v]
-
-        if (s == 1) {
-          var dur = time_store[a['_linkID']] - Date.parse(dt)
-          a['_duration'] = dur
-          time_store[a['_linkID']] = dur
-        }
-
-
+        var dur = time_store[a['_linkID']] - Date.parse(dt)
+        a['_duration'] = dur
+        a['_durtxt'] = dhms(dur)
+        id_set[a['_linkID']] = true
+        time_store[a['_linkID']] = dur
       }
-
-      dist[var_name][v] = 0
-
 
 
     }
+
+    dist[var_name][v] = 0
+
+
+
   }
 
   for (var obj in window[obj_name]) {
     if (window[obj_name].hasOwnProperty(obj)) {
 
-      var a = window[obj_name][obj]
-      var s = a[state_int_name]
+      //String referenced VARS  --------------------------------------
+      var a = window[obj_name][obj]   //alarm row
+      var v = a[var_name]             //var name
+      var s = a[state_int_name]       //state integer
 
-      if (s == 0 && a['_linkID'] != 'none') {
+      if (s == 0 && a['_linkID'] != 'none' && id_set[a['_linkID']] == true) {
         a['_duration'] = time_store[a['_linkID']]
+        a['_durtxt'] = dhms( time_store[a['_linkID']])
       } else if ( a['_duration'] == undefined ) {
-        a['_duration'] = 'none'
+        a['_duration'] = -1
+        a['_durtxt'] = 'n/a'
       }
 
     }
   }
 
-  console.log(time_store)
-
+  console.log(id_set);
   console.log(alarms)
-  console.log(dist[var_name]);
-  console.log(link_store[var_name]);
 
+
+}
+
+
+function dhms(ms) {
+
+  var day_c = (1000 * 60 * 60 * 24)
+  var hrs_c = (1000 * 60 * 60)
+  var min_c = (1000 * 60)
+  var sec_c = 1000
+
+  if (ms < 10000) {var fx = 1} else {var fx = 0}
+
+  var days = Math.floor(ms / day_c);
+  ms -= days * day_c
+  var hrs = Math.floor(ms / hrs_c);
+  ms -= hrs * hrs_c
+  var min = Math.floor(ms / min_c);
+  ms -= min * min_c
+  var sec = (ms / sec_c).toFixed(fx);
+
+  if (days > 0) {
+    return days + 'd ' + hrs + 'h ' +  min + 'm ' + sec + 's'
+  } else if (hrs > 0) {
+    return hrs + 'h ' +  min + 'm ' + sec + 's'
+  } else if (min > 0) {
+    return min + 'm ' + sec + 's'
+  } else {
+    return sec + 's'
+  }
 
 }

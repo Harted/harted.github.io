@@ -12,21 +12,8 @@ function tableformat(){
 
 }
 
-$('#clearformat').click(function(){
-  var trclass_obj = $('tbody tr');
-  var trclass;
+$('').click(function(){
 
-  for (var i = 0; i < trclass_obj.length; i++) {
-
-    trclass = $(trclass_obj[i]).attr('class')
-
-    if((/clearformat/).test(trclass)){
-      $(trclass_obj[i]).attr('class',trclass.replace('clearformat',''))
-    } else {
-      $(trclass_obj[i]).attr('class',trclass + ' clearformat')
-    }
-
-  }
 
 
 })
