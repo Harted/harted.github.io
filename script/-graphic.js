@@ -11,6 +11,7 @@ function alfaLogo(){
   $('#alfa_logo polygon').attr('points',alfa_svg.poly)
 }; alfaLogo();
 
+
 // TH ARROWS -------------------------------------------------------------------
 function arrows(){
   // svg in object format
@@ -41,9 +42,11 @@ function arrows(){
     if (overlay.current == 'down'){
       $(overlay.path).attr('d',arrow_svg.up)
       .attr('class','up')
+      $(this).parent().find('.filterbox').css('height','auto');
     } else {
       $(overlay.path).attr('d',arrow_svg.down)
       .attr('class','down')
+      $(this).parent().find('.filterbox').css('height','0px');
     };
 
     //change all other arrows to down
@@ -52,20 +55,35 @@ function arrows(){
     for (var i = 0; i < other_ol.length; i++) {
       var id = $(other_ol[i]).attr('id')
       if ( id != overlay.id){
+
         $('#' + overlay.table_id + ' #' + id + ' path')
         .attr('d',arrow_svg.down).attr('class','down')
+
+        $('#' + overlay.table_id + ' #' + id).parent().find('.filterbox').css('height','0px');
+
       };
+
     };
+
+
+    // NOTE: Glithc when scrolling - try to fix header again!!!!!
+
+
+
+
+
+    $(this).parent().find('.filterbox').mouseenter(function(){
+      $(this).mouseleave(function(){
+        $(overlay.path).attr('d',arrow_svg.down)
+        .attr('class','down')
+        $(this).parent().find('.filterbox').css('height','0px');
+        $(this).off('mouseleave')
+      })
+    })
+
+
+
+
+
   });
 };
-
-
-less.pageLoadFinished.then(
-  function() {
-    setTimeout(function () {
-      $('.fade_less').css({
-        'opacity': 1,
-      });
-    }, 0);
-  }
-);

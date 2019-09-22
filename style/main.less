@@ -20,12 +20,12 @@
 @color_gray: #999;
 @color_blue: #A3C4BC;
 
-@color_red: #ED1C24;
-@color_green: #44AF69;
-@color_blueM: #067BC2;
-@color_yellow: #FFFF00;
-@color_yellowless: #FFFF7F;
-@color_brown: #B1740F;
+@color_red: #ED3B41; //#ED1C24;
+@color_green: #32C967; //#00C946;
+@color_blueM: #3FB5FF; //#009DFF;
+@color_yellow: #FFFF3F; //#FFFF00;
+@color_yellowless: #FFFF99; //#FFFF7F;
+@color_orange: #FFC83F; //#FFBC14;
 
 @scrolbar: 6px;
 
@@ -136,6 +136,8 @@ body {
       .header_div_whm();
       margin-left: calc((@header_height / 4) + @flex_margin);
       svg {
+        width: inherit;
+        height: inherit;
         fill: @color_blue;
         // fill: @color_blue;
       }
@@ -155,7 +157,7 @@ body {
         line-height: 0.8em;
       }
       span{
-         white-space: pre;
+        white-space: pre;
       }
     }
   }
@@ -217,7 +219,7 @@ body {
   flex-basis: auto;
 }
 
-.flex-container{
+#flex-container{
   margin: 0 @flex_margin;
   // width: calc(100%-@flex_margin);
   display: flex;
@@ -230,7 +232,7 @@ body {
     .flexen();
     min-height: 60%;
   }
-  #flex-form {
+  #flex-control {
     // flex:3;
     flex-grow: 3;
     .flexen();
@@ -244,7 +246,7 @@ body {
     display: flex;
     flex-flow: column;
     //form
-    .form-header {
+    #control-header {
       color: @color_bright;
       font-size: @table_fontsize;
       font-weight: bold;
@@ -256,7 +258,7 @@ body {
       extract(@table_pad,3)
       extract(@table_pad,4);
     }
-    .form-container {
+    #control-container {
       background-color: @color_blue;
       flex-grow: 1;
       // h-length, v-length, blur, spread, colour
@@ -271,12 +273,14 @@ body {
         visibility: hidden; //// TEMP: disabled
       }
     }
-    //table
-    .table-container {
+
+
+    // TABLE -------------------------------------------------------------------
+    #table-container {
       width: 100%;
       height: 100%;
       position: relative;
-      .shadow {
+      .table-overlay {
         position: absolute;
         top:@table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
         bottom:@scrolbar;
@@ -290,11 +294,12 @@ body {
           width: 12px;
           position: absolute;
           -webkit-background-clip: svg;
-            -moz-background-clip: svg;
-              background-clip: svg;
+          -moz-background-clip: svg;
+          background-clip: svg;
           svg {
-            fill: @color_blue;
-            stroke: @color_blue;
+            fill: @color_dark;
+            stroke: @color_dark;
+            stroke-width:3
           }
         }
       }
@@ -308,9 +313,9 @@ body {
         table {
           border-collapse: collapse;
           width: 100%;
-          .noselect();
         }
         thead {
+          .noselect();
           background-color: @color_dark;
           color:@color_bright;
           position: absolute;
@@ -334,6 +339,20 @@ body {
                 svg {
                   position:absolute;
                 }
+              }
+            }
+            .filterbox {
+              position:absolute;
+              top:@table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+              right:1px;
+              width: auto;
+              height: 0px;
+              transition: 500ms;
+              background-color: @color_dark;
+              box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.5);
+              overflow: hidden;
+              div {
+                padding: 10px;
               }
             }
           }
@@ -367,18 +386,90 @@ body {
               box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, .5);
             }
           }
+          .manual{
+            background-color: @color_blueM;
+          }
+          .autonotstarted{
+            animation: autonotstarted 1000ms linear infinite;
+          }
           .active {
             td {
               animation: pulse 1000ms linear infinite;
             }
           }
+          .interlock {
+            td:nth-child(5),td:nth-child(6){
+              span::before{
+                content: '\1F512  ' ;
+              }
+            }
+          }
+          .production {
+            background-color: @color_orange;
+          }
+          .controlroom {
+            td:nth-child(5),td:nth-child(6){
+              span::before{
+                content: '\231b  ' ;
+              }
+            }
+          }
+          .outfeed {
+            td:nth-child(5),td:nth-child(6){
+              span::before{
+                content: '\2B05  ' ;
+              }
+            }
+          }
+          .infeed {
+            td:nth-child(5),td:nth-child(6){
+              span::before{
+                content: '\27A1  ' ;
+              }
+            }
+          }
+          .andon {
+            td:nth-child(5),td:nth-child(6){
+              span::before{
+                content: '\1F4A1  ';
+              }
+            }
+          }
+          .formatnok {
+            td:nth-child(5){
+              span::before{
+                content: '\2753  ';
+              }
+            }
+          }
+          .clearformat {
+            background-color: @color_bright;
+            color: @color_dark;
+            font-weight: normal;
+            animation: none;
+            span{
+              background-color: rgba(0,0,0,0) ; //for safety objects
+              color: @color_dark;
+              // h-length, v-length, blur, spread, colour
+              box-shadow: none;
+            }
+          }
+
           @keyframes pulse {
             40% {opacity:1}
             50% {opacity:0}
             70% {opacity:1}
-
+          }
+          @keyframes autonotstarted {
+            0%  {color: @color_dark; background-color: @color_green;};
+            49% {color: @color_dark; background-color: @color_green;};
+            50% {color: @color_green; background-color: @color_dark;};
+            100% {color: @color_green; background-color: @color_dark;};
           }
           //Conditional formatting ------------------------------------------END
+        }
+        tr {
+          cursor: pointer;
         }
         th, td {
           padding:
@@ -420,7 +511,8 @@ body {
   right:0;
   z-index: -1
 }
-.face_reverse{
+
+.fade_reverse{
   transition: 250ms;
   opacity: 1;
 }

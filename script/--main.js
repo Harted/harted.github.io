@@ -21,13 +21,28 @@ const alarmlist_settings = {
   arrow: 14,
 }
 
+function ready(){
+  console.timeEnd('Document ready')
+  console.timeLog('----Ready')
+  console.time('Data')
+  getData_home()
+}
+
+// Less finished ---------------------------------------------------------------
+less.pageLoadFinished.then(
+  function() {
+    console.timeEnd('Less ready')
+    $('.fade_less').css('opacity', 1);
+  }
+);
+
 // AJAX ------------------------------------------------------------------------
 var base_data = [];
 var tables = [];
 var alarms = [];
 
 function getData(){
-  console.time('get data')
+
   $.ajax({
     url: '/script/ajax.php',
     type: "GET", // or "GET"
@@ -35,74 +50,76 @@ function getData(){
     cache: false,
     dataType: "json",
     success: function(data) {
-      console.timeEnd('get data')
-      console.time('process')
+
+      console.timeEnd('Data')
+      console.time('Processing')
       base_data = data
       processData(base_data)
-      console.timeEnd('process')
+      console.timeEnd('Processing')
+      console.timeEnd('----Ready')
+
+
       //getData()
     }
   });
 }
 
 function getData_home(){
-  console.time('get data')
-$.ajax({
-  url: 'https://main.xfiddle.com/2efa0c76/alarmdata.php',
-  type: "GET", // or "GET"
-  cache: false,
-  dataType: "json",
-  success: function(data) {
-    console.timeEnd('get data')
-    console.time('process')
-    base_data = data
-    processData(base_data)
-    console.timeEnd('process')
-    //getData()
-  }
-});
+
+  $.ajax({
+    url: 'https://main.xfiddle.com/2efa0c76/alarmdata.php',
+    type: "GET", // or "GET"
+    cache: false,
+    dataType: "json",
+    success: function(data) {
+
+      console.timeEnd('Data')
+      console.time('Processing')
+      base_data = data
+      processData(base_data)
+      console.timeEnd('Processing')
+      console.timeEnd('----Ready')
+
+      //getData()
+    }
+  });
 }
 
 
-getData_home()
-// processData(base_data)
+
 
 function processData(data) {
 
   tables = [];
   alarms = [];
 
-  console.time('--push alarms');
+
   for (let i = 0; i < data.length; i++) {
     alarms.push(new alarm(data[i]).alarm)
-  }; console.timeEnd('--push alarms');
+  };
 
-  active('alarms','_var','statetxt','_state', 'datetime')
+  analyze('alarms','_var','statetxt','_state', 'datetime')
 
-  console.time('--push tables');
+
   tables.push(new table(alarmlist_settings, alarms));
-  console.timeEnd('--push tables');
+  // NOTE: multiple tables are possible but still need some work
+  // I will implement when needed
+  // Mind good referencing and line height ristrictions to
+  // not overlay on the other table
 
-  console.time('--flex');
+  //set table container size to part of 100% according to the amount of tables
+  $('#table-container').css('height', 100/tables.length + '%')
+
   flex();
-  console.timeEnd('--flex');
 
-  console.time('--tableformat');
-  tableformat();
-  console.timeEnd('--tableformat');
+  headsize();
 
-  console.time('--arrows');
+
+
   arrows();
-  console.timeEnd('--arrows');
+
 
   $('.fade').css({'opacity': 1});
   $('.fade_reverse').css({'opacity': 0});
 
 }
-
-
-//Responsive -------------------------------------------------------------------
-$(window).on('resize',function(){
-  flex();
-  tableformat();
-});

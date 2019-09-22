@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
+<head> <!-- HEAD -------------------------------------------------------------->
 
   <meta charset="utf-8">
   <title>A L F A</title>
@@ -13,51 +13,30 @@
   <!-- Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <!-- Less -->
-  <script src="script/useragent.js" charset="utf-8"></script>
+  <!-- Window -->
+  <script src="script/--window.js" charset="utf-8"></script>
+
+  <!-- Spinner style -->
+  <link rel="stylesheet" href="style/spinner.css">
+
+  <!-- Less (stylesheet)-->
   <link rel="stylesheet/less" type="text/css" href="style/main.less" />
-  <script src="script/ie11_less_fix.js" charset="utf-8"></script>
+
+  <!-- Less (script)-->
+  <script src="script/LESS-conf.js" charset="utf-8"></script>
   <script src="script/LESS.js" ></script>
 
   <!-- jQuery -->
   <script src="script/jQuery.js" charset="utf-8"></script>
 
-  </script>
-
-  <style media="screen">
-  @keyframes spinner-line-fade-more {
-    0%, 100% {
-      opacity: 0; /* minimum opacity */
-    }
-    1% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes spinner-line-fade-quick {
-    0%, 39%, 100% {
-      opacity: 0.25; /* minimum opacity */
-    }
-    40% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes spinner-line-fade-default {
-    0%, 100% {
-      opacity: 0.22; /* minimum opacity */
-    }
-    1% {
-      opacity: 1;
-    }
-  }
-  </style>
-
 </head>
+<body onload="ready()"> <!-- BODY -------------------------------------------------------------->
 
-<body>
+  <!-- Spinner ------------------------------------------------------>
+  <div id='spinner' class='fade_reverse'></div>
 
-  <!-- Header -->
+
+  <!-- Header ------------------------------------------------------->
   <div id='header_space'></div>
   <div id='header' class='fade_less'>
 
@@ -71,26 +50,22 @@
     </div>
   </div>
 
-  <div id='spinner' class='fade_reverse'></div>
 
-  <!-- Flex container -->
-  <div class='flex-container fade' style='z-index:10'>
+  <!-- Flex container ----------------------------------------------->
+  <div id='flex-container' class='fade' style='z-index:10'>
 
     <div id='flex-table' class='flex-item'>
-      <div class='table-container'>
-        <div class='shadow'>
-            <div id='line'></div>
-        </div>
-        <div id='alarmlist' class='table-scroll'>
-
-        </div>
+      <div id='table-container'>
+        <div class='table-overlay'><div id='line'></div></div>
+        <div id='alarmlist' class='table-scroll'></div>
       </div>
     </div>
 
 
-    <div id='flex-form' class='flex-item'>
-      <div class='form-header'>Controls</div>
-      <div class='form-container'>
+    <div id='flex-control' class='flex-item'>
+      <div id='control-header'>Controls</div>
+      <div id='control-container'>
+        <div id='format' class='divbutton'>FORMAT</div>
         <div id='import' class='divbutton'>IMPORT</div>
       </div>
     </div>
@@ -98,9 +73,7 @@
   </div>
 
 
-
-
-  <!-- Footer -->
+  <!-- Footer ------------------------------------------------------->
   <div id='footer' class='fade'>
     <div id='credit'>
       <span>Created & designed by Jens De Ketelaere</span>
@@ -112,9 +85,14 @@
   <div id='footer_space'></div>
 
 
-  <!-- Load script -->
+
+
+  <!-- SCRIPT ------------------------------------------------------------>
+
+  <!-- Spinner -->
   <script src="script/spinner.js" charset="utf-8"></script>
 
+  <!-- Sequence -->
   <script src="script/-elements.js" charset="utf-8"></script>
   <script src="script/-graphic.js" charset="utf-8"></script>
   <script src="script/-alarm.js" charset="utf-8"></script>
@@ -122,6 +100,7 @@
   <script src="script/-flex.js" charset="utf-8"></script>
   <script src="script/-controls.js" charset="utf-8"></script>
 
+  <!-- MAIN -->
   <script src="script/--main.js" charset="utf-8"></script>
 
 </body>
