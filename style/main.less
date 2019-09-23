@@ -314,11 +314,14 @@ body {
           border-collapse: collapse;
           width: 100%;
         }
+        .table-head {
+          height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+        }
         thead {
           .noselect();
           background-color: @color_dark;
           color:@color_bright;
-          position: absolute;
+          position: fixed;
           z-index: 20;
           th {
             position: relative;
@@ -344,26 +347,35 @@ body {
             .filterbox {
               position:absolute;
               top:@table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
-              right:1px;
+              left:0;
               width: auto;
               height: 0px;
               transition: 500ms;
               background-color: @color_dark;
-              box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.5);
-              overflow: hidden;
+              box-shadow: 0px 3px 2px 0px rgba(0, 0, 0, 0.3);
+              overflow-y: scroll;
+              max-height: 300px;
               div {
-                padding: 10px;
+                padding: 2px 10px 2px 2px;
               }
+            }
+            &:last-child .filterbox{
+              right:0;
+              left:auto;
+              box-shadow: -2px 3px 2px 0px rgba(0, 0, 0, 0.3);
+            }
+            &:first-child .filterbox{
+              box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.3);
             }
           }
         }
         tbody {
           background-color: @color_bright;
-          &::before{
-            content: '';
-            display: block;
-            height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
-          }
+          // &::before{
+          //   content: '';
+          //   display: block;
+          //   height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+          // }
           //Conditional formatting ----------------------------------------START
           .A , .B {
             background-color: @color_red;
@@ -488,8 +500,6 @@ body {
     }
   }
 }
-
-
 
 
 

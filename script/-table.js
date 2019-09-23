@@ -24,9 +24,9 @@ function table(settings, data){
   // table header, seperate table because of fixed header system
   // otherwise scrolling would be glitchy because the before row heigth is
   // constantly changed by scrolling
-  table += '<table><thead>'
+  table += '<table class="table-head"><thead>'
   // row before use for fixed header with scrolling
-  table += '<tr class="before"></tr>'
+  // table += '<tr class="before"></tr>'
   // visible header ++++
   table += '<tr>'
   // get collumn header names from settings
@@ -40,8 +40,46 @@ function table(settings, data){
       // caption (text)
       table += '<th><span>' + settings.cols[col] + '</span>'
 
-      // filterbox
-      table += '<div class="filterbox"><div>Filterbox</div><div>Filterbox</div><div>Frequency Control FC302 Warning</div><div>Filterbox</div></div>'
+      // filterbox ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      table += '<div class="filterbox" id="' + col + '_filter">'
+      table += '<div class="filtertext">'
+
+
+      // make distinct list
+      var dis = distinct(data)[col]
+      console.log(dis);
+
+      var arr = []
+
+      for (var el in dis) {
+        if (dis.hasOwnProperty(el)) {
+          if (el == '') {
+            el = '-blanks-'
+          }
+          arr.push(el)
+        }
+      }
+
+      arr.sort()
+
+      console.log(arr);
+
+      for (var i = 0; i < arr.length; i++) {
+        table += '<div><input type="checkbox" Checked>' + arr[i] + '</input></div>'
+      }
+      //
+
+
+      table += '</div></div>'
+
+
+
+
+
+
+
+
+
 
 
       // div overlay+++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -64,7 +102,7 @@ function table(settings, data){
 
   // BODY -----------------------------------------------------------------
   // new table for body
-  table += '<table><body>'
+  table += '<table class="table-body"><body>'
 
   // for every record in array
   for (let i = 0; i < data.length; i++){
@@ -128,6 +166,7 @@ function table(settings, data){
 
   var el_td = el_id.getElementsByTagName('td');
   var el_th = el_id.getElementsByTagName('th');
+  var el_thead = el_id.getElementsByTagName('thead');
 
   this.headsize = function(){
     var td_width = 0
@@ -145,10 +184,9 @@ function table(settings, data){
 
   // FIXED HEADER - the header seems to be fixed because the 'before' row
   // gets the heigth of the top scroll height
-  var el_before = el_id.getElementsByClassName('before')[0]
 
   el_id.addEventListener("scroll", function(){
-    el_before.style.height = el_id.scrollTop + 'px'
+    el_thead[0].style.marginLeft = -el_id.scrollLeft + 'px'
   });
 
 

@@ -180,7 +180,7 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
         a['_active'] = false;
         link_store[var_name][v] = linkID;
         id_set[linkID] = false
-        time_store[linkID] = Date.parse(dt);
+        time_store[linkID] = sDateParse(dt);
         linkID++;
 
       } else if (s == 1 && dist[var_name][v] == 1){
@@ -202,7 +202,7 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
         // - Duration is stored to later assign to off event
         a['_linkID'] = link_store[var_name][v]
         id_set[a['_linkID']] = true
-        var dur = time_store[a['_linkID']] - Date.parse(dt)
+        var dur = time_store[a['_linkID']] - sDateParse(dt)
         a['_duration'] = dur // value in ms
         a['_durtxt'] = dhms(dur) // value in dhms
         time_store[a['_linkID']] = dur
@@ -239,6 +239,14 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
   };
 };
 
+// For safari
+function sDateParse(date){
+  date = date.replace(/-/g,'/')
+  date = date.split('.')
+
+  var d = new Date(date[0]);
+  return Date.parse(d)+parseInt(date[1]);
+}
 
 // Function: Convert ms to dhms string format ----------------------------------
 function dhms(ms) {

@@ -23,7 +23,6 @@ const alarmlist_settings = {
 
 function ready(){
   console.timeEnd('Document ready')
-  console.timeLog('----Ready')
   console.time('Data')
   getData_home()
 }

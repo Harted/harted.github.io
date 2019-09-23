@@ -5,12 +5,25 @@ console.time('Less ready')
 // USER AGENT ------------------------------------------------------------------
 var userAgent = getUserAgent();
 
+if (userAgent != 'Chrome' && false) {
+
+  var str = "This browser is not tested (yet)! \n\n"
+  str += "Use Google Chrome for the best experience.\n"
+  str += "(click cancel to continue to website)"
+
+  if (window.confirm(str)) {
+    window.location.href = "https://www.google.com/chrome/"
+  }
+
+  // window.alert('This browser is not tested!: \n
+  // Use Google Chrome for the best experience
+  // \n\n https://www.google.com/chrome/')
+}
+
 // Funtion
 function getUserAgent() {
 
   var UA = navigator.userAgent || navigator.vendor || window.opera;
-
-
 
   if (/windows phone/i.test(UA)) {
     return 'WindowsPhone';
