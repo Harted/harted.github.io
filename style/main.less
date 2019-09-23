@@ -349,14 +349,17 @@ body {
               top:@table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
               left:0;
               width: auto;
-              height: 0px;
-              transition: 500ms;
+              max-height: 0px;
+              transition: 100ms;
               background-color: @color_dark;
               box-shadow: 0px 3px 2px 0px rgba(0, 0, 0, 0.3);
-              overflow-y: scroll;
-              max-height: 300px;
+              overflow: hidden;
+              cursor: default;
               div {
                 padding: 2px 10px 2px 2px;
+              }
+              label, input{
+                cursor: pointer;
               }
             }
             &:last-child .filterbox{

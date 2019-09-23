@@ -24,7 +24,7 @@ const alarmlist_settings = {
 function ready(){
   console.timeEnd('Document ready')
   console.time('Data')
-  getData_home()
+  getData()
 }
 
 // Less finished ---------------------------------------------------------------
@@ -45,7 +45,7 @@ function getData(){
   $.ajax({
     url: '/script/ajax.php',
     type: "GET", // or "GET"
-    data: 'stn=CLF3037:CMP310:CMP311:CMP305&sev=A:B:C:D&lbt=8/24',
+    data: 'stn=CLF3037&sev=A:B:C:D&lbt=1/24',
     cache: false,
     dataType: "json",
     success: function(data) {
@@ -111,11 +111,11 @@ function processData(data) {
 
   flex();
 
-  headsize();
+  tablesize();
 
+  filterbox();
 
-
-  arrows();
+  filter();
 
 
   $('.fade').css({'opacity': 1});

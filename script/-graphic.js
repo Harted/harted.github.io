@@ -12,9 +12,9 @@ function alfaLogo(){
 }; alfaLogo();
 
 
-// TH ARROWS -------------------------------------------------------------------
-function arrows(){
-  // svg in object format
+// TH filterbox ----------------------------------------------------------------
+function filterbox(){
+  // ARROW SVG ------------------------------------------------------------
   var arrow_svg = {
     viewbox : "0 0 100 100",
     down: "M94.33,25.33c2.75,0,3.41,1.59,1.46,3.54L53.54,71.13c-1.94,1.94-5.13"
@@ -26,64 +26,56 @@ function arrows(){
   $('#alarmlist th div svg').attr('viewBox',arrow_svg.viewbox)
   $('#alarmlist th div path').attr('d',arrow_svg.down).addClass('down')
 
-  // click event
+  // CLICK EVENT ----------------------------------------------------------
+
+  var active = undefined;
+
   $('.th-overlay').click(function(event){
 
-    // populate object with needed info
-    var overlay = {
-      table_id : $(this).closest('.table-scroll').attr('id'),
-      id : $(this).attr('id'),
+    // populate object with needed info ------------------------------
+    var ol = {
+      table_id : '#' + $(this).closest('.table-scroll').attr('id'),
+      fb : $(this).parent().find('.filterbox'),
+      path : $(this).find('path')
     }
-    overlay['alarm_obj_id'] = overlay.id.replace('_overlay','') //needed later for filtering
-    overlay['path'] = '#' + overlay.table_id + ' #' + overlay.id + ' path'
-    overlay['current'] = $(overlay.path).attr('class')
-
-    //change arrow on click -> future show filter div
-    if (overlay.current == 'down'){
-      $(overlay.path).attr('d',arrow_svg.up)
-      .attr('class','up')
-      $(this).parent().find('.filterbox').css('height','auto');
-    } else {
-      $(overlay.path).attr('d',arrow_svg.down)
-      .attr('class','down')
-      $(this).parent().find('.filterbox').css('height','0px');
-    };
-
-    //change all other arrows to down
-    var other_ol = $('#' + overlay.table_id + ' .th-overlay')
-
-    for (var i = 0; i < other_ol.length; i++) {
-      var id = $(other_ol[i]).attr('id')
-      if ( id != overlay.id){
-
-        $('#' + overlay.table_id + ' #' + id + ' path')
-        .attr('d',arrow_svg.down).attr('class','down')
-
-        $('#' + overlay.table_id + ' #' + id).parent().find('.filterbox').css('height','0px');
-
-      };
-
-    };
+    // - state of the arrow (up/down)
+    // - height of the table overlay = max-height filterbox
+    ol.state = $(ol.path).attr('class')
+    ol.max = $(ol.table_id).parent().find('.table-overlay').css('height')
 
 
-    // NOTE: Glithc when scrolling - try to fix header again!!!!!
+    // HIDE ACTIVE if there's one ------------------------------------
+    if (active != undefined) { hide(active); active = undefined; };
 
 
+    // TOGGLE --------------------------------------------------------
+    if (ol.state == 'down'){                                            // SHOW
 
+      // Change class to up (= state)
+      $(ol.path).attr('d',arrow_svg.up).attr('class','up')
 
+      // Set filerbox max height and overflow hidden
+      // so the overflow is hidden when the animation happens
+      ol.fb.css({'max-height': ol.max, 'overflow':'hidden'})
 
-    $(this).parent().find('.filterbox').mouseenter(function(){
-      $(this).mouseleave(function(){
-        $(overlay.path).attr('d',arrow_svg.down)
-        .attr('class','down')
-        $(this).parent().find('.filterbox').css('height','0px');
-        $(this).off('mouseleave')
+      // show scrollbar if needed on transition end
+      $(this).parent().off('transitionend').one('transitionend', function(){
+        ol.fb.css('overflow','auto');
       })
-    })
+
+      // store the active filterbox to hide when click on other
+      active = {path: ol.path, fb: ol.fb}
+
+    } else { hide(ol); active = undefined;};                            // HIDE
 
 
-
-
+    // function to hide the filterbox---------------------------------
+    function hide(o){
+      // Change class to down (= state)
+      $(o.path).attr('d',arrow_svg.down).attr('class','down')
+      // Set filerbox max height to 0 and overflow to hidden
+      o.fb.css({'max-height': 0, 'overflow':'hidden'})
+    }
 
   });
 };

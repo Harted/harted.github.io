@@ -40,46 +40,35 @@ function table(settings, data){
       // caption (text)
       table += '<th><span>' + settings.cols[col] + '</span>'
 
-      // filterbox ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      // filterbox +++++++++++++++++++++++++++++++++++++++++++++++++++
       table += '<div class="filterbox" id="' + col + '_filter">'
       table += '<div class="filtertext">'
 
-
       // make distinct list
       var dis = distinct(data)[col]
-      console.log(dis);
-
       var arr = []
 
       for (var el in dis) {
         if (dis.hasOwnProperty(el)) {
-          if (el == '') {
-            el = '-blanks-'
-          }
+
+          // replace blanks with '-blanks-'
+          if (el == '') {el = '-blanks-'}
+          // fill an array
           arr.push(el)
         }
       }
 
+      // Sort the array
       arr.sort()
 
-      console.log(arr);
-
+      // make the filterlist
       for (var i = 0; i < arr.length; i++) {
-        table += '<div><input type="checkbox" Checked>' + arr[i] + '</input></div>'
+        table += '<div><label for="' + arr[i] + '"><input type="checkbox" id="' + arr[i] + '" checked>'
+        table += arr[i] + '</label></div>'
       }
-      //
-
 
       table += '</div></div>'
-
-
-
-
-
-
-
-
-
+      // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
       // div overlay+++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -101,58 +90,63 @@ function table(settings, data){
 
 
   // BODY -----------------------------------------------------------------
-  // new table for body
-  table += '<table class="table-body"><body>'
 
-  // for every record in array
-  for (let i = 0; i < data.length; i++){
-    table += '<tr class="' + data[i].severity + ' ' + data[i]._type + ' '
-    // table += 'linkID_' + data[i]._linkID + ' '
-    // table += data[i].statetxt + ' '
+  table += '<table class="table-body">'
 
-    // active
-    if (data[i]._active) {
-      table += 'active '
-    }
+  this.makeBody = function(d){
+    var body = '<body>'
 
-    // title (info on mouse over)
-    table += '" title="'
-    table += 'Duration : ' + data[i]._durtxt + '\n'
-    table += 'Variable : ' + data[i]._var
+    // for every record in array
+    for (let i = 0; i < d.length; i++){
+      body += '<tr class="' + d[i].severity + ' ' + d[i]._type + ' '
 
-    table += '" id="linkID_' + data[i]._linkID + '_' + data[i].statetxt
-
-    table += '" text="' + data[i]._durtxt
-
-    table += '">'
-
-    // var names in settings are the names of which variables you want
-    // to fetch and place in table. (col = var name)-> so the order of the
-    // header and the data is always the same.
-    // If there would be a mistake in the var name in the settings object
-    // there will be no data in the collumn.
-
-    j = 0 // reset index for getting th maximum string lenght
-
-    for (var col in settings.cols) {
-      if (data[i].hasOwnProperty(col)) {
-        // min-width based on th string length
-        table += '<td style="min-width:' + th_min_w[j] + 'px;"> '
-        // text
-        table += '<span>' + data[i][col] + '</span></td>'
-      } else {
-        // when there's nothing available
-        table += '<td>-n/a-</td>'
+      // active
+      if (d[i]._active) {
+        body += 'active '
       }
-      j++
+
+      // title (info on mouse over)
+      body += '" title="'
+      body += 'Duration : ' + d[i]._durtxt + '\n'
+      body += 'Variable : ' + d[i]._var
+
+      body += '" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt
+
+      body += '" text="' + d[i]._durtxt
+
+      body += '">'
+
+      // var names in settings are the names of which variables you want
+      // to fetch and place in table. (col = var name)-> so the order of the
+      // header and the data is always the same.
+      // If there would be a mistake in the var name in the settings object
+      // there will be no data in the collumn.
+
+      j = 0 // reset index for getting th maximum string lenght
+
+      for (var col in settings.cols) {
+        if (d[i].hasOwnProperty(col)) {
+          // min-width based on th string length
+          body += '<td style="min-width:' + th_min_w[j] + 'px;"> '
+          // text
+          body += '<span>' + d[i][col] + '</span></td>'
+        } else {
+          // when there's nothing available
+          body += '<td>-n/a-</td>'
+        }
+        j++
+      }
+      body += '</tr>'
     }
-    table += '</tr>'
+    // close table (body)
+    body += '</body>'
+
+    return body
   }
-  // close table (body)
-  table += '</body></table>'
 
+  table += this.makeBody(data)
 
-
+  table += '</table>'
 
   // OUTPUT ---------------------------------------------------------------
   var el_id = document.getElementById(settings.id.replace('#',''));
@@ -295,10 +289,14 @@ function table(settings, data){
       last_td = obj.find('td').last()
       txt[0] = obj.attr('text')
       txt[1] = last_td.text()
+      txt[2] =   last_td.attr('style')
       last_td.find('span').text(txt[0])
 
-      // Give duration a yellow color
-      last_td.css({'color':'#ED3B41','font-weight':'bold'})
+      // Give duration a style
+      last_td.css({
+        'font-size':'12px','font-weight':'bold', 'color':'#F5F5F5',
+        'filter':'drop-shadow(0px 0px 1px rgba(0, 0, 0, 1))',
+      })
 
       // LINKED EVENT OPACITY
       // Set objects for the linked events (ON & OFF)
@@ -371,7 +369,7 @@ function table(settings, data){
 
       // Reset the state text
       last_td.find('span').text(txt[1])
-      last_td.attr('style','')
+      last_td.attr('style',txt[2])
 
       // Reset the opacities
       for (let i = 1; i < linked_td.length - 1; i++) {
@@ -455,8 +453,8 @@ function table(settings, data){
 };
 
 
-// TABLE HEADSIZE -----------------------------------------------------------
-function headsize(){
+// TABLE HEADSIZE --------------------------------------------------------------
+function tablesize(){
 
   //adjust headsize on tables
   for (var table in tables) {

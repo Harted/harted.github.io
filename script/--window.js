@@ -7,7 +7,7 @@ var userAgent = getUserAgent();
 
 if (userAgent != 'Chrome' && false) {
 
-  var str = "This browser is not tested (yet)! \n\n"
+  var str = "This browser is not supported! \n\n"
   str += "Use Google Chrome for the best experience.\n"
   str += "(click cancel to continue to website)"
 
@@ -55,7 +55,7 @@ window.onresize = function(event){
 
   // user functions ---------------
   flex();
-  headsize();
+  tablesize();
   // ------------------------------
 
 };
