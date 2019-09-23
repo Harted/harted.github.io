@@ -24,7 +24,7 @@ const alarmlist_settings = {
 function ready(){
   console.timeEnd('Document ready')
   console.time('Data')
-  getData()
+  getData_home()
 }
 
 // Less finished ---------------------------------------------------------------
