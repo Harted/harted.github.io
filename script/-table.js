@@ -94,27 +94,28 @@ function table(settings, data){
   table += '<table class="table-body">'
 
   this.makeBody = function(d){
-    var body = '<body>'
+    body = []
+    body.push('<body>')
 
     // for every record in array
     for (let i = 0; i < d.length; i++){
-      body += '<tr class="' + d[i].severity + ' ' + d[i]._type + ' '
+      body.push('<tr class="' + d[i].severity + ' ' + d[i]._type + ' ')
 
       // active
       if (d[i]._active) {
-        body += 'active '
+        body.push('active ')
       }
 
       // title (info on mouse over)
-      body += '" title="'
-      body += 'Duration : ' + d[i]._durtxt + '\n'
-      body += 'Variable : ' + d[i]._var
+      body.push('" title="')
+      body.push('Duration : ' + d[i]._durtxt + '\n')
+      body.push('Variable : ' + d[i]._var)
 
-      body += '" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt
+      body.push('" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt)
 
-      body += '" text="' + d[i]._durtxt
+      body.push('" text="' + d[i]._durtxt)
 
-      body += '">'
+      body.push('">')
 
       // var names in settings are the names of which variables you want
       // to fetch and place in table. (col = var name)-> so the order of the
@@ -127,24 +128,24 @@ function table(settings, data){
       for (var col in settings.cols) {
         if (d[i].hasOwnProperty(col)) {
           // min-width based on th string length
-          body += '<td style="min-width:' + th_min_w[j] + 'px;"> '
+          body.push('<td style="min-width:' + th_min_w[j] + 'px;"> ')
           // text
-          body += '<span>' + d[i][col] + '</span></td>'
+          body.push('<span>' + d[i][col] + '</span></td>')
         } else {
           // when there's nothing available
-          body += '<td>-n/a-</td>'
+          body.push('<td>-n/a-</td>')
         }
         j++
       }
-      body += '</tr>'
+      body.push('</tr>')
     }
     // close table (body)
-    body += '</body>'
+    body.push('</body>')
 
     return body
   }
 
-  table += this.makeBody(data)
+  table += this.makeBody(data).join('')
 
   table += '</table>'
 
