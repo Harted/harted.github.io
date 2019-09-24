@@ -6,31 +6,6 @@ $c = oci_pconnect ('STO_SYS', 'STO_SYS1', 'nvr.gent.vcc.ford.com:49970/DST')
 OR die('Unable to connect to the database. Error: <pre>'
 . print_r(oci_error(),1) . '</pre>');
 
-if (isset($_GET['run'])) {
-
-	// Define the query.
-	$q = "SELECT ALARMDATEANDTIMESTAMP, ALARMSOURCE, ALARMOBJECT,
-	ALARMCOMMENT, ALARMSEVERITY, ALARMSTATUS FROM ALARM_DATA_FINALASS
-	WHERE ALARMSEVERITY NOT LIKE 'E'
-	AND ALARMSOURCE LIKE 'CLF3037','CMP305'
-	AND CHANGETS > SYSTIMESTAMP - 1
-	ORDER BY CHANGETS DESC ";
-
-	// Parse the query.
-	$s = oci_parse($c, $q);
-
-	// // Execute the query.
-	oci_execute($s);
-
-	//fetch all in 2d array
-	oci_fetch_all($s,$data,null,null,OCI_FETCHSTATEMENT_BY_ROW+OCI_NUM );
-
-	//send json encoded data back
-	echo json_encode($data);
-
-};
-
-
 
 if (isset($_GET['stn'])
 && isset($_GET['sev'])
@@ -42,10 +17,12 @@ $lbt_val = (isset($_GET['lbt'])) ? $_GET['lbt'] : '' ;
 $sta_val = (isset($_GET['sta'])) ? $_GET['sta'] : '' ;
 $end_val = (isset($_GET['end'])) ? $_GET['end'] : '' ;
 
-alarmquery($_GET['stn'],$_GET['sev'],$lbt_val,$sta_val,$end_val,$c);
+alarmquery($_GET['stn'],$_GET['sev'],$lbt_val,$sta_val,$end_val, $c);
 
 };
 
+
+// SET UP ALARMQUERY -----------------------------------------------------------
 function alarmquery($stn,$sev,$lbt,$sta,$end, $c){
 
 	$stn_arr = preg_split('/:/',$stn);
@@ -80,27 +57,48 @@ function alarmquery($stn,$sev,$lbt,$sta,$end, $c){
 
 
 	//alarm query first part
-	$Q = "SELECT ALARMDATEANDTIMESTAMP, ALARMSOURCE, ALARMOBJECT,
+	$q = "SELECT ALARMDATEANDTIMESTAMP, ALARMSOURCE, ALARMOBJECT,
 	ALARMCOMMENT, ALARMSEVERITY, ALARMSTATUS FROM ALARM_DATA_FINALASS WHERE ";
 
 	//time (always)
-	$Q .= "CHANGETS > SYSTIMESTAMP - " . $lbt . " ";
+	$q .= "CHANGETS > SYSTIMESTAMP - " . $lbt . " ";
 
 	//Station
-	$Q .= "AND " . $stn_str . " ";
+	$q .= "AND " . $stn_str . " ";
 
 	//Severity
-	$Q .= "AND " . $sev_str . " ";
+	$q .= "AND " . $sev_str . " ";
 
-	$Q .= "ORDER BY CHANGETS DESC ";
+	$q .= "ORDER BY CHANGETS DESC ";
 
-	//echo $Q . '<br><br><br><br><br>';
+	//echo $q . '<br><br><br><br><br>';
 
-	$s = oci_parse($c, $Q);
+	request($q, $c);
+
+
+};
+
+
+// STATIONS QUERY --------------------------------------------------------------
+if (isset($_GET['stations'])){
+
+	$q = "SELECT DISTINCT(ALARMSOURCE) FROM ALARM_DATA_FINALASS
+	ORDER BY ALARMSOURCE";
+
+	request($q, $c);
+
+};
+
+
+
+
+// ORACLE REQUEST AND ECHO BACK ------------------------------------------------
+function request($q, $c){
+
+	$s = oci_parse($c, $q);
 	oci_execute($s);
 	oci_fetch_all($s,$data,null,null,OCI_FETCHSTATEMENT_BY_ROW+OCI_NUM );
 	echo json_encode($data);
-
 
 };
 

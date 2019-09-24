@@ -66,8 +66,10 @@ function table(settings, data){
       // filterbox +++++++++++++++++++++++++++++++++++++++++++++++++++
       table += '<div class="filterbox" id="' + col + '_filter">'
 
-      if(col.search('_') < 0) {
+      table += '<div class="fltrbtn" id="one">One</div>'
+      table += '<div class="fltrbtn" id="all">All</div>'
 
+      if(col.search('_') < 0) {
 
         table += '<div class="filtertext">'
 
@@ -75,6 +77,7 @@ function table(settings, data){
         var dis = distinct(data)[col]
         var arr = []
 
+        // fill array to sort
         for (var el in dis) {
           if (dis.hasOwnProperty(el)) {
 
@@ -92,9 +95,9 @@ function table(settings, data){
         for (var i = 0; i < arr.length; i++) {
 
           //for jquery id referencing
-          var usid = arr[i].replace(/[ \/\:\.\-\+\,]/g,'')
+          var usid = arr[i].replace(/[ \/\:\.\-\+\,\?\&]/g,'_')
 
-          table += '<div><label for="' + usid + '">'
+          table += '<div class="visible"><label for="' + usid + '">'
           table += '<input type="checkbox" id="' + usid + '" checked>'
           table += arr[i] + '</label></div>'
 
@@ -224,91 +227,105 @@ function table(settings, data){
 
 
   // HOVER ----------------------------------------------------------------
-  var body_tr = $(settings.id + ' tbody tr') // body table row object
+  var body_tr // body table row object
 
   var id // to store id (array) [LinkID_ , n , ON/OFF]
   var id_int // to store id integer ('n' of previous)
 
-  var freeze = false // to set true on click to freeze visual link
+  var freeze // to set true on click to freeze visual link
   var stored_id, stored_obj // to store id and obj on click
 
   var last_td // to store last_td obj for duration output
   var txt = [] // to store text
 
-  // Get the line object to output the html
-  var lineobj = $(settings.id).prev('.table-overlay').find('#line')
+  var lineobj // line object to output the html
 
 
   // ON HOVER --------------------------------------------------------
-  body_tr.hover(
-    function(){
+  this.setHover = function(external){
 
-      // add click event on mouseenter
-      $(this).on('click', onclick)
+    // when triggerd from filter and if one is fixed when applying filter
+    // set stored_id to false, therwise freezing doesn't work
+    // also hide the link =)
+    if (external) {stored_id = undefined;lineobj.css('display','none')}
 
-      // FREEZE ON CLICK (disable the mouseenter event on other tr's)
-      function onclick(){
-        if (stored_id == undefined || stored_id == $(this).attr('id')) {
-          if(freeze){
+    body_tr = $(settings.id + ' tbody tr')
+    freeze = false
+    lineobj = $(settings.id).prev('.table-overlay').find('#line')
 
-            // CLICK ON THIS OBJECT when freezed
-            // reset stored id & object, set freeze to false, remove shadow
-            stored_id = undefined ; stored_obj = undefined ; freeze = false;
-            $(this).next().css('box-shadow', 'none')
-            $(this).prev().css('box-shadow', 'none')
-          } else {
+    body_tr.hover(
+      function(){
 
-            freeze = true // freeze is true: disable actions on hover
+        // add click event on mouseenter
+        $(this).on('click', onclick)
 
-            // store id & object that has been clicked
-            stored_id = $(this).attr('id')
-            stored_obj = $(this)
 
-            // box shadow to show it's freezed (clicked in it seems
-            $(this).next()
-            .css('box-shadow', 'inset 0px 6px 7px -5px rgba(0,0,0,0.5)')
 
-            $(this).prev()
-            .css('box-shadow', 'inset 0px -6px 7px -5px rgba(0,0,0,0.5)')
+        // FREEZE ON CLICK (disable the mouseenter event on other tr's)
+        function onclick(){
+          console.log(stored_id);
+          if (stored_id == undefined || stored_id == $(this).attr('id')) {
+            if(freeze){
 
-          }
-        } else if (stored_id != undefined && freeze) {
+              // CLICK ON THIS OBJECT when freezed
+              // reset stored id & object, set freeze to false, remove shadow
+              stored_id = undefined ; stored_obj = undefined ; freeze = false;
+              $(this).next().css('box-shadow', 'none')
+              $(this).prev().css('box-shadow', 'none')
+            } else {
 
-          // CLICK ON OTHER OBJECT when freezed
-          freeze = false
+              freeze = true // freeze is true: disable actions on hover
 
-          // Execute mouseleave on freezed object and mouseenter on this one
-          mouseleave(stored_obj); mouseenter($(this));
+              // store id & object that has been clicked
+              stored_id = $(this).attr('id')
+              stored_obj = $(this)
 
-          // Remove shadow
-          stored_obj.next().css('box-shadow', 'none')
-          stored_obj.prev().css('box-shadow', 'none')
+              // box shadow to show it's freezed (clicked in it seems
+              $(this).next()
+              .css('box-shadow', 'inset 0px 6px 7px -5px rgba(0,0,0,0.5)')
 
-          // reset stored id & object
-          stored_id = undefined; stored_obj = undefined
+              $(this).prev()
+              .css('box-shadow', 'inset 0px -6px 7px -5px rgba(0,0,0,0.5)')
 
+            }
+          } else if (stored_id != undefined && freeze) {
+
+            // CLICK ON OTHER OBJECT when freezed
+            freeze = false
+
+            // Execute mouseleave on freezed object and mouseenter on this one
+            mouseleave(stored_obj); mouseenter($(this));
+
+            // Remove shadow
+            stored_obj.next().css('box-shadow', 'none')
+            stored_obj.prev().css('box-shadow', 'none')
+
+            // reset stored id & object
+            stored_id = undefined; stored_obj = undefined
+
+          };
         };
-      };
 
-      // DON'T execute actions when freeze = true
-      if (freeze) {return;}
+        // DON'T execute actions when freeze = true
+        if (freeze) {return;}
 
-      mouseenter($(this)) // ++++++++++MOUSE ENTER++++++++++++
+        mouseenter($(this)) // ++++++++++MOUSE ENTER++++++++++++
 
-    },
-    function(){
+      },
+      function(){
 
-      // remover click event on mouseleave
-      // (otherwise there are new ones on each hover.. )
-      $(this).off('click')
+        // remover click event on mouseleave
+        // (otherwise there are new ones on each hover.. )
+        $(this).off('click')
 
-      // DON'T execute actions when freeze = true
-      if (freeze) {return;}
+        // DON'T execute actions when freeze = true
+        if (freeze) {return;}
 
-      mouseleave($(this)) // ++++++++++MOUSE LEAVE++++++++++++
+        mouseleave($(this)) // ++++++++++MOUSE LEAVE++++++++++++
 
-    }
-  );
+      }
+    );
+  }; this.setHover(false);
 
 
   // MOUSE ENTER -----------------------------------------------------

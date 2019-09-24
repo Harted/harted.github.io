@@ -234,6 +234,7 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
         // - Assing not available and -1
         a['_duration'] = -1
         a['_durtxt'] = 'n/a'
+        a._linkID = -1
       };
     };
   };

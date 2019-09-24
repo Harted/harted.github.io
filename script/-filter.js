@@ -52,7 +52,7 @@ function filterbox(){
       // store the active filterbox to hide when click on other
       active = {path: ol.path, fb: ol.fb}
 
-    } else { hide(ol, true); active = undefined;};                            // HIDE
+    } else { hide(ol, true); active = undefined;};                      // HIDE
 
 
     // function to hide the filterbox---------------------------------
@@ -68,6 +68,8 @@ function filterbox(){
         applyFilter(filtered);
         flex();
         tablesize();
+        //restore hover
+        tables[0].setHover(true)
         console.timeEnd('apply filter')
       }
 
@@ -79,119 +81,125 @@ function filterbox(){
 
 var filtered, fltr, fltr_mem
 
-
+// FILTER FUNCTION -------------------------------------------------------------
 function filter(alarms){
 
-  $('.filterbox input').on('click', updatefilter)
+  $('.filterbox input').on('click', function(){updatefilter(this)})
+  $('.filterbox #one').on('mousedown', selectpress)
+  .on('mouseup', function(){select(this, false)})
+  $('.filterbox #all').on('mousedown', selectpress)
+  .on('mouseup', function(){select(this, true)})
 
   fltr = distinct(alarms);
   var hidden = distinct(alarms)
 
-  // set al disinct values true
-  for (var obj in fltr) {
-    if (fltr.hasOwnProperty(obj)) {
-      for (var o in fltr[obj]) {
-        if (fltr[obj].hasOwnProperty(o)) {
-          fltr[obj][o] = true
+  fltr = setFltrObj(fltr,true)
+  hidden = setFltrObj(hidden,false)
+
+  // Remember to know if filter has changed
+  fltr_mem = JSON.stringify(fltr)
+
+
+  dsblInput(hidden)
+
+  // Disable input function -----------------------------------------------
+  // If there's only one true disable input
+  function dsblInput(obj){
+    for (var l1 in obj) {
+      if (obj.hasOwnProperty(l1) && l1.search('_') < 0) {
+        var viscnt = 0
+        for (var l2 in obj[l1]) {
+          if (obj[l1].hasOwnProperty(l2)) {
+            if(obj[l1][l2] == false){viscnt++}
+          }
+        }
+
+        var i_obj = $('#' + l1 + '_filter input')
+
+        if (viscnt == 1) {
+          for (var i = 0; i < i_obj.length; i++) {
+            s_i_obj = $(i_obj[i])
+
+            if (s_i_obj.prop('checked') == true){
+              s_i_obj.prop('disabled',true)
+            } else {
+              s_i_obj.prop('disabled',false)
+            }
+
+          }
+        } else {
+          i_obj.prop('disabled',false)
         }
       }
     }
   }
 
-  // Remember to know if filter has changed
-  fltr_mem = JSON.stringify(fltr)
+  // Update filer function ------------------------------------------------
+  function updatefilter(target){
 
-  function updatefilter(){
+    target = $(target)
 
     // Set state of checkbox, text and filtered column when click on this
-    var st = $(this).prop('checked')
-    var txt = $(this).parent().text();
-    var col_id = $(this).parents().eq(3)
+    var st = target.prop('checked')
+    var txt = target.parent().text();
+    var col_id = target.parents().eq(3)
     var col = col_id.attr('id').replace('_filter','')
 
-    var col_fltrd = {}
-
-    // Set the state in the filter object
+    // Set the state in the filter object for current clikced checkbox
     fltr[col][txt] = st
 
-    // check if a collumn is filtered so items can't be hidden (filtertree)
-    for (var flt in fltr) {
-      if (flt.search('_') < 0) {
-        if (fltr.hasOwnProperty(flt)) {
-          col_fltrd[flt] = false
-          for (var item in fltr[flt]) {
-            if (fltr[flt].hasOwnProperty(item)) {
-              if (fltr[flt][item] == false) {
-                col_fltrd[flt] = true
-              }
-            }
-          }
-        }
-      }
-    }
-
-
-    console.log(col_fltrd)
-
-    // Where the filtered alarms have to come
+    // var for filtered alarms
     filtered = []
 
-    // Filter the alarms
+    // Filter the alarms ---------------------------------------------
     for (let i = 0; i < alarms.length; i++) {
 
+      // check if all filterable elements in a row are checked
       var all_checked = true
-
       for (let col in alarms[i]) {
         if (alarms[i].hasOwnProperty(col) && col.search('_') < 0) {
+          // If one is false it's enough to set all_checked true
           if(fltr[col][alarms[i][col]] == false){ all_checked = false; break;}
         }
       }
 
-
+      // if all are checked push in filtered alarm array
       if (all_checked) {filtered.push(alarms[i])}
 
     }
 
-    // reset hidden all to true
-    for (var obj in hidden) {
-      if (obj.search('_') < 0) {
-        if (hidden.hasOwnProperty(obj)) {
-          for (var o in hidden[obj]) {
-            if (hidden[obj].hasOwnProperty(o) && col_fltrd[obj] == false) {     //////// HIER BEN IK BEZIG
-              hidden[obj][o] = true
-            }
-          }
-        }
-      }
-    }
+    hidden = setFltrObj(hidden,true)
 
     // Hide connected filteritems
     // - Go trough filtered alarms
     for (let i = 0; i < filtered.length; i++) {
       for (let o in filtered[i]) {
-        if (o.search('_') < 0) {
-          // - If the filtered alarms has the object set hidden to false
-          if (hidden.hasOwnProperty(o)) {
-            hidden[o][filtered[i][o]] = false
+        if (filtered[i].hasOwnProperty(o) && o.search('_') < 0) {
+
+          if (hidden[o].hasOwnProperty(filtered[i][o])) {
+
+            if (hidden[o][filtered[i][o]]) {
+              hidden[o][filtered[i][o]] = false
+            }
+
           }
         }
       }
     }
 
-    //console.log(hidden);
 
     var obj
 
-    var this_id = $(this).parents().eq(3).attr('id').replace('_filter','')
-
     for (var h in hidden) {
       if (hidden.hasOwnProperty(h)) {
-        if (h.search('_') < 0 && h != this_id ) {
+        if (h.search('_') < 0 && h) {
+
+
           for (var id in hidden[h]) {
             if (hidden[h].hasOwnProperty(id)) {
 
               if (id == '') {id = '-blanks-'}
-              var usid = id.replace(/[ \/\:\.\-\+\,]/g,'')
+              var usid = id.replace(/[ \/\:\.\-\+\,\?\&]/g,'_')
 
               var jqstr = '#' + h + '_filter #' + usid
 
@@ -201,16 +209,78 @@ function filter(alarms){
                 console.log('Undefined ID: ',usid, obj)
               }
 
-              if (hidden[h][id]) {
-                obj.parent().parent().css({'display':'none','padding':0})
+              if (hidden[h][id] && fltr[h][id]) {
+                obj.parent().parent().addClass('hidden')
+                obj.parent().parent().removeClass('visible')
+
+
               } else {
-                obj.parent().parent().removeAttr('style')
+                obj.parent().parent().addClass('visible')
+                obj.parent().parent().removeClass('hidden')
               }
+
             }
           }
         }
       }
     }
+
+    dsblInput(hidden)
+
+    // Give blue color when filter is active
+    for (var list in fltr) {
+      if (fltr.hasOwnProperty(list)) {
+        for (var chkbx in fltr[list]) {
+          if (fltr[list].hasOwnProperty(chkbx)) {
+            var onefalse = false
+            if (fltr[list][chkbx] == false) { onefalse = true; break;}
+          }
+        }
+      }
+
+      lst_obj = $('#' + list + '_filter').parent().find('span')
+
+      if (onefalse) {
+        lst_obj.addClass('filtered')
+      } else {
+        lst_obj.removeClass('filtered')
+      }
+    }
+
+
+  }
+
+  var fltrbtn_css = {
+    "color":"#F5F5F5",
+    "box-shadow": 'inset 0px 0px 3px 1px rgba(0,0,0,0.5)'
+  }
+
+  function selectpress(){$(this).css(fltrbtn_css)}
+
+  function select(target, all){
+
+    target = $(target)
+
+    var p = target.parent('div')
+    var p_id = p.attr('id')
+    var vis = $(p).find('.visible').find('input');
+
+    var inputs = $(vis)
+
+    console.log(inputs)
+
+    // Note: ge moogt enke de visible inputs aanzetten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    if (inputs.length > 1){
+      $(inputs[0]).prop('checked', true); updatefilter(inputs[0])
+      for (var i = 1; i < inputs.length; i++) {
+        $(inputs[i]).prop('checked', all); updatefilter(inputs[i])
+      }
+    }
+
+    // Reset style of button
+    target.attr('style','')
+
   }
 }
 
@@ -223,4 +293,28 @@ function applyFilter(data){
   // Remember to know if filter has changed
   fltr_mem = JSON.stringify(fltr)
 
+  // set clearformat when previously active
+  if (c.f) {$('tr').addClass('clearformat')}
+
+}
+
+function setFltrObj(obj, bool){
+  // scan first level
+  for (var lvl_1 in obj) {
+    // filter non filter elements
+    if (lvl_1.search('_') < 0) {
+      // if property is present
+      if (obj.hasOwnProperty(lvl_1)) {
+        // scan level 2
+        for (var lvl_2 in obj[lvl_1]) {
+          // if property is present
+          if (obj[lvl_1].hasOwnProperty(lvl_2)) {
+            // set objects with bool value
+            obj[lvl_1][lvl_2] = bool
+          }
+        }
+      }
+    }
+  }
+  return obj
 }

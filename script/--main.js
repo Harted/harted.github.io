@@ -24,7 +24,7 @@ function getData(){
   $.ajax({
     url: '/script/ajax.php',
     type: "GET", // or "GET"
-    data: 'stn=CLF3037&sev=A:B:C:D&lbt=1/24',
+    data: 'stn=CLF3037:CMP310:CMP311:CMP305&sev=A:B:C:D&lbt=1/24',
     cache: false,
     dataType: "json",
     success: function(data) {
