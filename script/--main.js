@@ -1,25 +1,4 @@
-//table setting object for table() function ------------------------------------
-const alarmlist_settings = {
-  //fool proof check for object to be compatible with table() function
-  obj_type: 'table_t',
-  //div id to output table
-  id: '#alarmlist',
-  //variable names should be object names in the data array
-  //order of variables is also order of collumns in table
-  //strings are header captions
-  cols : {
-    datetime: 'DateTime',
-    station: 'Station',
-    zone: 'Zone',
-    object: 'Object',
-    description: 'Description',
-    comment: 'Comment',
-    severity: 'Sev.',
-    statetxt: 'State',
-  },
-  fontwidth: 6,
-  arrow: 14,
-}
+
 
 function ready(){
   console.timeEnd('Document ready')
@@ -97,7 +76,7 @@ function processData(data) {
     alarms.push(new alarm(data[i]).alarm)
   };
 
-  analyze('alarms','_var','statetxt','_state', 'datetime')
+  analyze('alarms','_var','_statetxt','_state', '_datetime')
 
 
   tables.push(new table(alarmlist_settings, alarms));

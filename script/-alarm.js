@@ -3,7 +3,7 @@ function alarm(data) {
 
   // Alarm part names for object in order of fetched data
   var alarmparts = [
-    'datetime','station', '_var', 'comment', 'severity', '_state'
+    '_datetime','station', '_var', 'comment', 'severity', '_state'
   ];
 
 
@@ -22,7 +22,7 @@ function alarm(data) {
 
   // Set statetxt 0=OFF 1=ON
   var onoff = ['OFF','ON']
-  this.alarm.statetxt = onoff[parseInt(this.alarm._state)]
+  this.alarm._statetxt = onoff[parseInt(this.alarm._state)]
 
   // REGEX expressions
   var rgx = {

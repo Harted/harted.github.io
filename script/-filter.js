@@ -30,8 +30,8 @@ function filterbox(){
     ol.max = $(ol.table_id).parent().find('.table-overlay').css('height')
 
 
-    // HIDE ACTIVE if there's one ------------------------------------
-    if (active != undefined) { hide(active); active = undefined; };
+    // HIDE ACTIVE if there's one when click on other ----------------
+    if (active != undefined) { hide(active, false); active = undefined; };
 
 
     // TOGGLE --------------------------------------------------------
@@ -52,29 +52,23 @@ function filterbox(){
       // store the active filterbox to hide when click on other
       active = {path: ol.path, fb: ol.fb}
 
-    } else { hide(ol); active = undefined;};                            // HIDE
+    } else { hide(ol, true); active = undefined;};                            // HIDE
 
 
     // function to hide the filterbox---------------------------------
-    function hide(o){
+    function hide(o, aplfltr){
       // Change class to down (= state)
       $(o.path).attr('d',arrow_svg.down).attr('class','down')
       // Set filerbox max height to 0 and overflow to hidden
       o.fb.css({'max-height': 0, 'overflow':'hidden'})
 
-      console.log('active: ', filteractive);
-
-      if ((filteractive || filteractive == false && fa_mem == true )&& active == undefined) {
-        console.log('execute');
+      // Aplly filter is filter has changed
+      if (JSON.stringify(fltr) != fltr_mem && aplfltr) {
         console.time('apply filter')
         applyFilter(filtered);
         flex();
         tablesize();
-        fa_mem = filteractive
         console.timeEnd('apply filter')
-
-        // NEXT :::: change filterbox content when applying filters
-
       }
 
     }
@@ -83,22 +77,17 @@ function filterbox(){
 };
 
 
-
-
-var filtered
-var filteractive
-var fa_mem = false
-
-
+var filtered, fltr, fltr_mem
 
 
 function filter(alarms){
 
   $('.filterbox input').on('click', updatefilter)
 
-  var fltr = distinct(alarms)
+  fltr = distinct(alarms);
+  var hidden = distinct(alarms)
 
-  // set al disinct valuus true
+  // set al disinct values true
   for (var obj in fltr) {
     if (fltr.hasOwnProperty(obj)) {
       for (var o in fltr[obj]) {
@@ -109,46 +98,119 @@ function filter(alarms){
     }
   }
 
+  // Remember to know if filter has changed
+  fltr_mem = JSON.stringify(fltr)
+
   function updatefilter(){
 
-
+    // Set state of checkbox, text and filtered column when click on this
     var st = $(this).prop('checked')
     var txt = $(this).parent().text();
-    var col = $(this).parents().eq(3).attr('id').replace('_filter','')
+    var col_id = $(this).parents().eq(3)
+    var col = col_id.attr('id').replace('_filter','')
 
+    var col_fltrd = {}
 
-
+    // Set the state in the filter object
     fltr[col][txt] = st
 
-    filtered = []
-
-
-
-    for (var i = 0; i < alarms.length; i++) {
-
-
-      var item = alarms[i][col]
-      var checked = fltr[col][item]
-
-      if (checked) {filtered.push(alarms[i])}
-
-    }
-
-    filteractive = false
-
-    for (var obj in fltr) {
-      if (fltr.hasOwnProperty(obj)) {
-        for (var o in fltr[obj]) {
-          if (fltr[obj].hasOwnProperty(o)) {
-            if(fltr[obj][o] == false){
-              filteractive = true
+    // check if a collumn is filtered so items can't be hidden (filtertree)
+    for (var flt in fltr) {
+      if (flt.search('_') < 0) {
+        if (fltr.hasOwnProperty(flt)) {
+          col_fltrd[flt] = false
+          for (var item in fltr[flt]) {
+            if (fltr[flt].hasOwnProperty(item)) {
+              if (fltr[flt][item] == false) {
+                col_fltrd[flt] = true
+              }
             }
           }
         }
       }
     }
-    console.log('filter active: ',filteractive)
 
+
+    console.log(col_fltrd)
+
+    // Where the filtered alarms have to come
+    filtered = []
+
+    // Filter the alarms
+    for (let i = 0; i < alarms.length; i++) {
+
+      var all_checked = true
+
+      for (let col in alarms[i]) {
+        if (alarms[i].hasOwnProperty(col) && col.search('_') < 0) {
+          if(fltr[col][alarms[i][col]] == false){ all_checked = false; break;}
+        }
+      }
+
+
+      if (all_checked) {filtered.push(alarms[i])}
+
+    }
+
+    // reset hidden all to true
+    for (var obj in hidden) {
+      if (obj.search('_') < 0) {
+        if (hidden.hasOwnProperty(obj)) {
+          for (var o in hidden[obj]) {
+            if (hidden[obj].hasOwnProperty(o) && col_fltrd[obj] == false) {     //////// HIER BEN IK BEZIG
+              hidden[obj][o] = true
+            }
+          }
+        }
+      }
+    }
+
+    // Hide connected filteritems
+    // - Go trough filtered alarms
+    for (let i = 0; i < filtered.length; i++) {
+      for (let o in filtered[i]) {
+        if (o.search('_') < 0) {
+          // - If the filtered alarms has the object set hidden to false
+          if (hidden.hasOwnProperty(o)) {
+            hidden[o][filtered[i][o]] = false
+          }
+        }
+      }
+    }
+
+    //console.log(hidden);
+
+    var obj
+
+    var this_id = $(this).parents().eq(3).attr('id').replace('_filter','')
+
+    for (var h in hidden) {
+      if (hidden.hasOwnProperty(h)) {
+        if (h.search('_') < 0 && h != this_id ) {
+          for (var id in hidden[h]) {
+            if (hidden[h].hasOwnProperty(id)) {
+
+              if (id == '') {id = '-blanks-'}
+              var usid = id.replace(/[ \/\:\.\-\+\,]/g,'')
+
+              var jqstr = '#' + h + '_filter #' + usid
+
+              obj = $(jqstr)
+
+              if (obj.length == 0) {
+                console.log('Undefined ID: ',usid, obj)
+              }
+
+              if (hidden[h][id]) {
+                obj.parent().parent().css({'display':'none','padding':0})
+              } else {
+                obj.parent().parent().removeAttr('style')
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -157,5 +219,8 @@ function applyFilter(data){
   var newbody = tables[0].makeBody(data)
   var tb = document.getElementsByClassName('table-body')
   tb[0].innerHTML = newbody.join('')
+
+  // Remember to know if filter has changed
+  fltr_mem = JSON.stringify(fltr)
 
 }

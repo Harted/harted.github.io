@@ -1,3 +1,26 @@
+//SETTINGS object for table() function -----------------------------------------
+const alarmlist_settings = {
+  //fool proof check for object to be compatible with table() function
+  obj_type: 'table_t',
+  //div id to output table
+  id: '#alarmlist',
+  //variable names should be object names in the data array
+  //order of variables is also order of collumns in table
+  //strings are header captions
+  cols : {
+    _datetime: 'DateTime', // _ = don't apply filter
+    station: 'Station',
+    zone: 'Zone',
+    object: 'Object',
+    description: 'Description',
+    comment: 'Comment',
+    severity: 'Sev.',
+    _statetxt: 'State',
+  },
+  fontwidth: 6,
+  arrow: 14,
+}
+
 // TABLE FUNCTION --------------------------------------------------------------
 function table(settings, data){
 
@@ -42,32 +65,45 @@ function table(settings, data){
 
       // filterbox +++++++++++++++++++++++++++++++++++++++++++++++++++
       table += '<div class="filterbox" id="' + col + '_filter">'
-      table += '<div class="filtertext">'
 
-      // make distinct list
-      var dis = distinct(data)[col]
-      var arr = []
+      if(col.search('_') < 0) {
 
-      for (var el in dis) {
-        if (dis.hasOwnProperty(el)) {
 
-          // replace blanks with '-blanks-'
-          if (el == '') {el = '-blanks-'}
-          // fill an array
-          arr.push(el)
+        table += '<div class="filtertext">'
+
+        // make distinct list
+        var dis = distinct(data)[col]
+        var arr = []
+
+        for (var el in dis) {
+          if (dis.hasOwnProperty(el)) {
+
+            // replace blanks with '-blanks-'
+            if (el == '') {el = '-blanks-'}
+            // fill an array
+            arr.push(el)
+          }
         }
+
+        // Sort the array
+        arr.sort()
+
+        // make the filterlist
+        for (var i = 0; i < arr.length; i++) {
+
+          //for jquery id referencing
+          var usid = arr[i].replace(/[ \/\:\.\-\+\,]/g,'')
+
+          table += '<div><label for="' + usid + '">'
+          table += '<input type="checkbox" id="' + usid + '" checked>'
+          table += arr[i] + '</label></div>'
+
+        }
+
+        table += '</div>'
       }
 
-      // Sort the array
-      arr.sort()
-
-      // make the filterlist
-      for (var i = 0; i < arr.length; i++) {
-        table += '<div><label for="' + arr[i] + '"><input type="checkbox" id="' + arr[i] + '" checked>'
-        table += arr[i] + '</label></div>'
-      }
-
-      table += '</div></div>'
+      table += '</div>'
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -111,7 +147,7 @@ function table(settings, data){
       body.push('Duration : ' + d[i]._durtxt + '\n')
       body.push('Variable : ' + d[i]._var)
 
-      body.push('" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt)
+      body.push('" id="linkID_' + d[i]._linkID + '_' + d[i]._statetxt)
 
       body.push('" text="' + d[i]._durtxt)
 
