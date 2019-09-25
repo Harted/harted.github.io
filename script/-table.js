@@ -48,10 +48,15 @@ function table(settings, data){
   // otherwise scrolling would be glitchy because the before row heigth is
   // constantly changed by scrolling
   table += '<table class="table-head"><thead>'
+
   // row before use for fixed header with scrolling
   // table += '<tr class="before"></tr>'
   // visible header ++++
   table += '<tr>'
+
+  //prepare distinct data for filter
+  var dist_f = distinct(data)
+
   // get collumn header names from settings
   for (var col in settings.cols) {
     if (settings.cols.hasOwnProperty(col)) {
@@ -66,20 +71,23 @@ function table(settings, data){
       // filterbox +++++++++++++++++++++++++++++++++++++++++++++++++++
       table += '<div class="filterbox" id="' + col + '_filter">'
 
-      table += '<div class="fltrbtn" id="one">One</div>'
-      table += '<div class="fltrbtn" id="all">All</div>'
-
+      // only add filter items on collumns without an underscore
       if(col.search('_') < 0) {
 
+        // One & All buttons
+        table += '<div class="fltrbtn" id="one">One</div>'
+        table += '<div class="fltrbtn" id="all">All</div>'
+
+        // Filter checkboxes
         table += '<div class="filtertext">'
 
         // make distinct list
-        var dis = distinct(data)[col]
+        var elements = dist_f[col]
         var arr = []
 
         // fill array to sort
-        for (var el in dis) {
-          if (dis.hasOwnProperty(el)) {
+        for (var el in elements) {
+          if (elements.hasOwnProperty(el)) {
 
             // replace blanks with '-blanks-'
             if (el == '') {el = '-blanks-'}
@@ -94,9 +102,11 @@ function table(settings, data){
         // make the filterlist
         for (var i = 0; i < arr.length; i++) {
 
-          //for jquery id referencing
+          //give conpatible id (no spaces and weird signs)
           var usid = arr[i].replace(/[ \/\:\.\-\+\,\?\&]/g,'_')
 
+          //set input id, text and the label link
+          //label link needed for click on text to toggle
           table += '<div class="visible"><label for="' + usid + '">'
           table += '<input type="checkbox" id="' + usid + '" checked>'
           table += arr[i] + '</label></div>'
@@ -139,6 +149,7 @@ function table(settings, data){
     // for every record in array
     for (let i = 0; i < d.length; i++){
       body.push('<tr class="' + d[i].severity + ' ' + d[i]._type + ' ')
+      body.push('visible ')
 
       // active
       if (d[i]._active) {
