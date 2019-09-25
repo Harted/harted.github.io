@@ -26,22 +26,25 @@ alarmquery($_GET['stn'],$_GET['sev'],$lbt_val,$sta_val,$end_val, $c);
 function alarmquery($stn,$sev,$lbt,$sta,$end, $c){
 
 	$stn_arr = preg_split('/:/',$stn);
-	$stn_str = '(';
 
-	for ($i=0; $i < count($stn_arr); $i++) {
-		$stn_str .= "ALARMSOURCE LIKE '" . $stn_arr[$i] . "'";
-		if (count($stn_arr) > 1 && $i < count($stn_arr) - 1) {
-			$stn_str .= " OR ";
+	if (strlen($stn_arr[0]) > 0) {
+
+		$stn_str = "AND" . " (";
+
+		for ($i=0; $i < count($stn_arr); $i++) {
+			$stn_str .= "ALARMSOURCE LIKE '" . $stn_arr[$i] . "'";
+			if (count($stn_arr) > 1 && $i < count($stn_arr) - 1) {
+				$stn_str .= " OR ";
+			};
 		};
-	};
 
-	$stn_str .= ')';
+		$stn_str .= ") " ;
 
-
+	} else { $stn_str = ""; };
 
 	$sev_arr = preg_split('/:/',$sev);
 
-	$sev_str = '(';
+	$sev_str = "AND" . " (";
 
 	for ($i=0; $i < count($sev_arr); $i++) {
 		$sev_str .= "ALARMSEVERITY LIKE '" . $sev_arr[$i] . "'";
@@ -64,10 +67,10 @@ function alarmquery($stn,$sev,$lbt,$sta,$end, $c){
 	$q .= "CHANGETS > SYSTIMESTAMP - " . $lbt . " ";
 
 	//Station
-	$q .= "AND " . $stn_str . " ";
+	$q .= $stn_str . " ";
 
 	//Severity
-	$q .= "AND " . $sev_str . " ";
+	$q .= $sev_str . " ";
 
 	$q .= "ORDER BY CHANGETS DESC ";
 

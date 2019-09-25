@@ -3,7 +3,7 @@
 function ready(){
   console.timeEnd('Document ready')
   console.time('Data')
-  getData_home()
+  getData()
 }
 
 // Less finished ---------------------------------------------------------------
@@ -15,32 +15,50 @@ less.pageLoadFinished.then(
 );
 
 // AJAX ------------------------------------------------------------------------
-var base_data = [];
+var data = [];
 var tables = [];
 var alarms = [];
+
+var stn = ['CLF3037','CMP310','CMP311','CMP305']
+var stn_str = stn.join(':')
+
+var sev = ['A','B','C','D']
+var sev_str = sev.join(':')
+
+var lbt = '8/24'
+
+console.log(stn_str);
 
 function getData(){
 
   $.ajax({
     url: '/script/ajax.php',
-    type: "GET", // or "GET"
-    data: 'stn=CLF3037:CMP310:CMP311:CMP305&sev=A:B:C:D&lbt=1/24',
+    type: "GET",
     cache: false,
     dataType: "json",
-    success: function(data) {
+    data: {
+      stn: stn_str,
+      sev: sev_str,
+      lbt: lbt,
+    },
+  }).done(function(received) {
 
-      console.timeEnd('Data')
-      console.time('Processing')
-      base_data = data
-      processData(base_data)
-      console.timeEnd('Processing')
-      console.timeEnd('----Ready')
+    console.timeEnd('Data')
+    console.time('Processing')
+    data = received
+    processData(data)
+    console.timeEnd('Processing')
+    console.timeEnd('----Ready')
 
-
-      //getData()
-    }
+  })
+  .fail(function() {console.log("Ajax: error");})
+  .always(function() {console.log("Ajax: complete");
   });
 }
+
+
+
+
 
 function getData_home(){
 
@@ -49,16 +67,15 @@ function getData_home(){
     type: "GET", // or "GET"
     cache: false,
     dataType: "json",
-    success: function(data) {
+    success: function(received) {
 
       console.timeEnd('Data')
       console.time('Processing')
-      base_data = data
+      data = received
       processData(base_data)
       console.timeEnd('Processing')
       console.timeEnd('----Ready')
 
-      //getData()
     }
   });
 }
