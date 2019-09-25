@@ -72,7 +72,7 @@ function getData_home(){
       console.timeEnd('Data')
       console.time('Processing')
       data = received
-      processData(base_data)
+      processData(data)
       console.timeEnd('Processing')
       console.timeEnd('----Ready')
 
