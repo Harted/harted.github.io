@@ -8,7 +8,6 @@ function flex(){ // NOTE: Copy new flex function at work
   //set container to height between header and footer
   el_fc.style.height = (win.iH - hh - fh) + 'px'
 
-
   // OVERFLOW FIX ----------------------------------------------------
   // Set the widht off the flex items so the overflow works correctly
   // with the margins and paddings included

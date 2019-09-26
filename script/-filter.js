@@ -65,40 +65,245 @@ function filterbox(){
 
       // Apply filter when al the filterboxes are hidden
       if(aplfltr){applyFilter()};
-
     }
-
   });
 };
 
-// Store filtered alarms, the filter obj, a memory and an id array
-var filtered, fltr, fltr_mem, id_arr
+
+
+
+// GLOBAL VARS -----------------------------------------------------------------
+var filtered, fltr, fltr_mem, id_arr, hidden, collapsed
+
+// INIT FILTER  ----------------------------------------------------------------
+function initFilter(){
+
+  // clicking on filter chkbox updates filter
+  $('.filterbox input').on('click', function(){
+    updatefilter(this)
+    filter()
+  })
+
+  // click on one button selects one
+  $('.filterbox #one').on('mousedown', selectpress)
+  .on('mouseup', select)
+
+  // clcik on all button selects all
+  $('.filterbox #all').on('mousedown', selectpress)
+  .on('mouseup', select)
+
+  // make filter and hidden object
+  fltr = distinct(alarms);
+  hidden = distinct(alarms)
+
+  // set true/false on filter and hidden object for filter items
+  // no items with underscore included (see: setFltrObj() function)
+  fltr = setFltrObj(fltr,true)
+  hidden = setFltrObj(hidden,false)
+
+  // Remember fltr state to know if filter has changed (see: applyFilter())
+  fltr_mem = JSON.stringify(fltr)
+
+  // Disable input when only one visible chkbox is checked (on load)
+  dsblInput()
+}
+
+
+var last_filtered = []
+var col_mem = undefined
+
+// UPDATE FILTER ---------------------------------------------------------------
+function updatefilter(target){
+
+  // update filter is triggerd by chkbox and all/one buttons
+  target = $(target)
+
+  // Set state of checkbox, text and filtered on give target
+  var st = target.prop('checked')
+  var txt = target.parent().text();
+  var col_id = target.parents().eq(3)
+  var col = col_id.attr('id').replace('_filter','')
+
+  // Set the state in the filter object for current clicked checkbox
+  fltr[col][txt] = st
+
+};
+
+
+// FILTER ----------------------------------------------------------------------
+function filter(){
+
+  console.log('FILTER');
+  // reset var for filtered alarms
+  filtered = []
+  collapsed = []
+
+  // FILTER THE ALARMS ----------------------------------------------------
+  for (let i = 0; i < alarms.length; i++) {
+
+    // check if all filterable elements in a row are checked
+    var all_checked = true
+    for (let col in alarms[i]) {
+      if (alarms[i].hasOwnProperty(col)){
+        // only execute on filter
+        if (col.search('_') < 0) {
+          // If one is false it's enough to set all_checked true
+          if(fltr[col][alarms[i][col]] == false){ all_checked = false; break;}
+        }
+      }
+    }
+
+    // if all are checked push in filtered alarm array
+    if (all_checked) {filtered.push(alarms[i])} else {collapsed.push(alarms[i])}
+
+  }
+
+  // fill id array to later apply visibility: collapse on itmes not in arr
+  id_arr = []
+  for (var i = 0; i < filtered.length; i++) {
+    id_arr.push('linkID_' + filtered[i]._linkID + '_' + filtered[i]._statetxt)
+  }
+
+  // HIDE FILTER ITEMS ----------------------------------------------------
+  // reset hidden object (init all hidden)
+  hidden = setFltrObj(hidden, false)
+
+  // Hide CHECKED filter items who are present in the collapsed list
+  for (let i = 0; i < collapsed.length; i++) {
+
+    for (let o in collapsed[i]) {
+      if (collapsed[i].hasOwnProperty(o)){
+        // only check for filtered items in filtered list (not underscored)
+        if ( o.search('_') < 0) {
+
+          //
+          if (hidden[o].hasOwnProperty(collapsed[i][o]) && fltr[o][collapsed[i][o]]) {
+            hidden[o][collapsed[i][o]] = true
+          }
+
+
+        }
+      }
+    }
+  }
+
+  // Unhide CHECKED filter items who are present in the filtered list
+  for (let i = 0; i < filtered.length; i++) {
+
+    for (let o in filtered[i]) {
+      if (filtered[i].hasOwnProperty(o)){
+        // only check for filtered items in filtered list (not underscored)
+        if ( o.search('_') < 0) {
+
+          //
+          if (hidden[o].hasOwnProperty(filtered[i][o]) && fltr[o][filtered[i][o]]) {
+            hidden[o][filtered[i][o]] = false
+          }
+
+
+        }
+      }
+    }
+  }
+
+
+
+
+
+
+  // EVERYTHING IS FIGUREOUTABLE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  for (var h in hidden) {
+    if (hidden.hasOwnProperty(h)) {
+
+      // only filter elements
+      if (h.search('_') < 0) {
+
+        for (var id in hidden[h]) {
+          if (hidden[h].hasOwnProperty(id)) {
+
+            // if blank give it '-blanks-' string
+            if (id == '') {id = '-blanks-'}
+
+            // convert id to compatible (see: table() function: filterbox)
+            var usid = id.replace(/[ \/\:\.\-\+\,\?\&\=]/g,'_')
+
+            // set the jquery object
+            var obj = $('#' + h + '_filter #' + usid)
+
+            // Switch between hidden and visible classes
+            if (hidden[h][id]) {
+              obj.parent().parent().addClass('hidden')
+              obj.parent().parent().removeClass('visible')
+
+            } else {
+              obj.parent().parent().addClass('visible')
+              obj.parent().parent().removeClass('hidden')
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  // Disable input when only one visible chkbox is checked (on update)
+  dsblInput()
+
+
+  // FILTER STATE VISUALISATION -------------------------------------------
+  // Give blue color when filter is active
+  for (var list in fltr) {
+
+    // check is one chkbox is false
+    if (fltr.hasOwnProperty(list)) {
+      for (var chkbx in fltr[list]) {
+        if (fltr[list].hasOwnProperty(chkbx)) {
+          var onefalse = false
+          if (fltr[list][chkbx] == false) { onefalse = true; break;}
+        }
+      }
+    }
+
+    // find the span of the th
+    lst_obj = $('#' + list + '_filter').parent().find('span')
+
+    // if one is false apply style
+    if (onefalse) {
+      lst_obj.addClass('filtered')
+    } else {
+      lst_obj.removeClass('filtered')
+    }
+  }
+
+}
+
+
 
 // APPLY FILTER ----------------------------------------------------------------
 function applyFilter(){
 
   // Apply filter is filter has changed
   if (JSON.stringify(fltr) != fltr_mem) {
-
-    console.time('apply')
-    apply(filtered);
-    console.timeEnd('apply')
-
-
-    console.time('react')
-    // React on new table size
-    console.time('----flex')
-    flex();
-    console.timeEnd('----flex')
-    tablesize();
-    // Restore hover (true = external trigger)
-    //tables[0].setHover(true)
-    tables[0].dl()
-    console.timeEnd('react')
-  }
-
-  function apply(data){
-
 
     var tbody_tr = $('tbody tr')
 
@@ -121,272 +326,96 @@ function applyFilter(){
     // set clearformat when previously active
     if (c.f) {$('tr').addClass('clearformat')}
 
-  }
+    tables[0].dl()
 
+  }
 }
 
-// FILTER FUNCTION -------------------------------------------------------------
-function initFilter(){
 
-  // clicking on filter chkbox updates filter
-  $('.filterbox input').on('click', function(){
-    updatefilter(this)
-    filter()
+
+// DISABLE INPUT FUNCTION ------------------------------------------------------
+// If there's only one true disable input
+function dsblInput(){
+  for (var l1 in hidden) {
+    if (hidden.hasOwnProperty(l1)){
+
+      // only on filter items
+      if (l1.search('_') < 0) {
+
+        // Count visible checkboxes
+        var viscnt = 0
+        for (var l2 in hidden[l1]) {
+          if (hidden[l1].hasOwnProperty(l2)) {
+            if(hidden[l1][l2] == false && fltr[l1][l2] == true){viscnt++}
+          }
+        }
+
+        // Set checkbox/input object
+        var i_obj = $('#' + l1 + '_filter input')
+
+        // If only one visible and true
+        if (viscnt == 1) {
+          for (var i = 0; i < i_obj.length; i++) {
+
+            // set single input onject
+            s = $(i_obj[i])
+
+            // if it's checked then disable it
+            if (s.prop('checked') == true){ s.prop('disabled',true) }
+
+          }
+
+          // if more then one visible and true enable all
+        } else { i_obj.prop('disabled',false) }
+      }
+    }
+  }
+}
+
+
+
+// ONE & ALL BUTTONS -----------------------------------------------------------
+// state of button on mousedown
+function selectpress(){
+  $(this).css({
+    "color":"#F5F5F5",
+    "box-shadow": 'inset 0px 0px 3px 1px rgba(0,0,0,0.5)'
   })
-
-  // click on one button selects one
-  $('.filterbox #one').on('mousedown', selectpress)
-  .on('mouseup', select)
-
-  // clcik on all button selects all
-  $('.filterbox #all').on('mousedown', selectpress)
-  .on('mouseup', select)
-
-  // make filter and hidden object
-  fltr = distinct(alarms);
-  var hidden = distinct(alarms)
-
-  // set true/false on filter and hidden object for filter items
-  // no items with underscore included (see: setFltrObj() function)
-  fltr = setFltrObj(fltr,true)
-  hidden = setFltrObj(hidden,false)
-
-  // Remember fltr state to know if filter has changed (see: applyFilter())
-  fltr_mem = JSON.stringify(fltr)
-
-  // Disable input when only one visible chkbox is checked (on load)
-  dsblInput()
-
-  // UPDATE FILTER --------------------------------------------------------
-  function updatefilter(target){
-
-    // update filter is triggerd by chkbox and all/one buttons
-    target = $(target)
-
-    // Set state of checkbox, text and filtered on give target
-    var st = target.prop('checked')
-    var txt = target.parent().text();
-    var col_id = target.parents().eq(3)
-    var col = col_id.attr('id').replace('_filter','')
-
-    // Set the state in the filter object for current clikced checkbox
-    fltr[col][txt] = st
-
-  };
-
-
-  // FILTER ---------------------------------------------------------------
-  function filter(){
-
-    console.log('FILTER');
-    // reset var for filtered alarms
-    filtered = []
-
-    // FILTER THE ALARMS ---------------------------------------------
-    for (let i = 0; i < alarms.length; i++) {
-
-      // check if all filterable elements in a row are checked
-      var all_checked = true
-      for (let col in alarms[i]) {
-        if (alarms[i].hasOwnProperty(col)){
-          // only execute on filter
-          if (col.search('_') < 0) {
-            // If one is false it's enough to set all_checked true
-            if(fltr[col][alarms[i][col]] == false){ all_checked = false; break;}
-          }
-        }
-      }
-
-      // if all are checked push in filtered alarm array
-      if (all_checked) {filtered.push(alarms[i])}
-
-    }
-
-    id_arr = []
-
-    for (var i = 0; i < filtered.length; i++) {
-
-      id_arr.push('linkID_' + filtered[i]._linkID + '_' + filtered[i]._statetxt)
-
-    }
-
-
-
-
-    // HIDE FILTER ITEMS ---------------------------------------------
-    // reset hidden object (init all hidden)
-    hidden = setFltrObj(hidden,true)
-
-    // Unhide filter items who are present in the filtered list
-    for (let i = 0; i < filtered.length; i++) {
-      for (let o in filtered[i]) {
-        if (filtered[i].hasOwnProperty(o)){
-
-          // only check for filtered items in filtered list (not underscored)
-          if ( o.search('_') < 0) {
-
-            // if the hidden object is present in filtered than unhide
-            if (hidden[o].hasOwnProperty(filtered[i][o])) {
-
-              if (hidden[o][filtered[i][o]]) {
-                hidden[o][filtered[i][o]] = false
-              }
-            }
-          }
-        }
-      }
-    }
-
-    for (var h in hidden) {
-      if (hidden.hasOwnProperty(h)) {
-
-        // only filter elements
-        if (h.search('_') < 0) {
-
-
-          for (var id in hidden[h]) {
-            if (hidden[h].hasOwnProperty(id)) {
-
-              // if blank give it '-blanks-' string
-              if (id == '') {id = '-blanks-'}
-
-              // convert id to compatible (see: table() function: filterbox)
-              var usid = id.replace(/[ \/\:\.\-\+\,\?\&\=]/g,'_')
-
-              // set the jquery object
-              var obj = $('#' + h + '_filter #' + usid)
-
-              // If future alarms have strange signs, show in console
-              // NOTE: I can add a break here
-              if (obj.length == 0) {}
-
-              // Switch between hidden and visible classes
-              if (hidden[h][id] && fltr[h][id]) {
-                obj.parent().parent().addClass('hidden')
-                obj.parent().parent().removeClass('visible')
-
-              } else {
-                obj.parent().parent().addClass('visible')
-                obj.parent().parent().removeClass('hidden')
-              }
-            }
-          }
-        }
-      }
-    }
-
-
-    // Disable input when only one visible chkbox is checked (on update)
-    dsblInput()
-
-
-    // FILTER STATE VISUALISATION ------------------------------------
-    // Give blue color when filter is active
-    for (var list in fltr) {
-
-      // check is one chkbox is false
-      if (fltr.hasOwnProperty(list)) {
-        for (var chkbx in fltr[list]) {
-          if (fltr[list].hasOwnProperty(chkbx)) {
-            var onefalse = false
-            if (fltr[list][chkbx] == false) { onefalse = true; break;}
-          }
-        }
-      }
-
-      // find the span of the th
-      lst_obj = $('#' + list + '_filter').parent().find('span')
-
-      // if one is false apply style
-      if (onefalse) {
-        lst_obj.addClass('filtered')
-      } else {
-        lst_obj.removeClass('filtered')
-      }
-    }
-
-  }
-
-  // Disable input function -----------------------------------------------
-  // If there's only one true disable input
-  function dsblInput(){
-    for (var l1 in hidden) {
-      if (hidden.hasOwnProperty(l1)){
-
-        // only on filter items
-        if (l1.search('_') < 0) {
-
-          // Count visible checkboxes
-          var viscnt = 0
-          for (var l2 in hidden[l1]) {
-            if (hidden[l1].hasOwnProperty(l2)) {
-              if(hidden[l1][l2] == false){viscnt++}
-            }
-          }
-
-          // Set checkbox/input object
-          var i_obj = $('#' + l1 + '_filter input')
-
-          // If only one visible and true
-          if (viscnt == 1) {
-            for (var i = 0; i < i_obj.length; i++) {
-
-              // set single input onject
-              s = $(i_obj[i])
-
-              // if it's checked then disable it
-              if (s.prop('checked') == true){ s.prop('disabled',true) }
-
-            }
-
-            // if more then one visible and true enable all
-          } else { i_obj.prop('disabled',false) }
-        }
-      }
-    }
-  }
-
-  // ONE & ALL BUTTONS ----------------------------------------------------
-  // state of button on mousedown
-  function selectpress(){
-    $(this).css({
-      "color":"#F5F5F5",
-      "box-shadow": 'inset 0px 0px 3px 1px rgba(0,0,0,0.5)'
-    })
-  }
-
-  // function for One & All buttons
-  function select(){
-
-    // target given by click on One or All button
-    target = $(this)
-
-
-    // if id is 'all' select all, otherwise one is true, rest is false
-    if (target.attr('id') == 'all') {all = true} else {all = false}
-
-
-    // find visible inputs
-    var p = target.parent('div')
-    var vis = $(p).find('.visible').find('input');
-    var inputs = $(vis)
-
-
-    // only execute when there is more than one checkbox visible
-    if (inputs.length > 1){
-      $(inputs[0]).prop('checked', true); updatefilter(inputs[0])
-      for (var i = 1; i < inputs.length; i++) {
-        $(inputs[i]).prop('checked', all); updatefilter(inputs[i])
-      }
-    }
-
-    filter();
-
-    // Reset style of button when complete
-    target.attr('style','')
-
-  }
 }
+
+// function for One & All buttons
+function select(){
+
+  // target given by click on One or All button
+  target = $(this)
+
+
+  // if id is 'all' select all, otherwise one is true, rest is false
+  if (target.attr('id') == 'all') {all = true} else {all = false}
+
+
+  // find visible inputs
+  var p = target.parent('div')
+  var vis = $(p).find('.visible').find('input');
+  var inputs = $(vis)
+
+
+  // only execute when there is more than one checkbox visible
+  if (inputs.length > 1){
+    $(inputs[0]).prop('checked', true); updatefilter(inputs[0])
+    for (var i = 1; i < inputs.length; i++) {
+      $(inputs[i]).prop('checked', all); updatefilter(inputs[i])
+    }
+  }
+
+  filter();
+
+  // Reset style of button when complete
+  target.attr('style','')
+
+}
+
+
 
 // FILTER OBJECT SET (true/false) function -------------------------------------
 function setFltrObj(obj, bool){

@@ -3,22 +3,7 @@
 function ready(){
   console.timeEnd('Document ready')
 
-console.time('font')
-  fontReady();
-
-  function fontReady(){
-
-    var fr = document.fonts.check('1em Inconsolata')
-    console.log('Font ready:',fr)
-
-    if (fr) {
-      console.timeEnd('font')
-      console.time('Data')
-      getData_home()
-    } else {
-      setTimeout(fontReady, 50);
-    }
-  }
+getData();
 }
 
 // Less finished ---------------------------------------------------------------
@@ -34,18 +19,16 @@ var data = [];
 var tables = [];
 var alarms = [];
 
-var stn = ['CLF3037','CMP310','CMP311','CMP305']
+var stn = ['CLF3037','CLF2028']
 var stn_str = stn.join(':')
 
 var sev = ['A','B','C','D']
 var sev_str = sev.join(':')
 
-var lbt = '8/24'
-
-console.log(stn_str);
+var lbt = '1/48'
 
 function getData(){
-
+  console.time('Data')
   $.ajax({
     url: '/script/ajax.php',
     type: "GET",
@@ -66,13 +49,8 @@ function getData(){
     console.timeEnd('----Ready')
 
   })
-  .fail(function() {console.log("Ajax: error");})
-  .always(function() {console.log("Ajax: complete");
-  });
+  .fail(function() {console.log("Ajax: error");});
 }
-
-
-
 
 
 function getData_home(){
@@ -94,8 +72,6 @@ function getData_home(){
     }
   });
 }
-
-
 
 
 function processData(data) {

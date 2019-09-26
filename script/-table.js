@@ -356,8 +356,6 @@ function table(settings, data){
       txt[2] = last_td.attr('style')
       last_td.find('span').text(txt[0])
 
-      console.log(txt);
-
       // Give duration a style
       last_td.css({
         'font-size':'12px','font-weight':'bold', 'color':'#F5F5F5',
@@ -460,6 +458,11 @@ function table(settings, data){
 
   function drawLine(){
 
+    // always hide line upfront 
+    lineobj.css('display','none')
+
+    if (typeof events == 'undefined'){ return false; }
+
     // Get trs positions
     // - off event is always above
     // - offset top of bottom off event = ot + oh
@@ -470,10 +473,7 @@ function table(settings, data){
     // If trs are directly above or below eachother
     // - in this case the position of the OFF bottom is equal to ON top
     // - return false and don't draw a line
-    if(off_ot + off_oh >= on_ot){
-      lineobj.css('display','none')
-      return false;
-    }
+    if(off_ot + off_oh >= on_ot){ return false; }
 
     // Get position fot the line
     // - The offset top of the table overlay
