@@ -166,7 +166,7 @@ function filter(){
   // reset hidden object
   hidden = setFltrObj(hidden, true)
 
-
+// NOTE: replace by unhide all filtered...
   // Hide CHECKED filter items who are present in the collapsed list
   for (let i = 0; i < collapsed.length; i++) {
 
