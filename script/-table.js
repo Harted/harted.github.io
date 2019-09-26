@@ -408,8 +408,6 @@ function table(settings, data){
         el_id.removeEventListener('scroll', drawLine)
         window.removeEventListener('resize', drawLine)
 
-        lineobj.css('display','none')
-
       }
 
     } else {
@@ -473,6 +471,7 @@ function table(settings, data){
     // - in this case the position of the OFF bottom is equal to ON top
     // - return false and don't draw a line
     if(off_ot + off_oh >= on_ot){
+      lineobj.css('display','none')
       return false;
     }
 
