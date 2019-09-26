@@ -93,8 +93,8 @@ function initFilter(){
   .on('mouseup', select)
 
   // make filter and hidden object
-  fltr = distinct(alarms);
-  hidden = distinct(alarms)
+  fltr = distinct(alarms, true);
+  hidden = distinct(alarms, true)
 
   // set true/false on filter and hidden object for filter items
   // no items with underscore included (see: setFltrObj() function)
@@ -109,8 +109,6 @@ function initFilter(){
 }
 
 
-var last_filtered = []
-var col_mem = undefined
 
 // UPDATE FILTER ---------------------------------------------------------------
 function updatefilter(target){
@@ -158,15 +156,16 @@ function filter(){
 
   }
 
-  // fill id array to later apply visibility: collapse on itmes not in arr
+  // fill id array to later apply "visibility: collapse" on itmes not in arr
   id_arr = []
   for (var i = 0; i < filtered.length; i++) {
     id_arr.push('linkID_' + filtered[i]._linkID + '_' + filtered[i]._statetxt)
   }
 
   // HIDE FILTER ITEMS ----------------------------------------------------
-  // reset hidden object (init all hidden)
+  // reset hidden object
   hidden = setFltrObj(hidden, false)
+
 
   // Hide CHECKED filter items who are present in the collapsed list
   for (let i = 0; i < collapsed.length; i++) {
@@ -186,6 +185,7 @@ function filter(){
       }
     }
   }
+
 
   // Unhide CHECKED filter items who are present in the filtered list
   for (let i = 0; i < filtered.length; i++) {

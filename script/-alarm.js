@@ -132,17 +132,22 @@ function alarm(data) {
 
 
 
-function distinct(alarm_arr){
+function distinct(alarm_arr, filter){
+
+  filter = filter || false
 
   var distinct = {}
   // For all alarm rows
   for (var i = 0; i < alarm_arr.length; i++) {
     // For columns in alarm row
     for (var col in alarm_arr[i]) {
-      // set name of subobject to name of alarmobject (column) once
-      if (distinct[col] == undefined) { distinct[col] = {} }
-      // set var name in subobject null
-      distinct[col][alarm_arr[i][col]] = 1
+      // Only filter objects
+      if (col.search('_') < 0 || !filter){
+        // set name of subobject to name of alarmobject (column) once
+        if (distinct[col] == undefined) { distinct[col] = {} }
+        // set var name in subobject null
+        distinct[col][alarm_arr[i][col]] = 1
+      }
     }
   }
   return distinct
@@ -154,6 +159,7 @@ function distinct(alarm_arr){
 function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
 
   var dist = distinct(window[obj_name]);
+  console.log(dist)
   var link_store = distinct(window[obj_name]);
   var linkID = 0;
   var linkIDn = -1;
