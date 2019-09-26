@@ -164,27 +164,27 @@ function filter(){
 
   // HIDE FILTER ITEMS ----------------------------------------------------
   // reset hidden object
-  hidden = setFltrObj(hidden, false)
+  hidden = setFltrObj(hidden, true)
 
 
   // Hide CHECKED filter items who are present in the collapsed list
-  for (let i = 0; i < collapsed.length; i++) {
+//  for (let i = 0; i < collapsed.length; i++) {
 
-    for (let o in collapsed[i]) {
-      if (collapsed[i].hasOwnProperty(o)){
+ //   for (let o in collapsed[i]) {
+ //     if (collapsed[i].hasOwnProperty(o)){
         // only check for filtered items in filtered list (not underscored)
-        if ( o.search('_') < 0) {
+//        if ( o.search('_') < 0) {
 
           //
-          if (hidden[o].hasOwnProperty(collapsed[i][o]) && fltr[o][collapsed[i][o]]) {
-            hidden[o][collapsed[i][o]] = true
-          }
-
-
-        }
-      }
-    }
-  }
+//          if (hidden[o].hasOwnProperty(collapsed[i][o]) && fltr[o][collapsed[i][o]]) {
+//            hidden[o][collapsed[i][o]] = true
+//          }
+//
+//
+//        }
+//      }
+//    }
+//  }
 
 
   // Unhide CHECKED filter items who are present in the filtered list
