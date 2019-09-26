@@ -156,6 +156,7 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
   var dist = distinct(window[obj_name]);
   var link_store = distinct(window[obj_name]);
   var linkID = 0;
+  var linkIDn = -1;
   var id_set = []
   var time_store = []
 
@@ -191,9 +192,10 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
         // - This event has no link and no duration
         a['_active'] = true
         a[state_name] = 'ACTIVE'
-        a['_linkID'] = -1
+        a['_linkID'] = linkIDn
         a['_duration'] = -1
         a['_durtxt'] = 'n/a'
+        linkIDn --
       } else if (s == 1) {
         // Not active ON events
         // - Assing stored ID (stored at OFF event)
@@ -234,7 +236,8 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
         // - Assing not available and -1
         a['_duration'] = -1
         a['_durtxt'] = 'n/a'
-        a._linkID = -1
+        a._linkID = linkIDn
+        linkIDn--
       };
     };
   };

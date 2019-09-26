@@ -2,8 +2,23 @@
 
 function ready(){
   console.timeEnd('Document ready')
-  console.time('Data')
-  getData_home()
+
+console.time('font')
+  fontReady();
+
+  function fontReady(){
+
+    var fr = document.fonts.check('1em Inconsolata')
+    console.log('Font ready:',fr)
+
+    if (fr) {
+      console.timeEnd('font')
+      console.time('Data')
+      getData_home()
+    } else {
+      setTimeout(fontReady, 50);
+    }
+  }
 }
 
 // Less finished ---------------------------------------------------------------
@@ -63,7 +78,7 @@ function getData(){
 function getData_home(){
 
   $.ajax({
-    url: 'https://main.xfiddle.com/2efa0c76/alarmdata.php',
+    url: 'https://main.xfiddle.com/2efa0c76/alarmdata2.php',
     type: "GET", // or "GET"
     cache: false,
     dataType: "json",

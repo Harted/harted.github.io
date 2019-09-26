@@ -428,7 +428,12 @@ body {
             background-color: @color_blueM;
           }
           .autonotstarted{
-            animation: autonotstarted 1000ms linear infinite;
+            color: @color_dark;
+            background-color: @color_green;
+            &.active{
+              animation: autonotstarted 1000ms linear infinite;
+              td {animation: none;}
+            }
           }
           .active {
             td {
@@ -528,7 +533,9 @@ body {
 
 
 
-
+.hidden{
+  visibility: collapse;
+}
 
 
 

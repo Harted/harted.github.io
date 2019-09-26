@@ -149,7 +149,6 @@ function table(settings, data){
     // for every record in array
     for (let i = 0; i < d.length; i++){
       body.push('<tr class="' + d[i].severity + ' ' + d[i]._type + ' ')
-      body.push('visible ')
 
       // active
       if (d[i]._active) {
@@ -354,8 +353,10 @@ function table(settings, data){
       last_td = obj.find('td').last()
       txt[0] = obj.attr('text')
       txt[1] = last_td.text()
-      txt[2] =   last_td.attr('style')
+      txt[2] = last_td.attr('style')
       last_td.find('span').text(txt[0])
+
+      console.log(txt);
 
       // Give duration a style
       last_td.css({
@@ -457,6 +458,7 @@ function table(settings, data){
     }
   }
 
+  this.dl = function (){drawLine()}
 
   function drawLine(){
 
