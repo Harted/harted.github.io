@@ -176,9 +176,11 @@ function filter(alarms){
   // UPDATE FILTER FUNCTION -----------------------------------------------
   function updatefilter(target){
 
+    console.time('target')
     // update filter is triggerd by chkbox and all/one buttons
     target = $(target)
-
+    console.timeEnd('target')
+    console.time('props/attr');
     // Set state of checkbox, text and filtered on give target
     var st = target.prop('checked')
     var txt = target.parent().text();
@@ -188,6 +190,11 @@ function filter(alarms){
     // Set the state in the filter object for current clikced checkbox
     fltr[col][txt] = st
 
+    console.timeEnd('props/attr')
+
+  }
+  function filter(){
+    console.time('filter')
     // reset var for filtered alarms
     filtered = []
 
@@ -210,7 +217,8 @@ function filter(alarms){
       if (all_checked) {filtered.push(alarms[i])}
 
     }
-
+console.timeEnd('filter')
+console.time('hidden')
     // HIDE FILTER ITEMS ---------------------------------------------
     // reset hidden object (init all hidden)
     hidden = setFltrObj(hidden,true)
@@ -270,10 +278,12 @@ function filter(alarms){
         }
       }
     }
-
+console.timeEnd('hidden')
+console.time('dsblInput')
     // Disable input when only one visible chkbox is checked (on update)
     dsblInput()
-
+console.timeEnd('dsblInput')
+console.time('VISUALISATION')
     // FILTER STATE VISUALISATION ------------------------------------
     // Give blue color when filter is active
     for (var list in fltr) {
@@ -298,8 +308,8 @@ function filter(alarms){
         lst_obj.removeClass('filtered')
       }
     }
+    console.timeEnd('VISUALISATION')
   }
-
   // ONE & ALL BUTTONS ----------------------------------------------------
   // state of button on mousedown
   function selectpress(){
@@ -311,18 +321,21 @@ function filter(alarms){
 
   // function for One & All buttons
   function select(){
-
+    console.time('----s:target')
     // target given by click on One or All button
     target = $(this)
-
+console.timeEnd('----s:target')
+console.time('----idall')
     // if id is 'all' select all, otherwise one is true, rest is false
     if (target.attr('id') == 'all') {all = true} else {all = false}
-
+console.timeEnd('----idall')
+console.time('----vis')
     // find visible inputs
     var p = target.parent('div')
     var vis = $(p).find('.visible').find('input');
     var inputs = $(vis)
-
+console.timeEnd('----vis')
+console.time('----setprop')
     // only execute when there is more than one checkbox visible
     if (inputs.length > 1){
       $(inputs[0]).prop('checked', true); updatefilter(inputs[0])
@@ -330,10 +343,22 @@ function filter(alarms){
         $(inputs[i]).prop('checked', all); updatefilter(inputs[i])
       }
     }
+console.timeEnd('----setprop')
 
+
+console.time('------filter func')
+  filter();
+
+
+console.timeEnd('------filter func')
+
+
+
+
+console.time('----style')
     // Reset style of button when complete
     target.attr('style','')
-
+console.timeEnd('----style')
   }
 }
 
