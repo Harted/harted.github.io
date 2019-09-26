@@ -111,7 +111,7 @@ function processData(data) {
 
   filterbox();
 
-  filter(alarms);
+  initFilter();
 
 
   $('.fade').css({'opacity': 1});

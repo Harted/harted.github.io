@@ -110,7 +110,7 @@ function applyFilter(){
 }
 
 // FILTER FUNCTION -------------------------------------------------------------
-function filter(alarms){ //change name to initFilter !!!!!!!!!!!!!!!!!!!!!!!!!
+function initFilter(){ 
 
   // clicking on filter chkbox updates filter
   $('.filterbox input').on('click', function(){updatefilter(this)})
