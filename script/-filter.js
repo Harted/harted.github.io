@@ -224,7 +224,7 @@ function filter(){
                 if (collapsed[i].hasOwnProperty(col)){
                   // only execute on filter
                   if (col.search('_') < 0) {
-                    // If one is false it's enough to set all_checked true
+                    // If one is false it's enough to set all_checked false
                     if(fltr[col][collapsed[i][col]] == false){
                       all_checked = false;
                       break;
@@ -233,7 +233,7 @@ function filter(){
                 }
               }
 
-              // if all are checked push in filtered alarm array
+              // if all are checked push in len_check array
               if (all_checked) {len_check.push(alarms[i])}
 
             }
