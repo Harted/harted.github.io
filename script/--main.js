@@ -6,6 +6,8 @@ function ready(){
 getData();
 }
 
+// lalalakak
+
 // Less finished ---------------------------------------------------------------
 less.pageLoadFinished.then(
   function() {
