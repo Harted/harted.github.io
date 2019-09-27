@@ -166,26 +166,6 @@ function filter(){
   // reset hidden object
   hidden = setFltrObj(hidden, true)
 
-// NOTE: replace by unhide all filtered...
-  // Hide CHECKED filter items who are present in the collapsed list
-  for (let i = 0; i < collapsed.length; i++) {
-
-    for (let o in collapsed[i]) {
-      if (collapsed[i].hasOwnProperty(o)){
-        // only check for filtered items in filtered list (not underscored)
-        if ( o.search('_') < 0) {
-
-          //
-          if (hidden[o].hasOwnProperty(collapsed[i][o]) && fltr[o][collapsed[i][o]]) {
-            hidden[o][collapsed[i][o]] = true
-          }
-
-
-        }
-      }
-    }
-  }
-
 
   // Unhide CHECKED filter items who are present in the filtered list
   for (let i = 0; i < filtered.length; i++) {
@@ -206,32 +186,76 @@ function filter(){
     }
   }
 
+  // Unhide UNCHECKED filter items
+  for (let o in fltr) {
+    if (fltr.hasOwnProperty(o)) {
+
+      for (let item in fltr[o]) {
+        if (fltr[o].hasOwnProperty(item)) {
+
+          if (!fltr[o][item]) { hidden[o][item] = false }
+
+        }
+      }
+
+    }
+  }
 
 
+  // hide UNCHECKED filter items who don't bring shit back
+  for (let o in hidden) {
+    if (hidden.hasOwnProperty(o)) {
+
+      for (let item in hidden[o]) {
+        if (hidden[o].hasOwnProperty(item)) {
+
+          if (!hidden[o][item] && !fltr[o][item]){
+
+            // suppose item was true, would it bring something back
+            fltr[o][item] = true
+
+            var len_check = []
+
+            for (let i = 0; i < collapsed.length; i++) {
+
+              // check if all filterable elements in a row are checked
+              var all_checked = true
+              for (let col in collapsed[i]) {
+                if (collapsed[i].hasOwnProperty(col)){
+                  // only execute on filter
+                  if (col.search('_') < 0) {
+                    // If one is false it's enough to set all_checked true
+                    if(fltr[col][collapsed[i][col]] == false){
+                      all_checked = false;
+                      break;
+                    }
+                  }
+                }
+              }
+
+              // if all are checked push in filtered alarm array
+              if (all_checked) {len_check.push(alarms[i])}
+
+            }
+
+            console.log(item, len_check, len_check.length);
+
+            // if it brings nothing back hide the unchecked item
+            if (len_check == 0) {hidden[o][item] = true}
+
+            // set back to false
+            fltr[o][item] = false
+
+          }
+
+        }
+      }
+
+    }
+  }
 
 
-
-  // EVERYTHING IS FIGUREOUTABLE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // actual hidding :)
   for (var h in hidden) {
     if (hidden.hasOwnProperty(h)) {
 
