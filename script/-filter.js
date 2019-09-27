@@ -131,7 +131,6 @@ function updatefilter(target){
 // FILTER ----------------------------------------------------------------------
 function filter(){
 
-  console.log('FILTER');
   // reset var for filtered alarms
   filtered = []
   collapsed = []
@@ -186,6 +185,7 @@ function filter(){
     }
   }
 
+
   // Unhide UNCHECKED filter items
   for (let o in fltr) {
     if (fltr.hasOwnProperty(o)) {
@@ -237,8 +237,6 @@ function filter(){
               if (all_checked) {len_check.push(alarms[i])}
 
             }
-
-            console.log(item, len_check, len_check.length);
 
             // if it brings nothing back hide the unchecked item
             if (len_check == 0) {hidden[o][item] = true}

@@ -5,11 +5,11 @@ console.time('Less ready')
 // USER AGENT ------------------------------------------------------------------
 var userAgent = getUserAgent();
 
-if (userAgent != 'Chrome' && false) {
+if (userAgent != 'Chrome') {
 
   var str = "This browser is not supported! \n\n"
   str += "Use Google Chrome for the best experience.\n"
-  str += "(click cancel to continue to website)"
+
 
   if (window.confirm(str)) {
     window.location.href = "https://www.google.com/chrome/"

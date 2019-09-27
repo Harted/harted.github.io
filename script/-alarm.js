@@ -159,7 +159,6 @@ function distinct(alarm_arr, filter){
 function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
 
   var dist = distinct(window[obj_name]);
-  console.log(dist)
   var link_store = distinct(window[obj_name]);
   var linkID = 0;
   var linkIDn = -1;

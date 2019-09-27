@@ -259,19 +259,86 @@ body {
       extract(@table_pad,4);
     }
     #control-container {
+
+      width: 100%;
+      height: 100%;
+      position: relative;
+
       background-color: @color_blue;
-      flex-grow: 1;
-      // h-length, v-length, blur, spread, colour
+      font-size: 14px;
       box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
-      .divbutton {
-        .noselect();
-        cursor: pointer;
+
+      .noselect();
+
+      // ZONE BUTTONS
+      #stnbtns {                             // border: 1px solid yellow;
+
+        max-height: 100%;
+        max-width: 100%;
         margin: calc(@flex_margin * 2);
-        color: @color_dark;
+
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        .zonegroup {                          //border: 1px solid red;
+
+          display: flex;
+          justify-content: flex-start;
+          flex-direction: column;
+
+          margin: 5px;
+
+          box-shadow: 0 0px 5px 0px rgba(0, 0, 0, .5);
+          background-color: @color_dark;
+
+          .zg_header {                        //border: 1px solid blue;
+
+              padding: 5px;
+
+              color: @color_bright;
+              //background-color: @color_dark;
+
+              font-weight: bold;
+              text-align: center;
+
+          }
+
+          .zg_items {                         //border: 1px solid green;
+
+            // height: 90%;
+
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            writing-mode: vertical-lr; //turn
+
+            justify-content: flex-start;
+
+            div {
+              writing-mode: horizontal-tb; //turn back
+              padding: 2px;
+              margin: 5px;
+
+              background-color: @color_blue;
+              border: 1px solid rgba(80,80,80,0.1);
+              border-radius: 2px;
+
+              &:hover{
+                background-color: @color_bright;
+              }
+
+
+            }
+
+          }
+
+
+
+        }
+
       }
-      #import {
-        visibility: hidden; //// TEMP: disabled
-      }
+
     }
 
 
@@ -512,6 +579,9 @@ body {
         }
         tr {
           cursor: pointer;
+          .hidden{
+            visibility: collapse;
+          }
         }
         th, td {
           padding:
@@ -533,9 +603,7 @@ body {
 
 
 
-.hidden{
-  visibility: collapse;
-}
+
 
 
 

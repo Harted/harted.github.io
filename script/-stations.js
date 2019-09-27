@@ -50,18 +50,98 @@ TIA_GC = {
 }
 
 
-// $.ajax({
-//   url: '/path/to/file',
-//   type: 'GET',
-//   dataType: 'json',
-//   data: {param1: 'value1'}
-// })
-// .done(function() {
-//   console.log("success");
-// })
-// .fail(function() {
-//   console.log("error");
-// })
-// .always(function() {
-//   console.log("complete");
-// });
+// GET Stations from database (ALARMSOURCE) ------------------------------------
+$.ajax({
+  url: '/script/ajax.php',
+  type: 'GET',
+  cache: false,
+  dataType: 'json',
+  data: {'stations':''}
+})
+.done(function(received) { setActiveStn(received);})
+.fail(function() { console.log("Ajax: stations: error");})
+
+
+// Set active true with found stations -----------------------------------------
+function setActiveStn(stn_arr){
+
+  for (var i = 0; i < stn_arr.length; i++) {
+    stn_arr[i] = stn_arr[i][0]
+  }
+
+  for (var zone in TIA_GC) {
+    if (TIA_GC.hasOwnProperty(zone)) {
+
+      var zone_active = false
+
+      for (var station in TIA_GC[zone]) {
+        if (TIA_GC[zone].hasOwnProperty(station)) {
+
+          if (stn_arr.includes(station)){
+            TIA_GC[zone][station].active = true ;
+            stn_arr.splice(stn_arr.indexOf(station),1)
+            zone_active = true
+          }
+        }
+      }
+
+      TIA_GC[zone]._active = zone_active
+
+    }
+  }
+
+  if (stn_arr.length > 0) {
+    for (var i = 0; i < stn_arr.length; i++) {
+      TIA_GC.OTHER[stn_arr[i]] = {active:true,};
+    }
+  }
+
+  console.log(TIA_GC);
+
+  stnBtns(TIA_GC)
+
+}
+
+function stnBtns(stns) {
+
+  var s = ''
+
+  for (var zone in stns) {
+    if (stns.hasOwnProperty(zone)) {
+
+      if (stns[zone]._active || (true) ) {
+
+        s += '<div class="zonegroup" id="' + zone + '_group">'
+        s += '<div class="zg_header">'
+        s += zone.replace('ZONE','Zone ')
+        s += '</div>'
+        s += '<div class="zg_items">'
+
+      }
+
+
+      for (var stn in stns[zone]) {
+        if (stns[zone].hasOwnProperty(stn)) {
+
+          if (stns[zone][stn].active || (true && stn != '_active')) {
+
+            s += '<div id="' + stn + '_stnbtn" class="div_ctrl">' + stn + '</div>'
+
+          }
+
+
+        }
+      }
+
+
+      if (stns[zone]._active || (true)) {
+         s += '</div></div>'
+      }
+
+    }
+  }
+
+  $('#stnbtns').html(s)
+
+
+}

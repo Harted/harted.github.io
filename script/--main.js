@@ -21,7 +21,7 @@ var data = [];
 var tables = [];
 var alarms = [];
 
-var stn = ['CLF3037','CLF2028']
+var stn = ['CLF3037','CMP305','CMP310','CMP311']
 var stn_str = stn.join(':')
 
 var sev = ['A','B','C','D']
