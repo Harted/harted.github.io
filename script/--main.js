@@ -3,7 +3,7 @@
 function ready(){
   console.timeEnd('Document ready')
 
-getData();
+getData_home();
 }
 
 // lalalakak
