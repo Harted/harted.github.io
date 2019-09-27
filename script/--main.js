@@ -3,7 +3,7 @@
 function ready(){
   console.timeEnd('Document ready')
 
-getData_home();
+getData();
 }
 
 // Less finished ---------------------------------------------------------------
