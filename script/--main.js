@@ -56,7 +56,7 @@ function getData(){
 
 
 function getData_home(){
-
+  console.time('Data')
   $.ajax({
     url: 'https://main.xfiddle.com/2efa0c76/alarmdata2.php',
     type: "GET", // or "GET"

@@ -5,7 +5,7 @@ console.time('Less ready')
 // USER AGENT ------------------------------------------------------------------
 var userAgent = getUserAgent();
 
-if (userAgent != 'Chrome') {
+if (userAgent != 'Chrome' && false) {
 
   var str = "This browser is not supported! \n\n"
   str += "Use Google Chrome for the best experience.\n"

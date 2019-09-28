@@ -1,20 +1,4 @@
-@font-face {
-  font-family: 'Inconsolata';
-  font-style: normal;
-  font-weight: 400;
-  src: url(/Inconsolata/Inconsolata-Regular.ttf);
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Inconsolata';
-  font-style: normal;
-  font-weight: 700;
-  src: url(/Inconsolata/Inconsolata-Bold.ttf);
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-
-//colors
+// COLORS-----------------------------------------------------------------------
 @color_dark: #444;
 @color_bright: #F5F5F5;
 @color_gray: #999;
@@ -27,6 +11,8 @@
 @color_yellowless: #FFFF99; //#FFFF7F;
 @color_orange: #FFC83F; //#FFBC14;
 
+
+// SCROLLBAR--------------------------------------------------------------------
 @scrolbar: 6px;
 
 ::-webkit-scrollbar {
@@ -47,28 +33,11 @@
   background-color: @color_dark;
 }
 
-//font
-@inco: 'Inconsolata', monospace;
 
-//variables
-//--header/footer
-@header_height: 80px;
-@footer_height: 30px;
-//--table
-@table_fontsize: 12px;
-@table_pad: 8px, 12px, 6px, 6px;
-@flex_margin: 0.8%; // NOTE: solution for flex-space
+// GLOBAL ----------------------------------------------------------------------
+.fade, .fade_less { opacity: 0; transition: 500ms };
 
-//body
-body {
-  font-family: @inco;
-  margin:0;
-  color: @color_dark;
-  background-color: @color_dark;
-  overflow:hidden;
-}
-
-.fade, .fade_less {opacity: 0; transition: 814ms};
+.fade_reverse { opacity: 1; transition: 250ms };
 
 .noselect(){
   -webkit-touch-callout: none;
@@ -79,169 +48,214 @@ body {
   user-select: none;
 }
 
-// NOTE: NEW -------------------------------------------------------------------
-.header814() {
-  @media all and(max-width: 814px){
-    height: calc(@header_height/2);
-  }
-}
-.footer814() {
-  @media all and(max-width: 814px){
-    height: calc(@footer_height/2);
-  }
+.center(){
+  position:fixed;
+  margin:auto;
+  top:0;bottom:0;left:0;right:0;
 }
 
-
-#header_space{
-  width: 100%;
-  height: @header_height;
-  .header814();
-}
-
-#footer_space{
-  width: 100%;
-  height: @footer_height;
-  .footer814();
-}
-
-.header_div_whm(){
-  width: calc(@header_height / 2);
-  height: calc(@header_height / 2);
-  margin: calc(@header_height / 4) calc(@header_height / 6);
-}
-.header_div_whm814(){
-  width: calc(@header_height / 4);
-  height: calc(@header_height / 4);
-  margin: calc(@header_height / 8) calc(@header_height / 12);
+#spinner {
+  width: 50%; height: 50%; //size half by page
+  z-index: -1; //on the background
+  .center(); //in absolute center
 }
 
 
-#header{
-  z-index: 100;
+
+// BODY ------------------------------------------------------------------------
+body {
+  margin:0;
+  color: @color_dark;
   background-color: @color_dark;
+  overflow: hidden; //no scrollbar
+  height: 100%;
+}
+
+html {
+  height: 100%;
+}
+
+@mw: 814px;
+
+
+
+// HEADER & FOOTER -------------------------------------------------------------
+@header_height: 80px;
+@footer_height: 30px;
+
+
+// Header & footer mixins -------------------------------------------
+.header_footer_cmn() {
+
+  // Position
   position: fixed;
+  width: 100%;
+  z-index: 100;
+
+  // Flex (items positioning)
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  height: @header_height;
-  top:0;
-  #logo{
-    display: flex;
-    align-items: center;
-    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5););
-    #alfa_logo {
-      display: inline-block;
-      flex-shrink: 0;
-      .header_div_whm();
-      margin-left: calc((@header_height / 4) + @flex_margin);
-      svg {
-        width: inherit;
-        height: inherit;
-        fill: @color_blue;
-        // fill: @color_blue;
-      }
-      @media all and(max-width: 814px){
-        .header_div_whm814();
-      }
-    }
-    #alfa_txt{
-      display: inline-block;
-      font-size: 1.5em;
-      line-height: 1.5em;
-      font-weight: bold;
-      pointer-events: none;
-      color: @color_bright;
-      @media all and(max-width: 814px){
-        font-size: 0.8em;
-        line-height: 0.8em;
-      }
-      span{
-        white-space: pre;
-      }
-    }
-  }
-  #volvo_logo {
-    .header_div_whm();
-    margin-right: calc((@header_height / 4) + @flex_margin);
-    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5););
-    float: right;
-    img {
-      width: inherit;
-      height: inherit;
-      opacity: 0.5;
-    }
-    @media all and(max-width: 814px){
-      .header_div_whm814();
-    }
-  }
-  .header814()
-}
 
-.footer_txt_cmn(){
-  height:100%;
-  margin-right: @flex_margin;
-  margin-left: @flex_margin;
-  display:flex;
-  align-items: center;
-  opacity: 0.5;
-}
-
-#footer{
-  z-index: 100;
+  // Style
   background-color: @color_dark;
-  position: fixed;
-  width: 100%;
+
+}
+
+.header_whm() {
+  height: @header_height;
+  @media all and(max-width: @mw){ height: calc(@header_height/2); }
+}
+.footer_whm() {
   height: @footer_height;
-  bottom: 0;
-  .footer814();
-  #credit{
-    float:right;
-    .footer_txt_cmn();
+  @media all and(max-width: @mw){ height: calc(@footer_height/2); }
+}
+
+
+// Header elements mixins -------------------------------------------
+.header_sq_whm(){
+
+  // Regular size
+  width: calc(@header_height / 2);
+  height: calc(@header_height / 2);
+  margin: calc(@header_height / 4) calc(@header_height / 6);
+
+  // < 814 px sizes
+  @media all and(max-width: @mw){
+    width: calc(@header_height / 4);
+    height: calc(@header_height / 4);
+    margin: calc(@header_height / 8) calc(@header_height / 12);
   }
-  #info{
-    float: left;
-    .footer_txt_cmn();
-  }
-  span{
-    font-size: 0.6em;
-    @media all and (max-width: 814px){
-      font-size: 0.3em;
+
+}
+
+.header_shadow(){
+  filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5);); // Shadow
+}
+
+
+// Block elements for spacing ----------------------------------------
+#header_space{.header_whm();}
+#footer_space{.header_whm();}
+
+
+// Header ---------------------------------------------------------------
+#header{
+
+  // Mixins
+  .header_footer_cmn();
+  .header_whm();
+
+  top:0; //stick at top
+
+  #alfa_logo{
+
+    .header_shadow();
+    display: flex; align-items: center; // Flex align center
+
+
+    #logo {
+
+      .header_sq_whm(); // size & margin for square
+      margin-left: calc((@header_height / 4) + @flex_margin);
+
+      svg { width: inherit; height: inherit; fill: @color_blue;} // SVG
+
     }
+
+    #alfa_txt{
+
+      font-weight: bold; //Font
+      font-size: 1.5em; line-height: 1.5em;
+      @media all and(max-width: @mw){
+        font-size: 0.8em; line-height: 0.8em;
+      }
+
+      color: @color_bright;         // Color
+      pointer-events: none;         // No selecting text
+      span{ white-space: nowrap; }  // No wrapping A L F A
+
+    }
+  }
+
+  #volvo_logo {
+
+    .header_sq_whm();
+    .header_shadow();
+
+    margin-right: calc((@header_height / 4) + @flex_margin);
+    img { width: inherit;height: inherit;opacity: 0.5; }
+
+  }
+}
+
+
+// Footer ---------------------------------------------------------------
+#footer{
+
+  // Mixins
+  .header_footer_cmn();
+  .footer_whm();
+
+  bottom: 0; // Stick at bottom
+
+  div {
+
+    font-size: 0.6em; @media all and (max-width: @mw){font-size: 0.4em;}
+
+    margin: 0px @flex_margin;   //position
+
+    opacity: 0.6;               //style
     color: @color_bright;
     pointer-events: none;
+
   }
 }
-// -----------------------------------------------------------------------------
 
-.flexen(){
-  flex-shrink: 0;
-  flex-basis: auto;
-}
+
+
+// MAIN ------------------------------------------------------------------------++++
+@table_fontsize: 12px;
+@table_pad: 8px, 12px, 6px, 6px;
+@flex_margin: 0.8%;
+
+@th_height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+
+
 
 #flex-container{
-  margin: 0 @flex_margin;
-  // width: calc(100%-@flex_margin);
+
+  // FLEX (parent)
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap-reverse;
-  align-items: flex-end;
+
+  // Position
+  margin: 0 @flex_margin;
+  height: calc(100% - @header_height - @footer_height);
+
+
   #flex-table {
-    // flex:7;
-    flex-grow: 7;
-    .flexen();
+
+    // FLEX (child)
+    flex-grow: 1;
     min-height: 60%;
+
   }
+
   #flex-control {
-    // flex:3;
-    flex-grow: 3;
-    .flexen();
-    min-width: 30%;
+
+    // FLEX (child)
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 300px; //fixed width
+
     z-index: 20;
+
   }
+
   .flex-item {
-    width:calc(100%-@flex_margin); // NOTE: solution for flex-space
-    margin: 0px @flex_margin; // NOTE: solution for flex-space
+    width:calc(100%-@flex_margin);
+    margin: 0px @flex_margin;
     height:100%;
     display: flex;
     flex-flow: column;
@@ -261,84 +275,21 @@ body {
     #control-container {
 
       width: 100%;
-      height: 100%;
+      height: calc(100% - @th_height);
       position: relative;
 
       background-color: @color_blue;
-      font-size: 14px;
+      font-size: 20px;
       box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
 
       .noselect();
 
-      // ZONE BUTTONS
-      #stnbtns {                              border: 1px solid yellow;
-
-        max-height: 100%;
-        max-width: 100%;
-        margin: calc(@flex_margin * 2);
-
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-
-        .zonegroup {                          border: 1px solid red;
-
-          display: flex;
-          justify-content: flex-start;
-          flex-direction: column;
-
-          margin: 5px;
-
-          box-shadow: 0 0px 5px 0px rgba(0, 0, 0, .5);
-          background-color: @color_dark;
-
-          .zg_header {                        border: 1px solid blue;
-
-              padding: 5px;
-
-              color: @color_bright;
-              //background-color: @color_dark;
-
-              font-weight: bold;
-              text-align: center;
-
-          }
-
-          .zg_items {                         border: 1px solid green;
-
-            // height: 90%;
-
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
-            writing-mode: vertical-lr; //turn
-
-            justify-content: flex-start;
-
-            div {
-              writing-mode: horizontal-tb; //turn back
-              padding: 2px;
-              margin: 5px;
-
-              background-color: @color_blue;
-              border: 1px solid rgba(80,80,80,0.1);
-              border-radius: 2px;
-
-              &:hover{
-                background-color: @color_bright;
-              }
+      // ZONE BUTTONS ----------------------------------------------------------
+      #stnbtns {                              border: 5px solid yellow;
 
 
-            }
-
-          }
-
-
-
-        }
 
       }
-
     }
 
 
@@ -349,7 +300,7 @@ body {
       position: relative;
       .table-overlay {
         position: absolute;
-        top:@table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+        top:@th_height;
         bottom:@scrolbar;
         left:0;
         right:@scrolbar;
@@ -382,7 +333,7 @@ body {
           width: 100%;
         }
         .table-head {
-          height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+          height: @th_height;
         }
         thead {
           .noselect();
@@ -413,7 +364,7 @@ body {
             }
             .filterbox {
               position:absolute;
-              top:@table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+              top:@th_height;
               left:0;
               width: auto;
               max-height: 0px;
@@ -467,7 +418,7 @@ body {
           // &::before{
           //   content: '';
           //   display: block;
-          //   height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+          //   height: @th_height;
           // }
           //Conditional formatting ----------------------------------------START
           .A , .B {
@@ -579,9 +530,7 @@ body {
         }
         tr {
           cursor: pointer;
-          .hidden{
-            visibility: collapse;
-          }
+
         }
         th, td {
           padding:
@@ -601,28 +550,6 @@ body {
   }
 }
 
-
-
-
-
-
-
-
-
-
-#spinner {
-  position: absolute;
-  margin: auto;
-  widht:50%;
-  height: 50%;
-  top:0;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index: -1
-}
-
-.fade_reverse{
-  transition: 250ms;
-  opacity: 1;
+.hidden{
+  visibility: collapse;
 }

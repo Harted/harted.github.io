@@ -103,7 +103,7 @@ function table(settings, data){
         for (var i = 0; i < arr.length; i++) {
 
           //give conpatible id (no spaces and weird signs)
-          var usid = arr[i].replace(/[ \/\:\.\-\+\,\?\&\=]/g,'_')
+          var usid = arr[i].replace(/[ \/\\\:\.\-\+\,\?\&\=]/g,'_')
 
           //set input id, text and the label link
           //label link needed for click on text to toggle
@@ -458,7 +458,7 @@ function table(settings, data){
 
   function drawLine(){
 
-    // always hide line upfront 
+    // always hide line upfront
     lineobj.css('display','none')
 
     if (typeof events == 'undefined'){ return false; }

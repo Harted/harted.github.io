@@ -1,13 +1,6 @@
 // FLEX FORMAT ------------------------------------------------------------
 function flex(){ // NOTE: Copy new flex function at work
 
-  // get header and footer height
-  var hh = parseFloat(getComputedStyle(el_head).height)
-  var fh = parseFloat(getComputedStyle(el_foot).height)
-
-  //set container to height between header and footer
-  el_fc.style.height = (win.iH - hh - fh) + 'px'
-
   // OVERFLOW FIX ----------------------------------------------------
   // Set the widht off the flex items so the overflow works correctly
   // with the margins and paddings included

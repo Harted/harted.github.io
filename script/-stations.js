@@ -51,15 +51,19 @@ TIA_GC = {
 
 
 // GET Stations from database (ALARMSOURCE) ------------------------------------
-$.ajax({
-  url: '/script/ajax.php',
-  type: 'GET',
-  cache: false,
-  dataType: 'json',
-  data: {'stations':''}
-})
-.done(function(received) { setActiveStn(received);})
-.fail(function() { console.log("Ajax: stations: error");})
+
+
+// $.ajax({
+//   url: '/script/ajax.php',
+//   type: 'GET',
+//   cache: false,
+//   dataType: 'json',
+//   data: {'stations':''}
+// })
+// .done(function(received) { setActiveStn(received);})
+// .fail(function() { console.log("Ajax: stations: error");})
+
+// setActiveStn([])
 
 
 // Set active true with found stations -----------------------------------------
@@ -116,6 +120,7 @@ function stnBtns(stns) {
         s += zone.replace('ZONE','Zone ')
         s += '</div>'
         s += '<div class="zg_items">'
+        s += '<div class="zg_items2">'
 
       }
 
@@ -142,6 +147,18 @@ function stnBtns(stns) {
   }
 
   $('#stnbtns').html(s)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
