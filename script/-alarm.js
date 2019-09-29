@@ -276,11 +276,11 @@ function dhms(ms) {
   var sec = (ms / sec_c).toFixed(fx);
 
   if (days > 0) {
-    return days + 'd ' + hrs + 'h ' +  min + 'm ' + sec + 's'
+    return days + 'd' + hrs + 'h' +  min + 'm' + sec + 's'
   } else if (hrs > 0) {
-    return hrs + 'h ' +  min + 'm ' + sec + 's'
+    return hrs + 'h' +  min + 'm' + sec + 's'
   } else if (min > 0) {
-    return min + 'm ' + sec + 's'
+    return min + 'm' + sec + 's'
   } else {
     return sec + 's'
   };

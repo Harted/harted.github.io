@@ -7,22 +7,31 @@ $('#format').click(function(){
 
   c.f = toggle(c.f)
 
-  switch (c.f) {
-    case true:
-      $('tr').addClass('clearformat')
-    break;
-    case false:
-      $('tr').removeClass('clearformat')
-    break;
+  if (c.f) {
+    $('tr').addClass('clearformat')
+  } else {
+    $('tr').removeClass('clearformat')
   }
 
 })
 
 
 
+$('input[type=datetime-local]').focusout(datecheck)
+$('input[type=datetime-local]').on('input', datecheck)
 
+function datecheck(){
 
+  var date = new Date($(this).val())
+  if (date == 'Invalid Date') {
+    $(this).addClass('invalid')
+  } else {
+    $(this).removeClass('invalid')
+  }
 
+  console.log(date); //////HIERZO
+
+}
 
 
 

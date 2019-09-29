@@ -35,36 +35,39 @@ function flex(){ // NOTE: Copy new flex function at work
 
   if( t_ot > f_ot ){
     //ABOVE EACHOTHER
-    // Height of control container shoul be max 40%
-    for (let i in el_arr_fi) {
-      if (el_arr_fi.hasOwnProperty(i)) {
-        if (el_arr_fi[i].style.height != '40%') {
-          el_arr_fi[i].style.height = '40%'
-        }
-      }
-    }
-    // don't show control header when above eachother
-    if(el_ch.style.display != 'none'){
-      el_ch.style.display = 'none'
-    }
+    el_ft.classList.add('above')
+    el_ff.classList.add('above')
+
+    el_ch.addEventListener('click', exp_c)
+
   } else {
     // NEXT TO EACHOTHER
-    // Control container can be 100% height
-    for (let i in el_arr_fi) {
-      if (el_arr_fi.hasOwnProperty(i)) {
-        if (el_arr_fi[i].style.height != '100%') {
-          el_arr_fi[i].style.height = '100%'
-        }
-      }
-    }
-    // show control header when next to eachother
-    if(el_ch.style.display != 'initial'){
-      el_ch.style.display = 'initial'
-    }
+    el_ft.classList.remove('above', 'exp_tr', 'expand')
+    el_ff.classList.remove('above', 'exp_tr', 'expand')
+
+    el_ch.removeEventListener('click', exp_c)
+
   }
 }
 
+function exp_c(){
 
+  if(el_ft.classList.value.search('expand') > 0){
+    el_ft.classList.remove('expand')
+    el_ff.classList.remove('expand')
+    el_ch.addEventListener('transitionend', exp_c_tr)
+  } else {
+    el_ft.classList.add('expand','exp_tr')
+    el_ff.classList.add('expand','exp_tr')
+  };
+
+  function exp_c_tr(){
+    el_ft.classList.remove('exp_tr')
+    el_ff.classList.remove('exp_tr')
+    el_ch.removeEventListener('transitionend', exp_c_tr)
+  }
+
+}
 
 
 // OUTER WIDTH with pure javascript function -----------------------------------

@@ -1,15 +1,18 @@
 // COLORS-----------------------------------------------------------------------
 @color_dark: #444;
+@color_l_dark: #404040;
 @color_bright: #F5F5F5;
 @color_gray: #999;
 @color_blue: #A3C4BC;
+@color_blue_01: rgba(163, 196, 188, 0.1);
+@color_blue_05: rgba(163, 196, 188, 0.5);
 
-@color_red: #ED3B41; //#ED1C24;
-@color_green: #32C967; //#00C946;
-@color_blueM: #3FB5FF; //#009DFF;
-@color_yellow: #FFFF3F; //#FFFF00;
-@color_yellowless: #FFFF99; //#FFFF7F;
-@color_orange: #FFC83F; //#FFBC14;
+@color_red: #ED3B41;
+@color_green: #32C967;
+@color_blueM: #3FB5FF;
+@color_yellow: #FFFF3F;
+@color_yellowless: #FFFF99;
+@color_orange: #FFC83F;
 
 
 // SCROLLBAR--------------------------------------------------------------------
@@ -31,6 +34,14 @@
 }
 ::-webkit-scrollbar-corner {
   background-color: @color_dark;
+}
+
+// SELECTION -------------------------------------------------------------------
+::selection {
+  background: @color_blue_05; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: @color_blue_05; /* Gecko Browsers */
 }
 
 
@@ -214,12 +225,14 @@ html {
 
 
 
-// MAIN ------------------------------------------------------------------------++++
+// MAIN ------------------------------------------------------------------------
 @table_fontsize: 12px;
 @table_pad: 8px, 12px, 6px, 6px;
 @flex_margin: 0.8%;
 
 @th_height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
+@th_pad: extract(@table_pad,1) extract(@table_pad,2) extract(@table_pad,3)
+extract(@table_pad,4);
 
 
 
@@ -228,17 +241,27 @@ html {
   // FLEX (parent)
   display: flex;
   flex-wrap: wrap-reverse;
+  align-items: flex-start;
 
   // Position
   margin: 0 @flex_margin;
   height: calc(100% - @header_height - @footer_height);
+  @media all and (max-width: @mw){
+    height: calc(100% - (@header_height/2) - (@footer_height/2));
+  }
 
 
+  // FLEX table & control -------------------------------------------------
   #flex-table {
 
     // FLEX (child)
     flex-grow: 1;
-    min-height: 60%;
+
+    &.above { height: calc(100% - (@th_height * 2)); } // when above
+
+    &.expand { // on click
+      height: 50% !important;
+    }
 
   }
 
@@ -249,47 +272,186 @@ html {
     flex-shrink: 0;
     flex-basis: 300px; //fixed width
 
-    z-index: 20;
+    z-index: 20; //z position
+
+    &.above {
+
+      flex-grow: 1; // FLEX (child)
+
+      height: @th_height;
+
+      svg { display: block !important;} // display hamburger
+
+      #control-header:hover { // hover when above
+        background-color: @color_blue_01;
+        cursor: pointer;
+      }
+
+    }
+
+    &.expand { // on click
+      height: 50% !important;
+    }
 
   }
 
+  .exp_tr { transition: height ease 300ms;} // expand transition
+
+
+  // FLEX ITEM table & control --------------------------------------------
   .flex-item {
-    width:calc(100%-@flex_margin);
+
+    // Position
+    height: 100%; // overide when above
     margin: 0px @flex_margin;
-    height:100%;
-    display: flex;
-    flex-flow: column;
-    //form
+
+
     #control-header {
-      color: @color_bright;
+
+      // FLEX (parent) - text and hamburger position
+      display: flex;
+      justify-content: space-between;
+
+      padding: @th_pad;                 // position
+
+      font-weight: bold;                // font
       font-size: @table_fontsize;
-      font-weight: bold;
       line-height: @table_fontsize;
-      width: 100%;
-      padding:
-      extract(@table_pad,1)
-      extract(@table_pad,2)
-      extract(@table_pad,3)
-      extract(@table_pad,4);
+
+      color: @color_bright;             // style
+
+      svg {                             // svg
+        display: none;
+        height: @table_fontsize;
+        fill: @color_blue;
+      }
+
     }
+
     #control-container {
+
+      display: flex;
+      overflow: hidden;
+      flex-wrap: wrap;
+      align-content: flex-start;
+
 
       width: 100%;
       height: calc(100% - @th_height);
-      position: relative;
 
-      background-color: @color_blue;
-      font-size: 20px;
-      box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
+      font-size: @table_fontsize;
+      line-height: @table_fontsize;
+
+      color: @color_bright;
 
       .noselect();
 
-      // ZONE BUTTONS ----------------------------------------------------------
-      #stnbtns {                              border: 5px solid yellow;
+      .control-group-header {
 
+        width: 290px;                       // position
+        padding: @th_pad;
+        margin: 0px 10px 5px 0px;
+
+        // font-weight: bold;
+
+        // background-color: @color_blue;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        border-bottom: 1px solid @color_blue_01;
+        color: @color_blue
+
+      }
+
+      .control-group-content {
+
+        .control-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 5px;
+        }
+
+        input::-webkit-datetime-edit-day-field:focus,
+        input::-webkit-datetime-edit-month-field:focus,
+        input::-webkit-datetime-edit-year-field:focus,
+        input::-webkit-datetime-edit-hour-field:focus,
+        input::-webkit-datetime-edit-minute-field:focus,
+        input::-webkit-datetime-edit-second-field:focus {
+          background-color: @color_blue_05;
+          color: @color_bright;
+        }
+
+      }
+
+
+
+      .btn {
+
+        padding: 4px;
+        margin-right: 10px;
+        height: @table_fontsize;
+
+        font-weight: bold; //////////HIERZO
+
+        background-color: @color_blue;
+        color: @color_dark;
+        border-radius: 2px ;
+
+        &:hover{
+          box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 1);
+          cursor: pointer;
+        }
+      }
+
+      #sel_time{
+
+        label {
+          font-weight: bold;
+          display: block ;
+          width: 30px;
+          padding: 4px;
+        }
+
+        input[type=datetime-local] {
+
+          flex-grow: 1;
+
+          &.invalid {
+            color: @color_red;
+          }
+
+        }
+
+        input[type=number] {
+
+          width: 18px;
+
+        }
+
+
+        input[type=number], input[type=datetime-local] {
+
+          background-color: @color_dark;
+          color: @color_bright;
+          border: none;
+          outline: none;
+
+          padding: 4px;
+
+          margin-right: 10px;
+
+          box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
+
+          &:focus {
+            box-shadow: inset 0px 0px 3px 0px rgba(0, 0, 0, .5);
+          }
+
+        }
 
 
       }
+
     }
 
 
@@ -360,6 +522,9 @@ html {
                 svg {
                   position:absolute;
                 }
+              }
+              &:hover{
+                background-color: @color_blue_01;
               }
             }
             .filterbox {

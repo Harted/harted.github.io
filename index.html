@@ -66,10 +66,47 @@
 
 
     <div id='flex-control' class='flex-item'>
-      <div id='control-header'>Controls</div>
+      <div id='control-header'>
+        <span>Controls</span>
+        <div>
+          <svg viewBox="0 0 100 100">
+            <path d="M88.92,20.81H11.08c-5.35,0-9.73-4.38-9.73-9.73v0c0-5.35,4.38-9.73,9.73-9.73h77.84c5.35,0,9.73,4.38,9.73,9.73v0
+            C98.65,16.43,94.27,20.81,88.92,20.81z"/>
+            <path d="M88.92,59.73H11.08c-5.35,0-9.73-4.38-9.73-9.73v0c0-5.35,4.38-9.73,9.73-9.73h77.84c5.35,0,9.73,4.38,9.73,9.73v0
+            C98.65,55.35,94.27,59.73,88.92,59.73z"/>
+            <path d="M88.92,98.65H11.08c-5.35,0-9.73-4.38-9.73-9.73v0c0-5.35,4.38-9.73,9.73-9.73h77.84c5.35,0,9.73,4.38,9.73,9.73v0
+            C98.65,94.27,94.27,98.65,88.92,98.65z"/>
+          </svg>
+        </div>
+      </div>
       <div id='control-container'>
-        <div id='stnbtns'></div>
-        <!-- <div id='format' class='divbutton'>FORMAT</div> -->
+        <div id='sel_time' class='control-group'>
+          <div class='control-group-header'>
+            <span>Time Selection</span>
+          </div>
+          <div class='control-group-content'>
+            <div class='control-item'>
+
+              <label for='from_date'>From:</label>
+              <input id='from_date' type=datetime-local value="2019-01-01T00:00:00" step="1">
+              <input id='lookbacktime' type="number" name="lookback time" min="1" max="8">
+
+            </div>
+            <div class='control-item'>
+
+              <label for='to_date'>To:</label>
+              <input id='to_date' type=datetime-local value="2019-01-01T23:59:59" step="1">
+              <div id='now_btn' class="btn" id="now">now</div>
+
+            </div>
+          </div>
+        </div>
+        <div id='sel_stations' class='control-group'>
+          <div class='control-group-header'>
+            <span>Stations</span>
+          </div>
+          <div class='control-group-content'> </div>
+        </div>
       </div>
     </div>
 

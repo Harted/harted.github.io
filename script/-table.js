@@ -12,7 +12,7 @@ const alarmlist_settings = {
     station: 'Station',
     zone: 'Zone',
     object: 'Object',
-    description: 'Description',
+    //description: 'Description',
     comment: 'Comment',
     severity: 'Sev.',
     _statetxt: 'State',

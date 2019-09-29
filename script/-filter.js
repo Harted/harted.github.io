@@ -161,6 +161,7 @@ function filter(){
     id_arr.push('linkID_' + filtered[i]._linkID + '_' + filtered[i]._statetxt)
   }
 
+
   // HIDE FILTER ITEMS ----------------------------------------------------
   // reset hidden object
   hidden = setFltrObj(hidden, true)
@@ -200,7 +201,6 @@ function filter(){
 
     }
   }
-
 
   // hide UNCHECKED filter items who don't bring shit back
   for (let o in hidden) {
