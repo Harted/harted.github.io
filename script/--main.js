@@ -21,13 +21,44 @@ var data = [];
 var tables = [];
 var alarms = [];
 
-var stn = ['CLF3037','CMP305','CMP310','CMP311']
-var stn_str = stn.join(':')
 
-var sev = ['A','B','C','D']
-var sev_str = sev.join(':')
+function updateAX(){
 
-var lbt = '1/48'
+  ax.stn = []
+
+  for (var zone in TIA_GC) {
+    if (TIA_GC.hasOwnProperty(zone)) {
+
+      for (var stn in TIA_GC[zone]) {
+        if (TIA_GC[zone].hasOwnProperty(stn)) {
+
+          if (TIA_GC[zone][stn].sel) {
+            ax.stn.push(stn)
+          }
+        }
+      }
+    }
+  }
+
+  console.log(ax.stn_str());
+
+}
+
+
+var ax = {
+  stn: [],
+  stn_str: function(){ return this.stn.join(':')},
+
+  sev: [],
+  sev_str: function(){ return this.sev.join(':')},
+
+  lbt: '1/48',
+}
+
+ax.stn = ['CLF3037','CMP305','CMP310','CMP311']
+ax.sev = ['A','B','C','D']
+ax.lbt = '1/48'
+
 
 function getData(){
   console.time('Data')
@@ -37,9 +68,9 @@ function getData(){
     cache: false,
     dataType: "json",
     data: {
-      stn: stn_str,
-      sev: sev_str,
-      lbt: lbt,
+      stn: ax.stn_str(),
+      sev: ax.sev_str(),
+      lbt: ax.lbt,
     },
   }).done(function(received) {
 

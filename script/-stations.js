@@ -86,6 +86,9 @@ function setActiveStn(stn_arr){
             stn_arr.splice(stn_arr.indexOf(station),1)
             zone_active = true
           }
+
+          TIA_GC[zone][station].sel = false ;
+
         }
       }
 
@@ -114,7 +117,7 @@ function stnBtns(stns) {
 
     if (stns.hasOwnProperty(zone)) {
 
-      s += '<span class="zonename '
+      s += '<span id="' + zone + '_name" class="item_title '
       if(stns[zone]._active) { s += 'active '}
       s += '">' + zone.replace('ZONE','Zone ') + '</span>'
 
@@ -123,7 +126,7 @@ function stnBtns(stns) {
 
           if(stn.search('_') < 0){
 
-            s += '<div id="' + stn + '_stnbtn" class="stn_btn '
+            s += '<div id="' + zone + '_' + stn + '_stnbtn" class="glass_btn '
             if (stns[zone][stn].active) { s += 'active ' }
             s += '">' + stn + '</div>'
 
@@ -136,19 +139,8 @@ function stnBtns(stns) {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // button mouseup actions
+  $('#sel_stations .glass_btn.active').mouseup(sel_stn)
+  $('#sel_stations .item_title').mouseup(sel_zone)
 
 }

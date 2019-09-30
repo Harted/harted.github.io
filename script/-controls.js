@@ -1,176 +1,357 @@
-c = {
-  f: false,
-  th: [],
-  si: false,
+// TOGGLE ----------------------------------------------------------------------
+
+tog = {
+  format: false,
+  showinact: false,
 }
 
-$('#format').click(function(){
+var h = 3600000 // 1 hour in miliseconds
+var to = $('#to_date')
+var fr = $('#from_date')
 
-  c.f = toggle(c.f)
+// Clear/apply table formatting --------------------------------------
+$('#format').mouseup(format_mu)
 
-  if (c.f) {
-    $('tr').addClass('clearformat')
+function format_mu(){
+
+  tog.format = !tog.format
+
+  var el = $('tr')
+
+  if (tog.format) {
+    el.addClass('clearformat')
   } else {
-    $('tr').removeClass('clearformat')
+    el.removeClass('clearformat')
+    style_mu(this)
   }
 
-})
+};
 
-
-// TOGGLE FUNCTION
-function toggle(i){
-  if (i) {return false} else {return true}
-}
-
-
-// DATETIME --------------------------------------------------------------------
-var date_to_ud = false
-
-$('input[type=datetime-local]').focusout(datecheck)
-.on('input', datecheck)
-
-$('#to_date').focusout(dateto).on('input', dateto)
-
-//Default
-$(document).ready(function(){
-  $('#to_date').val(dateT(Date.now()))
-  $('#from_date').val(dateT(
-    dateT(new Date( new Date(Date.now()).getTime() - 3600000 )))
-  )
-})
-
-
-function datecheck() {
-
-  if(dc(this)){
-    $(this).removeClass('invalid')
-
-
-    if ($('#to_date').val() > dateT(Date.now())) {
-      $('#to_date').val(dateT())
-    }
-
-
-    if ($('#to_date').val() <= $('#from_date').val() ) {
-        $('#from_date').val(
-          dateT(new Date( $('#to_date').val()).getTime() - 3600000 )
-        )
-    }
-
-  } else {
-    $(this).addClass('invalid')
-  }
-
-}
-
-
-function dateto(){
-
-  if(dc(this)){
-    date_to_ud = true
-  } else {
-    date_to_ud = false
-  }
-
-}
-
-// Date check function -----------------------------------------------
-function dc(target){
-
-  var v = $(target).val()
-
-  var date = new Date(v)
-
-  if (date == 'Invalid Date') {
-    return false
-  } else {
-    return true
-  }
-
-}
-
-
-// BUTTON STYLE ----------------------------------------------------------------
-$('.btn').mousedown(style_md)
-function style_md(){ $(this).addClass('clicked') }
-function style_mu(dit){ $(dit).removeClass('clicked') }
-
-
-// TIME BUTTONS ----------------------------------------------------------------
-$('#today').mouseup(today_mu)
-
-function today_mu(){
-
-  var start = dateT().replace(/\d{2}:\d{2}:\d{2}/,'00:00:00')
-  var end = dateT()
-
-  $('#from_date').val( start ).removeClass('invalid')
-  $('#to_date').val( end ).removeClass('invalid')
-
-  style_mu(this)
-
-}
-
-$('#1_hour,#2_hour,#4_hour,#8_hour').mouseup(hour_sel)
-
-function hour_sel(){
-
-  if (date_to_ud) {
-    var d = dateT($('#to_date').val())
-  } else {
-    var d = dateT()
-  }
-
-  var h = 3600000
-  var n = parseInt($(this).attr('id').replace('_hour'))
-
-  var end = d
-
-  var start = dateT(new Date(d).getTime() - (n*h))
-
-  $('#from_date').val( start ).removeClass('invalid')
-  $('#to_date').val( end ).removeClass('invalid')
-
-  style_mu(this)
-
-}
-
-$('#dt_clear').mouseup(dt_clear)
-
-function dt_clear(){
-
-  $('#from_date').val('').addClass('invalid')
-  $('#to_date').val('').addClass('invalid')
-
-  date_to_ud = false;
-
-  style_mu(this)
-
-}
-
-
-// Local YYYY-MM-DDTHH:MM:SS sring from date
-function dateT(date){
-
-  date = date || Date.now()
-  return new Date(new Date(date).toString().split('GMT')[0]+' UTC').toISOString().split('.')[0]
-
-}
-
-
+// Show/hide inactive stations ---------------------------------------
 $('#show_inact').mouseup(show_inact_mu)
 
 function show_inact_mu(){
 
-  c.si = toggle(c.si)
+  tog.showinact = !tog.showinact
 
-  var el = $('#sel_stations .zonename, #sel_stations .stn_btn')
+  var el = $('#sel_stations .item_title, #sel_stations .glass_btn')
 
-  if (c.si){
+  if (tog.showinact){
     el.addClass('showinactive')
   } else {
     el.removeClass('showinactive')
     style_mu(this)
+  }
+
+}
+
+
+
+
+// BUTTON STYLE ----------------------------------------------------------------
+$('.btn').mousedown(style_md)
+// - common mousedown style:
+function style_md(){ $(this).addClass('clicked') }
+// - place this one in the mouse up function after the calculations:
+function style_mu(target){ $(target).removeClass('clicked') }
+
+
+
+// DEFAULTS --------------------------------------------------------------------
+// Default value: 1/4h from now
+$(document).ready(default_dt)
+
+function default_dt(){
+  console.log('default datetime');
+  to.val(dateT())
+  fr.val(dateT(new Date(Date.now()).getTime() - (h/4)))
+}
+
+
+// DATETIME ------------------------------------------------------------------//
+
+// USER DEFINED ----------------------------------------------------------+
+// This is true when the user changes the TO date by typing or selecting
+// - If the user changes the TO date the hour buttons reference to this
+// - date and not Date.now
+var to_user = false
+// - Function that sets it true
+$('#to_date').focusout(date_to).on('input', date_to)
+
+function date_to(){
+  if(dc(this)){to_user = true} else {to_user = false}
+  if(to_user){to.addClass('to_udef')} else {to.removeClass('to_udef')}
+}
+
+
+// VALIDITY VISUALISATION & RESTRICTIONS ---------------------------------+
+
+// Check if date and format red if it's not a date
+$('input[type=datetime-local]').focusout(datecheck).on('input', datecheck)
+
+function datecheck() {
+
+  if(dc(this)){ // check if valid date (returns true)
+
+    $(this).removeClass('invalid') // remove red format
+
+    // date_to can't be bigger then NOW
+    if (to.val() > dateT(Date.now())) { to.val(dateT())}
+
+    // if date_to is equal or smaller than from date set from date to 1h back
+    if (to.val() <= $('#from_date').val() ) {
+      fr.val(dateT(new Date( to.val()).getTime() - h ))
+    }
+
+  } else {
+
+    $(this).addClass('invalid') // add red format when no valid date
+
+  }
+}
+
+// Date check function -----------------------------------------------
+function dc(target){
+  var val = $(target).val(); var date = new Date(val);
+  if (date == 'Invalid Date') { return false } else { return true };
+}
+
+
+
+// TIME BUTTONS ----------------------------------------------------------------
+$('.h_btn').mouseup(hour_sel)
+$('#dt_reset').mouseup(dt_clear)
+
+// Fixed time selection buttons
+function hour_sel(){
+
+  if (to_user) { var d = dateT(to.val()) }
+  else { var d = dateT()};
+
+  var n = eval($(this).attr('id').replace('_hour','').replace('_','/'))
+
+  var start = dateT(new Date(d).getTime() - (n * h))
+  var end = d
+
+  fr.val( start ).removeClass('invalid')
+  to.val( end   ).removeClass('invalid')
+
+  style_mu(this)
+
+}
+
+// Reset to default
+function dt_clear(){
+
+  default_dt();
+
+  to_user = false; to.removeClass('to_udef');
+
+  style_mu(this);
+
+}
+
+
+// Local yyyy-mm-ddThh:mm:ss sring from date
+function dateT(d){
+
+  d = d || Date.now();
+  return new Date(
+    new Date(d).toString().split('GMT')[0]+' UTC'
+  ).toISOString().split('.')[0];
+
+}
+
+
+
+
+
+// STATION BUTTONS -------------------------------------------------------------
+
+$('.ssel_btn').mouseup(stn_all_mu)
+
+
+function sel_stn(){
+
+  var part = $(this).attr('id').split('_')
+  var state = TIA_GC[part[0]][part[1]].sel
+
+  stnSet(part[0],part[1],!state)
+
+}
+
+function sel_zone(){
+
+  var one_sel = false
+  var part = $(this).attr('id').split('_')
+
+  for (var stn in TIA_GC[part[0]]) {
+    if (TIA_GC[part[0]].hasOwnProperty(stn)) {
+
+      var sel = TIA_GC[part[0]][stn].sel
+
+      if(sel) {one_sel = true; break; };
+
+    }
+  }
+
+  for (var stn in TIA_GC[part[0]]) {
+    stnSet(part[0],stn,!one_sel)
+  }
+
+}
+
+
+
+function stn_all_mu(){
+
+  var s = $(this).attr('id').replace('stn_',''); var b;
+
+  if (s == 'all') { b = true } else { b = false}
+
+  for (var zone in TIA_GC) {
+    if (TIA_GC.hasOwnProperty(zone)) {
+
+      for (var stn in TIA_GC[zone]) {
+        if (TIA_GC[zone].hasOwnProperty(stn)) {
+
+          stnSet(zone,stn,b)
+
+        }
+      }
+    }
+  }
+
+  style_mu(this)
+
+}
+
+
+function stnSet(zone,stn,b){
+
+  var act = TIA_GC[zone][stn].active
+
+  if(act) { TIA_GC[zone][stn].sel = b}
+
+  var el = $('#' + zone + '_' + stn + '_stnbtn')
+
+  if(b && act){
+    el.addClass('sel')
+  } else {
+    el.removeClass('sel')
+  }
+
+}
+
+
+
+
+
+
+
+
+
+// FILTERS ---------------------------------------------------------------------
+
+FILTERS = {
+  sev: {
+    A: true, B: true, C: true, D: true, E: false,
+  },
+  at: {
+    general: true, safety: true, interlock: true,
+    autonotstarted: true, manual: true, formatnok: true,
+  },
+  prod: {
+    infeed: true, outfeed: true, andon: true, controlroom: true,
+  },
+}
+
+$(document).ready(default_fltr);
+
+function default_fltr(){
+  for (var type in FILTERS) {
+    if (FILTERS.hasOwnProperty(type)) {
+      for (var sub in FILTERS[type]) {
+        if (FILTERS[type].hasOwnProperty(sub)) { fltrSet(type, sub) }
+      }
+    }
+  }
+}
+
+// clicky wicky
+$('#filters .glass_btn').mouseup(filters_mu)
+
+function filters_mu(){
+
+  var part = $(this).attr('id').split('_')
+
+  FILTERS[part[0]][part[1]] = !FILTERS[part[0]][part[1]]
+
+  fltrSet(part[0], part[1])
+
+}
+
+function fltrSet(type,sub){
+
+  if(FILTERS[type][sub]){
+    $('#' + type + '_' + sub).addClass('sel')
+  } else {
+    $('#' + type + '_' + sub).removeClass('sel')
+  }
+
+}
+
+
+$('#filters .fsel_btn').mouseup(fltr_all_mu)
+
+
+function fltr_all_mu(){
+
+  var s = $(this).attr('id').replace('fltr_',''); var b;
+
+  if (s == 'all') { b = true } else { b = false}
+
+  for (var zone in TIA_GC) {
+    if (TIA_GC.hasOwnProperty(zone)) {
+
+      for (var type in FILTERS) {
+        if (FILTERS.hasOwnProperty(type)) {
+          for (var sub in FILTERS[type]) {
+            if (FILTERS[type].hasOwnProperty(sub)) {
+
+              FILTERS[type][sub] = b
+
+              fltrSet(type, sub)
+
+            }
+          }
+        }
+      }
+    }
+  }
+
+  style_mu(this)
+
+}
+
+$('#filters .item_title.active').mouseup(sel_type)
+
+function sel_type(){
+
+  var one_sel = false
+  var part = $(this).attr('id').split('_')
+
+  for (var sub in FILTERS[part[0]]) {
+    if (FILTERS[part[0]].hasOwnProperty(sub)) {
+
+      if(FILTERS[part[0]][sub]) {one_sel = true; break; };
+
+    }
+  }
+
+  for (var sub in FILTERS[part[0]]) {
+    FILTERS[part[0]][sub] = !one_sel
+    fltrSet(part[0], sub)
   }
 
 }

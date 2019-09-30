@@ -86,12 +86,13 @@
           </div>
           <div class='control-group-content'>
             <div class='control-item'>
-              <div id='today' class='btn'> Today </div>
-              <div id='1_hour' class='btn'> 1h </div>
-              <div id='2_hour' class='btn'> 2h </div>
-              <div id='4_hour' class='btn'> 4h </div>
-              <div id='8_hour' class='btn'> 8h </div>
-              <div id='dt_clear' class='btn right'> Clear </div>
+              <div id='1_4_hour' class='btn h_btn'> 15m </div>
+              <div id='1_2_hour' class='btn h_btn'> 30m </div>
+              <div id='1_hour' class='btn h_btn'> 1h </div>
+              <div id='2_hour' class='btn h_btn'> 2h </div>
+              <div id='4_hour' class='btn h_btn'> 4h </div>
+              <div id='8_hour' class='btn h_btn'> 8h </div>
+              <div id='dt_reset' class='btn right'> Reset </div>
             </div>
 
             <div class='control-item'>
@@ -118,12 +119,56 @@
 
             <div class='control-item'>
               <div id='show_inact' class='btn'> Show inactive </div>
+              <div id='stn_all' class='btn right ssel_btn'> All </div>
+              <div id='stn_none' class='btn right_follow ssel_btn'> None </div>
             </div>
 
             <div id='ZONE1' class='control-item'></div>
             <div id='ZONE2' class='control-item'></div>
             <div id='ZONE3' class='control-item'></div>
             <div id='ZONE4' class='control-item'></div>
+
+          </div>
+        </div>
+        <div id='filters' class='control-group'>
+          <div class='control-group-header'><span>Filters</span></div>
+
+          <div class='control-group-content'>
+
+            <div class='control-item'>
+              <div id='fltr_all' class='btn right fsel_btn'> All </div>
+              <div id='fltr_none' class='btn right_follow fsel_btn'> None </div>
+              <!-- <div id='fltr_res' class='btn right_follow fsel_btn'> Reset </div> -->
+            </div>
+
+            <div id='severity' class='control-item'>
+              <span id="sev_title" class="item_title active">Severity</span>
+              <div id="sev_A" class="glass_btn active">A</div>
+              <div id="sev_B" class="glass_btn active">B</div>
+              <div id="sev_C" class="glass_btn active">C</div>
+              <div id="sev_D" class="glass_btn active">D</div>
+              <div id="sev_E" class="glass_btn active">E</div>
+            </div>
+
+            <div id='alarmtype' class='control-item'>
+              <span id="at_title" class="item_title active">Alarm Type</span>
+
+              <div id="at_general" class="glass_btn active">General</div>
+              <div id="at_safety" class="glass_btn active">Safety</div>
+              <div id="at_interlock" class="glass_btn active">Interlock</div>
+              <div id="at_autonotstarted" class="glass_btn active">Not Started</div>
+              <div id="at_manual" class="glass_btn active">Manual</div>
+              <div id="at_formatnok" class="glass_btn active">Format NOK</div>
+            </div>
+
+            <div id='production' class='control-item'>
+              <span id="prod_title" class="item_title active">Production</span>
+              <div id="prod_infeed" class="glass_btn active">Wait Infeed</div>
+              <div id="prod_outfeed" class="glass_btn active">Wait Outfeed</div>
+              <div id="prod_andon" class="glass_btn active">Andon</div>
+              <div id="prod_controlroom" class="glass_btn active">Control Room</div>
+            </div>
+
 
           </div>
         </div>
