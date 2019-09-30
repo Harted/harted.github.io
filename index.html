@@ -86,26 +86,46 @@
           </div>
           <div class='control-group-content'>
             <div class='control-item'>
+              <div id='today' class='btn'> Today </div>
+              <div id='1_hour' class='btn'> 1h </div>
+              <div id='2_hour' class='btn'> 2h </div>
+              <div id='4_hour' class='btn'> 4h </div>
+              <div id='8_hour' class='btn'> 8h </div>
+              <div id='dt_clear' class='btn right'> Clear </div>
+            </div>
+
+            <div class='control-item'>
 
               <label for='from_date'>From:</label>
-              <input id='from_date' type=datetime-local value="2019-01-01T00:00:00" step="1">
-              <input id='lookbacktime' type="number" name="lookback time" min="1" max="8">
+              <input id='from_date' type='datetime-local' value="" step='1'
+              placeholder="yyyy/mm/ddThh:mm:ss">
 
             </div>
+
             <div class='control-item'>
 
               <label for='to_date'>To:</label>
-              <input id='to_date' type=datetime-local value="2019-01-01T23:59:59" step="1">
-              <div id='now_btn' class="btn" id="now">now</div>
+              <input id='to_date' type='datetime-local' value="" step='1'
+              placeholder="yyyy/mm/ddThh:mm:ss">
 
             </div>
           </div>
         </div>
         <div id='sel_stations' class='control-group'>
-          <div class='control-group-header'>
-            <span>Stations</span>
+          <div class='control-group-header'><span>Stations</span></div>
+
+          <div class='control-group-content'>
+
+            <div class='control-item'>
+              <div id='show_inact' class='btn'> Show inactive </div>
+            </div>
+
+            <div id='ZONE1' class='control-item'></div>
+            <div id='ZONE2' class='control-item'></div>
+            <div id='ZONE3' class='control-item'></div>
+            <div id='ZONE4' class='control-item'></div>
+
           </div>
-          <div class='control-group-content'> </div>
         </div>
       </div>
     </div>

@@ -53,15 +53,15 @@ TIA_GC = {
 // GET Stations from database (ALARMSOURCE) ------------------------------------
 
 
-// $.ajax({
-//   url: '/script/ajax.php',
-//   type: 'GET',
-//   cache: false,
-//   dataType: 'json',
-//   data: {'stations':''}
-// })
-// .done(function(received) { setActiveStn(received);})
-// .fail(function() { console.log("Ajax: stations: error");})
+$.ajax({
+  url: '/script/ajax.php',
+  type: 'GET',
+  cache: false,
+  dataType: 'json',
+  data: {'stations':''}
+})
+.done(function(received) { setActiveStn(received);})
+.fail(function() { console.log("Ajax: stations: error");})
 
 // setActiveStn([])
 
@@ -100,8 +100,6 @@ function setActiveStn(stn_arr){
     }
   }
 
-  console.log(TIA_GC);
-
   stnBtns(TIA_GC)
 
 }
@@ -111,42 +109,34 @@ function stnBtns(stns) {
   var s = ''
 
   for (var zone in stns) {
+
+    var s = ''
+
     if (stns.hasOwnProperty(zone)) {
 
-      if (stns[zone]._active || (true) ) {
-
-        s += '<div class="zonegroup" id="' + zone + '_group">'
-        s += '<div class="zg_header">'
-        s += zone.replace('ZONE','Zone ')
-        s += '</div>'
-        s += '<div class="zg_items">'
-        s += '<div class="zg_items2">'
-
-      }
-
+      s += '<span class="zonename '
+      if(stns[zone]._active) { s += 'active '}
+      s += '">' + zone.replace('ZONE','Zone ') + '</span>'
 
       for (var stn in stns[zone]) {
         if (stns[zone].hasOwnProperty(stn)) {
 
-          if (stns[zone][stn].active || (true && stn != '_active')) {
+          if(stn.search('_') < 0){
 
-            s += '<div id="' + stn + '_stnbtn" class="div_ctrl">' + stn + '</div>'
+            s += '<div id="' + stn + '_stnbtn" class="stn_btn '
+            if (stns[zone][stn].active) { s += 'active ' }
+            s += '">' + stn + '</div>'
 
           }
-
-
         }
       }
 
-
-      if (stns[zone]._active || (true)) {
-         s += '</div></div>'
-      }
+      $('#' + zone).html(s);
 
     }
   }
 
-  $('#stnbtns').html(s)
+
 
 
 

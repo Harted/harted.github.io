@@ -30,10 +30,10 @@ function flex(){ // NOTE: Copy new flex function at work
 
 
   // FLEX ITEM HEIGHT ------------------------------------------------
-  var t_ot = el_ft.offsetTop
-  var f_ot = el_ff.offsetTop
+  var t_ol = el_ft.offsetLeft
+  var f_ol = el_ff.offsetLeft
 
-  if( t_ot > f_ot ){
+  if( t_ol == f_ol ){
     //ABOVE EACHOTHER
     el_ft.classList.add('above')
     el_ff.classList.add('above')
@@ -54,17 +54,23 @@ function exp_c(){
 
   if(el_ft.classList.value.search('expand') > 0){
     el_ft.classList.remove('expand')
-    el_ff.classList.remove('expand')
-    el_ch.addEventListener('transitionend', exp_c_tr)
+    el_ff.classList.remove('expand','overflow')
+    el_ff.addEventListener('transitionend', exp_c_tr)
   } else {
     el_ft.classList.add('expand','exp_tr')
     el_ff.classList.add('expand','exp_tr')
+    el_ff.addEventListener('transitionend', exp_c_of)
   };
 
   function exp_c_tr(){
     el_ft.classList.remove('exp_tr')
     el_ff.classList.remove('exp_tr')
-    el_ch.removeEventListener('transitionend', exp_c_tr)
+    el_ff.removeEventListener('transitionend', exp_c_tr)
+  }
+
+  function exp_c_of(){
+    el_ff.classList.add('overflow')
+    el_ff.removeEventListener('transitionend', exp_c_of)
   }
 
 }
