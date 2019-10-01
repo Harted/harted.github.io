@@ -66,7 +66,7 @@ $(document).ready(default_dt)
 
 function default_dt(){
   to.val(dateT())
-  fr.val(dateT(new Date(Date.now()).getTime() - (h/4)))
+  fr.val(dateT(null, h/4))
   lb.val( 15 )
 }
 
@@ -99,11 +99,11 @@ function datecheck() {
     $(this).removeClass('invalid') // remove red format
 
     // date_to can't be bigger then NOW
-    if (to.val() > dateT(Date.now())) { to.val(dateT())}
+    if (to.val() > dateT()) { to.val(dateT())}
 
     // if date_to is equal or smaller than from date set from date to 1h back
-    if (to.val() <= $('#from_date').val() ) {
-      fr.val(dateT(new Date( to.val()).getTime() - h ))
+    if (to.val() <= fr.val() ) {
+      fr.val(dateT(to.val(),h))
     }
 
   } else {
@@ -135,6 +135,7 @@ $('#dt_reset').mouseup(dt_clear)
 $('#relative').mouseup(rel_mu)
 rt.mouseup(rt_mu);
 
+
 // Fixed time selection buttons
 function hour_sel(){
 
@@ -143,7 +144,7 @@ function hour_sel(){
 
   var n = eval($(this).attr('id').replace('_hour','').replace('_','/'))
 
-  var start = dateT(new Date(d).getTime() - (n * h))
+  var start = dateT(d, n * h)
   var end = d
 
   fr.val( start ).removeClass('invalid')
@@ -169,14 +170,66 @@ function dt_clear(){
 
 
 // Local yyyy-mm-ddThh:mm:ss sring from date
-function dateT(d){
+function dateT(d, sub){
 
-  d = d || Date.now();
-  return new Date(
-    new Date(d).toString().split('GMT')[0]+' UTC'
+  // now or defined by T string
+  if (d == undefined){
+
+    d = new Date(Date.now())
+
+  } else if (/[\d]{4}-[\d]{1,}-[\d]{1,}T[\d]{2}:[\d]{2}:[\d]{2}/.test(d)) {
+
+      var p = d.match(/[\d]{1,}/g)
+
+      var d = new Date(p[0],p[1]-1,p[2],p[3],p[4],p[5])
+
+  }
+
+  // subtract
+  var n = Date.parse(d)
+
+  if (sub != undefined) {
+
+    n = n - sub
+
+  }
+
+  // create T string
+  var o = new Date(n)
+
+  var str = new Date(
+    new Date(n).toString().split('GMT')[0]+' UTC'
   ).toISOString().split('.')[0];
 
+  return str
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $(document).ready(function(){
   lb.prop('disabled',true)

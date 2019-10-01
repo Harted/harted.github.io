@@ -87,7 +87,7 @@
             <span>Time Selection</span>
           </div>
 
-          <form action='#' onsubmit="GET()">
+          <form onsubmit="GET(); return false;">
 
 
           <div class='control-group-content'>
@@ -121,7 +121,7 @@
               <div id='relative' class='btn'> Relative </div>
               <input id='realtime' type='button' class='btn i_btn' value='RT'>
               <label for='lookback'>Look back:</label>
-              <input id='lookback' type='number' value="15" min='5' max='480' required>
+              <input id='lookback' type='number' value="15" min='5' max='480' pattern="[0-9]" required>
               <label for='lookback'> minutes </label>
             </div>
 

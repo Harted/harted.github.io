@@ -73,6 +73,19 @@
 }
 
 
+// Remove iOS formatting
+textarea,
+input.text,
+input[type="text"],
+input[type="button"],
+input[type="number"],
+input[type="submit"],
+input[type="datetime-local"],
+.input-checkbox {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
 
 // BODY ------------------------------------------------------------------------
 body {
@@ -469,6 +482,7 @@ extract(@table_pad,4);
         input { // for firefox
           font-family: Inconsolata;
           font-size: @table_fontsize;
+
         }
 
         input[type=datetime-local], input[type=number] {
@@ -496,7 +510,7 @@ extract(@table_pad,4);
           }
 
           &:disabled {
-            color: @color_dark;
+            color: @color_blue_04;
           }
 
         }
