@@ -368,7 +368,7 @@ FILTERS = {
     A: true, B: true, C: true, D: true, E: false,
   },
   at: {
-    general: true, safety: true, interlock: true,
+    active: true, general: true, safety: true, interlock: true,
     autonotstarted: true, manual: true, formatnok: true,
   },
   prod: {

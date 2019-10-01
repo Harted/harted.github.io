@@ -53,7 +53,7 @@ function GET(init){
   }
 
   // AJAX
-  $.ajax(ajax_s_home())
+  $.ajax(ajax_s())
 
   .fail(function() {                                                  // FAIL
 
