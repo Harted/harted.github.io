@@ -1,30 +1,120 @@
+// Body load ready (set on body in index.html) ---------------------------------
+function ready(){ GET(true);}
 
+// GLOBAL alarms & table variables ---------------------------------------------
+var alarms, table
 
-function ready(){
-  console.timeEnd('Document ready')
-
-getData_home();
+// AJAX SETTINGS ---------------------------------------------------------------
+function ajax_s() {
+  return {
+    url: '/script/ajax.php',
+    type: "GET",
+    cache: false,
+    dataType: "json",
+    data: {
+      rel: ax.rel,
+      stn: ax.stn_str(),
+      sev: ax.sev_str(),
+      lbt: ax.lbt_str(),
+      sta: ax.sta_str(),
+      end: ax.end_str(),
+    }
+  }
 }
 
-// lalalakak
-
-// Less finished ---------------------------------------------------------------
-less.pageLoadFinished.then(
-  function() {
-    console.timeEnd('Less ready')
-    $('.fade_less').css('opacity', 1);
+function ajax_s_home(){
+  return {
+    url: 'https://main.xfiddle.com/2efa0c76/alarmdata2.php',
+    type: "GET",
+    cache: false,
+    dataType: "json",
   }
-);
+}
 
-// AJAX ------------------------------------------------------------------------
-var data = [];
-var tables = [];
-var alarms = [];
+var get_busy = false
+
+// INIT Function ---------------------------------------------------------------
+function GET(init){
+
+  if(get_busy){ return; }
+
+  get_busy = true
+
+  var timer = new Date()
+
+  updateAX();
+
+  // initial settings
+  if (init) {
+    ax.rel = true
+    ax.stn = []
+    ax.sev = ['A','B','C','D']
+    ax.lbt = 15
+  }
+
+  // AJAX
+  $.ajax(ajax_s())
+
+  .fail(function() {                                                  // FAIL
+
+    console.log("Ajax: error")
+
+    $('.fade').css({'opacity': 1});
+    $('.fade_reverse').css({'opacity': 0});
+
+    style_mu($('#get_data'))
+    get_busy = false
+
+  })
+
+  .done(function(data) {                                              // SUCCES
+
+    console.log("Ajax: succes");
+
+    // NO data - temporary fix
+    if (data.length == 0) {
+      data = [['No Data','','0000nodata.AA_nodata','','','0']]
+    }
+
+    setAlarms(data); // fill alarm object
+    setTable(); // init table based on alarms
+    responsive(); // set table and page sizes
+    tableFilter(); // apply table filer
+
+    $('.fade').css({'opacity': 1});
+    $('.fade_reverse').css({'opacity': 0});
+
+    if (TIME.rt) {
+      get_busy = false
+      GD.val('GET DATA ('+ (new Date() - timer) + 'ms)')
+      GET()
+      return;
+    }
+
+    style_mu($('#get_data'))
+    get_busy = false
+
+  });
+}
 
 
+
+// AJAX PARAM object -----------------------------------------------------------
+var ax = {
+  rel: false,
+  stn: [], stn_str: function(){ return this.stn.join(':')},
+  sev: [], sev_str: function(){ return this.sev.join(':')},
+  lbt: 1, lbt_str: function(){ return this.lbt + '/1440'},
+  sta: '', sta_str: function(){ return this.sta.replace('T',' ')},
+  end: '', end_str: function(){ return this.end.replace('T',' ')},
+}
+
+
+// UPDATE param object
 function updateAX(){
 
   ax.stn = []
+  ax.sev = []
 
   for (var zone in TIA_GC) {
     if (TIA_GC.hasOwnProperty(zone)) {
@@ -40,105 +130,50 @@ function updateAX(){
     }
   }
 
-  console.log(ax.stn_str());
+  for (var sev in FILTERS.sev) {
 
-}
-
-
-var ax = {
-  stn: [],
-  stn_str: function(){ return this.stn.join(':')},
-
-  sev: [],
-  sev_str: function(){ return this.sev.join(':')},
-
-  lbt: '1/48',
-}
-
-ax.stn = ['CLF3037','CMP305','CMP310','CMP311']
-ax.sev = ['A','B','C','D']
-ax.lbt = '1/48'
-
-
-function getData(){
-  console.time('Data')
-  $.ajax({
-    url: '/script/ajax.php',
-    type: "GET",
-    cache: false,
-    dataType: "json",
-    data: {
-      stn: ax.stn_str(),
-      sev: ax.sev_str(),
-      lbt: ax.lbt,
-    },
-  }).done(function(received) {
-
-    console.timeEnd('Data')
-    console.time('Processing')
-    data = received
-    processData(data)
-    console.timeEnd('Processing')
-    console.timeEnd('----Ready')
-
-  })
-  .fail(function() {console.log("Ajax: error");});
-}
-
-
-function getData_home(){
-  console.time('Data')
-  $.ajax({
-    url: 'https://main.xfiddle.com/2efa0c76/alarmdata.php',
-    type: "GET", // or "GET"
-    cache: false,
-    dataType: "json",
-    success: function(received) {
-
-      console.timeEnd('Data')
-      console.time('Processing')
-      data = received
-      processData(data)
-      console.timeEnd('Processing')
-      console.timeEnd('----Ready')
-
+    if (FILTERS.sev[sev]) {
+      ax.sev.push(sev)
     }
-  });
-}
+  }
 
-
-function processData(data) {
-
-  tables = [];
-  alarms = [];
-
-
-  for (let i = 0; i < data.length; i++) {
-    alarms.push(new alarm(data[i]).alarm)
-  };
-
-  analyze('alarms','_var','_statetxt','_state', '_datetime')
-
-
-  tables.push(new table(alarmlist_settings, alarms));
-  // NOTE: multiple tables are possible but still need some work
-  // I will implement when needed
-  // Mind good referencing and line height ristrictions to
-  // not overlay on the other table
-
-  //set table container size to part of 100% according to the amount of tables
-  $('#table-container').css('height', 100/tables.length + '%')
-
-  flex();
-
-  tablesize();
-
-  filterbox();
-
-  initFilter();
-
-
-  $('.fade').css({'opacity': 1});
-  $('.fade_reverse').css({'opacity': 0});
+  ax.rel = TIME.rel
+  ax.lbt = TIME.lbt();
+  ax.sta = TIME.sta();
+  ax.end = TIME.end();
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Less finished ---------------------------------------------------------------
+less.pageLoadFinished.then(
+  function() {
+
+    $('.fade_less').css('opacity', 1);
+  }
+);

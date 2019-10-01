@@ -4,17 +4,20 @@ $c = oci_pconnect ('STO_SYS', 'STO_SYS1', 'nvr.gent.vcc.ford.com:49970/DST')
 OR die('Unable to connect to the database. Error: <pre>'
 . print_r(oci_error(),1) . '</pre>');
 
+$aq = "SELECT ALARMDATEANDTIMESTAMP, ALARMSOURCE, ALARMOBJECT,
+ALARMCOMMENT, ALARMSEVERITY, ALARMSTATUS FROM ALARM_DATA_FINALASS WHERE ";
+
 // ALARM DATA GET --------------------------------------------------------------
-if (isset($_GET['stn']) && isset($_GET['sev']) && (isset($_GET['lbt'])
-|| (isset($_GET['sta']) && isset($_GET['end'])))) {
+if (isset($_GET['rel']) && isset($_GET['stn']) && isset($_GET['sev'])
+&& (isset($_GET['lbt']) || (isset($_GET['sta']) && isset($_GET['end'])))) {
 
-// Set time values to empty string when not set
-$lbt_val = (isset($_GET['lbt'])) ? $_GET['lbt'] : '' ;
-$sta_val = (isset($_GET['sta'])) ? $_GET['sta'] : '' ;
-$end_val = (isset($_GET['end'])) ? $_GET['end'] : '' ;
+// create query
+$q = $aq . alarmquery(
+	$_GET['rel'],$_GET['stn'],$_GET['sev'],
+	$_GET['lbt'],$_GET['sta'],$_GET['end']
+);
 
-// create alarmquery
-$q = alarmquery($_GET['stn'],$_GET['sev'],$lbt_val,$sta_val,$end_val);
+//echo $q;
 
 // request and echo data
 request($q, $c);
@@ -23,18 +26,21 @@ request($q, $c);
 
 
 // SET UP ALARMQUERY -----------------------------------------------------------
-function alarmquery($stn,$sev,$lbt,$sta,$end){
+function alarmquery($rel,$stn,$sev,$lbt,$sta,$end){
 
 	// split sring to get array
 	$stn_arr = preg_split('/:/',$stn);
 	$sev_arr = preg_split('/:/',$sev);
 
-	// Alarm query first part
-	$q = "SELECT ALARMDATEANDTIMESTAMP, ALARMSOURCE, ALARMOBJECT,
-	ALARMCOMMENT, ALARMSEVERITY, ALARMSTATUS FROM ALARM_DATA_FINALASS WHERE ";
+	$rel = filter_var($rel, FILTER_VALIDATE_BOOLEAN);
 
 	// Time (always)
-	$q .= "CHANGETS > SYSTIMESTAMP - " . $lbt . " ";
+	if ($rel) {
+		$q = "CHANGETS > SYSTIMESTAMP - " . $lbt . " ";
+	} else {
+		$q = "(CHANGETS > TO_TIMESTAMP('" . $sta . "', 'yyyy-mm-dd hh24:mi:ss') AND "
+		. "CHANGETS < TO_TIMESTAMP('" . $end . "', 'yyyy-mm-dd hh24:mi:ss')) ";
+	};
 
 	// Station
 	$q .= queryPart('ALARMSOURCE', $stn_arr);

@@ -1,5 +1,5 @@
 // TH filterbox ----------------------------------------------------------------
-function filterbox(){
+function tableFilter(){
   // ARROW SVG ------------------------------------------------------------
   var arrow_svg = {
     viewbox : "0 0 100 100",
@@ -67,6 +67,9 @@ function filterbox(){
       if(aplfltr){applyFilter()};
     }
   });
+
+  initFilter();
+
 };
 
 
@@ -267,7 +270,7 @@ function filter(){
             if (id == '') {id = '-blanks-'}
 
             // convert id to compatible (see: table() function: filterbox)
-            var usid = id.replace(/[ \/\\\:\.\-\+\,\?\&\=]/g,'_')
+            var usid = id.replace(/[ \/\\\:\.\-\+\,\?\&\=\(\)]/g,'_')
 
             // set the jquery object
             var obj = $('#' + h + '_filter #' + usid)

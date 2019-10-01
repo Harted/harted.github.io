@@ -81,9 +81,15 @@
       </div>
       <div id='control-container'>
         <div id='sel_time' class='control-group'>
+
+
           <div class='control-group-header'>
             <span>Time Selection</span>
           </div>
+
+          <form action='#' onsubmit="GET()">
+
+
           <div class='control-group-content'>
             <div class='control-item'>
               <div id='1_4_hour' class='btn h_btn'> 15m </div>
@@ -99,7 +105,7 @@
 
               <label for='from_date'>From:</label>
               <input id='from_date' type='datetime-local' value="" step='1'
-              placeholder="yyyy/mm/ddThh:mm:ss">
+              placeholder="yyyy/mm/ddThh:mm:ss" required>
 
             </div>
 
@@ -107,10 +113,25 @@
 
               <label for='to_date'>To:</label>
               <input id='to_date' type='datetime-local' value="" step='1'
-              placeholder="yyyy/mm/ddThh:mm:ss">
+              placeholder="yyyy/mm/ddThh:mm:ss" required>
 
             </div>
+
+            <div class='control-item'>
+              <div id='relative' class='btn'> Relative </div>
+              <input id='realtime' type='button' class='btn i_btn' value='RT'>
+              <label for='lookback'>Look back:</label>
+              <input id='lookback' type='number' value="15" min='5' max='480' required>
+              <label for='lookback'> minutes </label>
+            </div>
+
+            <div class='control-item'>
+              <input id='get_data' class='btn get_btn right' type='submit' value="GET DATA">
+            </div>
           </div>
+
+</form>
+
         </div>
         <div id='sel_stations' class='control-group'>
           <div class='control-group-header'><span>Stations</span></div>

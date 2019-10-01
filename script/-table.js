@@ -21,8 +21,14 @@ const alarmlist_settings = {
   arrow: 14,
 }
 
+// INIT TABLE
+function setTable(){
+  table = new makeTable(alarmlist_settings, alarms);
+}
+
+
 // TABLE FUNCTION --------------------------------------------------------------
-function table(settings, data){
+function makeTable(settings, data){
 
 
   // FOOLPROOF ------------------------------------------------------------
@@ -33,8 +39,6 @@ function table(settings, data){
       'Settings object' , settings , 'not compatible for function: table()'
     ); return;
   }
-
-
 
 
   //VARIABLES -------------------------------------------------------------
@@ -103,7 +107,7 @@ function table(settings, data){
         for (var i = 0; i < arr.length; i++) {
 
           //give conpatible id (no spaces and weird signs)
-          var usid = arr[i].replace(/[ \/\\\:\.\-\+\,\?\&\=]/g,'_')
+          var usid = arr[i].replace(/[ \/\\\:\.\-\+\,\?\&\=\(\)]/g,'_')
 
           //set input id, text and the label link
           //label link needed for click on text to toggle
@@ -201,8 +205,6 @@ function table(settings, data){
   // OUTPUT ---------------------------------------------------------------
   var el_id = document.getElementById(settings.id.replace('#',''));
   el_id.innerHTML = table
-
-
 
 
   // FORMAT ---------------------------------------------------------------
@@ -517,16 +519,3 @@ function table(settings, data){
     });
   };
 };
-
-
-// TABLE HEADSIZE --------------------------------------------------------------
-function tablesize(){
-
-  //adjust headsize on tables
-  for (var table in tables) {
-    if (tables.hasOwnProperty(table)) {
-      tables[table].headsize()
-    }
-  }
-
-}

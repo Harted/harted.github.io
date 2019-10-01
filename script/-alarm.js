@@ -1,3 +1,17 @@
+// SET ALARMS ------------------------------------------------------------------
+function setAlarms(data){
+
+  alarms = [];
+
+  for (let i = 0; i < data.length; i++) {
+    alarms.push(new alarm(data[i]).alarm)
+  };
+
+  analyze('alarms','_var','_statetxt','_state', '_datetime')
+
+}
+
+
 // ALARM OBJECT GENERATOR ------------------------------------------------------
 function alarm(data) {
 

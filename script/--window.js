@@ -1,7 +1,3 @@
-console.time('----Ready')
-console.time('Document ready')
-console.time('Less ready')
-
 // USER AGENT ------------------------------------------------------------------
 var userAgent = getUserAgent();
 
@@ -53,11 +49,7 @@ var win = getWindowData();                                      //on load
 window.onresize = function(event){
   win = getWindowData();
 
-  // user functions ---------------
-  flex();
-  tablesize();
-  // ------------------------------
-
+  responsive();
 };
 
 function getWindowData() {                                      //Function
@@ -75,6 +67,14 @@ window.onpageshow = function(event) {
   if (event.persisted){
     location.reload()
   }
+};
+
+
+
+// Responsive on resize --------------------------------------------------------
+function responsive(){
+  flex();
+  table.headsize()
 };
 
 

@@ -8,6 +8,9 @@ tog = {
 var h = 3600000 // 1 hour in miliseconds
 var to = $('#to_date')
 var fr = $('#from_date')
+var lb = $('#lookback')
+var rt = $('#realtime')
+var GD = $('#get_data')
 
 // Clear/apply table formatting --------------------------------------
 $('#format').mouseup(format_mu)
@@ -62,9 +65,9 @@ function style_mu(target){ $(target).removeClass('clicked') }
 $(document).ready(default_dt)
 
 function default_dt(){
-  console.log('default datetime');
   to.val(dateT())
   fr.val(dateT(new Date(Date.now()).getTime() - (h/4)))
+  lb.val( 15 )
 }
 
 
@@ -119,8 +122,18 @@ function dc(target){
 
 
 // TIME BUTTONS ----------------------------------------------------------------
+var TIME = {
+  rel: false,
+  rt: false,
+  lbt: function(){return(lb.val())},
+  sta: function(){return(fr.val())},
+  end: function(){return(to.val())},
+}
+
 $('.h_btn').mouseup(hour_sel)
 $('#dt_reset').mouseup(dt_clear)
+$('#relative').mouseup(rel_mu)
+rt.mouseup(rt_mu);
 
 // Fixed time selection buttons
 function hour_sel(){
@@ -135,6 +148,7 @@ function hour_sel(){
 
   fr.val( start ).removeClass('invalid')
   to.val( end   ).removeClass('invalid')
+  lb.val( n * 60 )
 
   style_mu(this)
 
@@ -145,7 +159,9 @@ function dt_clear(){
 
   default_dt();
 
-  to_user = false; to.removeClass('to_udef');
+  to_user = false;
+  to.removeClass('to_udef invalid');
+  fr.removeClass('invalid')
 
   style_mu(this);
 
@@ -162,7 +178,48 @@ function dateT(d){
 
 }
 
+$(document).ready(function(){
+  lb.prop('disabled',true)
+  rt.prop('disabled',true)
+})
 
+function rel_mu(){
+
+  TIME.rel = !TIME.rel
+
+  if (TIME.rel) {
+    to.prop('disabled',true)
+    fr.prop('disabled',true)
+    lb.prop('disabled',false)
+    rt.prop('disabled',false)
+  } else {
+    to.prop('disabled',false)
+    fr.prop('disabled',false)
+    lb.prop('disabled',true)
+    rt.prop('disabled',true); reset_rt();
+    style_mu(this)
+  }
+
+}
+
+function rt_mu(){
+
+  TIME.rt = !TIME.rt
+
+  if (TIME.rt) {
+    GD.val('GET DATA (realtime)')
+  } else {
+    GD.val('GET DATA')
+    style_mu(this)
+  }
+
+}
+
+function reset_rt(){
+  GD.val('GET DATA')
+  TIME.rt = false;
+  style_mu('#realtime')
+}
 
 
 
