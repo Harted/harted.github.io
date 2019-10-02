@@ -5,17 +5,19 @@ function ready(){
     window.location.search.substring(1)
   ).split('&')
 
-  var params = {}
+  if (parray[0].length > 0){
 
-  for (var i = 0; i < parray.length; i++) {
-    var p = parray[i].split('=')
+    var params = {}
 
-    params[p[0]] = p[1].replace(' ','T')
+    for (var i = 0; i < parray.length; i++) {
+      var p = parray[i].split('=')
 
+      params[p[0]] = p[1].replace(' ','T')
+
+    }
+
+    console.log(params)
   }
-
-  console.log(params)
-
 
   GET(true);
 
