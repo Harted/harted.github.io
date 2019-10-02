@@ -215,22 +215,6 @@ function dateT(d, sub){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 $(document).ready(function(){
   lb.prop('disabled',true)
   rt.prop('disabled',true)
@@ -262,14 +246,14 @@ function rt_mu(){
   if (TIME.rt) {
     GD.val('GET DATA (realtime)')
   } else {
-    GD.val('GET DATA')
+    GD.val('GET DATA').prop('disabled',false)
     style_mu(this)
   }
 
 }
 
 function reset_rt(){
-  GD.val('GET DATA')
+  GD.val('GET DATA').prop('disabled',false)
   TIME.rt = false;
   style_mu('#realtime')
 }
@@ -368,11 +352,12 @@ FILTERS = {
     A: true, B: true, C: true, D: true, E: false,
   },
   at: {
-    active: true, general: true, safety: true, interlock: true,
+    active: false, general: true, safety: true, interlock: true,
     autonotstarted: true, manual: true, formatnok: true,
+    alarm: true,
   },
   prod: {
-    infeed: true, outfeed: true, andon: true, controlroom: true,
+    general: true, inout: true, andon: true, controlroom: true,
   },
 }
 

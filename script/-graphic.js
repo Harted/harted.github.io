@@ -9,4 +9,8 @@ function alfaLogo(){
   // set attributes for top left logo
   $('#alfa_logo svg').attr('viewBox',alfa_svg.viewbox)
   $('#alfa_logo polygon').attr('points',alfa_svg.poly)
+
+  $('#controllogo svg').attr('viewBox',alfa_svg.viewbox)
+  $('#controllogo polygon').attr('points',alfa_svg.poly)
+
 }; alfaLogo();

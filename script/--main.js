@@ -71,15 +71,15 @@ function GET(init){
 
     console.log("Ajax: succes");
 
-    // NO data - temporary fix
-    if (data.length == 0) {
-      data = [['No Data','','0000nodata.AA_nodata','','','0']]
-    }
-
     setAlarms(data); // fill alarm object
     setTable(); // init table based on alarms
     responsive(); // set table and page sizes
-    tableFilter(); // apply table filer
+    if (!TIME.rt){ // apply table filer
+      tableFilter();
+      $('.th-overlay').removeClass('hidden')
+    } else {
+      $('.th-overlay').addClass('hidden')
+    }
 
     $('.fade').css({'opacity': 1});
     $('.fade_reverse').css({'opacity': 0});
@@ -87,6 +87,7 @@ function GET(init){
     if (TIME.rt) {
       get_busy = false
       GD.val('GET DATA ('+ (new Date() - timer) + 'ms)')
+      .prop('disabled',true)
       GET()
       return;
     }

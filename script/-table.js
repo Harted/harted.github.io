@@ -166,8 +166,6 @@ function makeTable(settings, data){
 
       body.push('" id="linkID_' + d[i]._linkID + '_' + d[i]._statetxt)
 
-      body.push('" text="' + d[i]._durtxt)
-
       body.push('">')
 
       // var names in settings are the names of which variables you want
@@ -181,7 +179,12 @@ function makeTable(settings, data){
       for (var col in settings.cols) {
         if (d[i].hasOwnProperty(col)) {
           // min-width based on th string length
-          body.push('<td style="min-width:' + th_min_w[j] + 'px;"> ')
+          body.push('<td ')
+
+          // Add duration text to duration col td
+          if (col == '_statetxt') {body.push(' text="' + d[i]._durtxt + '"')}
+
+          body.push(' style="min-width:' + th_min_w[j] + 'px;"> ')
           // text
           body.push('<span>' + d[i][col] + '</span></td>')
         } else {
@@ -247,9 +250,6 @@ function makeTable(settings, data){
   var freeze // to set true on click to freeze visual link
   var stored_id, stored_obj // to store id and obj on click
 
-  var last_td // to store last_td obj for duration output
-  var txt = [] // to store text
-
   var lineobj // line object to output the html
 
 
@@ -271,8 +271,6 @@ function makeTable(settings, data){
         // add click event on mouseenter
         $(this).on('click', onclick)
 
-
-
         // FREEZE ON CLICK (disable the mouseenter event on other tr's)
         function onclick(){
           console.log(stored_id);
@@ -282,8 +280,8 @@ function makeTable(settings, data){
               // CLICK ON THIS OBJECT when freezed
               // reset stored id & object, set freeze to false, remove shadow
               stored_id = undefined ; stored_obj = undefined ; freeze = false;
-              $(this).next().css('box-shadow', 'none')
-              $(this).prev().css('box-shadow', 'none')
+              $(this).next().removeClass('next')
+              $(this).prev().removeClass('prev')
             } else {
 
               freeze = true // freeze is true: disable actions on hover
@@ -293,11 +291,8 @@ function makeTable(settings, data){
               stored_obj = $(this)
 
               // box shadow to show it's freezed (clicked in it seems
-              $(this).next()
-              .css('box-shadow', 'inset 0px 6px 7px -5px rgba(0,0,0,0.5)')
-
-              $(this).prev()
-              .css('box-shadow', 'inset 0px -6px 7px -5px rgba(0,0,0,0.5)')
+              $(this).next().addClass('next')
+              $(this).prev().addClass('prev')
 
             }
           } else if (stored_id != undefined && freeze) {
@@ -309,8 +304,8 @@ function makeTable(settings, data){
             mouseleave(stored_obj); mouseenter($(this));
 
             // Remove shadow
-            stored_obj.next().css('box-shadow', 'none')
-            stored_obj.prev().css('box-shadow', 'none')
+            stored_obj.next().removeClass('next')
+            stored_obj.prev().removeClass('prev')
 
             // reset stored id & object
             stored_id = undefined; stored_obj = undefined
@@ -337,7 +332,11 @@ function makeTable(settings, data){
 
       }
     );
-  }; this.setHover(false);
+  };
+
+  if(!TIME.rt) {
+    this.setHover(false);
+  } // disable on realtime
 
 
   // MOUSE ENTER -----------------------------------------------------
@@ -351,18 +350,7 @@ function makeTable(settings, data){
     if (id_int >= 0) {
 
       // DURATION
-      // Find last td, store text, set text from custom text attribute
-      last_td = obj.find('td').last()
-      txt[0] = obj.attr('text')
-      txt[1] = last_td.text()
-      txt[2] = last_td.attr('style')
-      last_td.find('span').text(txt[0])
-
-      // Give duration a style
-      last_td.css({
-        'font-size':'12px','font-weight':'bold', 'color':'#F5F5F5',
-        'filter':'drop-shadow(0px 0px 1px rgba(0, 0, 0, 1))',
-      })
+      obj.addClass('duration')
 
       // LINKED EVENT OPACITY
       // Set objects for the linked events (ON & OFF)
@@ -371,29 +359,16 @@ function makeTable(settings, data){
         $(settings.id + ' #linkID_' + id_int + '_ON'),
       ]
 
+      // Set opacity of linked event low
       if (id[2] == 'OFF') {
-
-        // If this event is OFF set ON's middle td's opacity lower
-        linked_td = events[1].find('td')
-        for (var i = 1; i < linked_td.length - 1; i++) {
-          $(linked_td[i]).css('opacity',0.3)
-        };
-
+        events[1].addClass('linked_td')
       } else {
-
-        // If this event is ON set OFF's middle td's opacity lower
-        linked_td = events[0].find('td')
-        for (var i = 1; i < linked_td.length - 1; i++) {
-          $(linked_td[i]).css('opacity',0.3)
-        };
-
+        events[0].addClass('linked_td')
       }
 
       // BACKGROUND COLOR
       for (var i = 0; i < events.length; i++) {
-        events[i].css({
-          'background-color':'#A3C4BC',
-        })
+        events[i].addClass('hover')
       }
 
       // DRAW CONNECTION LINE
@@ -413,7 +388,7 @@ function makeTable(settings, data){
     } else {
 
       // On single object only change background color
-      obj.css({'background-color':'#A3C4BC'});
+      obj.addClass('hover');
 
     };
   }
@@ -431,18 +406,9 @@ function makeTable(settings, data){
     // If object has an id it has a linked event
     if (id_int >= 0) {
 
-      // Reset the state text
-      last_td.find('span').text(txt[1])
-      last_td.attr('style',txt[2])
-
-      // Reset the opacities
-      for (let i = 1; i < linked_td.length - 1; i++) {
-        $(linked_td[i]).css('opacity',1)
-      };
-
       // Reset to original style
       for (let i = 0; i < events.length; i++) {
-        events[i].attr('style','')
+        events[i].removeClass('hover linked_td duration')
       }
 
       // Display no line
@@ -451,7 +417,7 @@ function makeTable(settings, data){
     } else {
 
       // Reset style when object has no linkID
-      obj.attr('style','')
+      obj.removeClass('hover')
 
     }
   }

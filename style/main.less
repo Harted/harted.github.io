@@ -230,8 +230,7 @@ html {
 
     margin: 0px @flex_margin;   //position
 
-    opacity: 0.6;               //style
-    color: @color_bright;
+    color: @color_bright_05; // style
     pointer-events: none;
 
   }
@@ -274,7 +273,7 @@ extract(@table_pad,4);
     &.above { height: calc(100% - (@th_height * 2)); } // when above
 
     &.expand { // on click
-      height: 34% !important;
+      height: 40% !important;
     }
 
   }
@@ -308,7 +307,7 @@ extract(@table_pad,4);
     }
 
     &.expand { // on click
-      height: 66% !important;
+      height: 60% !important;
     }
 
     &.overflow {
@@ -386,7 +385,7 @@ extract(@table_pad,4);
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
         border-bottom: 1px solid @color_blue_04;
-        color: @color_blue
+        color: @color_blue;
 
       }
 
@@ -398,6 +397,11 @@ extract(@table_pad,4);
           flex-wrap: wrap;
           align-items: center;
           margin: 0 10px 5px 0px ;
+
+          #at_active {
+              width: 100px !important;
+          }
+
         }
 
         input::-webkit-datetime-edit-day-field:focus,
@@ -442,6 +446,7 @@ extract(@table_pad,4);
         &.clicked {
           color: @color_bright;
           box-shadow: inset 0px 0px 2px 1px rgba(0,0,0,0.5);
+          text-shadow: 0px 0px 3px rgba(0, 0, 0, 1);
         }
 
       }
@@ -468,6 +473,14 @@ extract(@table_pad,4);
         margin-top: 5px;
         border: none;
         outline: none;
+
+        &:disabled {
+          background-color: @color_dark;
+          color: @color_blue_08;
+          box-shadow: none;
+          cursor: initial;
+        }
+
       }
 
       #sel_time{
@@ -553,7 +566,7 @@ extract(@table_pad,4);
 
         &.sel {
           background-color: @color_blue_08;
-          // color: @color_dark;
+          text-shadow: 0px 0px 3px rgba(0, 0, 0, 1);
         }
 
       }
@@ -574,11 +587,24 @@ extract(@table_pad,4);
         }
       }
 
-      #alarmtype {
-        .glass_btn:nth-child(n+6) {
-          width: 88.66px
+      #controllogo {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 900px;
+
+        height: 100px;
+
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        svg {
+          width: 25px;
+          fill: @color_blue_04;
+          .header_shadow();
         }
       }
+
 
     }
 
@@ -653,6 +679,10 @@ extract(@table_pad,4);
               }
               &:hover{
                 background-color: @color_blue_01;
+                cursor: pointer;
+              }
+              &.hidden {
+                display: none;
               }
             }
             .filterbox {
@@ -708,11 +738,43 @@ extract(@table_pad,4);
         }
         tbody {
           background-color: @color_bright;
-          // &::before{
-          //   content: '';
-          //   display: block;
-          //   height: @th_height;
-          // }
+
+          tr {
+
+            &.hover {
+              background-color: @color_blue;
+            }
+
+            &.prev {
+              box-shadow: inset 0px -6px 7px -5px rgba(0,0,0,0.5);
+            }
+
+            &.next {
+              box-shadow: inset 0px 6px 7px -5px rgba(0,0,0,0.5);
+            }
+
+            &.linked_td{
+              td:not(:first-child):not(:last-child) {
+                opacity: 0.3;
+              }
+            }
+
+            &.duration{
+              td:last-child{
+                span {
+                  display: none;
+                }
+                &:after{
+                  content: attr(text);
+                  font-size: 12px;
+                  font-weight: bold;
+                  color : #F5F5F5;
+                  filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 1));
+                }
+              }
+            }
+          }
+
           //Conditional formatting ----------------------------------------START
           .A , .B {
             background-color: @color_red;
@@ -748,7 +810,7 @@ extract(@table_pad,4);
           }
           .active {
             td {
-              animation: pulse 1000ms linear infinite;
+              animation: pulse 2000ms linear infinite;
             }
           }
           .interlock {
@@ -809,9 +871,9 @@ extract(@table_pad,4);
           }
 
           @keyframes pulse {
-            40% {opacity:1}
-            50% {opacity:0}
-            70% {opacity:1}
+            80% {opacity:1}
+            90% {opacity:0}
+            100% {opacity:1}
           }
           @keyframes autonotstarted {
             0%  {color: @color_dark; background-color: @color_green;};
@@ -820,10 +882,6 @@ extract(@table_pad,4);
             100% {color: @color_green; background-color: @color_dark;};
           }
           //Conditional formatting ------------------------------------------END
-        }
-        tr {
-          cursor: pointer;
-
         }
         th, td {
           padding:

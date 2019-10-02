@@ -3,11 +3,67 @@ function setAlarms(data){
 
   alarms = [];
 
+  // NO data
+
   for (let i = 0; i < data.length; i++) {
     alarms.push(new alarm(data[i]).alarm)
   };
 
   analyze('alarms','_var','_statetxt','_state', '_datetime')
+
+  alarms = infilter(alarms)
+
+  // NO data
+  if (alarms.length == 0) {
+    alarms = [{
+      comment: "",
+      description: "",
+      object: "",
+      severity: "",
+      station: "",
+      zone: "",
+      _active: false,
+      _datetime: "No Data",
+      _duration: -1,
+      _durtxt: "",
+      _linkID: -1,
+      _state: "",
+      _statetxt: "",
+      _stcode: "",
+      _type: "",
+      _var: "No Data",
+    }];
+  }
+
+}
+
+
+// INPUT FILTER ----------------------------------------------------------------
+function infilter(alarms){
+
+  var new_alarms = []
+
+  for (var i = 0; i < alarms.length; i++) {
+
+    var filtered = false
+
+    if (alarms[i]._type.search('production') < 0) {
+
+      if(!FILTERS.at[alarms[i]._type]) {filtered = true}
+
+    } else {
+      var sp = alarms[i]._type.split(' ')
+
+      if(!FILTERS.prod[sp[1]]) {filtered = true}
+    }
+
+    if(FILTERS.at.active && !alarms[i]._active) {filtered = true}
+
+    if (!filtered) { new_alarms.push(alarms[i]) }
+
+  }
+
+  return new_alarms;
 
 }
 
@@ -99,13 +155,15 @@ function alarm(data) {
 
         this.alarm['_type'] = 'production '
         if (rgx.prod.in.test(this.alarm._var)) {
-          this.alarm['_type'] += 'infeed'
+          this.alarm['_type'] += 'inout'
         } else if (rgx.prod.out.test(this.alarm._var)) {
-          this.alarm['_type'] += 'outfeed'
+          this.alarm['_type'] += 'inout'
         } else if (rgx.prod.andon.test(this.alarm._var)) {
           this.alarm['_type'] += 'andon'
         } else if (rgx.prod.cr.test(this.alarm._var)) {
           this.alarm['_type'] += 'controlroom'
+        } else {
+          this.alarm['_type'] += 'general'
         }
 
       } else {
