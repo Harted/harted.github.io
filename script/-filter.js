@@ -76,7 +76,7 @@ function tableFilter(){
 
 
 // GLOBAL VARS -----------------------------------------------------------------
-var filtered, fltr, fltr_mem, id_arr, hidden, collapsed
+var filtered, fltr, fltr_mem, id_arr, hidden, collapsed, onoff = true
 
 // INIT FILTER  ----------------------------------------------------------------
 function initFilter(){
@@ -128,6 +128,9 @@ function updatefilter(target){
   // Set the state in the filter object for current clicked checkbox
   fltr[col][txt] = st
 
+  // check if on or off are switched
+  if (onoff) { onoff = fltr.statetxt.ON && fltr.statetxt.OFF }
+
 };
 
 
@@ -161,7 +164,7 @@ function filter(){
   // fill id array to later apply "visibility: collapse" on itmes not in arr
   id_arr = []
   for (var i = 0; i < filtered.length; i++) {
-    id_arr.push('linkID_' + filtered[i]._linkID + '_' + filtered[i]._statetxt)
+    id_arr.push('linkID_' + filtered[i]._linkID + '_' + filtered[i].statetxt)
   }
 
 
@@ -327,6 +330,9 @@ function filter(){
 // APPLY FILTER ----------------------------------------------------------------
 function applyFilter(){
 
+  // Check on off state to draw line or not
+  onoff = fltr.statetxt.ON && fltr.statetxt.OFF
+
   // Apply filter is filter has changed
   if (JSON.stringify(fltr) != fltr_mem) {
 
@@ -349,9 +355,10 @@ function applyFilter(){
     fltr_mem = JSON.stringify(fltr)
 
     // set clearformat when previously active
-    if (c.f) {$('tr').addClass('clearformat')}
+    if (tog.format) {$('tr').addClass('clearformat')}
 
-    tables[0].dl()
+    // reset draw line events so no line can appear after filtering
+    table.events = undefined;
 
   }
 }

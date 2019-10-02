@@ -659,6 +659,12 @@ extract(@table_pad,4);
           z-index: 20;
           th {
             position: relative;
+            &:first-child{
+              .th-overlay {
+                display: none
+              }
+
+            }
             .th-overlay {
               position: absolute;
               top: 0;
@@ -743,6 +749,7 @@ extract(@table_pad,4);
 
             &.hover {
               background-color: @color_blue;
+              cursor: pointer;
             }
 
             &.prev {

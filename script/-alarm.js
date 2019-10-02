@@ -9,7 +9,7 @@ function setAlarms(data){
     alarms.push(new alarm(data[i]).alarm)
   };
 
-  analyze('alarms','_var','_statetxt','_state', '_datetime')
+  analyze('alarms','_var','statetxt','_state', '_datetime')
 
   alarms = infilter(alarms)
 
@@ -28,7 +28,7 @@ function setAlarms(data){
       _durtxt: "",
       _linkID: -1,
       _state: "",
-      _statetxt: "",
+      statetxt: "",
       _stcode: "",
       _type: "",
       _var: "No Data",
@@ -92,7 +92,7 @@ function alarm(data) {
 
   // Set statetxt 0=OFF 1=ON
   var onoff = ['OFF','ON']
-  this.alarm._statetxt = onoff[parseInt(this.alarm._state)]
+  this.alarm.statetxt = onoff[parseInt(this.alarm._state)]
 
   // REGEX expressions
   var rgx = {

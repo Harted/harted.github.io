@@ -24,7 +24,7 @@ function ajax_s() {
 
 function ajax_s_home(){
   return {
-    url: 'https://main.xfiddle.com/2efa0c76/alarmdata2.php',
+    url: 'https://www.harted.be/php/alarmdata3.php',
     type: "GET",
     cache: false,
     dataType: "json",
@@ -53,7 +53,7 @@ function GET(init){
   }
 
   // AJAX
-  $.ajax(ajax_s())
+  $.ajax(ajax_s_home())
 
   .fail(function() {                                                  // FAIL
 

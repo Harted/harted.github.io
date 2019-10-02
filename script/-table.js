@@ -15,7 +15,7 @@ const alarmlist_settings = {
     description: 'Description',
     comment: 'Comment',
     severity: 'Sev.',
-    _statetxt: 'State',
+    statetxt: 'State',
   },
   fontwidth: 6,
   arrow: 14,
@@ -27,7 +27,7 @@ function setTable(){
 }
 
 
-// TABLE FUNCTION --------------------------------------------------------------
+// tbl +FUNCTION --------------------------------------------------------------
 function makeTable(settings, data){
 
 
@@ -42,21 +42,21 @@ function makeTable(settings, data){
 
 
   //VARIABLES -------------------------------------------------------------
-  var table = '' // table variable to output to html
+  var tbl = '' // tbl +variable to output to html
   var j = 0 // index to calculate max string lenght of th and td
   var th_min_w = [] // to store th min-width
   var td_min_w = [] // to store td min-width
 
   // HEADER ---------------------------------------------------------------
-  // table header, seperate table because of fixed header system
+  // tbl +header, seperate tbl +because of fixed header system
   // otherwise scrolling would be glitchy because the before row heigth is
   // constantly changed by scrolling
-  table += '<table class="table-head"><thead>'
+  tbl += '<table class="table-head"><thead>'
 
   // row before use for fixed header with scrolling
-  // table += '<tr class="before"></tr>'
+  // tbl += '<tr class="before"></tr>'
   // visible header ++++
-  table += '<tr>'
+  tbl += '<tr>'
 
   //prepare distinct data for filter
   var dist_f = distinct(data)
@@ -70,20 +70,20 @@ function makeTable(settings, data){
       + settings.arrow;j++;
 
       // caption (text)
-      table += '<th><span>' + settings.cols[col] + '</span>'
+      tbl += '<th><span>' + settings.cols[col] + '</span>'
 
       // filterbox +++++++++++++++++++++++++++++++++++++++++++++++++++
-      table += '<div class="filterbox" id="' + col + '_filter">'
+      tbl += '<div class="filterbox" id="' + col + '_filter">'
 
       // only add filter items on collumns without an underscore
       if(col.search('_') < 0) {
 
         // One & All buttons
-        table += '<div class="fltrbtn" id="one">One</div>'
-        table += '<div class="fltrbtn" id="all">All</div>'
+        tbl += '<div class="fltrbtn" id="one">One</div>'
+        tbl += '<div class="fltrbtn" id="all">All</div>'
 
         // Filter checkboxes
-        table += '<div class="filtertext">'
+        tbl += '<div class="filtertext">'
 
         // make distinct list
         var elements = dist_f[col]
@@ -111,40 +111,40 @@ function makeTable(settings, data){
 
           //set input id, text and the label link
           //label link needed for click on text to toggle
-          table += '<div class="visible"><label for="' + usid + '">'
-          table += '<input type="checkbox" id="' + usid + '" checked>'
-          table += arr[i] + '</label></div>'
+          tbl += '<div class="visible"><label for="' + usid + '">'
+          tbl += '<input type="checkbox" id="' + usid + '" checked>'
+          tbl += arr[i] + '</label></div>'
 
         }
 
-        table += '</div>'
+        tbl += '</div>'
       }
 
-      table += '</div>'
+      tbl += '</div>'
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
       // div overlay+++++++++++++++++++++++++++++++++++++++++++++++++++
-      table += '<div class="th-overlay" id="' + col + '_overlay">'
-      table += '<div class="arrow">'
-      table += '<svg><g><path>'
-      table += '</path></g></svg>'
-      table += '</div>'
-      table += '</div>'
+      tbl += '<div class="th-overlay" id="' + col + '_overlay">'
+      tbl += '<div class="arrow">'
+      tbl += '<svg><g><path>'
+      tbl += '</path></g></svg>'
+      tbl += '</div>'
+      tbl += '</div>'
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      table += '</th>'
+      tbl += '</th>'
     }
   }
-  table += '</tr>'
-  // close table (header)
-  table += '</thead></table>'
+  tbl += '</tr>'
+  // close tbl +(header)
+  tbl += '</thead></table>'
 
 
 
 
   // BODY -----------------------------------------------------------------
 
-  table += '<table class="table-body">'
+  tbl += '<table +class="table-body">'
 
   this.makeBody = function(d){
     body = []
@@ -164,7 +164,7 @@ function makeTable(settings, data){
       body.push('Duration : ' + d[i]._durtxt + '\n')
       body.push('Variable : ' + d[i]._var)
 
-      body.push('" id="linkID_' + d[i]._linkID + '_' + d[i]._statetxt)
+      body.push('" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt)
 
       body.push('">')
 
@@ -182,7 +182,7 @@ function makeTable(settings, data){
           body.push('<td ')
 
           // Add duration text to duration col td
-          if (col == '_statetxt') {body.push(' text="' + d[i]._durtxt + '"')}
+          if (col == 'statetxt') {body.push(' text="' + d[i]._durtxt + '"')}
 
           body.push(' style="min-width:' + th_min_w[j] + 'px;"> ')
           // text
@@ -195,19 +195,19 @@ function makeTable(settings, data){
       }
       body.push('</tr>')
     }
-    // close table (body)
+    // close tbl +(body)
     body.push('</body>')
 
     return body
   }
 
-  table += this.makeBody(data).join('')
+  tbl += this.makeBody(data).join('')
 
-  table += '</table>'
+  tbl += '</table>'
 
   // OUTPUT ---------------------------------------------------------------
   var el_id = document.getElementById(settings.id.replace('#',''));
-  el_id.innerHTML = table
+  el_id.innerHTML = tbl
 
 
   // FORMAT ---------------------------------------------------------------
@@ -224,9 +224,13 @@ function makeTable(settings, data){
 
       //get td widht
       td_width = getComputedStyle(el_td[i]).width
+
       //set th min-widht
       el_th[i].style.minWidth = td_width
-      //
+
+      //keep th left position always (also on realtime)
+      th_lpos()
+
     };
   };
 
@@ -234,15 +238,15 @@ function makeTable(settings, data){
   // FIXED HEADER - the header seems to be fixed because the 'before' row
   // gets the heigth of the top scroll height
 
-  el_id.addEventListener("scroll", function(){
+  el_id.addEventListener("scroll", th_lpos)
+
+  function th_lpos(){
     el_thead[0].style.marginLeft = -el_id.scrollLeft + 'px'
-  });
-
-
+  }
 
 
   // HOVER ----------------------------------------------------------------
-  var body_tr // body table row object
+  var body_tr // body tbl +row object
 
   var id // to store id (array) [LinkID_ , n , ON/OFF]
   var id_int // to store id integer ('n' of previous)
@@ -273,7 +277,7 @@ function makeTable(settings, data){
 
         // FREEZE ON CLICK (disable the mouseenter event on other tr's)
         function onclick(){
-          console.log(stored_id);
+
           if (stored_id == undefined || stored_id == $(this).attr('id')) {
             if(freeze){
 
@@ -351,24 +355,25 @@ function makeTable(settings, data){
 
       // DURATION
       obj.addClass('duration')
+      table.headsize()
 
       // LINKED EVENT OPACITY
       // Set objects for the linked events (ON & OFF)
-      events = [
+      this.events = [
         $(settings.id + ' #linkID_' + id_int + '_OFF'),
         $(settings.id + ' #linkID_' + id_int + '_ON'),
       ]
 
       // Set opacity of linked event low
       if (id[2] == 'OFF') {
-        events[1].addClass('linked_td')
+        this.events[1].addClass('linked_td')
       } else {
-        events[0].addClass('linked_td')
+        this.events[0].addClass('linked_td')
       }
 
       // BACKGROUND COLOR
-      for (var i = 0; i < events.length; i++) {
-        events[i].addClass('hover')
+      for (var i = 0; i < this.events.length; i++) {
+        this.events[i].addClass('hover')
       }
 
       // DRAW CONNECTION LINE
@@ -407,8 +412,8 @@ function makeTable(settings, data){
     if (id_int >= 0) {
 
       // Reset to original style
-      for (let i = 0; i < events.length; i++) {
-        events[i].removeClass('hover linked_td duration')
+      for (let i = 0; i < this.events.length; i++) {
+        this.events[i].removeClass('hover linked_td duration')
       }
 
       // Display no line
@@ -429,14 +434,14 @@ function makeTable(settings, data){
     // always hide line upfront
     lineobj.css('display','none')
 
-    if (typeof events == 'undefined'){ return false; }
+    if (typeof this.events == 'undefined' || !onoff ){ return false; }
 
     // Get trs positions
     // - off event is always above
     // - offset top of bottom off event = ot + oh
-    var off_ot = events[0].offset().top
-    var off_oh = events[0].outerHeight()
-    var on_ot = events[1].offset().top
+    var off_ot = this.events[0].offset().top
+    var off_oh = this.events[0].outerHeight()
+    var on_ot = this.events[1].offset().top
 
     // If trs are directly above or below eachother
     // - in this case the position of the OFF bottom is equal to ON top
@@ -444,7 +449,7 @@ function makeTable(settings, data){
     if(off_ot + off_oh >= on_ot){ return false; }
 
     // Get position fot the line
-    // - The offset top of the table overlay
+    // - The offset top of the tbl +overlay
     // - The offset left of the second td (-6 = half the div width)
     var sh_ot = $(settings.id).prev('.table-overlay').offset().top
     var l = el_th[1].offsetLeft - 6;
