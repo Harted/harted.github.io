@@ -1,5 +1,26 @@
 // Body load ready (set on body in index.html) ---------------------------------
-function ready(){ GET(true);}
+function ready(){
+
+  var parray = decodeURIComponent(
+    window.location.search.substring(1)
+  ).split('&')
+
+  var params = {}
+
+  for (var i = 0; i < parray.length; i++) {
+    var p = parray[i].split('=')
+
+    params[p[0]] = p[1].replace(' ','T')
+
+  }
+
+  console.log(params)
+
+
+  GET(true);
+
+
+}
 
 // GLOBAL alarms & table variables ---------------------------------------------
 var alarms, table
@@ -53,11 +74,13 @@ function GET(init){
   }
 
   // AJAX
-  $.ajax(ajax_s_home())
+  $.ajax(ajax_s())
 
   .fail(function() {                                                  // FAIL
 
     console.log("Ajax: error")
+
+    history.pushState(1,'','?' + this.url.split('?')[1])
 
     $('.fade').css({'opacity': 1});
     $('.fade_reverse').css({'opacity': 0});
@@ -70,6 +93,8 @@ function GET(init){
   .done(function(data) {                                              // SUCCES
 
     console.log("Ajax: succes");
+
+    history.pushState(1,'','?' + this.url.split('?')[1])
 
     setAlarms(data); // fill alarm object
     setTable(); // init table based on alarms

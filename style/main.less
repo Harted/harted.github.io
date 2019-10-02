@@ -47,9 +47,10 @@
 
 
 // GLOBAL ----------------------------------------------------------------------
-.fade, .fade_less { opacity: 0; transition: 500ms };
+.fade { opacity: 0; transition: 500ms 300ms };
+.fade_less { opacity: 0; transition: 500ms };
 
-.fade_reverse { opacity: 1; transition: 250ms };
+.fade_reverse { opacity: 1; transition: 200ms };
 
 .noselect(){
   -webkit-touch-callout: none;
@@ -155,7 +156,7 @@ html {
 }
 
 .header_shadow(){
-  filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5);); // Shadow
+  filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.7);); // Shadow
 }
 
 
@@ -184,8 +185,41 @@ html {
       .header_sq_whm(); // size & margin for square
       margin-left: calc((@header_height / 4) + @flex_margin);
 
-      svg { width: inherit; height: inherit; fill: @color_blue;} // SVG
+      svg {
+        width: inherit;
+        height: inherit;
+        fill: none;//@color_blue;
 
+        polygon {
+          stroke: @color_blue;
+          stroke-width: 1;
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 1000;
+          animation: dash 1s linear forwards;
+        }
+
+      }
+
+      @keyframes dash {
+        0% {
+          stroke-dashoffset: 1000;
+          fill: rgba(163, 196, 188, 0);
+        }
+        30% {
+          fill: rgba(163, 196, 188, 0);
+        }
+        40% {
+          stroke-width: 1;
+        }
+        90% {
+          stroke-width: 0;
+        }
+        100% {
+          stroke-width: 0;
+          stroke-dashoffset: 0;
+          fill: @color_blue;
+        }
+      }
     }
 
     #alfa_txt{
@@ -196,9 +230,14 @@ html {
         font-size: 0.8em; line-height: 0.8em;
       }
 
+      width: 100px;
+      flex-shrink: 0;
+
       color: @color_bright;         // Color
       pointer-events: none;         // No selecting text
-      span{ white-space: nowrap; }  // No wrapping A L F A
+
+      //width: 0px;
+      overflow: hidden;
 
     }
   }
@@ -389,6 +428,18 @@ extract(@table_pad,4);
 
       }
 
+      .all {
+
+        &:after{
+          content: "(all)";
+          float: right;
+          color: @color_bright_05;
+          margin-right: -8px;
+          font-size: 10px;
+        }
+
+      }
+
       .control-group-content {
 
         .control-item {
@@ -398,8 +449,8 @@ extract(@table_pad,4);
           align-items: center;
           margin: 0 10px 5px 0px ;
 
-          #at_active {
-              width: 100px !important;
+          #only_active {
+            width: 100px !important;
           }
 
         }

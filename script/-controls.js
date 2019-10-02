@@ -264,6 +264,7 @@ function reset_rt(){
 
 $('.ssel_btn').mouseup(stn_all_mu)
 
+$(document).ready(all_stns)
 
 function sel_stn(){
 
@@ -335,10 +336,35 @@ function stnSet(zone,stn,b){
     el.removeClass('sel')
   }
 
+  all_stns();
+
 }
 
 
+function all_stns(){
 
+  var all_false = true
+
+
+  for (var zone in TIA_GC) {
+    if (TIA_GC.hasOwnProperty(zone)) {
+
+      for (var stn in TIA_GC[zone]) {
+        if (TIA_GC[zone].hasOwnProperty(stn)) {
+
+          if (TIA_GC[zone][stn].sel) {all_false = false; break;}
+
+        }
+      }
+    }
+  }
+
+
+
+  if (all_false) { $('#stns_header').addClass('all') }
+  else $('#stns_header').removeClass('all')
+
+}
 
 
 
@@ -348,11 +374,14 @@ function stnSet(zone,stn,b){
 // FILTERS ---------------------------------------------------------------------
 
 FILTERS = {
+  only: {
+    active: false,
+  },
   sev: {
     A: true, B: true, C: true, D: true, E: false,
   },
   at: {
-    active: false, general: true, safety: true, interlock: true,
+    general: true, safety: true, interlock: true,
     autonotstarted: true, manual: true, formatnok: true,
     alarm: true,
   },
@@ -384,6 +413,8 @@ function filters_mu(){
 
   fltrSet(part[0], part[1])
 
+  all_sev()
+
 }
 
 function fltrSet(type,sub){
@@ -397,14 +428,14 @@ function fltrSet(type,sub){
 }
 
 
-$('#filters .fsel_btn').mouseup(fltr_all_mu)
+$('#filters .fsel_btn').mouseup(fltr_res_mu)
 
 
-function fltr_all_mu(){
+function fltr_res_mu(){
 
   var s = $(this).attr('id').replace('fltr_',''); var b;
 
-  if (s == 'all') { b = true } else { b = false}
+  if (s == 'res') { b = true } else { b = false}
 
   for (var zone in TIA_GC) {
     if (TIA_GC.hasOwnProperty(zone)) {
@@ -424,6 +455,12 @@ function fltr_all_mu(){
       }
     }
   }
+
+  //exeptions:
+  FILTERS.sev.E = false; fltrSet('sev', 'E')
+  FILTERS.only.active = false; fltrSet('only', 'active')
+
+  all_sev()
 
   style_mu(this)
 
@@ -448,5 +485,24 @@ function sel_type(){
     FILTERS[part[0]][sub] = !one_sel
     fltrSet(part[0], sub)
   }
+
+  all_sev()
+
+}
+
+
+
+function all_sev(){
+
+  var all_false = true
+
+  for (var sev in FILTERS.sev) {
+    if (FILTERS.sev.hasOwnProperty(sev)) {
+      if (FILTERS.sev[sev]) {all_false = false; break;}
+    }
+  }
+
+  if (all_false) { $('#sev_title').addClass('all') }
+  else $('#sev_title').removeClass('all')
 
 }
