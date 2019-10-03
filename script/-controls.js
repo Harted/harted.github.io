@@ -11,6 +11,7 @@ var fr = $('#from_date')
 var lb = $('#lookback')
 var rt = $('#realtime')
 var GD = $('#get_data')
+var rel = $('#relative')
 
 // Clear/apply table formatting --------------------------------------
 $('#format').mouseup(format_mu)
@@ -54,17 +55,20 @@ function show_inact_mu(){
 // BUTTON STYLE ----------------------------------------------------------------
 $('.btn').mousedown(style_md)
 // - common mousedown style:
-function style_md(){ $(this).addClass('clicked') }
+function style_md(event){
+
+  $(event).addClass('clicked')
+  $(event.target).addClass('clicked') // REVIEW: maybe not so beautifull fix..
+
+}
 // - place this one in the mouse up function after the calculations:
 function style_mu(target){ $(target).removeClass('clicked') }
 
 
 
 // DEFAULTS --------------------------------------------------------------------
-// Default value: 1/4h from now
-$(document).ready(default_dt)
 
-function default_dt(){
+function default_dt(){ // trigered on session load
   to.val(dateT())
   fr.val(dateT(null, h/4))
   lb.val( 15 )
@@ -132,7 +136,7 @@ var TIME = {
 
 $('.h_btn').mouseup(hour_sel)
 $('#dt_reset').mouseup(dt_clear)
-$('#relative').mouseup(rel_mu)
+rel.mouseup(rel_mu)
 rt.mouseup(rt_mu);
 
 
@@ -206,23 +210,18 @@ function dateT(d, sub){
 }
 
 
-
-
-
-
-
-
-
-
-
-$(document).ready(function(){
-  lb.prop('disabled',true)
-  rt.prop('disabled',true)
-})
-
 function rel_mu(){
 
-  TIME.rel = !TIME.rel
+  TIME.rel = !TIME.rel //toggle
+  relative_sel(this);
+
+}
+
+function relative_sel(target){
+
+  target = target || rel.get()[0]
+
+  style_md(target)
 
   if (TIME.rel) {
     to.prop('disabled',true)
@@ -234,20 +233,29 @@ function rel_mu(){
     fr.prop('disabled',false)
     lb.prop('disabled',true)
     rt.prop('disabled',true); reset_rt();
-    style_mu(this)
+    style_mu(target)
   }
 
 }
 
 function rt_mu(){
 
-  TIME.rt = !TIME.rt
+  TIME.rt = !TIME.rt // Toggle
+  realtime_sel(this)
+
+}
+
+function realtime_sel(target){
+
+  target = target || rt.get()[0]
+
+  style_md(target)
 
   if (TIME.rt) {
     GD.val('GET DATA (realtime)')
   } else {
     GD.val('GET DATA').prop('disabled',false)
-    style_mu(this)
+    style_mu(target)
   }
 
 }
@@ -266,7 +274,7 @@ $('.ssel_btn').mouseup(stn_all_mu)
 
 $(document).ready(all_stns)
 
-function sel_stn(){
+function sel_stn(){ //trigger in -stations.js
 
   var part = $(this).attr('id').split('_')
   var state = TIA_GC[part[0]][part[1]].sel
@@ -275,7 +283,7 @@ function sel_stn(){
 
 }
 
-function sel_zone(){
+function sel_zone(){ //trigger in -stations.js
 
   var one_sel = false
   var part = $(this).attr('id').split('_')
@@ -373,30 +381,37 @@ function all_stns(){
 
 // FILTERS ---------------------------------------------------------------------
 
-FILTERS = {
-  only: {
-    active: false,
-  },
-  sev: {
-    A: true, B: true, C: true, D: true, E: false,
-  },
-  at: {
-    general: true, safety: true, interlock: true,
-    autonotstarted: true, manual: true, formatnok: true,
-    alarm: true,
-  },
-  prod: {
-    general: true, inout: true, andon: true, controlroom: true,
-  },
+var FILTERS = default_fltr_settings()
+
+function default_fltr_settings(){
+  return {
+    only: {
+      active: false,
+    },
+    sev: {
+      A: true, B: true, C: true, D: true, E: false,
+    },
+    at: {
+      general: true, safety: true, interlock: true,
+      autonotstarted: true, manual: true, formatnok: true,
+      alarm: true,
+    },
+    prod: {
+      general: true, inout: true, andon: true, controlroom: true,
+    },
+  }
 }
 
-$(document).ready(default_fltr);
+function default_fltr(){ //triggered in load session
 
-function default_fltr(){
+  FILTERS = default_fltr_settings()
+
+  console.log(FILTERS);
+
   for (var type in FILTERS) {
     if (FILTERS.hasOwnProperty(type)) {
       for (var sub in FILTERS[type]) {
-        if (FILTERS[type].hasOwnProperty(sub)) { fltrSet(type, sub) }
+        if (FILTERS[type].hasOwnProperty(sub)) { fltrSet(type, sub, FILTERS[type][sub]) }
       }
     }
   }
@@ -409,21 +424,7 @@ function filters_mu(){
 
   var part = $(this).attr('id').split('_')
 
-  FILTERS[part[0]][part[1]] = !FILTERS[part[0]][part[1]]
-
-  fltrSet(part[0], part[1])
-
-  all_sev()
-
-}
-
-function fltrSet(type,sub){
-
-  if(FILTERS[type][sub]){
-    $('#' + type + '_' + sub).addClass('sel')
-  } else {
-    $('#' + type + '_' + sub).removeClass('sel')
-  }
+  fltrSet(part[0], part[1], !FILTERS[part[0]][part[1]])
 
 }
 
@@ -445,9 +446,7 @@ function fltr_res_mu(){
           for (var sub in FILTERS[type]) {
             if (FILTERS[type].hasOwnProperty(sub)) {
 
-              FILTERS[type][sub] = b
-
-              fltrSet(type, sub)
+              fltrSet(type, sub, b)
 
             }
           }
@@ -457,10 +456,8 @@ function fltr_res_mu(){
   }
 
   //exeptions:
-  FILTERS.sev.E = false; fltrSet('sev', 'E')
-  FILTERS.only.active = false; fltrSet('only', 'active')
-
-  all_sev()
+  fltrSet('sev', 'E', false)
+  fltrSet('only', 'active', false)
 
   style_mu(this)
 
@@ -482,14 +479,25 @@ function sel_type(){
   }
 
   for (var sub in FILTERS[part[0]]) {
-    FILTERS[part[0]][sub] = !one_sel
-    fltrSet(part[0], sub)
+    fltrSet(part[0], sub, !one_sel)
+  }
+
+}
+
+
+function fltrSet(type,sub, b){
+
+  FILTERS[type][sub] = b
+
+  if(FILTERS[type][sub]){
+    $('#' + type + '_' + sub).addClass('sel')
+  } else {
+    $('#' + type + '_' + sub).removeClass('sel')
   }
 
   all_sev()
 
 }
-
 
 
 function all_sev(){

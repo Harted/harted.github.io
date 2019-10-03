@@ -26,6 +26,7 @@ function setTable(){
   table = new makeTable(alarmlist_settings, alarms);
 }
 
+var tableready = false
 
 // tbl +FUNCTION --------------------------------------------------------------
 function makeTable(settings, data){
@@ -209,6 +210,7 @@ function makeTable(settings, data){
   var el_id = document.getElementById(settings.id.replace('#',''));
   el_id.innerHTML = tbl
 
+  if(!tableready){tableready = true}
 
   // FORMAT ---------------------------------------------------------------
   // th min-width = td width (align headers with content)

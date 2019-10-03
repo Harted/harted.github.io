@@ -1,16 +1,14 @@
 // Body load ready (set on body in index.html) ---------------------------------
 function ready(){
 
+  loadSession();
 
   GET(true);
-
 
 }
 
 // GLOBAL alarms & table variables ---------------------------------------------
-var alarms, table
-
-var stored
+var alarms, table, stored_settings
 
 // AJAX SETTINGS ---------------------------------------------------------------
 function ajax_s() {
@@ -79,8 +77,7 @@ function GET(init){
 
     console.log("Ajax: succes");
 
-    history.pushState(stored,'',storeSettings());
-
+    pushState(init);
     setAlarms(data); // fill alarm object
     setTable(); // init table based on alarms
     responsive(); // set table and page sizes
@@ -156,9 +153,27 @@ function updateAX(){
 }
 
 
-function storeSettings(){
+// COPY Session
+$('#volvo_logo').click(copySession)
+.contextmenu(function(){
+  if (window.sidebar && window.sidebar.addPanel) { // Mozilla Firefox Bookmark
+    window.sidebar.addPanel(document.title, window.location.href, '');
+  } else if (window.external && ('AddFavorite' in window.external)) { // IE Favorite
+    window.external.AddFavorite(location.href, document.title);
+  } else if (window.opera && window.print) { // Opera Hotlist
+    this.title = document.title;
+    return true;
+  } else { // webkit - safari/chrome
+    alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this page.');
+  }
+})
 
-  stored = {
+
+
+
+function curSet(){
+
+  return {
     TIA_GC: TIA_GC,
     FILTERS: FILTERS,
     TIME: {
@@ -170,8 +185,131 @@ function storeSettings(){
     }
   }
 
-  return btoa(JSON.stringify(stored))
+}
 
+function copySession(){
+
+  var url = window.location.origin + '/?' + btoa(JSON.stringify(curSet()))
+
+  writeToClipboardOnPermission(url)
+
+}
+
+
+
+function pushState(init){
+
+  newstate = JSON.stringify(curSet())
+  oldstate = JSON.stringify(window.history.state)
+
+  if(!TIME.rt && !popper && !init && !(newstate == oldstate)) {
+    console.log('history pushed!')
+    history.pushState(curSet(),'','')
+  }
+
+  popper = false;
+
+}
+
+
+var popper = false
+
+window.onpopstate = function(event){
+  console.log('POP!!!');
+  popper = true;
+  loadSession();
+  GET();
+}
+
+
+function loadSession(){
+
+  var session
+
+  if (window.location.search.length > 0){
+    console.log('From string:')
+    session = JSON.parse(atob(window.location.search.substring(1)))
+    history.pushState(session,'','/')
+  } else if (window.history.state != null){
+    console.log('From history:')
+    session = window.history.state
+  }
+
+  console.log(session);
+
+  if (session != undefined) {
+
+    var ST = session.TIA_GC
+    var FI = session.FILTERS
+    var TI = session.TIME
+
+    // stations
+    for (var zone in ST) {
+      if (ST.hasOwnProperty(zone)) {
+
+        for (var stn in ST[zone]) {
+          if (ST[zone].hasOwnProperty(stn)) {
+
+            stnSet(zone,stn,ST[zone][stn].sel)
+
+          }
+        }
+      }
+    }
+
+
+    // Filters
+    for (var type in FI) {
+      if (FI.hasOwnProperty(type)) {
+
+        for (var sub in FI[type]) {
+          if (FI[type].hasOwnProperty(sub)) {
+
+            FILTERS[type][sub] = FI[type][sub]
+            fltrSet(type,sub,FI[type][sub])
+
+          }
+        }
+      }
+    }
+
+    // Time
+    TIME.rel = TI.rel; relative_sel();
+    TIME.rt = TI.rt; realtime_sel();
+    lb.val( TI.lbt )
+    fr.val( TI.sta )
+    to.val( TI.end )
+
+  } else {
+
+    console.log('Set default')
+
+    default_fltr();
+    dt_clear();
+
+    TIME.rel = false; relative_sel();
+    TIME.rt = false; realtime_sel();
+
+    lb.prop('disabled',true)
+    rt.prop('disabled',true)
+
+  }
+
+}
+
+$('#alfa_logo').click(reset_history)
+
+function reset_history(){
+
+  if(window.history.state != null) {
+    console.log('Resettet!')
+    history.pushState(null,'','')
+    popper = true;
+    loadSession();
+    GET();
+  } else {
+    alert('already reset')
+  }
 
 }
 
@@ -184,20 +322,63 @@ function storeSettings(){
 
 
 
+// Copy to clipboard functions
+function writeToClipboardOnPermission(text){
+  return navigator.permissions.query({name:'clipboard-write'})
+  .then(
+    result => {
+      if (result.state == 'granted' || result.state == 'prompt'){
+        return writeToClipboard(text);
+      }
+      else {
+        console.log("Don't have permissions to use clipboard", result.state);
+        Alart("Don't have permissions to use clipboard");
+      }
+    }
+  )
+  .catch(
+    err => {
+      console.log("Error! Reqeusting permission", err)
+      Alert("Error! Reqeusting permission")
+    }
+  )
+}
 
-
-
-
-
-
-
-
-
-
-// Less finished ---------------------------------------------------------------
-less.pageLoadFinished.then(
-  function() {
-
-    $('.fade_less').css('opacity', 1);
+function writeToClipboard(text) {
+  return navigator.clipboard.writeText(text).then(
+    result => {
+      console.log("Successfully copied to clipboard", result)
+      alert("Successfully copied to clipboard")
+    }
+  )
+  .catch(
+    err => {
+      console.log("Error! could not copy text", err)
+      alert("Error! could not copy text")
+    })
   }
-);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Less finished ---------------------------------------------------------------
+  less.pageLoadFinished.then(
+    function() {
+
+      $('.fade_less').css('opacity', 1);
+    }
+  );

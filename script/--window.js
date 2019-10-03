@@ -44,12 +44,12 @@ function getUserAgent() {
 
 // GET WINDOW DATA -------------------------------------------------------------
 
-var win = getWindowData();                                      //on load
+var win = getWindowData();  //on load
 
 window.onresize = function(event){
   win = getWindowData();
 
-  responsive();
+  if(tableready){responsive()};
 };
 
 function getWindowData() {                                      //Function
@@ -60,15 +60,6 @@ function getWindowData() {                                      //Function
   return {iW: iW, iH : iH, dPR : dPR};
 
 };
-
-
-// Reload page when pressing back in browser -----------------------------------
-window.onpageshow = function(event) {
-  if (event.persisted){
-    location.reload()
-  }
-};
-
 
 
 // Responsive on resize --------------------------------------------------------
