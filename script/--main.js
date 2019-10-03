@@ -1,23 +1,6 @@
 // Body load ready (set on body in index.html) ---------------------------------
 function ready(){
 
-  var parray = decodeURIComponent(
-    window.location.search.substring(1)
-  ).split('&')
-
-  if (parray[0].length > 0){
-
-    var params = {}
-
-    for (var i = 0; i < parray.length; i++) {
-      var p = parray[i].split('=')
-
-      params[p[0]] = p[1].replace(' ','T')
-
-    }
-
-    console.log(params)
-  }
 
   GET(true);
 
@@ -26,6 +9,8 @@ function ready(){
 
 // GLOBAL alarms & table variables ---------------------------------------------
 var alarms, table
+
+var stored
 
 // AJAX SETTINGS ---------------------------------------------------------------
 function ajax_s() {
@@ -76,7 +61,7 @@ function GET(init){
   }
 
   // AJAX
-  $.ajax(ajax_s())
+  $.ajax(ajax_s_home())
 
   .fail(function() {                                                  // FAIL
 
@@ -94,7 +79,7 @@ function GET(init){
 
     console.log("Ajax: succes");
 
-    // history.pushState(1,'','?' + this.url.split('?')[1])
+    history.pushState(stored,'',storeSettings());
 
     setAlarms(data); // fill alarm object
     setTable(); // init table based on alarms
@@ -171,11 +156,24 @@ function updateAX(){
 }
 
 
+function storeSettings(){
+
+  stored = {
+    TIA_GC: TIA_GC,
+    FILTERS: FILTERS,
+    TIME: {
+      rel: TIME.rel,
+      rt: TIME.rt,
+      lbt: TIME.lbt(),
+      sta: TIME.sta(),
+      end: TIME.end(),
+    }
+  }
+
+  return btoa(JSON.stringify(stored))
 
 
-
-
-
+}
 
 
 
