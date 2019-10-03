@@ -82,8 +82,6 @@ function GET(init){
 
     console.log("Ajax: error")
 
-    history.pushState(1,'','?' + this.url.split('?')[1])
-
     $('.fade').css({'opacity': 1});
     $('.fade_reverse').css({'opacity': 0});
 
@@ -96,7 +94,7 @@ function GET(init){
 
     console.log("Ajax: succes");
 
-    history.pushState(1,'','?' + this.url.split('?')[1])
+    // history.pushState(1,'','?' + this.url.split('?')[1])
 
     setAlarms(data); // fill alarm object
     setTable(); // init table based on alarms

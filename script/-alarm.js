@@ -57,7 +57,7 @@ function infilter(alarms){
       if(!FILTERS.prod[sp[1]]) {filtered = true}
     }
 
-    if(FILTERS.at.active && !alarms[i]._active) {filtered = true}
+    if(FILTERS.only.active && !alarms[i]._active) {filtered = true}
 
     if (!filtered) { new_alarms.push(alarms[i]) }
 
