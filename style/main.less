@@ -670,14 +670,12 @@ extract(@table_pad,4);
       width: 100%;
       height: 100%;
       position: relative;
-      .table-overlay {
+      .table-overlay, .table-underlay {
         position: absolute;
         top:@th_height;
         bottom:@scrolbar;
         left:0;
         right:@scrolbar;
-        box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
-        z-index: 10;
         pointer-events: none;
         #line{
           display: none;
@@ -690,6 +688,24 @@ extract(@table_pad,4);
             fill: @color_dark;
             stroke: @color_dark;
             stroke-width:3
+          }
+        }
+      }
+      .table-overlay{
+        z-index: 10;
+        box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
+      }
+      .table-underlay{
+        z-index: -1;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        #ul_logo {
+          width: 25%;
+          height: 25%;
+          svg{
+            width: 100%; height: 100%;
+            fill: @color_dark;
           }
         }
       }
@@ -798,9 +814,27 @@ extract(@table_pad,4);
             }
           }
         }
+
+        .table-body {
+          &.loading {
+            animation: loading 150ms ease forwards;
+          }
+          &.loaded {
+            animation: loaded 150ms ease forwards;
+          }
+          @keyframes loaded {
+            0%{opacity: 0}
+            100%{opacity: 1}
+          }
+          @keyframes loading {
+            0%{opacity: 1}
+            100%{opacity: 0}
+          }
+        }
+
         tbody {
           background-color: @color_bright;
-
+          // visibility: hidden;
           tr {
 
             &.hover {

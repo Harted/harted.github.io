@@ -59,6 +59,20 @@
 
     <div id='flex-table' class='flex-item'>
       <div id='table-container'>
+        <div class='table-underlay'><div id='ul_logo'>
+
+          <svg>
+            <filter id="inset-shadow">
+              <feFlood flood-color="rgba(0,0,0,0.7)"/>
+              <feComposite in2="SourceAlpha" operator="out"/>
+              <feGaussianBlur stdDeviation="0.8" result="blur"/>
+              <feComposite operator="atop" in2="SourceGraphic"/>
+            </filter>
+            <polygon filter="url(#inset-shadow)"></polygon>
+          </svg>
+        </div>
+
+        </div>
         <div class='table-overlay'><div id='line'></div></div>
         <div id='alarmlist' class='table-scroll'></div>
       </div>
@@ -218,7 +232,6 @@
     </div>
   </div>
   <!-- <div id='footer_space'></div> -->
-
 
 
 

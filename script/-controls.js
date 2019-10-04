@@ -332,6 +332,8 @@ function stn_all_mu(){
 
 function stnSet(zone,stn,b){
 
+  if (stn.search('_') > -1) {return;}
+
   var act = TIA_GC[zone][stn].active
 
   if(act) { TIA_GC[zone][stn].sel = b}

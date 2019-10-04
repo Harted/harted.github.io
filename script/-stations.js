@@ -52,18 +52,22 @@ TIA_GC = {
 
 // GET Stations from database (ALARMSOURCE) ------------------------------------
 
+function getStations(){
 
-// $.ajax({
-//   url: '/script/ajax.php',
-//   type: 'GET',
-//   cache: false,
-//   dataType: 'json',
-//   data: {'stations':''}
-// })
-// .done(function(received) { setActiveStn(received);})
-// .fail(function() { console.log("Ajax: stations: error");})
+  $.ajax({
+    url: '/script/ajax.php',
+    type: 'GET',
+    cache: false,
+    dataType: 'json',
+    data: {'stations':''}
+  })
+  .done(function(received) { setActiveStn(received);})
+  .fail(function() { console.log("Ajax: stations: error");})
 
-setActiveStn([['CSR266'],['CLF2028'],['CLF2029'],['CHL2922'],['CCP2222'],['CMP305'],['CMP306'],['CMP310'], ['CMP311'],['CLF3037']])
+}
+
+
+// setActiveStn([['CSR266'],['CLF2028'],['CLF2029'],['CHL2922'],['CCP2222'],['CMP305'],['CMP306'],['CMP310'], ['CMP311'],['CLF3037']])
 
 
 // Set active true with found stations -----------------------------------------
@@ -142,5 +146,7 @@ function stnBtns(stns) {
   // button mouseup actions
   $('#sel_stations .glass_btn.active').mouseup(sel_stn)
   $('#sel_stations .item_title').mouseup(sel_zone)
+
+  stationsReady();
 
 }

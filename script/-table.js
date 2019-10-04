@@ -145,7 +145,7 @@ function makeTable(settings, data){
 
   // BODY -----------------------------------------------------------------
 
-  tbl += '<table +class="table-body">'
+  tbl += '<table class="table-body">'
 
   this.makeBody = function(d){
     body = []

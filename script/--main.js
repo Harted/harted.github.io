@@ -1,6 +1,12 @@
 // Body load ready (set on body in index.html) ---------------------------------
 function ready(){
 
+  getStations();
+
+}
+
+function stationsReady(){
+
   loadSession();
 
   GET(true);
@@ -12,6 +18,9 @@ var alarms, table, stored_settings
 
 // AJAX SETTINGS ---------------------------------------------------------------
 function ajax_s() {
+
+  console.log(ax.stn_str());
+
   return {
     url: '/script/ajax.php',
     type: "GET",
@@ -48,18 +57,14 @@ function GET(init){
 
   var timer = new Date()
 
-  updateAX();
-
-  // initial settings
-  if (init) {
-    ax.rel = true
-    ax.stn = []
-    ax.sev = ['A','B','C','D']
-    ax.lbt = 15
+  if (!TIME.rt) {
+    $('.table-body').removeClass('loaded').addClass('loading')
   }
 
+  updateAX();
+
   // AJAX
-  $.ajax(ajax_s_home())
+  $.ajax(ajax_s())
 
   .fail(function() {                                                  // FAIL
 
@@ -80,6 +85,12 @@ function GET(init){
     pushState(init);
     setAlarms(data); // fill alarm object
     setTable(); // init table based on alarms
+
+    if (!TIME.rt) {
+      $('.table-body').addClass('loaded')
+    }
+
+
     responsive(); // set table and page sizes
     if (!TIME.rt){ // apply table filer
       tableFilter();
@@ -155,18 +166,6 @@ function updateAX(){
 
 // COPY Session
 $('#volvo_logo').click(copySession)
-.contextmenu(function(){
-  if (window.sidebar && window.sidebar.addPanel) { // Mozilla Firefox Bookmark
-    window.sidebar.addPanel(document.title, window.location.href, '');
-  } else if (window.external && ('AddFavorite' in window.external)) { // IE Favorite
-    window.external.AddFavorite(location.href, document.title);
-  } else if (window.opera && window.print) { // Opera Hotlist
-    this.title = document.title;
-    return true;
-  } else { // webkit - safari/chrome
-    alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this page.');
-  }
-})
 
 
 
@@ -284,6 +283,20 @@ function loadSession(){
 
     console.log('Set default')
 
+    // stations
+    for (var zone in TIA_GC) {
+      if (TIA_GC.hasOwnProperty(zone)) {
+
+        for (var stn in TIA_GC[zone]) {
+          if (TIA_GC[zone].hasOwnProperty(stn)) {
+
+            stnSet(zone,stn,false)
+
+          }
+        }
+      }
+    }
+
     default_fltr();
     dt_clear();
 
@@ -327,17 +340,20 @@ function writeToClipboardOnPermission(text){
   return navigator.permissions.query({name:'clipboard-write'})
   .then(
     result => {
+      console.log(result);
       if (result.state == 'granted' || result.state == 'prompt'){
         return writeToClipboard(text);
       }
       else {
         console.log("Don't have permissions to use clipboard", result.state);
+        alert("Don't have permissions to use clipboard")
       }
     }
   )
   .catch(
     err => {
       console.log("Error! Reqeusting permission", err)
+      alert("Error! Reqeusting permission")
     }
   )
 }
@@ -358,7 +374,7 @@ function writeToClipboard(text) {
 
 
 
-
+console.log(navigator.clipboard)
 
 
 
