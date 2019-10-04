@@ -54,15 +54,15 @@ TIA_GC = {
 
 function getStations(){
 
-  $.ajax({
-    url: '/script/ajax.php',
-    type: 'GET',
-    cache: false,
-    dataType: 'json',
-    data: {'stations':''}
-  })
-  .done(function(received) { setActiveStn(received);})
-  .fail(function() { console.log("Ajax: stations: error");})
+ // $.ajax({
+ //   url: '/script/ajax.php',
+//    type: 'GET',
+//    cache: false,
+//    dataType: 'json',
+//    data: {'stations':''}
+//  })
+//  .done(function(received) { setActiveStn(received);})
+//  .fail(function() { console.log("Ajax: stations: error");})
 
 }
 
