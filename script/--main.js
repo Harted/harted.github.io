@@ -332,14 +332,14 @@ function writeToClipboardOnPermission(text){
       }
       else {
         console.log("Don't have permissions to use clipboard", result.state);
-        Alart("Don't have permissions to use clipboard");
+        alert("Don't have permissions to use clipboard");
       }
     }
   )
   .catch(
     err => {
       console.log("Error! Reqeusting permission", err)
-      Alert("Error! Reqeusting permission")
+      alert("Error! Reqeusting permission")
     }
   )
 }
