@@ -19,8 +19,6 @@ var alarms, table, stored_settings
 // AJAX SETTINGS ---------------------------------------------------------------
 function ajax_s() {
 
-  console.log(ax.stn_str());
-
   return {
     url: '/script/ajax.php',
     type: "GET",
@@ -46,9 +44,11 @@ function ajax_s_home(){
   }
 }
 
+
+
+// GET FUnction  ---------------------------------------------------------------
 var get_busy = false
 
-// INIT Function ---------------------------------------------------------------
 function GET(init){
 
   if(get_busy){ return; }

@@ -66,8 +66,12 @@ function getStations(){
 
 }
 
+// Sample for home
 
-setActiveStn([['CSR266'],['CLF2028'],['CLF2029'],['CHL2922'],['CCP2222'],['CMP305'],['CMP306'],['CMP310'], ['CMP311'],['CLF3037']])
+setTimeout(function () {
+  setActiveStn([['CSR266'],['CLF2028'],['CLF2029'],['CHL2922'],['CCP2222'],['CMP305'],['CMP306'],['CMP310'], ['CMP311'],['CLF3037']])
+
+}, 150);
 
 
 // Set active true with found stations -----------------------------------------
