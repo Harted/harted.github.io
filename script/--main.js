@@ -64,7 +64,7 @@ function GET(init){
   updateAX();
 
   // AJAX
-  $.ajax(ajax_s_home())
+  $.ajax(ajax_s())
 
   .fail(function() {                                                  // FAIL
 
@@ -188,9 +188,9 @@ function curSet(){
 
 function copySession(){
 
-  var url = window.location.origin + '/?' + btoa(JSON.stringify(curSet()))
+  var url = '/?' + btoa(JSON.stringify(curSet()))
 
-  writeToClipboardOnPermission(url)
+  history.pushState(curSet(),'',url)
 
 }
 
@@ -325,57 +325,6 @@ function reset_history(){
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-// Copy to clipboard functions
-function writeToClipboardOnPermission(text){
-  return navigator.permissions.query({name:'clipboard-write'})
-  .then(
-    result => {
-      console.log(result);
-      if (result.state == 'granted' || result.state == 'prompt'){
-        return writeToClipboard(text);
-      }
-      else {
-        console.log("Don't have permissions to use clipboard", result.state);
-        alert("Don't have permissions to use clipboard")
-      }
-    }
-  )
-  .catch(
-    err => {
-      console.log("Error! Reqeusting permission", err)
-      alert("Error! Reqeusting permission")
-    }
-  )
-}
-
-function writeToClipboard(text) {
-  return navigator.clipboard.writeText(text).then(
-    result => {
-      console.log("Successfully copied to clipboard", result)
-      alert("Successfully copied to clipboard")
-    }
-  )
-  .catch(
-    err => {
-      console.log("Error! could not copy text", err)
-      alert("Error! could not copy text")
-    })
-  }
-
-
-
-console.log(navigator.clipboard)
-
 
 
 

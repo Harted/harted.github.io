@@ -129,7 +129,10 @@ function updatefilter(target){
   fltr[col][txt] = st
 
   // check if on or off are switched
-  if (onoff) { onoff = fltr.statetxt.ON && fltr.statetxt.OFF }
+  if (onoff) {
+    onoff = fltr.statetxt.ON && fltr.statetxt.OFF
+    table.dl()
+  }
 
 };
 
@@ -332,6 +335,7 @@ function applyFilter(){
 
   // Check on off state to draw line or not
   onoff = fltr.statetxt.ON && fltr.statetxt.OFF
+  table.dl();
 
   // Apply filter is filter has changed
   if (JSON.stringify(fltr) != fltr_mem) {

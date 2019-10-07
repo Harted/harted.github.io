@@ -344,6 +344,7 @@ function makeTable(settings, data){
     this.setHover(false);
   } // disable on realtime
 
+  var events = []
 
   // MOUSE ENTER -----------------------------------------------------
   function mouseenter(obj){
@@ -361,21 +362,21 @@ function makeTable(settings, data){
 
       // LINKED EVENT OPACITY
       // Set objects for the linked events (ON & OFF)
-      this.events = [
+      events = [
         $(settings.id + ' #linkID_' + id_int + '_OFF'),
         $(settings.id + ' #linkID_' + id_int + '_ON'),
       ]
 
       // Set opacity of linked event low
       if (id[2] == 'OFF') {
-        this.events[1].addClass('linked_td')
+        events[1].addClass('linked_td')
       } else {
-        this.events[0].addClass('linked_td')
+        events[0].addClass('linked_td')
       }
 
       // BACKGROUND COLOR
-      for (var i = 0; i < this.events.length; i++) {
-        this.events[i].addClass('hover')
+      for (var i = 0; i < events.length; i++) {
+        events[i].addClass('hover')
       }
 
       // DRAW CONNECTION LINE
@@ -414,8 +415,8 @@ function makeTable(settings, data){
     if (id_int >= 0) {
 
       // Reset to original style
-      for (let i = 0; i < this.events.length; i++) {
-        this.events[i].removeClass('hover linked_td duration')
+      for (let i = 0; i < events.length; i++) {
+        events[i].removeClass('hover linked_td duration')
       }
 
       // Display no line
@@ -436,14 +437,14 @@ function makeTable(settings, data){
     // always hide line upfront
     lineobj.css('display','none')
 
-    if (typeof this.events == 'undefined' || !onoff ){ return false; }
+    if ( !onoff ){ return false; } //don't show line when on/off is filtered
 
     // Get trs positions
     // - off event is always above
     // - offset top of bottom off event = ot + oh
-    var off_ot = this.events[0].offset().top
-    var off_oh = this.events[0].outerHeight()
-    var on_ot = this.events[1].offset().top
+    var off_ot = events[0].offset().top
+    var off_oh = events[0].outerHeight()
+    var on_ot = events[1].offset().top
 
     // If trs are directly above or below eachother
     // - in this case the position of the OFF bottom is equal to ON top
