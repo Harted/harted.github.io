@@ -50,6 +50,8 @@ function flex(){ // NOTE: Copy new flex function at work
   }
 }
 
+
+// EXPAND CONTROL (when above) -------------------------------------------------
 function exp_c(){
 
   if(el_ft.classList.value.search('expand') > 0){

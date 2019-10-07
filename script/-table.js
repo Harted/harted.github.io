@@ -144,6 +144,7 @@ function makeTable(settings, data){
 
 
   // BODY -----------------------------------------------------------------
+  // Made internal function to access from outside (not use atm)
 
   tbl += '<table class="table-body">'
 
@@ -185,7 +186,9 @@ function makeTable(settings, data){
           // Add duration text to duration col td
           if (col == 'statetxt') {body.push(' text="' + d[i]._durtxt + '"')}
 
+          // Min-width for td = th min width
           body.push(' style="min-width:' + th_min_w[j] + 'px;"> ')
+
           // text
           body.push('<span>' + d[i][col] + '</span></td>')
         } else {
@@ -239,9 +242,7 @@ function makeTable(settings, data){
 
   // FIXED HEADER - the header seems to be fixed because the 'before' row
   // gets the heigth of the top scroll height
-
   el_id.addEventListener("scroll", th_lpos)
-
   function th_lpos(){
     el_thead[0].style.marginLeft = -el_id.scrollLeft + 'px'
   }

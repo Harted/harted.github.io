@@ -1,19 +1,21 @@
 // SET ALARMS ------------------------------------------------------------------
 function setAlarms(data){
 
+  // Reset alarm array
   alarms = [];
 
-  // NO data
-
+  // Push alarms in alarms array
   for (let i = 0; i < data.length; i++) {
     alarms.push(new alarm(data[i]).alarm)
   };
 
+  // Analyze alarms (active, linkId, duration)
   analyze('alarms','_var','statetxt','_state', '_datetime')
 
+  // Filter alarms by selected buttons (Only active, Types & Production)
   alarms = infilter(alarms)
 
-  // NO data
+  // Fill no data item in alarms when there's no data
   if (alarms.length == 0) {
     alarms = [{
       comment: "",
@@ -25,7 +27,7 @@ function setAlarms(data){
       _active: false,
       _datetime: "No Data",
       _duration: -1,
-      _durtxt: "",
+      _durtxt: "n/a",
       _linkID: -1,
       _state: "",
       statetxt: "",
@@ -34,37 +36,6 @@ function setAlarms(data){
       _var: "No Data",
     }];
   }
-
-}
-
-
-// INPUT FILTER ----------------------------------------------------------------
-function infilter(alarms){
-
-  var new_alarms = []
-
-  for (var i = 0; i < alarms.length; i++) {
-
-    var filtered = false
-
-    if (alarms[i]._type.search('production') < 0) {
-
-      if(!FILTERS.at[alarms[i]._type]) {filtered = true}
-
-    } else {
-      var sp = alarms[i]._type.split(' ')
-
-      if(!FILTERS.prod[sp[1]]) {filtered = true}
-    }
-
-    if(FILTERS.only.active && !alarms[i]._active) {filtered = true}
-
-    if (!filtered) { new_alarms.push(alarms[i]) }
-
-  }
-
-  return new_alarms;
-
 }
 
 
@@ -76,8 +47,6 @@ function alarm(data) {
     '_datetime','station', '_var', 'comment', 'severity', '_state'
   ];
 
-
-
   // Local alarm object
   this.alarm = {};
 
@@ -85,7 +54,6 @@ function alarm(data) {
   for (let i = 0; i < data.length; i++) {
     this.alarm[alarmparts[i]] = data[i]
   };
-
 
 
   // FORMATTING DATA ------------------------------------------------------
@@ -203,7 +171,45 @@ function alarm(data) {
 
 
 
+// INPUT FILTER ----------------------------------------------------------------
+function infilter(alarms){
 
+  var new_alarms = [] // to store filtered alarms
+
+  for (var i = 0; i < alarms.length; i++) {
+
+    var filtered = false
+
+    if (alarms[i]._type.search('production') < 0) {             // TYPES
+
+      // Check if type of alarm is filered
+      if(!FILTERS.at[alarms[i]._type]) {filtered = true}
+
+    } else {                                                    // PRODUCTION
+
+      // split production alarm
+      var sp = alarms[i]._type.split(' ')
+
+      // check if last part of porduction type alarm is filtered
+      if(!FILTERS.prod[sp[1]]) {filtered = true}
+
+    }
+
+    // filter non active alarms when set                        // ONLY ACTIVE
+    if(FILTERS.only.active && !alarms[i]._active) {filtered = true}
+
+
+    // PUSH alarm in filtered list when filtered is false
+    if (!filtered) { new_alarms.push(alarms[i]) }
+
+  }
+
+  return new_alarms; // return the filtered array
+
+}
+
+
+// Make a distinct list of alarms ----------------------------------------------
 function distinct(alarm_arr, filter){
 
   filter = filter || false
@@ -227,7 +233,7 @@ function distinct(alarm_arr, filter){
 
 
 
-//
+// Analyze alarms for active, duration and link --------------------------------
 function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
 
   var dist = distinct(window[obj_name]);
