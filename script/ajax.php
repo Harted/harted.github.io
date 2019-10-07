@@ -1,6 +1,6 @@
 <?php
 // CONNECTION STRING -----------------------------------------------------------
-$c = oci_pconnect ('STO_SYS', 'STO_SYS1', 'nvr.gent.vcc.ford.com:49970/DST')
+$c = oci_pconnect ('STO_SYS', 'STO_SYS1', 'nvg.gent.vcc.ford.com:49970/DST')
 OR die('Unable to connect to the database. Error: <pre>'
 . print_r(oci_error(),1) . '</pre>');
 
