@@ -76,7 +76,7 @@ function tableFilter(){
 
 
 // GLOBAL VARS -----------------------------------------------------------------
-var filtered, fltr, fltr_mem, id_arr, hidden, collapsed, onoff = true
+var filtered, fltr, fltr_mem, id_arr, hidden, collapsed
 
 // INIT FILTER  ----------------------------------------------------------------
 function initFilter(){
@@ -127,12 +127,6 @@ function updatefilter(target){
 
   // Set the state in the filter object for current clicked checkbox
   fltr[col][txt] = st
-
-  // check if on or off are switched
-  if (onoff) {
-    onoff = fltr.statetxt.ON && fltr.statetxt.OFF
-    table.dl()
-  }
 
 };
 
@@ -333,10 +327,6 @@ function filter(){
 // APPLY FILTER ----------------------------------------------------------------
 function applyFilter(){
 
-  // Check on off state to draw line or not
-  onoff = fltr.statetxt.ON && fltr.statetxt.OFF
-  table.dl();
-
   // Apply filter is filter has changed
   if (JSON.stringify(fltr) != fltr_mem) {
 
@@ -361,10 +351,11 @@ function applyFilter(){
     // set clearformat when previously active
     if (tog.format) {$('tr').addClass('clearformat')}
 
-    // reset draw line events so no line can appear after filtering
-    table.events = undefined;
 
   }
+
+  table.dl(); //Redraw the line
+
 }
 
 

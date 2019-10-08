@@ -37,7 +37,7 @@ function ajax_s() {
 
 function ajax_s_home(){
   return {
-    url: 'https://www.harted.be/php/alarmdata3.php',
+    url: 'https://www.harted.be/php/alarmdata.php',
     type: "GET",
     cache: false,
     dataType: "json",
@@ -64,7 +64,7 @@ function GET(init){
   updateAX();
 
   // AJAX
-  $.ajax(ajax_s())
+  $.ajax(ajax_s_home())
 
   .fail(function() {                                                  // FAIL
 

@@ -272,12 +272,13 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
         // REVIEW: may ONLY activate when end date is Date.now()
         // - Assign active and set true
         // - Change state text to ACTIVE
-        // - This event has no link and no duration
+        // - This event has no link but a duraction to now
         a['_active'] = true
         a[state_name] = 'ACTIVE'
         a['_linkID'] = linkIDn
-        a['_duration'] = -1
-        a['_durtxt'] = 'n/a'
+        var dur = Date.now() - sDateParse(dt)
+        a['_duration'] = dur
+        a['_durtxt'] = dhms(dur)
         linkIDn --
       } else if (s == 1) {
         // Not active ON events

@@ -24,6 +24,7 @@ const alarmlist_settings = {
 // INIT TABLE
 function setTable(){
   table = new makeTable(alarmlist_settings, alarms);
+  table.dl() // Reset line
 }
 
 var tableready = false
@@ -287,8 +288,8 @@ function makeTable(settings, data){
               // CLICK ON THIS OBJECT when freezed
               // reset stored id & object, set freeze to false, remove shadow
               stored_id = undefined ; stored_obj = undefined ; freeze = false;
-              $(this).next().removeClass('next')
-              $(this).prev().removeClass('prev')
+              $(this).removeClass('freeze')
+
             } else {
 
               freeze = true // freeze is true: disable actions on hover
@@ -297,9 +298,8 @@ function makeTable(settings, data){
               stored_id = $(this).attr('id')
               stored_obj = $(this)
 
-              // box shadow to show it's freezed (clicked in it seems
-              $(this).next().addClass('next')
-              $(this).prev().addClass('prev')
+              // box shadow to show it's freezed
+              $(this).addClass('freeze')
 
             }
           } else if (stored_id != undefined && freeze) {
@@ -311,8 +311,7 @@ function makeTable(settings, data){
             mouseleave(stored_obj); mouseenter($(this));
 
             // Remove shadow
-            stored_obj.next().removeClass('next')
-            stored_obj.prev().removeClass('prev')
+            stored_obj.removeClass('freeze')
 
             // reset stored id & object
             stored_id = undefined; stored_obj = undefined
@@ -354,12 +353,12 @@ function makeTable(settings, data){
     id = obj.attr('id').split('_');
     id_int = parseInt(id[1]); // parse integer from string
 
+    // DURATION
+    obj.addClass('duration')
+    table.headsize()
+
     // If object has an id it has a linked event
     if (id_int >= 0) {
-
-      // DURATION
-      obj.addClass('duration')
-      table.headsize()
 
       // LINKED EVENT OPACITY
       // Set objects for the linked events (ON & OFF)
@@ -406,6 +405,9 @@ function makeTable(settings, data){
   // MOUSE LEAVE -----------------------------------------------------
   function mouseleave(obj){
 
+    // Remove duration
+    obj.removeClass('duration')
+
     // Remove eventlistener on mouse leave when it's set on enter
     if (drawLine != undefined) {
       el_id.removeEventListener('scroll', drawLine)
@@ -417,7 +419,7 @@ function makeTable(settings, data){
 
       // Reset to original style
       for (let i = 0; i < events.length; i++) {
-        events[i].removeClass('hover linked_td duration')
+        events[i].removeClass('hover linked_td')
       }
 
       // Display no line
@@ -429,6 +431,10 @@ function makeTable(settings, data){
       obj.removeClass('hover')
 
     }
+
+    // Reset events object
+    events = []
+
   }
 
   this.dl = function (){drawLine()}
@@ -438,7 +444,13 @@ function makeTable(settings, data){
     // always hide line upfront
     lineobj.css('display','none')
 
-    if ( !onoff ){ return false; } //don't show line when on/off is filtered
+    // no events -> don't draw line
+    if (events.length == 0) {return false}
+
+    // if one or more is hidden don't draw line
+    if (events[0].hasClass('hidden') || events[1].hasClass('hidden')){
+      return false;
+    }
 
     // Get trs positions
     // - off event is always above
