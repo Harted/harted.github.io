@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head> <!-- HEAD -------------------------------------------------------------->
+
+  <meta charset="utf-8">
+  <title>LIVE</title>
+
+  <!-- Font -->
+  <link rel="stylesheet" href="/style/font.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+
+  <!-- Responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,
+  maximum-scale=1.0, user-scalable=no" />
+
+  <!-- Window -->
+  <script src="script/--window.js" charset="utf-8"></script>
+
+  <!-- Spinner style -->
+  <link rel="stylesheet" href="style/spinner.css">
+
+  <!-- Less (stylesheet)-->
+  <link rel="stylesheet/less" type="text/css" href="style/main.less" />
+
+  <!-- Less (script)-->
+  <script src="script/LESS-conf.js" charset="utf-8"></script>
+  <script src="script/LESS.js" ></script>
+
+  <!-- jQuery -->
+  <script src="script/jQuery.js" charset="utf-8"></script>
+
+</head>
+<body onload="ready()"> <!-- BODY --------------------------------------------->
+
+  <!-- Spinner -->
+  <div id='spinner' class='fade_reverse'></div>
+
+
+  <!-- Header ----------------------------------------------------------------->
+  <div id='header_space'></div>
+  <div id='header' class='fade_less'>
+
+    <div id='alfa_logo' title='Reload & Reset'>
+      <div id='logo'><svg><polygon class='anim'></polygon></svg></div>
+      <div id='alfa_txt'><span>A L F A</span></div>
+    </div>
+
+    <div id='volvo_logo'>
+      <img src="image/volvo_logo_color.png" title="Get current state URL" alt="">
+    </div>
+  </div>
+
+
+  <!-- Flex container --------------------------------------------------------->
+  <div id='flex-container' class='fade' style='z-index:10'>
+
+    <!-- FLEX TABLE ----------------------------------------------------------->
+    <div id='flex-table' class='flex-item'>
+      <div id='table-container'>
+
+        <!-- Underlay -->
+        <div class='table-underlay'>
+          <div id='ul_logo'>
+            <svg>
+              <filter id="inset-shadow">
+                <feFlood flood-color="rgba(0,0,0,0.7)"/>
+                <feComposite in2="SourceAlpha" operator="out"/>
+                <feGaussianBlur stdDeviation="0.8" result="blur"/>
+                <feComposite operator="atop" in2="SourceGraphic"/>
+              </filter>
+              <polygon filter="url(#inset-shadow)"></polygon>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Ovelray -->
+        <div class='table-overlay'><div id='line'></div></div>
+
+        <!-- TABLE -->
+        <div id='alarmlist' class='table-scroll'></div>
+      </div>
+    </div>
+
+
+    <!-- FLEX CONTROLS -------------------------------------------------------->
+    <div id='flex-control' class='flex-item'>
+
+      <!-- Contol header -->
+      <div id='control-header'>
+        <span>Controls</span><div id='hamburger'><svg></svg></div>
+      </div>
+
+      <!-- CONTROLS -->
+      <div id='control-container'>
+
+        <!-- Time selection --------------------------------------------------->
+        <div id='sel_time' class='control-group'>
+          <div id= 'time_sel_header' class='control-group-header'>
+            <span>Time Selection</span>
+          </div>
+
+          <!-- Time selecion form -->
+          <form onsubmit="GET(); return false;">
+            <div class='control-group-content'>
+
+              <!-- Time sel butons -->
+              <div class='control-item'>
+                <div id='1_4_hour' class='btn h_btn'> 15m </div>
+                <div id='1_2_hour' class='btn h_btn'> 30m </div>
+                <div id='1_hour' class='btn h_btn'> 1h </div>
+                <div id='2_hour' class='btn h_btn'> 2h </div>
+                <div id='4_hour' class='btn h_btn'> 4h </div>
+                <div id='8_hour' class='btn h_btn'> 8h </div>
+                <div id='dt_reset' class='btn right'> Reset </div>
+              </div>
+
+              <!-- From date -->
+              <div class='control-item'>
+                <label for='from_date'>From:</label>
+                <input id='from_date' type='datetime-local' value="" step='1' placeholder="yyyy/mm/ddThh:mm:ss" required>
+              </div>
+
+              <!-- To date -->
+              <div class='control-item'>
+                <label for='to_date'>To:</label>
+                <input id='to_date' type='datetime-local' value="" step='1' placeholder="yyyy/mm/ddThh:mm:ss" required>
+              </div>
+
+              <!-- Relative selection -->
+              <div class='control-item'>
+                <div id='relative' class='btn'> Relative </div>
+                <input id='realtime' type='button' class='btn i_btn' value='RT'>
+                <label for='lookback'>Look back:</label>
+                <input id='lookback' type='number' value="15" min='5' max='480' pattern="[0-9]" required>
+                <label for='lookback'> minutes </label>
+              </div>
+
+              <!-- Get Data button -->
+              <div class='control-item'>
+                <input id='get_data' class='btn get_btn right' type='submit'
+                value="GET DATA">
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Station selection ------------------------------------------------>
+        <div id='sel_stations' class='control-group'>
+          <div id='stns_header'class='control-group-header'>
+            <span>Stations</span>
+          </div>
+
+          <div class='control-group-content'>
+
+            <div class='control-item'>
+              <div id='show_inact' class='btn'> Show inactive </div>
+              <div id='stn_all' class='btn right ssel_btn'> All </div>
+              <div id='stn_none' class='btn right_follow ssel_btn'> None </div>
+            </div>
+
+            <div id='ZONE1' class='control-item'></div>
+            <div id='ZONE2' class='control-item'></div>
+            <div id='ZONE3' class='control-item'></div>
+            <div id='ZONE4' class='control-item'></div>
+
+          </div>
+        </div>
+
+        <!-- Filter selection ------------------------------------------------->
+        <div id='filters' class='control-group'>
+          <div id='filters_header' class='control-group-header'>
+            <span>Filters</span>
+          </div>
+
+          <div class='control-group-content'>
+
+            <!-- Filter sel buttons -->
+            <div class='control-item'>
+              <div id="only_active" class="glass_btn active">Only active</div>
+              <div id='fltr_res' class='btn right fsel_btn'>Reset</div>
+              <div id='fltr_none' class='btn right_follow fsel_btn'>None</div>
+            </div>
+
+            <!-- Severoty selection -->
+            <div id='severity' class='control-item'>
+              <span id="sev_title" class="item_title active">Severity</span>
+              <div id="sev_A" class="glass_btn active">A</div>
+              <div id="sev_B" class="glass_btn active">B</div>
+              <div id="sev_C" class="glass_btn active">C</div>
+              <div id="sev_D" class="glass_btn active">D</div>
+              <div id="sev_E" class="glass_btn active">E</div>
+            </div>
+
+            <!-- Alarmtype selection -->
+            <div id='alarmtype' class='control-item'>
+              <span id="at_title" class="item_title active">Types</span>
+              <div id="at_general" class="glass_btn active">General</div>
+              <div id="at_safety" class="glass_btn active">Safety</div>
+              <div id="at_interlock" class="glass_btn active">Interlock</div>
+              <div id="at_alarm" class="glass_btn active">Alarm</div>
+              <div id="at_manual" class="glass_btn active">Manual</div>
+              <div id="at_autonotstarted" class="glass_btn active">!Started</div>
+              <div id="at_formatnok" class="glass_btn active">FormatNOK</div>
+            </div>
+
+            <!-- Production type selection -->
+            <div id='production' class='control-item'>
+              <span id="prod_title" class="item_title active">Production</span>
+              <div id="prod_general" class="glass_btn active">General</div>
+              <div id="prod_inout" class="glass_btn active">In/Out</div>
+              <div id="prod_andon" class="glass_btn active">Andon</div>
+              <div id="prod_controlroom" class="glass_btn active">CR</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Bottom logo to look nice on scroll -->
+        <div id='controllogo' class='control-group'>
+          <div><svg><polygon></polygon></svg></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer ----------------------------------------------------------------->
+  <div id='footer' class='fade'>
+    <div id='info'>
+      <span>ALARM LIST FINAL ASSEMBLY - ACM - VCG</span>
+    </div>
+    <div id='credit'>
+      <span>Created & designed by Jens De Ketelaere</span>
+    </div>
+  </div>
+
+
+  <!-- SCRIPT ----------------------------------------------------------------->
+
+  <!-- Spinner -->
+  <script src="script/spinner.js" charset="utf-8"></script>
+
+  <!-- Scripts -->
+  <script src="script/-elements.js" charset="utf-8"></script>
+  <script src="script/-graphic.js" charset="utf-8"></script>
+  <script src="script/-alarm.js" charset="utf-8"></script>
+  <script src="script/-table.js" charset="utf-8"></script>
+  <script src="script/-flex.js" charset="utf-8"></script>
+  <script src="script/-controls.js" charset="utf-8"></script>
+  <script src="script/-filter.js" charset="utf-8"></script>
+  <script src="script/-stations.js" charset="utf-8"></script>
+  <script src="script/--main.js" charset="utf-8"></script>
+
+
+
+</body>
+</html>
