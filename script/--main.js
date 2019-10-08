@@ -300,11 +300,8 @@ function loadSession(){
     default_fltr();
     dt_clear();
 
-    TIME.rel = false; relative_sel();
+    TIME.rel = true; relative_sel();
     TIME.rt = false; realtime_sel();
-
-    lb.prop('disabled',true)
-    rt.prop('disabled',true)
 
   }
 
@@ -321,7 +318,7 @@ function reset_history(){
     loadSession();
     GET();
   } else {
-    alert('already reset')
+    alert('Already reset!')
   }
 
 }

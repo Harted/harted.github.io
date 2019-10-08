@@ -12,6 +12,7 @@ var lb = $('#lookback')
 var rt = $('#realtime')
 var GD = $('#get_data')
 var rel = $('#relative')
+var oa = $("#only_active")
 
 // Clear/apply table formatting --------------------------------------
 $('#format').mouseup(format_mu)
@@ -228,12 +229,20 @@ function relative_sel(target){
     fr.prop('disabled',true)
     lb.prop('disabled',false)
     rt.prop('disabled',false)
+
+    oa.removeClass('hidden')
+
   } else {
     to.prop('disabled',false)
     fr.prop('disabled',false)
     lb.prop('disabled',true)
     rt.prop('disabled',true); reset_rt();
+
+    oa.addClass('hidden')
+    fltrSet('only', 'active', false)
+
     style_mu(target)
+
   }
 
 }

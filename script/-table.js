@@ -160,12 +160,16 @@ function makeTable(settings, data){
       // active
       if (d[i]._active) {
         body.push('active ')
+        if (TIME.rt) { body.push('duration ') }
       }
 
       // title (info on mouse over)
       body.push('" title="')
-      body.push('Duration : ' + d[i]._durtxt + '\n')
-      body.push('Variable : ' + d[i]._var)
+      body.push(d[i]._zone + ' - ')
+      body.push(d[i]._stntxt + '\n')
+
+      body.push('Variable : ' + d[i]._var + '\n')
+      body.push('Duration : ' + d[i]._durtxt)
 
       body.push('" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt)
 
@@ -258,8 +262,8 @@ function makeTable(settings, data){
   var freeze // to set true on click to freeze visual link
   var stored_id, stored_obj // to store id and obj on click
 
-  var lineobj // line object to output the html
-
+  // line object to output the html
+  var lineobj = $(settings.id).prev('.table-overlay').find('#line')
 
   // ON HOVER --------------------------------------------------------
   this.setHover = function(external){
@@ -271,7 +275,6 @@ function makeTable(settings, data){
 
     body_tr = $(settings.id + ' tbody tr')
     freeze = false
-    lineobj = $(settings.id).prev('.table-overlay').find('#line')
 
     body_tr.hover(
       function(){
@@ -340,9 +343,7 @@ function makeTable(settings, data){
     );
   };
 
-  if(!TIME.rt) {
-    this.setHover(false);
-  } // disable on realtime
+  if(!TIME.rt) {this.setHover(false);} // disable on realtime
 
   var events = []
 
@@ -407,6 +408,7 @@ function makeTable(settings, data){
 
     // Remove duration
     obj.removeClass('duration')
+    table.headsize()
 
     // Remove eventlistener on mouse leave when it's set on enter
     if (drawLine != undefined) {

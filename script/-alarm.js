@@ -62,6 +62,19 @@ function alarm(data) {
   var onoff = ['OFF','ON']
   this.alarm.statetxt = onoff[parseInt(this.alarm._state)]
 
+  // Station name & zone
+  for (var zone in TIA_GC) {
+    if (TIA_GC.hasOwnProperty(zone)) {
+      if (TIA_GC[zone].hasOwnProperty(this.alarm.station)) {
+        this.alarm._zone = zone
+        if (TIA_GC[zone][this.alarm.station].hasOwnProperty('name')){
+          this.alarm._stntxt = TIA_GC[zone][this.alarm.station].name
+        }
+      }
+    }
+  }
+
+
   // REGEX expressions
   var rgx = {
     st : /^[0-9]{4}[a-zA-Z]/,
@@ -273,12 +286,27 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
         // - Assign active and set true
         // - Change state text to ACTIVE
         // - This event has no link but a duraction to now
-        a['_active'] = true
-        a[state_name] = 'ACTIVE'
+
         a['_linkID'] = linkIDn
-        var dur = Date.now() - sDateParse(dt)
-        a['_duration'] = dur
-        a['_durtxt'] = dhms(dur)
+
+        if (TIME.rel) {
+
+          a['_active'] = true
+          a[state_name] = 'ACTIVE'
+
+          var dur = Date.now() - sDateParse(dt)
+          a['_duration'] = dur
+          a['_durtxt'] = dhms(dur)
+
+        } else {
+
+          a['_active'] = false
+
+          a['_duration'] = -1
+          a['_durtxt'] = 'n/a'
+
+        }
+
         linkIDn --
       } else if (s == 1) {
         // Not active ON events
