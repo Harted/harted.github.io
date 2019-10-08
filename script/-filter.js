@@ -332,6 +332,7 @@ function applyFilter(){
 
     var tbody_tr = $('tbody tr')
 
+    // Hide if not included in id-arr (visibility:collapse)
     for (var i = 0; i < tbody_tr.length; i++) {
       var id = $(tbody_tr[i]).attr('id')
       var incl = id_arr.includes(id)
@@ -343,7 +344,6 @@ function applyFilter(){
       }
 
     }
-
 
     // Remember to know if filter has changed
     fltr_mem = JSON.stringify(fltr)

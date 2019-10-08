@@ -1,21 +1,14 @@
-// TOGGLE ----------------------------------------------------------------------
+// TOGGLE BUTTONS --------------------------------------------------------------
 
+// toggle button object
 tog = {
-  format: false,
+  format: false, //not used
   showinact: false,
 }
 
-var h = 3600000 // 1 hour in miliseconds
-var to = $('#to_date')
-var fr = $('#from_date')
-var lb = $('#lookback')
-var rt = $('#realtime')
-var GD = $('#get_data')
-var rel = $('#relative')
-var oa = $("#only_active")
 
 // Clear/apply table formatting --------------------------------------
-$('#format').mouseup(format_mu)
+$('#format').mouseup(format_mu) // NOTE: NOT USED ATM
 
 function format_mu(){
 
@@ -27,7 +20,7 @@ function format_mu(){
     el.addClass('clearformat')
   } else {
     el.removeClass('clearformat')
-    style_mu(this)
+    btn_off_style(this)
   }
 
 };
@@ -45,50 +38,78 @@ function show_inact_mu(){
     el.addClass('showinactive')
   } else {
     el.removeClass('showinactive')
-    style_mu(this)
+    btn_off_style(this)
   }
 
 }
 
 
 
-
 // BUTTON STYLE ----------------------------------------------------------------
-$('.btn').mousedown(style_md)
-// - common mousedown style:
-function style_md(event){
+$('.btn').mousedown(btn_on_style)
 
-  $(event).addClass('clicked')
-  $(event.target).addClass('clicked') // REVIEW: maybe not so beautifull fix..
+// Button on style function
+function btn_on_style(event){
+
+  if (event.target == undefined) {
+    $(event).addClass('clicked') // by function call
+  } else {
+    $(event.target).addClass('clicked') // by mousedonw
+  }
 
 }
+
+// Button off style function
 // - place this one in the mouse up function after the calculations:
-function style_mu(target){ $(target).removeClass('clicked') }
-
-
-
-// DEFAULTS --------------------------------------------------------------------
-
-function default_dt(){ // trigered on session load
-  to.val(dateT())
-  fr.val(dateT(null, h/4))
-  lb.val( 15 )
+function btn_off_style(event){
+  $(event).removeClass('clicked') // (always) by function call
 }
+
+
 
 
 // DATETIME ------------------------------------------------------------------//
+
+// Hour constant shorthand
+var h = 3600000 // 1 hour in miliseconds
+
+// Time object shorthands
+var to = $('#to_date')
+var fr = $('#from_date')
+var lb = $('#lookback')
+
 
 // USER DEFINED ----------------------------------------------------------+
 // This is true when the user changes the TO date by typing or selecting
 // - If the user changes the TO date the hour buttons reference to this
 // - date and not Date.now
 var to_user = false
+
 // - Function that sets it true
 $('#to_date').focusout(date_to).on('input', date_to)
 
 function date_to(){
+  // set true if date is valid
   if(dc(this)){to_user = true} else {to_user = false}
+  // set user defined style
   if(to_user){to.addClass('to_udef')} else {to.removeClass('to_udef')}
+}
+
+
+// CLEAR DATE ------------------------------------------------------------+
+function dt_clear(){
+
+  // Reset user defined to date
+  to_user = false;
+
+  // = now - 15 min, not user defined and not invalid
+  to.val(dateT()).removeClass('to_udef invalid');
+  fr.val(dateT(null, h/4)).removeClass('invalid')
+  lb.val( 15 )
+
+  // Set mouse up style
+  btn_off_style(this);
+
 }
 
 
@@ -96,7 +117,9 @@ function date_to(){
 
 // Check if date and format red if it's not a date
 $('input[type=datetime-local]').focusout(datecheck).on('input', datecheck)
+$('input[type=number]').on('input', lb_check)
 
+// Check if valid and restirct from & to date
 function datecheck() {
 
   if(dc(this)){ // check if valid date (returns true)
@@ -108,7 +131,18 @@ function datecheck() {
 
     // if date_to is equal or smaller than from date set from date to 1h back
     if (to.val() <= fr.val() ) {
+
       fr.val(dateT(to.val(),h))
+
+    // limit date difference to 1 day
+    } else if (fr.val() <= dateT(to.val(),h*24)) {
+
+      // if from date is set set o date vice versa
+      if ($(this).val() == fr.val()){
+        to.val(dateT(fr.val(), -h*24))
+      } else if ($(this).val() == to.val()){
+        fr.val(dateT(to.val(), h*24))
+      }
     }
 
   } else {
@@ -118,6 +152,12 @@ function datecheck() {
   }
 }
 
+// Restrict lookback time 5-480 min
+function lb_check(){
+  // can't be larger then 480 minutes
+  if ($(this).val() > 480) {$(this).val(480)}
+}
+
 // Date check function -----------------------------------------------
 function dc(target){
   var val = $(target).val(); var date = new Date(val);
@@ -125,8 +165,16 @@ function dc(target){
 }
 
 
+// TIME BUTTONS ----------------------------------------------------------+
 
-// TIME BUTTONS ----------------------------------------------------------------
+// Time buttons object shorthands
+var rt = $('#realtime')
+var rel = $('#relative')
+
+var GD = $('#get_data')
+var oa = $("#only_active")
+
+// TIME object
 var TIME = {
   rel: false,
   rt: false,
@@ -135,41 +183,38 @@ var TIME = {
   end: function(){return(to.val())},
 }
 
+//inderect hour button reference
 $('.h_btn').mouseup(hour_sel)
+
+// direct references
 $('#dt_reset').mouseup(dt_clear)
 rel.mouseup(rel_mu)
 rt.mouseup(rt_mu);
 
-
-// Fixed time selection buttons
+// Fixed time selection buttons --------------------------------------
 function hour_sel(){
 
-  if (to_user) { var d = dateT(to.val()) }
-  else { var d = dateT()};
+  // if user selected to date use this as reference, else use now
+  if (to_user) {
+    var d = dateT(to.val())
+  } else {
+    var d = dateT()
+  };
 
+  // evaluate number from buton id
   var n = eval($(this).attr('id').replace('_hour','').replace('_','/'))
 
+  // calculate start en end date
   var start = dateT(d, n * h)
   var end = d
 
+  // set from, to and lookback
   fr.val( start ).removeClass('invalid')
   to.val( end   ).removeClass('invalid')
   lb.val( n * 60 )
 
-  style_mu(this)
-
-}
-
-// Reset to default
-function dt_clear(){
-
-  default_dt();
-
-  to_user = false;
-  to.removeClass('to_udef invalid');
-  fr.removeClass('invalid')
-
-  style_mu(this);
+  // set button off style on end
+  btn_off_style(this)
 
 }
 
@@ -177,136 +222,166 @@ function dt_clear(){
 // Local yyyy-mm-ddThh:mm:ss sring from date
 function dateT(d, sub){
 
-  // now or defined by T string
+  // now or defined by string
   if (d == undefined){
 
-    d = new Date(Date.now())
+    d = new Date(Date.now()) // if ndefined set to now
 
   } else if (/[\d]{4}-[\d]{1,}-[\d]{1,}T[\d]{2}:[\d]{2}:[\d]{2}/.test(d)) {
 
-      var p = d.match(/[\d]{1,}/g)
+      var p = d.match(/[\d]{1,}/g) // split by didget group
 
+      // Create new date with parts (because GMT is not in T string)
       var d = new Date(p[0],p[1]-1,p[2],p[3],p[4],p[5])
 
   }
 
-  // subtract
-  var n = Date.parse(d)
+  var n = Date.parse(d) // parse date to enable calculations
 
-  if (sub != undefined) {
+  if (sub != undefined) { n = n - sub } // subtract if defined
 
-    n = n - sub
+  var o = new Date(n) // convert back to date string
 
-  }
-
-  // create T string
-  var o = new Date(n)
-
+  // Make T string
   var str = new Date(
     new Date(n).toString().split('GMT')[0]+' UTC'
   ).toISOString().split('.')[0];
 
-  return str
+  return str // return T string
 
 }
 
 
+// RELATIVE selection button -----------------------------------------
 function rel_mu(){
 
   TIME.rel = !TIME.rel //toggle
-  relative_sel(this);
+  relative_sel();
 
 }
 
-function relative_sel(target){
+function relative_sel(){
 
-  target = target || rel.get()[0]
+  if (TIME.rel) {                                               // ON
 
-  style_md(target)
-
-  if (TIME.rel) {
+    // Disable absolute from & to date
     to.prop('disabled',true)
     fr.prop('disabled',true)
+
+    // Enable Lookback input field & realtime button
     lb.prop('disabled',false)
     rt.prop('disabled',false)
 
+    // Show only active button
     oa.removeClass('hidden')
 
-  } else {
+    // Only on exernal function call
+    if (!rel.hasClass('clicked')){
+      btn_on_style(rel)
+    }
+
+  } else {                                                     // OFF
+
+    // Enable absolute from & to date
     to.prop('disabled',false)
     fr.prop('disabled',false)
+
+    // Disable Lookback input field & realtime button
     lb.prop('disabled',true)
     rt.prop('disabled',true); reset_rt();
 
+    // Hide only active button and set to false
     oa.addClass('hidden')
     fltrSet('only', 'active', false)
 
-    style_mu(target)
+    // Apply off style to buton
+    btn_off_style(rel)
 
   }
 
 }
 
+
+// REALTIME selection button -----------------------------------------
 function rt_mu(){
 
   TIME.rt = !TIME.rt // Toggle
-  realtime_sel(this)
+  realtime_sel()
 
 }
 
-function realtime_sel(target){
-
-  target = target || rt.get()[0]
-
-  style_md(target)
+function realtime_sel(){
 
   if (TIME.rt) {
+
+    // Set Get data button caption
     GD.val('GET DATA (realtime)')
+
+    // Only on exernal function call
+    if (!rt.hasClass('clicked')){ btn_on_style(rt) }
+
   } else {
-    GD.val('GET DATA').prop('disabled',false)
-    style_mu(target)
+
+    reset_rt()
+
   }
 
 }
 
+// reset RT when: RT off, Relative off
 function reset_rt(){
+
+  // Set Get data button caption to default and enable
   GD.val('GET DATA').prop('disabled',false)
-  TIME.rt = false;
-  style_mu('#realtime')
+
+  TIME.rt = false; // set realtime to false
+  btn_off_style(rt) // set buton off style
+
 }
 
 
 
-// STATION BUTTONS -------------------------------------------------------------
+
+// STATION BUTTONS -----------------------------------------------------------//
 
 $('.ssel_btn').mouseup(stn_all_mu)
 
-$(document).ready(all_stns)
+$(document).ready(all_stns_caption)
 
-function sel_stn(){ //trigger in -stations.js
+// Select single station button --------------------------------------
+// - mouse_up trigger in -stations.js because html is created there
+function sel_stn(){
 
+  //Split glass_btn id in ZONE_STATION
   var part = $(this).attr('id').split('_')
-  var state = TIA_GC[part[0]][part[1]].sel
 
-  stnSet(part[0],part[1],!state)
+  //Set button with reverse selected state
+  stnSet(part[0],part[1],!TIA_GC[part[0]][part[1]].sel)
 
 }
 
-function sel_zone(){ //trigger in -stations.js
+// Select complete zone button ---------------------------------------
+// - mouse_up trigger in -stations.js because html is created there
+function sel_zone(){
 
   var one_sel = false
+
+  //Split zone title id to get zone (ZONE*_name)
   var part = $(this).attr('id').split('_')
 
+  //Check if one is selected in TIA_GC object
   for (var stn in TIA_GC[part[0]]) {
     if (TIA_GC[part[0]].hasOwnProperty(stn)) {
 
       var sel = TIA_GC[part[0]][stn].sel
-
-      if(sel) {one_sel = true; break; };
+      if(sel) {one_sel = true; break; }; // if one true set true & break
 
     }
   }
 
+  // Set all station of zone to inverse state of one_sel
+  // - if one is selected all will be false
+  // - if none are selected all will be true
   for (var stn in TIA_GC[part[0]]) {
     stnSet(part[0],stn,!one_sel)
   }
@@ -314,11 +389,13 @@ function sel_zone(){ //trigger in -stations.js
 }
 
 
-
+// Select ALL stations button ----------------------------------------
 function stn_all_mu(){
 
+  // get all or none sring from btn id
   var s = $(this).attr('id').replace('stn_',''); var b;
 
+  // if its all bool is true
   if (s == 'all') { b = true } else { b = false}
 
   for (var zone in TIA_GC) {
@@ -327,44 +404,47 @@ function stn_all_mu(){
       for (var stn in TIA_GC[zone]) {
         if (TIA_GC[zone].hasOwnProperty(stn)) {
 
-          stnSet(zone,stn,b)
+          stnSet(zone,stn,b) // set all according to b
 
         }
       }
     }
   }
 
-  style_mu(this)
+  btn_off_style(this) // set button style to off when complete
 
 }
 
 
+// Global station set function (zone, station, boolean value) --------
 function stnSet(zone,stn,b){
 
+  // ignore from ZONE: _active
   if (stn.search('_') > -1) {return;}
 
+  // Only set selected state when the station is active
   var act = TIA_GC[zone][stn].active
-
   if(act) { TIA_GC[zone][stn].sel = b}
 
+  // Set elemen lement for style
   var el = $('#' + zone + '_' + stn + '_stnbtn')
 
-  if(b && act){
-    el.addClass('sel')
-  } else {
-    el.removeClass('sel')
-  }
+  // Selected & Active = true -> Add on style
+  if(b && act){ el.addClass('sel') } else { el.removeClass('sel') }
 
-  all_stns();
+  // check if all stations caption has to be applied
+  all_stns_caption();
 
 }
 
 
-function all_stns(){
+// Caption to indicate all stations alarms will be imported when
+// no stations are selected
+function all_stns_caption(){
 
   var all_false = true
 
-
+  // Check if all station buttons selected values are false
   for (var zone in TIA_GC) {
     if (TIA_GC.hasOwnProperty(zone)) {
 
@@ -378,8 +458,7 @@ function all_stns(){
     }
   }
 
-
-
+  // Aplly or remove caption
   if (all_false) { $('#stns_header').addClass('all') }
   else $('#stns_header').removeClass('all')
 
@@ -388,13 +467,15 @@ function all_stns(){
 
 
 
+// FILTERS -------------------------------------------------------------------//
 
+// Mouse up actions
+$('#filters .glass_btn').mouseup(filters_mu)
+$('#filters .fsel_btn').mouseup(fltr_res_none)
+$('#filters .item_title.active').mouseup(sel_type)
 
-// FILTERS ---------------------------------------------------------------------
-
-var FILTERS = default_fltr_settings()
-
-function default_fltr_settings(){
+// Default filter values
+var FILTERS_def = function() {
   return {
     only: {
       active: false,
@@ -413,114 +494,122 @@ function default_fltr_settings(){
   }
 }
 
-function default_fltr(){ //triggered in load session
+var FILTERS = FILTERS_def() //Set object to default structure on load
 
-  FILTERS = default_fltr_settings()
+//triggered in load session
+function default_fltr(){
 
-  console.log(FILTERS);
+  // Set FILTERS to default
+  FILTERS = FILTERS_def()
 
+  // Apply style (and set again)
   for (var type in FILTERS) {
     if (FILTERS.hasOwnProperty(type)) {
       for (var sub in FILTERS[type]) {
-        if (FILTERS[type].hasOwnProperty(sub)) { fltrSet(type, sub, FILTERS[type][sub]) }
+        if (FILTERS[type].hasOwnProperty(sub)) {
+          fltrSet(type, sub, FILTERS[type][sub])
+        }
       }
     }
   }
 }
 
-// clicky wicky
-$('#filters .glass_btn').mouseup(filters_mu)
 
+// Set single filter button -------------------------------------------
 function filters_mu(){
 
+  // Split buton id (sev_A)
   var part = $(this).attr('id').split('_')
-
+  // Set inverse state
   fltrSet(part[0], part[1], !FILTERS[part[0]][part[1]])
 
 }
 
 
-$('#filters .fsel_btn').mouseup(fltr_res_mu)
+// Select none or reset fiiters button -------------------------------
+function fltr_res_none(){
 
-
-function fltr_res_mu(){
-
+  // get res or none sring from btn id
   var s = $(this).attr('id').replace('fltr_',''); var b;
 
-  if (s == 'res') { b = true } else { b = false}
+  if (s == 'res') {
+    default_fltr(); btn_off_style(this); return; // Reset filters & return
+  } else {
+    b = false // set false and continue
+  }
 
-  for (var zone in TIA_GC) {
-    if (TIA_GC.hasOwnProperty(zone)) {
-
-      for (var type in FILTERS) {
-        if (FILTERS.hasOwnProperty(type)) {
-          for (var sub in FILTERS[type]) {
-            if (FILTERS[type].hasOwnProperty(sub)) {
-
-              fltrSet(type, sub, b)
-
-            }
-          }
+  // Set all filers to b value (false in this case)
+  for (var type in FILTERS) {
+    if (FILTERS.hasOwnProperty(type)) {
+      for (var sub in FILTERS[type]) {
+        if (FILTERS[type].hasOwnProperty(sub)) {
+          fltrSet(type, sub, b)
         }
       }
     }
   }
 
-  //exeptions:
-  fltrSet('sev', 'E', false)
-  fltrSet('only', 'active', false)
-
-  style_mu(this)
+  btn_off_style(this) // Set button style to off
 
 }
 
-$('#filters .item_title.active').mouseup(sel_type)
 
+// Select all or none by type title ----------------------------------
 function sel_type(){
 
   var one_sel = false
+
+  //Split filter title id to get type (sev_title)
   var part = $(this).attr('id').split('_')
 
+  // Check if all filter button values are false
   for (var sub in FILTERS[part[0]]) {
     if (FILTERS[part[0]].hasOwnProperty(sub)) {
-
       if(FILTERS[part[0]][sub]) {one_sel = true; break; };
-
     }
   }
 
+  // Set all filters of type to inverse state of one_sel
+  // - if one is selected all will be false
+  // - if none are selected all will be true
   for (var sub in FILTERS[part[0]]) {
     fltrSet(part[0], sub, !one_sel)
   }
 
 }
 
-
+// Global filter set function (zone, station, boolean value) --------
 function fltrSet(type,sub, b){
 
+  // Set value
   FILTERS[type][sub] = b
 
+  // Set style
   if(FILTERS[type][sub]){
     $('#' + type + '_' + sub).addClass('sel')
   } else {
     $('#' + type + '_' + sub).removeClass('sel')
   }
 
-  all_sev()
+  // Check if all severity caption has to be applied
+  all_sev_caption()
 
 }
 
-
-function all_sev(){
+// Caption to indicate all severity alarms will be imported when
+// no severities are selected
+function all_sev_caption(){
 
   var all_false = true
 
+  // Check if all severity buttons are false
   for (var sev in FILTERS.sev) {
     if (FILTERS.sev.hasOwnProperty(sev)) {
       if (FILTERS.sev[sev]) {all_false = false; break;}
     }
   }
 
+  // Aplly or remove caption
   if (all_false) { $('#sev_title').addClass('all') }
   else $('#sev_title').removeClass('all')
 
