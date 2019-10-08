@@ -312,7 +312,6 @@ $('#alfa_logo').click(reset_history)
 function reset_history(){
 
   if(window.history.state != null) {
-    console.log('Resettet!')
     history.pushState(null,'','')
     popper = true;
     loadSession();
