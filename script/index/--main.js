@@ -28,7 +28,7 @@ window.onresize = function(event){
 };
 
 
-// Responsive on resize 
+// Responsive on resize
 function responsive(){
   flex();
   table.headsize()
@@ -86,7 +86,7 @@ function GET(init){
   updateAX();
 
   // AJAX ------------------------------------------------------------
-  $.ajax(ajax_s_home())
+  $.ajax(ajax_s())
 
   .fail(function() {                                                  // FAIL
 

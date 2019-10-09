@@ -91,6 +91,18 @@ if (isset($_GET['stations'])){
 };
 
 
+// STATION ALL -----------------------------------------------------------------
+// if (isset($_GET['stn_all'])){
+//
+// 	$q = $aq . "ALARMSOURCE LIKE '" . $_GET['stn_all'] . "' ";
+// 	$q .= "ORDER BY CHANGETS DESC ";
+//
+// 	//echo $q;
+//
+// 	request($q, $c);
+//
+// };
+
 // ORACLE REQUEST AND ECHO BACK ------------------------------------------------
 function request($q, $c){
 

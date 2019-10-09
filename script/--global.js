@@ -14,7 +14,7 @@ less.pageLoadFinished.then(
   }
 );
 
-TIA_GC = {
+var TIA_GC = {
   ZONE1: {
     CLF260: { active: false, name: 'Bodybuffer' },
     CLF280: { active: false, name: 'Doorline Assembly' },
