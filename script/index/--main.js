@@ -1,5 +1,18 @@
+// Temp live test
+$('#controllogo div').click(LIVE)
+
+function LIVE(){
+  var origin = window.location.origin
+  var url = '/live.html?' + btoa(JSON.stringify(curSet()))
+
+  window.location = origin + url
+}
+
+
 // Body load ready (set on body in index.html) ---------------------------------
-function ready(){ getStations();}
+function ready(){
+  getStations();
+}
 
 // When stations are fetched
 function stationsReady(){
@@ -8,10 +21,6 @@ function stationsReady(){
   GET(true); // GET data from database
 
 }
-
-
-// GLOBAL alarms & table variables ---------------------------------------------
-var alarms, table
 
 
 // AJAX SETTINGS ---------------------------------------------------------------
@@ -64,7 +73,7 @@ function GET(init){
   updateAX();
 
   // AJAX ------------------------------------------------------------
-  $.ajax(ajax_s())
+  $.ajax(ajax_s_home())
 
   .fail(function() {                                                  // FAIL
 
@@ -121,18 +130,6 @@ function GET(init){
   });
 }
 
-// FADE functions --------------------------------------------------------------
-function loadFade(){ //fade interface on load
-  $('.fade').css({'opacity': 1});
-  $('.fade_reverse').css({'opacity': 0});
-}
-
-// Less finished
-less.pageLoadFinished.then(
-  function() {
-    $('.fade_less').css('opacity', 1);
-  }
-);
 
 
 
@@ -184,6 +181,7 @@ function updateAX(){
   ax.end = TIME.end();
 
 }
+
 
 
 

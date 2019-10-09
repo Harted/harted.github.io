@@ -8,7 +8,7 @@ var alfa_svg = {
 $('#alfa_logo svg').attr('viewBox',alfa_svg.viewbox)
 $('#alfa_logo polygon').attr('points',alfa_svg.poly)
 
-// logo under controls
+// logo under controls (only index)
 $('#controllogo svg').attr('viewBox',alfa_svg.viewbox)
 $('#controllogo polygon').attr('points',alfa_svg.poly)
 
@@ -32,6 +32,6 @@ var hamburger_svg = {
   + 'C98.65,94.27,94.27,98.65,88.92,98.65z"/>'
 }
 
-// Control header hamburger
+// Control header hamburger (only index)
 $('#control-header #hamburger svg').attr('viewBox',hamburger_svg.viewbox)
 .html(hamburger_svg.paths)

@@ -48,8 +48,6 @@ var win = getWindowData();  //on load
 
 window.onresize = function(event){
   win = getWindowData();
-
-  if(tableready){responsive()};
 };
 
 function getWindowData() {                                      //Function
@@ -59,13 +57,6 @@ function getWindowData() {                                      //Function
 
   return {iW: iW, iH : iH, dPR : dPR};
 
-};
-
-
-// Responsive on resize --------------------------------------------------------
-function responsive(){
-  flex();
-  table.headsize()
 };
 
 

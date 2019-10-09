@@ -1,80 +1,8 @@
-// COLORS-----------------------------------------------------------------------
-@color_dark: #444;
-@color_bright: #F5F5F5;
-@color_bright_05: rgba(245, 245, 245, 0.3);
-@color_gray: #999;
-@color_blue: #A3C4BC;
-@color_blue_01: rgba(163, 196, 188, 0.1);
-@color_blue_04: rgba(163, 196, 188, 0.4);
-@color_blue_08: rgba(163, 196, 188, 0.8);
-
-@color_red: #ED3B41;
-@color_green: #32C967;
-@color_blueM: #3FB5FF;
-@color_yellow: #FFFF3F;
-@color_yellowless: #FFFF99;
-@color_orange: #FFC83F;
+// Import global ---------------------------------------------------------------
+@import "/style/-global.less";
 
 
-// SCROLLBAR--------------------------------------------------------------------
-@scrolbar: 6px;
-
-::-webkit-scrollbar {
-  width: @scrolbar;
-  height: @scrolbar;
-}
-::-webkit-scrollbar-thumb {
-  border-radius: @scrolbar;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-  background-color: @color_blue;
-}
-::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-  border-radius: @scrolbar;
-  background-color: @color_dark;
-}
-::-webkit-scrollbar-corner {
-  background-color: @color_dark;
-}
-
-// SELECTION -------------------------------------------------------------------
-::selection {
-  background: @color_blue_04; /* WebKit/Blink Browsers */
-}
-::-moz-selection {
-  background: @color_blue_04; /* Gecko Browsers */
-}
-
-
-// GLOBAL ----------------------------------------------------------------------
-.fade { opacity: 0; transition: 500ms 300ms };
-.fade_less { opacity: 0; transition: 500ms };
-
-.fade_reverse { opacity: 1; transition: 200ms };
-
-.noselect(){
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.center(){
-  position:fixed;
-  margin:auto;
-  top:0;bottom:0;left:0;right:0;
-}
-
-#spinner {
-  width: 50%; height: 50%; //size half by page
-  z-index: -1; //on the background
-  .center(); //in absolute center
-}
-
-
-// Remove iOS formatting
+// Remove iOS form formatting --------------------------------------------------
 textarea,
 input.text,
 input[type="text"],
@@ -88,206 +16,22 @@ input[type="datetime-local"],
 }
 
 
-// BODY ------------------------------------------------------------------------
-body {
-  margin:0;
-  color: @color_dark;
-  background-color: @color_dark;
-  overflow: hidden; //no scrollbar
-  height: 100%;
-}
-
-html {
-  height: 100%;
-}
-
-@mw: 814px;
-
-
-
 // HEADER & FOOTER -------------------------------------------------------------
 @header_height: 80px;
+@hh_small: 40px;
 @footer_height: 30px;
+@fh_small: 15px;
+@alfa_fs: 1.5em;
+@afs_small: 0.8em;
+@flex_margin: 0.8%;
 
-
-// Header & footer mixins -------------------------------------------
-.header_footer_cmn() {
-
-  // Position
-  position: fixed;
-  width: 100%;
-  z-index: 100;
-
-  // Flex (items positioning)
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  // Style
-  background-color: @color_dark;
-
-}
-
-.header_whm() {
-  height: @header_height;
-  @media all and(max-width: @mw){ height: calc(@header_height/2); }
-}
-.footer_whm() {
-  height: @footer_height;
-  @media all and(max-width: @mw){ height: calc(@footer_height/2); }
-}
-
-
-// Header elements mixins -------------------------------------------
-.header_sq_whm(){
-
-  // Regular size
-  width: calc(@header_height / 2);
-  height: calc(@header_height / 2);
-  margin: calc(@header_height / 4) calc(@header_height / 6);
-
-  // < 814 px sizes
-  @media all and(max-width: @mw){
-    width: calc(@header_height / 4);
-    height: calc(@header_height / 4);
-    margin: calc(@header_height / 8) calc(@header_height / 12);
-  }
-
-}
-
-.header_shadow(){
-  filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.7);); // Shadow
-}
-
-
-// Block elements for spacing ----------------------------------------
-#header_space{.header_whm();}
-#footer_space{.header_whm();}
-
-
-// Header ---------------------------------------------------------------
-#header{
-
-  // Mixins
-  .header_footer_cmn();
-  .header_whm();
-
-  top:0; //stick at top
-
-  #alfa_logo{
-
-    .header_shadow();
-    display: flex; align-items: center; // Flex align center
-
-    cursor: pointer;
-
-
-    #logo {
-
-      .header_sq_whm(); // size & margin for square
-      margin-left: calc((@header_height / 4) + @flex_margin);
-
-      svg {
-        width: inherit;
-        height: inherit;
-        fill: none;//@color_blue;
-
-        polygon {
-          stroke: @color_blue;
-          stroke-width: 1;
-          stroke-dasharray: 1000;
-          stroke-dashoffset: 1000;
-          &.anim {
-            animation: dash 1s linear forwards;
-          }  
-        }
-
-      }
-
-      @keyframes dash {
-        0% {
-          stroke-dashoffset: 1000;
-          fill: rgba(163, 196, 188, 0);
-        }
-        30% {
-          fill: rgba(163, 196, 188, 0);
-        }
-        40% {
-          stroke-width: 1;
-        }
-        90% {
-          stroke-width: 0;
-        }
-        100% {
-          stroke-width: 0;
-          stroke-dashoffset: 0;
-          fill: @color_blue;
-        }
-      }
-    }
-
-    #alfa_txt{
-
-      font-weight: bold; //Font
-      font-size: 1.5em; line-height: 1.5em;
-      @media all and(max-width: @mw){
-        font-size: 0.8em; line-height: 0.8em;
-      }
-
-      width: 100px;
-      flex-shrink: 0;
-
-      color: @color_bright;         // Color
-      pointer-events: none;         // No selecting text
-
-      //width: 0px;
-      overflow: hidden;
-
-    }
-  }
-
-  #volvo_logo {
-
-    .header_sq_whm();
-    .header_shadow();
-
-    margin-right: calc((@header_height / 4) + @flex_margin);
-    img {
-      width: inherit;height: inherit;opacity: 0.5;
-      &:hover { cursor: pointer;}
-    }
-
-  }
-}
-
-
-// Footer ---------------------------------------------------------------
-#footer{
-
-  // Mixins
-  .header_footer_cmn();
-  .footer_whm();
-
-  bottom: 0; // Stick at bottom
-
-  div {
-
-    font-size: 0.6em; @media all and (max-width: @mw){font-size: 0.4em;}
-
-    margin: 0px @flex_margin;   //position
-
-    color: @color_bright_05; // style
-    pointer-events: none;
-
-  }
-}
-
+@import '/style/headfoot.less';
 
 
 // MAIN ------------------------------------------------------------------------
 @table_fontsize: 12px;
 @table_pad: 8px, 12px, 6px, 6px;
-@flex_margin: 0.8%;
+
 
 @th_height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
 @th_pad: extract(@table_pad,1) extract(@table_pad,2) extract(@table_pad,3)
@@ -702,18 +446,7 @@ extract(@table_pad,4);
         box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, .5);
       }
       .table-underlay{
-        z-index: -1;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        #ul_logo {
-          width: 25%;
-          height: 25%;
-          svg{
-            width: 100%; height: 100%;
-            fill: @color_dark;
-          }
-        }
+        .inset_logo();
       }
       .table-scroll {
         font-size: @table_fontsize;

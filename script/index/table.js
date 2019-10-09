@@ -1,3 +1,6 @@
+//GLOBAL TABLE var -------------------------------------------------------------
+var table
+
 //SETTINGS object for table() function -----------------------------------------
 const alarmlist_settings = {
   //fool proof check for object to be compatible with table() function

@@ -474,7 +474,7 @@ $('#filters .glass_btn').mouseup(filters_mu)
 $('#filters .fsel_btn').mouseup(fltr_res_none)
 $('#filters .item_title.active').mouseup(sel_type)
 
-// Default filter values
+// Default filter values ---------------------------------------------
 var FILTERS_def = function() {
   return {
     only: {
