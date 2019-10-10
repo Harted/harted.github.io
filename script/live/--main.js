@@ -31,15 +31,42 @@ function loadSession(){
     // - it's a for loop to not ovewrite names for example
     for (var zone in ST) {
       if (ST.hasOwnProperty(zone)) {
+
+        var one_sel = false
+
         for (var stn in ST[zone]) {
           if (ST[zone].hasOwnProperty(stn)) {
             if (stn.search('_') < 0) { //ignore zone active
               TIA_GC[zone][stn].active = ST[zone][stn].active
               TIA_GC[zone][stn].sel = ST[zone][stn].sel
+
+              if(ST[zone][stn].sel){one_sel = true}
+
             } else {
-              TIA_GC[zone][stn] = ST[zone][stn] // zone active
+              TIA_GC[zone][stn] = ST[zone][stn] // set zone active
             }
           }
+        }
+
+        TIA_GC[zone]._selected = one_sel
+
+      }
+    }
+
+
+    // Check none selected -> Then all selected
+    var one_zone_selected = false
+
+    for (var zone in TIA_GC) {
+      if (TIA_GC[zone].hasOwnProperty(['_selected'])) {
+        if (TIA_GC[zone]._selected) {one_zone_selected = true};
+      }
+    }
+
+    if (!one_zone_selected) {
+      for (var zone in TIA_GC) {
+        if (TIA_GC[zone].hasOwnProperty(['_selected'])) {
+          TIA_GC[zone]._selected = true;
         }
       }
     }
@@ -97,24 +124,25 @@ function ajax_s_home(){
 
 function GET(){
 
+  var timer = new Date() // Init time for refresh rate
+
   updateAX();
 
   $.ajax(ajax_s())
   .done(function(data) {
-    console.log("success");
 
     setAlarms(data);
     checkActive()
+
+    document.title = 'L I V E - '+ (new Date() - timer) + 'ms'
 
     GET()
 
   })
   .fail(function() {
     console.log("error");
-  })
-  .always(function() {
-    console.log("complete");
   });
+
 
   loadFade();
 
@@ -194,17 +222,16 @@ function checkActive(){
 
   }
 
-  console.log(TIA_GC);
-
   var html = ''
 
   // Set stations with for loop to not overwrie names
   for (var zone in TIA_GC) {
     if (TIA_GC.hasOwnProperty(zone)) {
 
-      if (TIA_GC[zone]._active) {
-        html += '<br>'
-        html += '<div>' + zone + '</div>'
+      if (TIA_GC[zone]._active && TIA_GC[zone]._selected ) {
+        html += '<div class="zonebox"><span>'
+        html += zone.replace('ZONE','Zone ')
+        html += '</span>'
       }
 
       for (var stn in TIA_GC[zone]) {
@@ -213,28 +240,58 @@ function checkActive(){
           if (stn.search('_') < 0) { //ignore zone active
 
             if (TIA_GC[zone][stn].active_alarms.length > 0) {
-              html += '<div>----' + stn + '</div>'
+              html += '<div class="stationbox"><span>[' + stn
+              html += '] ' + TIA_GC[zone][stn].name + '</span>'
             }
 
             for (var i = 0; i < TIA_GC[zone][stn].active_alarms.length; i++) {
-              var alarm = TIA_GC[zone][stn].active_alarms[i].zone
-              + '   ' + TIA_GC[zone][stn].active_alarms[i].object
-              + '   ' + TIA_GC[zone][stn].active_alarms[i].comment
-              + '   (' + TIA_GC[zone][stn].active_alarms[i]._var + ')'
 
-              html += '<div>--------' + alarm + '</div>'
+              var alarm =
+              '<span>' + TIA_GC[zone][stn].active_alarms[i].severity + ' |</span>'
 
+
+
+              if (TIA_GC[zone][stn].active_alarms[i]._type == 'formatnok') {
+
+                alarm +=
+                '<span>' + TIA_GC[zone][stn].active_alarms[i]._var + '</span>'
+
+              } else {
+
+                alarm +=
+                '<span>' + TIA_GC[zone][stn].active_alarms[i].zone + ' |</span>'
+                + '<span>' + TIA_GC[zone][stn].active_alarms[i].object + ' |</span>'
+                + '<span>' + TIA_GC[zone][stn].active_alarms[i].comment + '</span>'
+
+              }
+
+
+
+              html += '<div class="alarmrow '
+              html += TIA_GC[zone][stn].active_alarms[i].severity + ' '
+              html += TIA_GC[zone][stn].active_alarms[i]._type
+              html += '">'
+              html += alarm + '</div>'
+
+            }
+
+            if (TIA_GC[zone][stn].active_alarms.length > 0) {
+              html += '</div>'
             }
 
           }
         }
       }
+
+      if (TIA_GC[zone]._active && TIA_GC[zone]._selected ) {
+        html += '</div>'
+      }
+
+
     }
   }
 
-  console.log(html);
-
-  $('#temp_active').html(html)
+  $('#flex-container').html(html)
 
 
 

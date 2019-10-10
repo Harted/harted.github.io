@@ -1,0 +1,105 @@
+.A , .B {
+  background-color: @color_red;
+  color: @color_bright;
+  font-weight: bold;
+}
+.C {
+  background-color: @color_yellow;
+  font-weight: bold;
+}
+.D {
+  background-color: @color_yellowless;
+}
+.safety {
+  font-weight: bold;
+  span{
+    background-color: @color_yellow; //for safety objects
+    color: @color_dark;
+    // h-length, v-length, blur, spread, colour
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, .5);
+  }
+}
+.manual{
+  background-color: @color_blueM;
+}
+.autonotstarted{
+  color: @color_dark;
+  background-color: @color_green;
+  &.active{
+    animation: autonotstarted 1000ms linear infinite;
+    td {animation: none;}
+  }
+}
+.active {
+  td {
+    animation: pulse 2000ms linear infinite;
+  }
+}
+.interlock {
+  td:nth-child(5),td:nth-child(6){
+    span::before{
+      content: '\1F512  ' ;
+    }
+  }
+}
+.production {
+  background-color: @color_orange;
+}
+.controlroom {
+  td:nth-child(5),td:nth-child(6){
+    span::before{
+      content: '\231b  ' ;
+    }
+  }
+}
+.outfeed {
+  td:nth-child(5),td:nth-child(6){
+    span::before{
+      content: '\2B05  ' ;
+    }
+  }
+}
+.infeed {
+  td:nth-child(5),td:nth-child(6){
+    span::before{
+      content: '\27A1  ' ;
+    }
+  }
+}
+.andon {
+  td:nth-child(5),td:nth-child(6){
+    span::before{
+      content: '\1F4A1  ';
+    }
+  }
+}
+.formatnok {
+  td:nth-child(5){
+    span::before{
+      content: '\2753  ';
+    }
+  }
+}
+.clearformat {
+  background-color: @color_bright;
+  color: @color_dark !important;
+  font-weight: normal !important;
+  animation: none !important;
+  span{
+    background-color: rgba(0,0,0,0) !important;
+    color: @color_dark !important;
+    box-shadow: none !important;
+  }
+}
+
+@keyframes pulse {
+  80% {opacity:1}
+  90% {opacity:0}
+  100% {opacity:1}
+}
+@keyframes autonotstarted {
+  0%  {color: @color_dark; background-color: @color_green;};
+  49% {color: @color_dark; background-color: @color_green;};
+  50% {color: @color_green; background-color: @color_dark;};
+  100% {color: @color_green; background-color: @color_dark;};
+}
