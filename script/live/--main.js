@@ -240,8 +240,8 @@ function checkActive(){
           if (stn.search('_') < 0) { //ignore zone active
 
             if (TIA_GC[zone][stn].active_alarms.length > 0) {
-              html += '<div class="stationbox"><span>[' + stn
-              html += '] ' + TIA_GC[zone][stn].name + '</span>'
+              html += '<div class="stationbox"><span>' + stn
+              html += ' - ' + TIA_GC[zone][stn].name + '</span>'
             }
 
             for (var i = 0; i < TIA_GC[zone][stn].active_alarms.length; i++) {
@@ -298,3 +298,9 @@ function checkActive(){
 
 
 }
+
+
+
+$('#alfa_logo').click(function(){
+  window.location = 'http://10.249.67.154'
+})

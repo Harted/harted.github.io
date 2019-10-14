@@ -201,7 +201,7 @@ function makeTable(settings, data){
           body.push('<span>' + d[i][col] + '</span></td>')
         } else {
           // when there's nothing available
-          body.push('<td>-n/a-</td>')
+          body.push('<td>n/a</td>')
         }
         j++
       }

@@ -161,7 +161,27 @@ function alarm(data) {
     } else {
       //if no ZM of ZS
       this.alarm['zone'] = 'General'
-      this.alarm['_type'] = 'general'
+
+      if (rgx.prod.p.test(this.alarm._var)) {
+
+        this.alarm['_type'] = 'production '
+        if (rgx.prod.in.test(this.alarm._var)) {
+          this.alarm['_type'] += 'inout'
+        } else if (rgx.prod.out.test(this.alarm._var)) {
+          this.alarm['_type'] += 'inout'
+        } else if (rgx.prod.andon.test(this.alarm._var)) {
+          this.alarm['_type'] += 'andon'
+        } else if (rgx.prod.cr.test(this.alarm._var)) {
+          this.alarm['_type'] += 'controlroom'
+        } else {
+          this.alarm['_type'] += 'general'
+        }
+
+      } else {
+        this.alarm['_type'] = 'general'
+      }
+
+
     };
 
     //remove stcode and zone to retain object:                              CR01
