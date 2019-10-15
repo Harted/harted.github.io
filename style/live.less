@@ -13,6 +13,16 @@
 
 @import '/style/headfoot.less';
 
+#pauze {
+  color: @color_blue_04;
+  cursor: pointer;
+  .noselect();
+  font-weight: bold;
+  &:hover {
+    color: @color_blue_08;
+  }
+}
+
 
 // UNDERLAY --------------------------------------------------------------------
 .table-underlay{
@@ -56,9 +66,7 @@
 
     // FLEX (child)
     flex-grow: 1;
-    flex-basis: 600px;
-
-    // background-color: @color_dark;
+    flex-basis: 550px;
 
     font-size: 1em;
 
@@ -67,7 +75,12 @@
 
     > span {
 
-      display: inline-block;
+      // FLEX (parent)
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      // display: inline-block;
       width: calc(100% - 10px);
 
       padding: 5px;
@@ -78,6 +91,15 @@
 
       font-weight: bold;
 
+
+
+    }
+
+    .reset_ignored {
+      .noselect();
+      float:right;
+      cursor: pointer;
+      font-size: 0.7em;
 
     }
 
@@ -122,6 +144,33 @@
           &:first-child{
             margin-left: 8px;
           }
+        }
+
+        &:hover {
+          .ignore {
+            opacity: 1;
+          }
+        }
+
+        .ignore {
+          display: inline-block;
+          opacity: 0.3;
+          float: right;
+          height: 15px; width: 15px;
+
+          border-radius: 3px;
+          background-color: @color_dark;
+          color: @color_bright;
+
+          cursor: pointer;
+        }
+
+        .duration {
+          float:right;
+        }
+
+        &.hidden {
+          display: none;
         }
 
 

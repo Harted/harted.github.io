@@ -136,7 +136,7 @@ function GET(){
 
     document.title = 'L I V E - '+ (new Date() - timer) + 'ms'
 
-    GET()
+    if(!pauze) {GET()}
 
   })
   .fail(function() {
@@ -185,11 +185,6 @@ function updateAX(){
 
 
 
-
-
-
-
-
 var active
 
 function checkActive(){
@@ -217,8 +212,15 @@ function checkActive(){
 
     var zone = active[i]._zone
     var stn = active[i].station
+    var vari = active[i]._var
 
-    TIA_GC[zone][stn].active_alarms.push(active[i])
+    setIgn(zone,stn);
+
+    if (!ignored[zone][stn].includes(vari)) {
+
+      TIA_GC[zone][stn].active_alarms.push(active[i])
+
+    }
 
   }
 
@@ -229,9 +231,15 @@ function checkActive(){
     if (TIA_GC.hasOwnProperty(zone)) {
 
       if (TIA_GC[zone]._active && TIA_GC[zone]._selected ) {
-        html += '<div class="zonebox"><span>'
+        html += '<div id="' + zone + '" '
+        html += 'class="zonebox"><span>'
         html += zone.replace('ZONE','Zone ')
-        html += '</span>'
+
+        if (ignLen(zone) > 0) {
+          html += ' (ignored:' + ignLen(zone) + ')'
+        }
+
+        html += '<span class="reset_ignored">reset</span></span>'
       }
 
       for (var stn in TIA_GC[zone]) {
@@ -240,7 +248,8 @@ function checkActive(){
           if (stn.search('_') < 0) { //ignore zone active
 
             if (TIA_GC[zone][stn].active_alarms.length > 0) {
-              html += '<div class="stationbox"><span>' + stn
+              html += '<div id="' + stn + '" '
+              html += 'class="stationbox"><span>' + stn
               html += ' - ' + TIA_GC[zone][stn].name + '</span>'
             }
 
@@ -266,12 +275,21 @@ function checkActive(){
               }
 
 
-
               html += '<div class="alarmrow '
               html += TIA_GC[zone][stn].active_alarms[i].severity + ' '
               html += TIA_GC[zone][stn].active_alarms[i]._type
               html += '">'
-              html += alarm + '</div>'
+              html += alarm
+
+              html += '<div class="ignore" title="ignore" '
+              html += 'var="' + TIA_GC[zone][stn].active_alarms[i]._var + '">'
+              html += '</div>'
+
+              html += '<span class="duration">'
+              html += TIA_GC[zone][stn].active_alarms[i]._durtxt
+              html += '</span>'
+
+              html += '</div>'
 
             }
 
@@ -294,7 +312,8 @@ function checkActive(){
   $('#flex-container').html(html)
 
 
-
+  $('.ignore').click(ignore)
+  $('.reset_ignored').click(resetig)
 
 
 }
@@ -304,3 +323,81 @@ function checkActive(){
 $('#alfa_logo').click(function(){
   window.location = 'http://10.249.67.154'
 })
+
+
+
+
+
+var ignored = {}
+
+function setIgn(zone,stn){
+
+  if (ignored[zone] == undefined){
+    ignored[zone] = {}
+  }
+
+  if (ignored[zone][stn] == undefined){
+    ignored[zone][stn] = []
+  }
+
+}
+
+function ignLen(zone){
+
+  var len = 0
+
+  for (var stn in ignored[zone]) {
+    if (ignored[zone].hasOwnProperty(stn)) {
+
+      len += ignored[zone][stn].length
+
+    }
+  }
+
+  return len
+
+}
+
+
+function ignore(){
+
+  var ignr = $(this).attr('var');
+  var stn = $(this).parents().eq(1).attr('id');
+  var zone = $(this).parents().eq(2).attr('id');
+
+  setIgn(zone,stn);
+
+  if (!ignored[zone][stn].includes(ignr)){
+    ignored[zone][stn].push(ignr)
+  }
+
+  console.log(ignored)
+
+  $(this).parent().addClass('hidden')
+}
+
+
+
+function resetig(){
+
+  var zone = $(this).parents().eq(1).attr('id')
+
+  ignored[zone] = {}
+
+  console.log(ignored)
+
+}
+
+
+
+var pauze = false
+
+
+$('#pauze').click(pauzen)
+
+
+function pauzen(){
+  pauze = !pauze
+  console.log(pauze);
+  if (!pauze) {GET()}
+}
