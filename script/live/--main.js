@@ -311,10 +311,8 @@ function checkActive(){
 
   $('#flex-container').html(html)
 
-
   $('.ignore').click(ignore)
   $('.reset_ignored').click(resetig)
-
 
 }
 
@@ -391,10 +389,6 @@ function resetig(){
 
 
 var pauze = false
-
-
-$('#pauze').click(pauzen)
-
 
 function pauzen(){
   pauze = !pauze
