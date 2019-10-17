@@ -388,10 +388,19 @@ function resetig(){
 
 
 
+$('#pauze').click(pauzen)
+
 var pauze = false
+var pauze_icon = ''
 
 function pauzen(){
   pauze = !pauze
-  console.log(pauze);
-  if (!pauze) {GET()}
+
+  if (!pauze) {
+    $(this).text('\u275A\u275A').removeClass('pauzed')
+    GET()
+  } else {
+    $(this).text('\u25ba').addClass('pauzed')
+
+  }
 }
