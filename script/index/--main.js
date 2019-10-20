@@ -86,7 +86,7 @@ function GET(init){
   updateAX();
 
   // AJAX ------------------------------------------------------------
-  $.ajax(ajax_s())
+  $.ajax(ajax_s_home())
 
   .fail(function() {                                                  // FAIL
 
