@@ -1,7 +1,7 @@
 // GET Stations from database (ALARMSOURCE) ------------------------------------
 
-//function getStations(){
-//
+function getStations(){
+
 // $.ajax({
 //   url: '/script/ajax.php',
 //   type: 'GET',
