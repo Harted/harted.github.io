@@ -78,19 +78,6 @@ html {
 
 
 // SPINNER ---------------------------------------------------------------------
-#spinner {
-
-  width: 50%; height: 50%; //size half by page
-  z-index: -1; //on the background
-
-  position:fixed;
-  margin:auto;
-  top:0;bottom:0;left:0;right:0;
-
-}
-
-
-// SPINNER ---------------------------------------------------------------------
 #loading {
 
   width: 50vh; height: 26vh; //size half by page
@@ -134,28 +121,18 @@ html {
         stroke-dashoffset: 600;
         stroke-width: 0;
       }
-      40% { //20%
+      40% {
         fill: rgba(163, 196, 188, 0);
       }
-      60% { //30%
+      60% {
         stroke-dashoffset: 0;
         stroke-width: 1;
       }
-      100% { //50%
+      100% {
         stroke-width: 0;
         stroke-dashoffset: 0;
         fill: rgba(163, 196, 188, 0.8);
       }
-      // 70% {
-      //   stroke-dashoffset: 0;
-      //   stroke-width: 1;
-      // }
-      // 80% {
-      //   fill: rgba(163, 196, 188, 0);
-      // }
-      // 100% {
-      //   stroke-dashoffset: -600;
-      // }
     }
 
   }
@@ -197,7 +174,8 @@ html {
     span {
 
       font-size: 0.9em;
-      color: @color_blue_04;
+      color: @color_blue;
+      opacity: 0.7;
 
       &.loading{
 
@@ -232,7 +210,6 @@ html {
   }
 
 }
-
 
 // INSET LOGO ------------------------------------------------------------------
 .inset_logo(){
