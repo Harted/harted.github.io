@@ -7,13 +7,6 @@ function loadFade(){ //fade interface on load
   $('.fade_reverse').css({'opacity': 0});
 }
 
-// Less finished
-less.pageLoadFinished.then(
-  function() {
-    $('.fade_less').css('opacity', 1);
-  }
-);
-
 var TIA_GC = {
   ZONE1: {
     CLF260: { active: false, name: 'Bodybuffer' },

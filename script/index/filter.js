@@ -335,7 +335,7 @@ function applyFilter(){
     // Hide if not included in id-arr (visibility:collapse)
     for (var i = 0; i < tbody_tr.length; i++) {
       var id = $(tbody_tr[i]).attr('id')
-      var incl = id_arr.includes(id)
+      var incl = id_arr.indexOf(id) > -1
 
       if (!incl) {
         $('#' + id).addClass('hidden')

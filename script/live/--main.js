@@ -216,7 +216,7 @@ function checkActive(){
 
     setIgn(zone,stn);
 
-    if (!ignored[zone][stn].includes(vari)) {
+    if (!(ignored[zone][stn].indexOf(vari) > -1)) {
 
       TIA_GC[zone][stn].active_alarms.push(active[i])
 
@@ -365,7 +365,7 @@ function ignore(){
 
   setIgn(zone,stn);
 
-  if (!ignored[zone][stn].includes(ignr)){
+  if (!(ignored[zone][stn].indexOf(ignr) > -1)){
     ignored[zone][stn].push(ignr)
   }
 

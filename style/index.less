@@ -25,19 +25,17 @@ input[type="datetime-local"],
 @afs_small: 0.8em;
 @flex_margin: 0.8%;
 
-@import '/style/headfoot.less';
+@import '/style/components/headfoot.less'; // HEADER AND FOOTER LESS
+
 
 
 // MAIN ------------------------------------------------------------------------
 @table_fontsize: 12px;
 @table_pad: 8px, 12px, 6px, 6px;
 
-
 @th_height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
 @th_pad: extract(@table_pad,1) extract(@table_pad,2) extract(@table_pad,3)
 extract(@table_pad,4);
-
-
 
 #flex-container{
 
@@ -607,7 +605,7 @@ extract(@table_pad,4);
           }
 
           //Conditional formatting ----------------------------------------START
-        @import "/style/cond_format.less";
+        @import "/style/components/cond_format.less";
           //Conditional formatting ------------------------------------------END
         }
         th, td {

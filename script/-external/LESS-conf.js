@@ -38,4 +38,7 @@ else {
   }
 }
 
-less = {logLevel: 1,};
+less = {
+  env: 'development',
+  logLevel: 1,
+};

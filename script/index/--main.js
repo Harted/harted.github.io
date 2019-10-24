@@ -12,6 +12,12 @@ function LIVE(){
 // Body load ready (set on body in index.html) ---------------------------------
 function ready(){
   getStations();
+
+  // if(!(window.location.hostname == 'localhost')){
+  //   window.alert("Bezig met aanpassingen!\nA L F A NIET BESCHIKBAAR!")
+  // }
+
+
 }
 
 // When stations are fetched
@@ -73,6 +79,8 @@ function GET(init){
 
   if(get_busy){ return; } // Don't execute when already busy
 
+  $('#load_status').html('<span class="loading">Getting data</span>')
+
   get_busy = true // Set busy true
 
   var timer = new Date() // Init time for refresh rate
@@ -86,13 +94,15 @@ function GET(init){
   updateAX();
 
   // AJAX ------------------------------------------------------------
-  $.ajax(ajax_s_home())
+  $.ajax(ajax_s())
 
   .fail(function() {                                                  // FAIL
 
-    console.log("Ajax: error")
+    console.log("Data: error")
 
-    loadFade(); // Fade in interface
+    //loadFade(); // Fade in interface
+
+      $('#load_status').html('<span class="fail">Woops &#128579 Something went wrong!</span>')
 
     if (TIME.rt) { reset_rt(); } // Reset realtime on error
     btn_off_style($('#get_data')) // Set Get data buton style off
@@ -102,10 +112,11 @@ function GET(init){
 
   .done(function(data) {                                              // SUCCES
 
-    console.log("Ajax: succes");
+    console.log("Data: succes");
 
     pushState(init); // push history state
     setAlarms(data); // fill alarm object
+
     setTable(); // init table based on alarms
     responsive(); // set table and page sizes
 

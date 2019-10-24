@@ -50,8 +50,6 @@
 
 // FADE ------------------------------------------------------------------------
 .fade { opacity: 0; transition: 500ms 300ms };
-.fade_less { opacity: 0; transition: 500ms };
-
 .fade_reverse { opacity: 1; transition: 200ms };
 
 
@@ -88,6 +86,150 @@ html {
   position:fixed;
   margin:auto;
   top:0;bottom:0;left:0;right:0;
+
+}
+
+
+// SPINNER ---------------------------------------------------------------------
+#loading {
+
+  width: 50vh; height: 26vh; //size half by page
+  z-index: -1; //on the background
+
+  position:fixed;
+  margin:auto;
+  top:0;bottom:0;left:0;right:0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  #load_logo {
+
+    height: 20vh;
+    width: 20vh;
+
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.7);); // Shadow
+
+    svg {
+      height: 100%;
+      width: 100%;
+      fill: none;
+
+      polygon {
+        stroke: @color_blue_04;
+        stroke-width: 1;
+        stroke-dasharray: 600;
+        stroke-dashoffset: 600;
+        &.anim {
+          animation: dash2 2s ease-in-out forwards;
+        }
+      }
+
+    }
+
+    @keyframes dash2 {
+      0% {
+        stroke-dashoffset: 600;
+        stroke-width: 0;
+      }
+      40% { //20%
+        fill: rgba(163, 196, 188, 0);
+      }
+      60% { //30%
+        stroke-dashoffset: 0;
+        stroke-width: 1;
+      }
+      100% { //50%
+        stroke-width: 0;
+        stroke-dashoffset: 0;
+        fill: rgba(163, 196, 188, 0.8);
+      }
+      // 70% {
+      //   stroke-dashoffset: 0;
+      //   stroke-width: 1;
+      // }
+      // 80% {
+      //   fill: rgba(163, 196, 188, 0);
+      // }
+      // 100% {
+      //   stroke-dashoffset: -600;
+      // }
+    }
+
+  }
+
+  #load_txt {
+
+    height: 6vh;
+    //width: 20vh;
+
+    display: flex;
+    align-items: center;
+
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.7);); // Shadow
+
+    span {
+      flex-shrink: 0;
+      color: @color_bright;
+      font-weight: bold;
+      font-size: 4vh;
+
+      background: -webkit-linear-gradient(white, @color_bright, @color_bright, @color_bright_05);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+    }
+
+  }
+
+  #load_status {
+
+    margin-bottom: -12vh;
+    height: 4vh;
+
+    display: flex;
+    align-items: flex-end;
+
+
+
+    span {
+
+      font-size: 0.9em;
+      color: @color_blue_04;
+
+      &.loading{
+
+        &::before {
+          content: ' ';
+          white-space: pre;
+        }
+
+        &::after{
+          animation: pointse 2s linear infinite;
+          content: '   ';
+          white-space: pre;
+        }
+      }
+
+      &.fail {
+        opacity: 0.7;
+        color: @color_red;
+      }
+
+    }
+
+
+
+    @keyframes pointse {
+      0%  {content: '   ';}
+      25% {content: '.  ';}
+      50% {content: '.. ';}
+      75% {content: '...';}
+    }
+
+  }
 
 }
 

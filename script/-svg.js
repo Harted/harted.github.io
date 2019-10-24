@@ -16,6 +16,10 @@ $('#controllogo polygon').attr('points',alfa_svg.poly)
 $('.table-underlay #ul_logo polygon').attr('points',alfa_svg.poly)
 $('.table-underlay #ul_logo svg').attr('viewBox',alfa_svg.viewbox)
 
+// Logo in backgound table
+$('#loading polygon').attr('points',alfa_svg.poly)
+$('#loading svg').attr('viewBox',alfa_svg.viewbox)
+
 
 // HAMBURGER -------------------------------------------------------------------
 var hamburger_svg = {
