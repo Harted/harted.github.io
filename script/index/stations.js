@@ -2,7 +2,7 @@
 
 function getStations(){
 
-$('#load_status').html('<span class="loading">Updating stations</span>')
+$('#load_status').html('<span class="loading">Connecting to database</span>')
 
 $.ajax({
   url: '/script/ajax.php',

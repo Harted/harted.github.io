@@ -126,23 +126,32 @@ function datecheck() {
 
     $(this).removeClass('invalid') // remove red format
 
-    // date_to can't be bigger then NOW
-    if (to.val() > dateT()) { to.val(dateT())}
-
     // if date_to is equal or smaller than from date set from date to 1h back
     if (to.val() <= fr.val() ) {
 
-      fr.val(dateT(to.val(),h))
-
-    // limit date difference to 1 day
-    } else if (fr.val() <= dateT(to.val(),h*24)) {
-
       // if from date is set set o date vice versa
       if ($(this).val() == fr.val()){
-        to.val(dateT(fr.val(), -h*24))
+        to.val(dateT(fr.val(), -h))
       } else if ($(this).val() == to.val()){
-        fr.val(dateT(to.val(), h*24))
+        fr.val(dateT(to.val(), h))
       }
+
+    // limit date difference to 1 day
+    // } else if (fr.val() <= dateT(to.val(),h*24)) {
+    //
+    //   // if from date is set set o date vice versa
+    //   if ($(this).val() == fr.val()){
+    //     to.val(dateT(fr.val(), -h*24))
+    //   } else if ($(this).val() == to.val()){
+    //     fr.val(dateT(to.val(), h*24))
+    //   }
+
+    }
+
+    // date_to can't be bigger then NOW
+    if (to.val() > dateT()) {
+      to.val(dateT())
+      fr.val(dateT(to.val(),h))
     }
 
   } else {
@@ -338,6 +347,18 @@ function reset_rt(){
   btn_off_style(rt) // set buton off style
 
 }
+
+
+// GET DATA  button --------------------------------------------------
+$('#get_data').click(function(){
+  if($('#get_form')[0].checkValidity()){
+    GET()
+  } else {
+    btn_off_style(this)
+  };
+})
+
+
 
 
 

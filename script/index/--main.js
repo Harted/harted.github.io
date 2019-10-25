@@ -13,10 +13,9 @@ function LIVE(){
 function ready(){
   getStations();
 
-  // if(!(window.location.hostname == 'localhost')){
-  //   window.alert("Bezig met aanpassingen!\nA L F A NIET BESCHIKBAAR!")
-  // }
-
+  if(!(window.location.hostname == 'localhost')){
+    window.alert("Bezig met aanpassingen...\nInterface werkt mogelijks niet naar behoren!")
+  }
 
 }
 
@@ -36,8 +35,12 @@ window.onresize = function(event){
 
 // Responsive on resize
 function responsive(){
+  console.time('flex')
   flex();
+  console.timeEnd('flex')
+  console.time('headsize')
   table.headsize()
+  console.timeEnd('headsize')
 };
 
 
@@ -80,6 +83,7 @@ function GET(init){
   if(get_busy){ return; } // Don't execute when already busy
 
   $('#load_status').html('<span class="loading">Getting data</span>')
+  $('#ul_status span').text('Getting data...')
 
   get_busy = true // Set busy true
 
@@ -114,11 +118,19 @@ function GET(init){
 
     console.log("Data: succes");
 
-    pushState(init); // push history state
-    setAlarms(data); // fill alarm object
+    console.time('pushState')
 
+    pushState(init); // push history state
+    console.timeEnd('pushState')
+    console.time('setAlarms')
+    setAlarms(data); // fill alarm object
+    console.timeEnd('setAlarms')
+    console.time('setTable')
     setTable(); // init table based on alarms
+    console.timeEnd('setTable')
+    console.time('responsive')
     responsive(); // set table and page sizes
+    console.timeEnd('responsive')
 
     // NOT REALTIME
     if (!TIME.rt){ // apply table filer
@@ -211,7 +223,7 @@ function updateAX(){
 
 
 // SESSION SAVE AND HISTORY ----------------------------------------------------
-$('#volvo_logo').click(copySession) // COPY Session
+$('#volvo_logo img').click(copySession) // COPY Session
 $('#alfa_logo').click(state_default) // Set default state
 
 // Return one object of TIA_GC, FILTERS & TIME objects

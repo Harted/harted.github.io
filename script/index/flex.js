@@ -37,10 +37,8 @@ function flex(){ // NOTE: Copy new flex function at work
     }
   }
 
-
   //IE11 fix (table container has to be set)--------------------------
   if(userAgent == 'IE11'){ el_tc.style.maxWidth = fi_tar_w + 'px'}
-
 
   // FLEX ITEM HEIGHT ------------------------------------------------
   var t_ol = el_ft.offsetLeft

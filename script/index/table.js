@@ -206,6 +206,15 @@ function makeTable(settings, data){
         j++
       }
       body.push('</tr>')
+
+      // Event limit
+      if (i == 499) {
+        body.push('<tr id="linkID_">')
+        body.push('<td><span>500 events limit reached..</span></td>')
+        body.push('<td></td><td></td><td></td><td></td><td></td><td></td><td></td>')
+        body.push('</tr>')
+      }
+
     }
     // close tbl +(body)
     body.push('</body>')
@@ -456,6 +465,9 @@ function makeTable(settings, data){
     if (events[0].hasClass('hidden') || events[1].hasClass('hidden')){
       return false;
     }
+
+    // if off event at end of 1000 events
+    if (events[1].length == 0) {return false}
 
     // Get trs positions
     // - off event is always above

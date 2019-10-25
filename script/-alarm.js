@@ -2,20 +2,52 @@
 function setAlarms(data){
 
   // Reset alarm array
+  all_alarms = [];
   alarms = [];
 
+  var data_len = data.length
+  var part100 = Math.round(data_len/100)
+  var progress = 0
+
   // Push alarms in alarms array
-  for (let i = 0; i < data.length; i++) {
-    alarms.push(new alarm(data[i]).alarm)
+  for (let i = 0; i < data_len ; i++) {
+
+    //// NOTE:this doesn't work because the browser freezes..
+    // if(i % part100 == 0) {
+    //
+    //     progress = Math.round((i / data_len)*100)
+    //     $('#load_status').html('<span class="loading">Processing alarms: ' + progress + '%</span>')
+    //     $('#ul_status span').text('Processing alarms: ' + progress + '%')
+    //
+    // }
+
+    all_alarms.push(new alarm(data[i]).alarm)
+
   };
 
+  //https://stackoverflow.com/questions/10344498/best-way-to-iterate-over-an-array-without-blocking-the-ui/10344560#10344560
+
+
   // Analyze alarms (active, linkId, duration)
-  analyze('alarms','_var','statetxt','_state', '_datetime')
+  analyze('all_alarms','_var','statetxt','_state', '_datetime')
 
   // Filter alarms by selected buttons (Only active, Types & Production)
-  alarms = infilter(alarms)
+  all_alarms = infilter(all_alarms)
 
-  // Fill no data item in alarms when there's no data
+  // Alarm limit -----------------------------------------------------
+  var len, limit = 500
+
+  if (all_alarms.length < limit) {
+    len = all_alarms.length
+  } else {
+    len = limit
+  }
+
+  for (let i = 0; i < len; i++) {
+    alarms.push(all_alarms[i])
+  }
+
+  // Fill no data item in alarms when there's no data ---------------
   if (alarms.length == 0) {
     alarms = [{
       comment: "",

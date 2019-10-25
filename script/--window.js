@@ -1,7 +1,7 @@
 // USER AGENT ------------------------------------------------------------------
 var userAgent = getUserAgent();
 
-if (userAgent != 'Chrome') {
+if (!(userAgent == 'Chrome' || userAgent == 'iOS' || userAgent == 'Android')) {
 
   var str = "This browser is not supported! \n\n"
   str += "Use Google Chrome for the best experience.\n"

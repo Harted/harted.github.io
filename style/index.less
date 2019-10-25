@@ -28,7 +28,6 @@ input[type="datetime-local"],
 @import '/style/components/headfoot.less'; // HEADER AND FOOTER LESS
 
 
-
 // MAIN ------------------------------------------------------------------------
 @table_fontsize: 12px;
 @table_pad: 8px, 12px, 6px, 6px;
@@ -44,6 +43,8 @@ extract(@table_pad,4);
   flex-wrap: wrap-reverse;
   align-items: flex-start;
 
+  font-size: 16px;
+
   // Position
   margin: 0 @flex_margin;
   height: calc(100% - @header_height - @footer_height);
@@ -58,7 +59,7 @@ extract(@table_pad,4);
     // FLEX (child)
     flex-grow: 1;
 
-    &.above { height: calc(100% - (@th_height * 2)); } // when above
+    &.above { height: calc(100% - (@th_height * 1.5)); } // when above
 
     &.expand { // on click
       height: 40% !important;
@@ -80,6 +81,7 @@ extract(@table_pad,4);
       flex-grow: 1; // FLEX (child)
 
       height: @th_height;
+      margin-bottom: calc(@th_height / 2);
 
       svg { display: block !important;} // display hamburger
 
@@ -96,6 +98,7 @@ extract(@table_pad,4);
 
     &.expand { // on click
       height: 60% !important;
+      margin-bottom: 0;
     }
 
     &.overflow {
@@ -106,7 +109,7 @@ extract(@table_pad,4);
 
   }
 
-  .exp_tr { transition: height ease 300ms;} // expand transition
+  .exp_tr {transition: 300ms;} // expand transition
 
 
   // FLEX ITEM table & control --------------------------------------------
@@ -447,6 +450,7 @@ extract(@table_pad,4);
         .inset_logo();
       }
       .table-scroll {
+        
         font-size: @table_fontsize;
         line-height: @table_fontsize;
         position: relative;
