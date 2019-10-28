@@ -2,26 +2,31 @@
 
 function getStations(){
 
-$('#load_status').html('<span class="loading">Connecting to database</span>')
+statusFields('Connecting to database', 'loading')
 
-//$.ajax({
-//  url: '/script/ajax.php',
-//  type: 'GET',
-//  cache: false,
-//  dataType: 'json',
-//  data: {'stations':''}
-//})
-//.done(function(received) { setActiveStn(received);})
-//.fail(function() {
-//  $('#load_status').html('<span class="fail">Woops &#128579 Something went wrong!</span>')
-//  console.log("Stations: error");
-//})
+$.ajax({
+  url: '/script/ajax.php',
+  type: 'GET',
+  cache: false,
+  dataType: 'json',
+  data: {'stations':''}
+})
+.done(function(received) {
 
+  setTimeout(function () {
+    setActiveStn(received);
+  }, 2000); //allow animation to play complete
 
+})
+.fail(function() {
 
+  statusFields('Not available', 'fail')
+  console.log("Stations: error");
+
+})
 
 // Sample for home
-setActiveStn([['CSR266'],['CLF2028'],['CLF2029'],['CHL2922'],['CCP2222'],['CMP305'],['CMP306'],['CMP310'], ['CMP311'],['CLF3037']])
+//setActiveStn([['CSR266'],['CLF2028'],['CLF2029'],['CHL2922'],['CCP2222'],['CMP305'],['CMP306'],['CMP310'], ['CMP311'],['CLF3037']])
 
 }
 
@@ -68,9 +73,7 @@ function setActiveStn(stn_arr, buttons){
     }
   }
 
-
   stnBtns(TIA_GC) // Make and output HTML
-
 
 }
 

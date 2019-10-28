@@ -208,9 +208,9 @@ function makeTable(settings, data){
       body.push('</tr>')
 
       // Event limit
-      if (i == 1999) {
+      if (i == alarmlimit - 1) {
         body.push('<tr id="linkID_">')
-        body.push('<td><span>500 events limit reached..</span></td>')
+        body.push('<td><span>' + alarmlimit + ' events limit reached..</span></td>')
         body.push('<td></td><td></td><td></td><td></td><td></td><td></td><td></td>')
         body.push('</tr>')
       }

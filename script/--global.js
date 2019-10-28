@@ -57,3 +57,45 @@ var TIA_GC = {
   },
   OTHER: {},
 }
+
+// Status fields ---------------------------------------------------------------
+function statusFields(str, cls){
+
+  if (TIME.rt){return}
+
+  var ids = ['#load_status','#ul_status']
+  var cl = 'loadstatus ' + cls
+
+  for (var i = 0; i < ids.length; i++) {
+    $(ids[i] + ' span').attr('class', cl).text(str)
+  }
+
+}
+
+
+//Async array function ---------------------------------------------------------
+function asyncArr(array, fn_arr, fn_dom, fn_after, context) {
+
+  var i = 0
+  var len = array.length
+  //var part = Math.ceil( len / 10 )
+  time = 100
+  var context = context || window
+
+  function itter(){
+    //var p = part // size of part
+    var starttime = Date.now() + time
+    while( /*p--*/ Date.now() < starttime && i < len) { // array function
+      fn_arr.call( context, array, i ) ; i++
+    }
+    if ( i < len ) { // between parts function
+      fn_dom.call( context, array, i )
+      setTimeout( itter, 0 )
+    } else { // after itteration
+      fn_after.call( context, array, i )
+    }
+  }
+
+  itter(); // start itteration
+
+}

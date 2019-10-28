@@ -56,6 +56,6 @@ function getWindowData() {                                      //Function
 
 };
 
-
+var open
 
 // REMOVE CONSOLE REGEX:      console\..{0,7}\(.{0,}\);?

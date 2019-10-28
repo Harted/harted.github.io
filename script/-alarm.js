@@ -1,5 +1,7 @@
+var alarmlimit = 2000
+
 // SET ALARMS ------------------------------------------------------------------
-function setAlarms(data){
+function setAlarms(data, fn_after, timer, init, context){
 
   // Reset alarm array
   all_alarms = [];
@@ -9,66 +11,83 @@ function setAlarms(data){
   var part100 = Math.round(data_len/100)
   var progress = 0
 
-  // Push alarms in alarms array
-  for (let i = 0; i < data_len ; i++) {
+  asyncArr(data, alarmProcess, alarmsStatus, alarmsAfter, this)
 
-    //// NOTE:this doesn't work because the browser freezes..
-    // if(i % part100 == 0) {
-    //
-    //     progress = Math.round((i / data_len)*100)
-    //     $('#load_status').html('<span class="loading">Processing alarms: ' + progress + '%</span>')
-    //     $('#ul_status span').text('Processing alarms: ' + progress + '%')
-    //
-    // }
+  function alarmProcess(arr, i){
 
-    all_alarms.push(new alarm(data[i]).alarm)
+    all_alarms.push(new alarm(arr[i]).alarm)
 
-  };
-
-  //https://stackoverflow.com/questions/10344498/best-way-to-iterate-over-an-array-without-blocking-the-ui/10344560#10344560
-
-
-  // Analyze alarms (active, linkId, duration)
-  analyze('all_alarms','_var','statetxt','_state', '_datetime')
-
-  // Filter alarms by selected buttons (Only active, Types & Production)
-  all_alarms = infilter(all_alarms)
-
-  // Alarm limit -----------------------------------------------------
-  var len, limit = 2000
-
-  if (all_alarms.length < limit) {
-    len = all_alarms.length
-  } else {
-    len = limit
   }
 
-  for (let i = 0; i < len; i++) {
-    alarms.push(all_alarms[i])
+  function alarmsStatus(arr, i){
+
+    var len = arr.length
+    var progress = Math.round( i / len * 100 )
+
+    statusFields('Processing alarms: ' + progress + '%', 'progress')
+
   }
 
-  // Fill no data item in alarms when there's no data ---------------
-  if (alarms.length == 0) {
-    alarms = [{
-      comment: "",
-      description: "",
-      object: "",
-      severity: "",
-      station: "",
-      zone: "",
-      _active: false,
-      _datetime: "No Data",
-      _duration: -1,
-      _durtxt: "n/a",
-      _linkID: -1,
-      _state: "",
-      statetxt: "",
-      _stcode: "",
-      _type: "",
-      _var: "No Data",
-    }];
+  function alarmsAfter(arr, i){
+
+    // Analyze alarms (active, linkId, duration)
+    analyze(afterAnalyze, this)
+
+    function afterAnalyze() {
+
+      // Filter alarms by selected buttons (Only active, Types & Production)
+      all_alarms = infilter(all_alarms)
+
+      // Alarm limit -----------------------------------------------------
+      var len
+
+      if (all_alarms.length < alarmlimit) {
+        len = all_alarms.length
+      } else {
+        len = alarmlimit
+      }
+
+      for (let i = 0; i < len; i++) {
+        alarms.push(all_alarms[i])
+      }
+
+      // Fill no data item in alarms when there's no data ---------------
+      if (alarms.length == 0) {
+        alarms = [{
+          comment: "",
+          description: "",
+          object: "",
+          severity: "",
+          station: "",
+          zone: "",
+          _active: false,
+          _datetime: "No Data",
+          _duration: -1,
+          _durtxt: "n/a",
+          _linkID: -1,
+          _state: "",
+          statetxt: "",
+          _stcode: "",
+          _type: "",
+          _var: "No Data",
+        }];
+      }
+
+      fn_after.call(context, timer, init)
+
+    }
   }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 // ALARM OBJECT GENERATOR ------------------------------------------------------
@@ -236,6 +255,8 @@ function alarm(data) {
 
 
 
+
+
 // INPUT FILTER ----------------------------------------------------------------
 function infilter(alarms){
 
@@ -274,14 +295,28 @@ function infilter(alarms){
 }
 
 
+
+
+
+
+
 // Make a distinct list of alarms ----------------------------------------------
-function distinct(alarm_arr, filter){
+function distinct(alarm_arr, filter, fn_after, context){
 
   filter = filter || false
 
   var distinct = {}
+
+  if(fn_after == undefined){
+    for (var i = 0; i < alarm_arr.length; i++) {
+      distProcess(alarm_arr, i)
+    }
+  } else {
+    asyncArr(alarm_arr, distProcess, distStatus, distAfter, this)
+  }
+
   // For all alarm rows
-  for (var i = 0; i < alarm_arr.length; i++) {
+  function distProcess(alarm_arr, i) {
     // For columns in alarm row
     for (var col in alarm_arr[i]) {
       // Only filter objects
@@ -293,30 +328,57 @@ function distinct(alarm_arr, filter){
       }
     }
   }
+
+  function distStatus(arr, i){
+
+    var len = arr.length
+    var progress = Math.round( i / len * 100 )
+
+    statusFields('Finding distinct alarms: ' + progress + '%', 'progress')
+
+  }
+
+  function distAfter(){
+
+    fn_after.call(context, distinct)
+
+  }
+
   return distinct
+
 }
 
 
 
+
+
+
+
+
 // Analyze alarms for active, duration and link --------------------------------
-function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
-
-  var dist = distinct(window[obj_name]);
-  var link_store = distinct(window[obj_name]);
-  var linkID = 0;
-  var linkIDn = -1;
-  var id_set = []
-  var time_store = []
+function analyze(fn_after, context){
 
 
-  for (var obj in window[obj_name]) {
-    if (window[obj_name].hasOwnProperty(obj)) {
+  var dist = distinct(all_alarms, false, afterDistinct, this);
+
+  function afterDistinct(dist){
+
+    var link_store = JSON.parse(JSON.stringify(dist))
+
+    var linkID = 0;
+    var linkIDn = -1;
+    var id_set = []
+    var time_store = []
+
+    asyncArr(all_alarms, analyzeP1, analyzeS1, analyzeA1, this);
+
+    function analyzeP1(arr, i){
 
       //String referenced VARS  --------------------------------------
-      var a = window[obj_name][obj]   //alarm row
-      var v = a[var_name]             //var name
-      var s = a[state_int_name]       //state integer
-      var dt = a[dt_name]             //datetimestamp
+      var a = arr[i]     //alarm row
+      var v = a._var              //var name
+      var s = a._state            //state integer
+      var dt = a._datetime        //datetimestamp
 
       // OFF event ---------------------------------------------------
       // - Assign link ID
@@ -325,37 +387,37 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
       //    at the ON event
       // - Add 1 to link ID for next event
       if (s == 0){
-        a['_linkID'] = linkID;
-        a['_active'] = false;
-        link_store[var_name][v] = linkID;
+        a._linkID = linkID;
+        a._active = false;
+        link_store._var[v] = linkID;
         id_set[linkID] = false
         time_store[linkID] = sDateParse(dt);
         linkID++;
 
-      } else if (s == 1 && dist[var_name][v] == 1){
+      } else if (s == 1 && dist._var[v] == 1){
         // First distinct event is ON event = ACTIVE -------------------
         // REVIEW: may ONLY activate when end date is Date.now()
         // - Assign active and set true
         // - Change state text to ACTIVE
         // - This event has no link but a duraction to now
 
-        a['_linkID'] = linkIDn
+        a._linkID = linkIDn
 
         if (TIME.rel) {
 
-          a['_active'] = true
-          a[state_name] = 'ACTIVE'
+          a._active = true
+          a.statetxt = 'ACTIVE'
 
           var dur = Date.now() - sDateParse(dt)
-          a['_duration'] = dur
-          a['_durtxt'] = dhms(dur)
+          a._duration = dur
+          a._durtxt = dhms(dur)
 
         } else {
 
-          a['_active'] = false
+          a._active = false
 
-          a['_duration'] = -1
-          a['_durtxt'] = 'n/a'
+          a._duration = -1
+          a._durtxt = 'n/a'
 
         }
 
@@ -366,45 +428,80 @@ function analyze(obj_name, var_name, state_name, state_int_name, dt_name){
         // - Link ID is set... when only OFF event this will be false
         // - Duration = time at OFF event minus time at ON event
         // - Duration is stored to later assign to off event
-        a['_linkID'] = link_store[var_name][v]
-        id_set[a['_linkID']] = true
-        var dur = time_store[a['_linkID']] - sDateParse(dt)
-        a['_duration'] = dur // value in ms
-        a['_durtxt'] = dhms(dur) // value in dhms
-        time_store[a['_linkID']] = dur
+        a._linkID = link_store._var[v]
+        id_set[a._linkID] = true
+        var dur = time_store[a._linkID] - sDateParse(dt)
+        a._duration = dur // value in ms
+        a._durtxt = dhms(dur) // value in dhms
+        time_store[a._linkID] = dur
       }
-    };
 
-    // Set it to zero when the first distinct event is found.
-    // so the next same event can't be active
-    dist[var_name][v] = 0
+      // Set it to zero when the first distinct event is found.
+      // so the next same event can't be active
+      dist._var[v] = 0
 
+    }
+
+    function analyzeS1(arr, i){
+
+      var len = arr.length
+      var progress = Math.round( i / len * 100 )
+
+      statusFields('Analyzing ON events: ' + progress + '%', 'progress')
+
+    }
+
+    function analyzeA1(arr, i){
+
+      statusFields('Analyzing ON events: 100%', 'progress')
+
+      asyncArr(arr, analyzeP2, analyzeS2, analyzeA2, this);
+
+      function analyzeP2(arr, i){
+
+        //String referenced VARS  --------------------------------------
+        var a = arr[i]   //alarm row
+        var v = a._var             //var name
+        var s = a._state      //state integer
+
+        if (s == 0 && a._linkID != 'none' && id_set[a._linkID] == true) {
+          // Off event that has a link ID and the ON event's ID is also set
+          // - Assing stored duration and durationtxt to the OFF event
+          a._duration = time_store[a._linkID]
+          a._durtxt = dhms( time_store[a._linkID])
+        } else if ( a._duration == undefined ) {
+          // Event without duration set
+          // - Assing not available and -1
+          a._duration = -1
+          a._durtxt = 'n/a'
+          a._linkID = linkIDn
+          linkIDn--
+        };
+
+      };
+
+      function analyzeS2(arr, i){
+
+        var len = arr.length
+        var progress = Math.round( i / len * 100 )
+
+        statusFields('Analyzing OFF events: ' + progress + '%', 'progress')
+
+      }
+
+      function analyzeA2(arr, i){
+
+        statusFields('Done ', 'done')
+
+        setTimeout(function () {
+          fn_after.call(context)
+        }, 10);
+
+      }
+    }
   }
 
-  // Second loop
-  for (var obj in window[obj_name]) {
-    if (window[obj_name].hasOwnProperty(obj)) {
 
-      //String referenced VARS  --------------------------------------
-      var a = window[obj_name][obj]   //alarm row
-      var v = a[var_name]             //var name
-      var s = a[state_int_name]       //state integer
-
-      if (s == 0 && a['_linkID'] != 'none' && id_set[a['_linkID']] == true) {
-        // Off event that has a link ID and the ON event's ID is also set
-        // - Assing stored duration and durationtxt to the OFF event
-        a['_duration'] = time_store[a['_linkID']]
-        a['_durtxt'] = dhms( time_store[a['_linkID']])
-      } else if ( a['_duration'] == undefined ) {
-        // Event without duration set
-        // - Assing not available and -1
-        a['_duration'] = -1
-        a['_durtxt'] = 'n/a'
-        a._linkID = linkIDn
-        linkIDn--
-      };
-    };
-  };
 };
 
 // For safari

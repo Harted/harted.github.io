@@ -131,12 +131,23 @@ function GET(){
   $.ajax(ajax_s())
   .done(function(data) {
 
-    setAlarms(data);
-    checkActive()
+    setAlarms(data, afterAlarms, timer, false, this);
 
-    document.title = 'L I V E - '+ (new Date() - timer) + 'ms'
+    function afterAlarms(timer, init){
 
-    if(!pauze) {GET()}
+      checkActive(all_alarms)
+
+      var status = (new Date() - timer) + 'ms'
+
+      if (pauze) { status = 'Pauzed'}
+
+      document.title = 'L I V E - ' + status
+      $('#foot_status span').text( 'Update: ' + status)
+
+      if(!pauze) {GET()}
+
+    }
+
 
   })
   .fail(function() {
@@ -187,7 +198,7 @@ function updateAX(){
 
 var active
 
-function checkActive(){
+function checkActive(alarms){
 
   active = []
 

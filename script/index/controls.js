@@ -635,3 +635,22 @@ function all_sev_caption(){
   else $('#sev_title').removeClass('all')
 
 }
+
+// COLLAPSE ------------------------------------------------------------------//
+$('.control-group-header').click(collapseGroup)
+
+function collapseGroup(){
+
+  console.log('clickske zi');
+
+  var el = $(this).parent()
+
+  if(el.attr('class').search('collapse') > -1){
+    el.removeClass('collapse')
+  } else {
+    el.addClass('collapse')
+  }
+
+  table.headsize()
+
+}

@@ -31,6 +31,7 @@ input[type="datetime-local"],
 // MAIN ------------------------------------------------------------------------
 @table_fontsize: 12px;
 @table_pad: 8px, 12px, 6px, 6px;
+@control_expand: 70%;
 
 @th_height: @table_fontsize + extract(@table_pad,1) + extract(@table_pad,3);
 @th_pad: extract(@table_pad,1) extract(@table_pad,2) extract(@table_pad,3)
@@ -62,7 +63,7 @@ extract(@table_pad,4);
     &.above { height: calc(100% - (@th_height * 1.5)); } // when above
 
     &.expand { // on click
-      height: 40% !important;
+      height: calc(100% - @control_expand) !important;
     }
 
   }
@@ -97,7 +98,7 @@ extract(@table_pad,4);
     }
 
     &.expand { // on click
-      height: 60% !important;
+      height: @control_expand !important;
       margin-bottom: 0;
     }
 
@@ -164,6 +165,21 @@ extract(@table_pad,4);
 
       .control-group {
         width: 300px;
+        height: auto;
+
+        &.collapse {
+          height: 30px;
+          overflow: hidden;
+          transition: all 250ms;
+          .control-group-header:after {
+            content: '\25bc';
+            float: none;
+            color: @color_blue;
+            margin-right: 0;
+            font-size: 1em;
+          }
+        }
+
       }
 
       .control-group-header {
@@ -178,6 +194,13 @@ extract(@table_pad,4);
         border-bottom: 1px solid @color_blue_04;
         color: @color_blue;
 
+        font-weight: bold;
+
+        &:hover {
+          background-color: @color_blue_01;
+          cursor: pointer;
+        }
+
       }
 
       .all {
@@ -185,7 +208,7 @@ extract(@table_pad,4);
         &:after{
           content: "(all)";
           float: right;
-          color: @color_bright_05;
+          color: @color_bright;
           margin-right: -8px;
           font-size: 10px;
         }
@@ -402,17 +425,29 @@ extract(@table_pad,4);
         height: 100px;
 
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
+        flex-direction: column;
 
         svg {
           width: 25px;
-          fill: @color_blue_04;
+          fill: @color_blue;
+          opacity: 0.5;
+          transition: 150ms;
           .header_shadow();
+
+          &:hover {
+            opacity: 1;
+            cursor: pointer;
+          }
         }
+
+        span {
+          padding-top: 2px;
+          color: @color_blue_08;
+        }
+
       }
-
-
     }
 
 
@@ -450,7 +485,7 @@ extract(@table_pad,4);
         .inset_logo();
       }
       .table-scroll {
-        
+
         font-size: @table_fontsize;
         line-height: @table_fontsize;
         position: relative;
