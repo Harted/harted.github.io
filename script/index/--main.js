@@ -27,6 +27,19 @@ function responsive(){flex(); table.headsize()};
 // AJAX SETTINGS ---------------------------------------------------------------
 function ajax_s() {
 
+
+  if(window.location.host == 'harted.github.io' || window.location.host == 'localhost:8000'){
+
+    //Remote settings (data sample)
+    return {
+      url: 'https://www.harted.be/php/alarmdata.php',
+      type: "GET",
+      cache: false,
+      dataType: "json",
+    }
+
+  }
+
   return {
     url: '/script/ajax.php',
     type: "GET",
@@ -44,12 +57,7 @@ function ajax_s() {
 }
 
 function ajax_s_home(){
-  return {
-    url: 'https://www.harted.be/php/alarmdata.php',
-    type: "GET",
-    cache: false,
-    dataType: "json",
-  }
+
 }
 
 function GET_init(){

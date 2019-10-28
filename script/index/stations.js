@@ -2,31 +2,36 @@
 
 function getStations(){
 
-statusFields('Connecting to database', 'loading')
+  statusFields('Connecting to database', 'loading')
 
-$.ajax({
-  url: '/script/ajax.php',
-  type: 'GET',
-  cache: false,
-  dataType: 'json',
-  data: {'stations':''}
-})
-.done(function(received) {
+  if(window.location.host == 'harted.github.io' || window.location.host == 'localhost:8000'){
+    // Sample for home
+    setTimeout(function () {
+      setActiveStn([['CSR266'],['CLF2028'],['CLF2029'],['CHL2922'],['CCP2222'],['CMP305'],['CMP306'],['CMP310'], ['CMP311'],['CLF3037']])
+    }, 2000);
+    return;
+  }
 
-  setTimeout(function () {
-    setActiveStn(received);
-  }, 2000); //allow animation to play complete
+  $.ajax({
+    url: '/script/ajax.php',
+    type: 'GET',
+    cache: false,
+    dataType: 'json',
+    data: {'stations':''}
+  })
+  .done(function(received) {
 
-})
-.fail(function() {
+    setTimeout(function () {
+      setActiveStn(received);
+    }, 2000); //allow animation to play complete
 
-  statusFields('Not available', 'fail')
-  console.log("Stations: error");
+  })
+  .fail(function() {
 
-})
+    statusFields('Not available', 'fail')
+    console.log("Stations: error");
 
-// Sample for home
-//setActiveStn([['CSR266'],['CLF2028'],['CLF2029'],['CHL2922'],['CCP2222'],['CMP305'],['CMP306'],['CMP310'], ['CMP311'],['CLF3037']])
+  })
 
 }
 
