@@ -35,7 +35,7 @@ function setAlarms(data){
   all_alarms = infilter(all_alarms)
 
   // Alarm limit -----------------------------------------------------
-  var len, limit = 500
+  var len, limit = 2000
 
   if (all_alarms.length < limit) {
     len = all_alarms.length

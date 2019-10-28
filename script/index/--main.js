@@ -13,9 +13,9 @@ function LIVE(){
 function ready(){
   getStations();
 
-  if(!(window.location.hostname == 'localhost')){
-    window.alert("Bezig met aanpassingen...\nInterface werkt mogelijks niet naar behoren!")
-  }
+  // if(!(window.location.hostname == 'localhost')){
+  //   window.alert("Bezig met aanpassingen...\nInterface werkt mogelijks niet naar behoren!")
+  // }
 
 }
 
