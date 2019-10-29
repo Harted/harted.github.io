@@ -10,7 +10,7 @@ function makeOverview(){
   // --- so add on and off time to every alarm
   // Adding duration for events doen't make sence
   // - C & D only need a count.. duration is not important
-  //
+  // SO.... DELETE THE SHIT BENEITH AND START OVER AT THE BASE 
 
   OVERVIEW = {}
 
