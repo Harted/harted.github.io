@@ -4,6 +4,14 @@ function makeOverview(){
 
   return; //temp disable
 
+  // Ideas for overview:
+  // - Only duration for A & B
+  // -- therfore create alarm groups so combined duration is possible
+  // --- so add on and off time to every alarm
+  // Adding duration for events doen't make sence
+  // - C & D only need a count.. duration is not important
+  //
+
   OVERVIEW = {}
 
   for (var i = 0; i < all_alarms.length; i++) {
@@ -27,57 +35,44 @@ function makeOverview(){
         var dur = 0
       }
 
-
-
-      if (OVERVIEW[zone] == undefined) {
-        OVERVIEW[zone] = {count:0, duration:0}
-      }
+      if (OVERVIEW[zone] == undefined) { OVERVIEW[zone] = {count:0} }
 
       OVERVIEW[zone].count++
-      OVERVIEW[zone].duration += dur
-      OVERVIEW[zone].durtxt = dhms(OVERVIEW[zone].duration)
 
-      if (OVERVIEW[zone][stn] == undefined) {
-        OVERVIEW[zone][stn] = {count:0, duration:0}
-      }
+      if (OVERVIEW[zone][stn] == undefined) { OVERVIEW[zone][stn] = {count:0}}
 
       OVERVIEW[zone][stn].count++
-      OVERVIEW[zone][stn].duration += dur
-      OVERVIEW[zone][stn].durtxt = dhms(OVERVIEW[zone][stn].duration)
-
       OVERVIEW[zone][stn].name = stname
 
       if (OVERVIEW[zone][stn][sev] == undefined) {
-        OVERVIEW[zone][stn][sev] = {count:0, duration:0}
+        OVERVIEW[zone][stn][sev] = {count:0}
       }
 
       OVERVIEW[zone][stn][sev].count++
-      OVERVIEW[zone][stn][sev].duration += dur
-      OVERVIEW[zone][stn][sev].durtxt = dhms(OVERVIEW[zone][stn][sev].duration)
 
       if (OVERVIEW[zone][stn][sev][zm] == undefined) {
-        OVERVIEW[zone][stn][sev][zm] = {count:0, duration:0}
+        OVERVIEW[zone][stn][sev][zm] = {count:0}
       }
 
       OVERVIEW[zone][stn][sev][zm].count++
-      OVERVIEW[zone][stn][sev][zm].duration += dur
-      OVERVIEW[zone][stn][sev][zm].durtxt = dhms(OVERVIEW[zone][stn][sev][zm].duration)
 
       if (OVERVIEW[zone][stn][sev][zm][obj] == undefined) {
-        OVERVIEW[zone][stn][sev][zm][obj] = {count:0, duration:0}
+        OVERVIEW[zone][stn][sev][zm][obj] = {count:0}
       }
 
       OVERVIEW[zone][stn][sev][zm][obj].count++
-      OVERVIEW[zone][stn][sev][zm][obj].duration += dur
-      OVERVIEW[zone][stn][sev][zm][obj].durtxt = dhms(OVERVIEW[zone][stn][sev][zm][obj].duration)
 
       if (OVERVIEW[zone][stn][sev][zm][obj][dsc] == undefined) {
-        OVERVIEW[zone][stn][sev][zm][obj][dsc] = {count:0, duration:0, comment: cmt}
+        OVERVIEW[zone][stn][sev][zm][obj][dsc] = {
+          count:0, duration: 0,comment: cmt
+        }
       }
 
       OVERVIEW[zone][stn][sev][zm][obj][dsc].count++
       OVERVIEW[zone][stn][sev][zm][obj][dsc].duration += dur
-      OVERVIEW[zone][stn][sev][zm][obj][dsc].durtxt = dhms(OVERVIEW[zone][stn][sev][zm][obj][dsc].duration)
+
+      OVERVIEW[zone][stn][sev][zm][obj][dsc].durtxt =
+      dhms(OVERVIEW[zone][stn][sev][zm][obj][dsc].duration)
 
       if (OVERVIEW[zone][stn][sev][zm][obj][dsc].alarms == undefined){
         OVERVIEW[zone][stn][sev][zm][obj][dsc].alarms = []
@@ -120,11 +115,6 @@ var SHIFTS = {
 SHIFTS[2] = SHIFTS[3] = SHIFTS[4] = SHIFTS[1]
 
 
-
-
-
-
-
 function uniT(tStr){
   var arr = tStr.split(':')
   return new Date(2019,0,1,arr[0], arr[1], arr[2])
@@ -163,6 +153,51 @@ function getShift(date){
   }
 }
 
+
+// HOLIDAYs --------------------------------------------------------------------
+var HOLIDAYS = [
+  // Januari
+  new Date (2019,00,01), new Date (2019,00,02),
+  // April
+  new Date (2019,03,19), new Date (2019,03,22),
+  // May
+  new Date (2019,04,01), new Date (2019,04,30), new Date (2019,04,31),
+  // June
+  new Date (2019,05,10),
+  // July (SSD)
+  new Date (2019,06,22), new Date (2019,06,23), new Date (2019,06,24),
+  new Date (2019,06,25), new Date (2019,06,26),
+  // (SSD)
+  new Date (2019,06,29), new Date (2019,06,30), new Date (2019,06,31),
+  new Date (2019,07,01), new Date (2019,07,02),
+  // (SSD)
+  new Date (2019,07,05), new Date (2019,07,06),new Date (2019,07,07),
+  new Date (2019,07,08), new Date (2019,07,09),
+  // August
+  new Date (2019,07,15),
+  new Date (2019,07,16),
+  // November
+  new Date (2019,10,01), new Date (2019,10,11),
+  // December (XSD)
+  new Date (2019,11,23), new Date (2019,11,24), new Date (2019,11,25),
+  new Date (2019,11,26), new Date (2019,11,27),
+  // (XSD)
+  new Date (2019,11,30), new Date (2019,11,31),
+]
+
+console.log(HOLIDAYS);
+
+
+
+
+// LAY-OFF ---------------------------------------------------------------------
+var LAYOFF = [
+  // Januari
+  [new Date (2019,00,01), 'S1'], [new Date (2019,00,02), 'S2'],
+
+]
+
+console.log(LAYOFF);
 
 
 
@@ -321,27 +356,83 @@ function duration(s,e,zone){
 
   if (dur.tot.nmb < (7 * 24 * 60 * 60 * 1000)){ //less than 1 week
 
+    var end = e_d; if (end > 7){ end -= 7 } // e_d < s_d
+
+    // start in break ------
+    function inBreak(day, time, ref){
+
+      for (var brk in BREAK[day]) {
+        if (BREAK[day].hasOwnProperty(brk)) {
+
+          if (BREAK[day][brk].hasOwnProperty(zone)){
+            var brk_t = BREAK[day][brk][zone]
+          } else if (BREAK[day][brk].hasOwnProperty('s')) {
+            var brk_t = BREAK[day][brk]
+          }
+
+          if(uniT(brk_t.s) <= uniT(time) && uniT(time) < uniT(brk_t.e)) {
+
+            var nm = day + brk // name
+
+            switch (ref) { // time
+              case 'e': var tm = uniT(brk_t[ref]) - uniT(time) ;break;
+              case 's': var tm = uniT(time) - uniT(brk_t[ref]) ;break;
+            }
+
+            if (tm > dur.tot.nmb) { tm = dur.tot.nmb }
+
+          }
+        }
+      }
+
+      return [nm, tm]
+
+    }
+
+    var inBrk = {
+      s : {
+        name : inBreak (s_d, s_t, 'e')[0],
+        time : inBreak (s_d, s_t, 'e')[1],
+      },
+      e : {
+        name : inBreak (e_d, e_t, 's')[0],
+        time : inBreak (e_d, e_t, 's')[1],
+      },
+    }
+
+
+    console.log(inBrk);
+
+
+    // breaks between ------
     var brks_between = []
 
-    for (var i = s_d; i <= e_d; i++) {
+    // if not in same break check breaks between
+    if (!(inBrk.s.name == inBrk.e.name) || (inBrk.s.name == undefined && inBrk.e.name == undefined) ){
 
-      dn = i; if (dn > 7){ dn -= 7 } // e_d < s_d
-      end = e_d; if (end > 7){ end -= 7 } // e_d < s_d
+      for (var i = s_d; i <= e_d; i++) {
 
-      for (var brk in BREAK[dn]) {
-        if (BREAK[dn].hasOwnProperty(brk)) {
+        dn = i; if (dn > 7){ dn -= 7 } // e_d < s_d
 
-          if (BREAK[dn][brk].hasOwnProperty(zone)){
+        for (brk in BREAK[dn]) {
+          if (BREAK[dn].hasOwnProperty(brk)) {
+
+            if (BREAK[dn][brk].hasOwnProperty(zone)){
+              var brk_t = BREAK[dn][brk][zone]
+            } else if (BREAK[dn][brk].hasOwnProperty('s')) {
+              var brk_t = BREAK[dn][brk]
+            }
+
 
             if (
 
               !(s_d == end) && ( // different day
-                s_d == dn && uniT(BREAK[dn][brk][zone].s) > uniT(s_t) ||
-                end == dn && uniT(BREAK[dn][brk][zone].e) <= uniT(e_t) ||
-                (s_d != dn && end != dn)
+                s_d == dn && uniT(brk_t.s) > uniT(s_t) || // start day
+                end == dn && uniT(brk_t.e) <= uniT(e_t) || // end day
+                (s_d != dn && end != dn) // days between start and end
               ) || (s_d == end) && ( // same day
-                uniT(BREAK[dn][brk][zone].s) > uniT(s_t) &&
-                uniT(BREAK[dn][brk][zone].e) <= uniT(e_t)
+                uniT(brk_t.s) > uniT(s_t) &&
+                uniT(brk_t.e) <= uniT(e_t)
               )
 
             ) {
@@ -349,37 +440,15 @@ function duration(s,e,zone){
               brks_between.push({
                 day : dn,
                 brk : brk,
-                time : BREAK[dn][brk][zone],
+                time : brk_t,
               })
 
-            }
-
-          } else if (BREAK[dn][brk].hasOwnProperty('s')) {
-
-            if (
-
-              !(s_d == end) && ( // diferent day
-                s_d == dn && uniT(BREAK[dn][brk].s) > uniT(s_t) ||
-                end == dn && uniT(BREAK[dn][brk].e) <= uniT(e_t) ||
-                (s_d != dn && end != dn)
-              ) || (s_d == end) && ( // same day
-                uniT(BREAK[dn][brk].s) > uniT(s_t) &&
-                uniT(BREAK[dn][brk].e) <= uniT(e_t)
-              )
-
-            ) {
-              brks_between.push({
-                day : dn,
-                brk : brk,
-                time : BREAK[dn][brk],
-              })
             }
 
           }
-
         }
-      }
 
+      }
     }
 
     var dur_breaks = 0
@@ -388,11 +457,14 @@ function duration(s,e,zone){
       dur_breaks += uniT(brks_between[i].time.e) - uniT(brks_between[i].time.s) + 1000
     }
 
+    dur.stl.nmb = dur_breaks + (inBrk.s.time || 0) + (inBrk.e.time || 0)
+    dur.stl.txt = dhms(dur.stl.nmb)
+
+    dur.prd.nmb = dur.tot.nmb - dur.stl.nmb
+    dur.prd.txt = dhms(dur.prd.nmb)
+
+
     console.log(brks_between, dur_breaks, dhms(dur_breaks))
-
-    // // NOTE: Next is in break duration calculation...
-    // place before breaks between if in same break there's no need to check ------------------------------------------------
-
 
   } else {
 
@@ -400,28 +472,15 @@ function duration(s,e,zone){
 
   }
 
-
-
-
-
   console.log(dur)
 
 }
 
 
+var br_s = dateT(new Date(sDateParse( '2019-09-23 11:23:00.725' )))
+var br_e = dateT(new Date(sDateParse( '2019-09-23 11:39:58.725' )))
 
-
-
-
-
-var br_s = dateT(new Date(sDateParse( '2019-09-24 00:00:00.725' )))
-var br_e = dateT(new Date(sDateParse( '2019-09-24 23:59:58.725' )))
-
-
-
-
-
-duration(br_s, br_e, 'ZONE3')
+duration(br_s, br_e, 'ZONE1')
 
 
 
