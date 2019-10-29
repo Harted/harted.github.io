@@ -1,5 +1,6 @@
 // GLOBAL alarms var -----------------------------------------------------------
 var alarms
+var alarmParts
 
 // FADE functions --------------------------------------------------------------
 function loadFade(){ //fade interface on load

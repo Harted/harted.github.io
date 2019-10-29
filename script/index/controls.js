@@ -117,7 +117,7 @@ function dt_clear(){
 
 // Check if date and format red if it's not a date
 $('input[type=datetime-local]').focusout(datecheck).on('input', datecheck)
-$('input[type=number]').on('input', lb_check)
+$('#sel_time input[type=number]').on('input', lb_check)
 
 // Check if valid and restirct from & to date
 function datecheck() {

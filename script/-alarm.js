@@ -1,4 +1,4 @@
-var alarmlimit = 2000
+var alarmLimit = 1000
 
 // SET ALARMS ------------------------------------------------------------------
 function setAlarms(data, fn_after, timer, init, context){
@@ -41,18 +41,36 @@ function setAlarms(data, fn_after, timer, init, context){
       // Alarm limit -----------------------------------------------------
       var len
 
-      if (all_alarms.length < alarmlimit) {
+      if (all_alarms.length < alarmLimit) {
         len = all_alarms.length
       } else {
-        len = alarmlimit
+        len = alarmLimit
       }
 
       for (let i = 0; i < len; i++) {
         alarms.push(all_alarms[i])
       }
 
+
+      // Alarm parts ----------------------------------------------------
+      alarmParts = []
+
+      for (let i = 0; i < all_alarms.length; i++) {
+
+        p = Math.ceil((i+1)/alarmLimit) - 1
+
+        if (alarmParts[p] == undefined) {
+          alarmParts[p] = []
+        }
+
+        alarmParts[p].push(all_alarms[i])
+
+      }
+
+      alarmPages();
+
       // Fill no data item in alarms when there's no data ---------------
-      if (alarms.length == 0) {
+      if (all_alarms.length == 0) {
         alarms = [{
           comment: "",
           description: "",
@@ -85,6 +103,69 @@ function setAlarms(data, fn_after, timer, init, context){
 
 
 
+function alarmPages(){
+
+  if(all_alarms.length > alarmLimit){
+
+    var pages = alarmParts.length
+    var v
+    var v_old = 0
+
+    $('#pagepick').addClass('display')
+    $('#pages').text('Pages: ' + pages)
+    $('#page').attr('max', pages)
+
+    $('#pagepick input[type=number]').on('input', pageChange)
+
+    function pageChange() {
+
+      v = $(this).val()
+
+      if (v > pages) {v = pages}
+      if (v < 1 && v != '' ) {v = 1}
+
+      $(this).val(v)
+
+      if(!Number.isNaN(parseInt(v))){
+
+        $(this).off('keyup').on('keyup',enter)
+        .off('focusout').on('focusout',pageConfirm)
+
+        function enter(event){
+
+          if (event.keyCode == 13) {
+            pageConfirm();
+          }
+        }
+      }
+
+      function pageConfirm(){
+        if(v != v_old){
+
+          alarms = alarmParts[v - 1]
+
+          $('.table-body').removeClass('loaded').addClass('loading')
+
+          setTable()
+          responsive();
+          tableFilter();
+
+          $('.table-body').addClass('loaded') // Fade in table body
+
+          v_old = v
+
+        }
+      }
+    }
+  } else {
+    $('#pagepick').removeClass('display')
+  }
+}
+
+
+
+
+
 
 
 
@@ -104,6 +185,13 @@ function alarm(data) {
   // Put alarm parts into the object
   for (let i = 0; i < data.length; i++) {
     this.alarm[alarmparts[i]] = data[i]
+
+    //TEMP: for _var without stationscode
+    if(i == 2 && this.alarm._var.match(/^[0-9]{3,}/) == null){
+      this.alarm._var = '(' + this.alarm.station.match(/[0-9]{3,}/) + ')' + this.alarm._var
+    }
+
+
   };
 
 
@@ -239,6 +327,10 @@ function alarm(data) {
     this.alarm['object'] = this.p1
     .replace(this.alarm._stcode,'').replace(this.alarm.zone,'')
 
+    if (this.alarm.object == "") {
+      this.alarm.object = "n/a"
+    }
+
     //if station is NOK do nothing and place _var in desc.
   } else {
 
@@ -323,7 +415,7 @@ function distinct(alarm_arr, filter, fn_after, context){
       if (col.search('_') < 0 || !filter){
         // set name of subobject to name of alarmobject (column) once
         if (distinct[col] == undefined) { distinct[col] = {} }
-        // set var name in subobject null
+        // set var name in subobject
         distinct[col][alarm_arr[i][col]] = 1
       }
     }

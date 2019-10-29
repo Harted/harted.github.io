@@ -157,7 +157,11 @@
 
   bottom: 0; // Stick at bottom
 
+
+
   div {
+
+    z-index: 101;
 
     font-size: 0.7em; @media all and (max-width: @mw){font-size: 0.5em;}
 
@@ -166,6 +170,21 @@
     color: @color_bright; // style
     opacity: 0.7;
     pointer-events: none;
+
+    display: none;
+
+    input[type=number] {
+      background-color: @color_dark;
+      color: @color_bright;
+      border: none;
+      outline: none;
+      font-size: 1em;
+      pointer-events: auto;
+    }
+
+    &.display {
+      display: block;
+    }
 
   }
 }

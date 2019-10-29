@@ -98,8 +98,6 @@ function makeTable(settings, data){
         for (var el in elements) {
           if (elements.hasOwnProperty(el)) {
 
-            // replace blanks with '-blanks-'
-            if (el == '') {el = '-blanks-'}
             // fill an array
             arr.push(el)
           }
@@ -112,7 +110,7 @@ function makeTable(settings, data){
         for (var i = 0; i < arr.length; i++) {
 
           //give conpatible id (no spaces and weird signs)
-          var usid = arr[i].replace(/[ \/\\\:\.\-\+\,\?\&\=\(\)]/g,'_')
+          var usid = arr[i].replace(/[ \/\\\:\.\-\+\,\?\&\=\(\)\"]/g,'_')
 
           //set input id, text and the label link
           //label link needed for click on text to toggle
@@ -154,7 +152,7 @@ function makeTable(settings, data){
 
   this.makeBody = function(d){
     body = []
-    body.push('<body>')
+    body.push('<tbody>')
 
     // for every record in array
     for (let i = 0; i < d.length; i++){
@@ -208,16 +206,16 @@ function makeTable(settings, data){
       body.push('</tr>')
 
       // Event limit
-      if (i == alarmlimit - 1) {
-        body.push('<tr id="linkID_">')
-        body.push('<td><span>' + alarmlimit + ' events limit reached..</span></td>')
-        body.push('<td></td><td></td><td></td><td></td><td></td><td></td><td></td>')
-        body.push('</tr>')
-      }
+      // if (i == alarmLimit - 1) {
+      //   body.push('<tr id="linkID_">')
+      //   body.push('<td><span>' + alarmLimit + ' events limit reached..</span></td>')
+      //   body.push('<td></td><td></td><td></td><td></td><td></td><td></td><td></td>')
+      //   body.push('</tr>')
+      // }
 
     }
     // close tbl +(body)
-    body.push('</body>')
+    body.push('</tbody>')
 
     return body
   }
@@ -466,8 +464,8 @@ function makeTable(settings, data){
       return false;
     }
 
-    // if off event at end of 1000 events
-    if (events[1].length == 0) {return false}
+    // if on or off event not present
+    if (events[0].length == 0 || events[1].length == 0) {return false}
 
     // Get trs positions
     // - off event is always above

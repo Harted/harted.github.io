@@ -147,7 +147,7 @@ function filter(){
       if (alarms[i].hasOwnProperty(col)){
         // only execute on filter
         if (col.search('_') < 0) {
-          // If one is false it's enough to set all_checked true
+          // If one is false it's enough to set all_checked false
           if(fltr[col][alarms[i][col]] == false){ all_checked = false; break;}
         }
       }
@@ -266,11 +266,8 @@ function filter(){
         for (var id in hidden[h]) {
           if (hidden[h].hasOwnProperty(id)) {
 
-            // if blank give it '-blanks-' string
-            if (id == '') {id = '-blanks-'}
-
             // convert id to compatible (see: table() function: filterbox)
-            var usid = id.replace(/[ \/\\\:\.\-\+\,\?\&\=\(\)]/g,'_')
+            var usid = id.replace(/[ \/\\\:\.\-\+\,\?\&\=\(\)\"]/g,'_')
 
             // set the jquery object
             var obj = $('#' + h + '_filter #' + usid)

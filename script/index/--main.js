@@ -1,7 +1,7 @@
 // Body load ready (set on body in index.html) ---------------------------------
 function ready(){
 
-  // busyChanges();
+  busyChanges();
   getStations();
 
 }
@@ -153,6 +153,8 @@ function GET(init){
       get_busy = false // Set busy false
 
       statusFields('', '')
+
+      makeOverview();
 
     }
   });
