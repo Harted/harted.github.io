@@ -170,7 +170,8 @@ function makeTable(settings, data){
       body.push(d[i]._stntxt + '\n')
 
       body.push('Variable : ' + d[i]._var + '\n')
-      body.push('Duration : ' + d[i]._durtxt)
+      body.push('Duration : ' + d[i]._durtxt + '\n')
+      body.push('Shift: ' + d[i]._shift)
 
       body.push('" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt)
 

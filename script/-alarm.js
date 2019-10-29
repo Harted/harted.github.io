@@ -471,6 +471,9 @@ function analyze(fn_after, context){
       var v = a._var              //var name
       var s = a._state            //state integer
       var dt = a._datetime        //datetimestamp
+      var date = sDateParse(dt)
+
+      a._shift = getShift(date)
 
       // OFF event ---------------------------------------------------
       // - Assign link ID
@@ -488,19 +491,20 @@ function analyze(fn_after, context){
 
       } else if (s == 1 && dist._var[v] == 1){
         // First distinct event is ON event = ACTIVE -------------------
-        // REVIEW: may ONLY activate when end date is Date.now()
         // - Assign active and set true
         // - Change state text to ACTIVE
         // - This event has no link but a duraction to now
 
         a._linkID = linkIDn
 
+
+
         if (TIME.rel) {
 
           a._active = true
           a.statetxt = 'ACTIVE'
 
-          var dur = Date.now() - sDateParse(dt)
+          var dur = Date.now() - date
           a._duration = dur
           a._durtxt = dhms(dur)
 
@@ -522,10 +526,11 @@ function analyze(fn_after, context){
         // - Duration is stored to later assign to off event
         a._linkID = link_store._var[v]
         id_set[a._linkID] = true
-        var dur = time_store[a._linkID] - sDateParse(dt)
+        var dur = time_store[a._linkID] - date
         a._duration = dur // value in ms
         a._durtxt = dhms(dur) // value in dhms
         time_store[a._linkID] = dur
+
       }
 
       // Set it to zero when the first distinct event is found.
