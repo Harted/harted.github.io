@@ -1,4 +1,5 @@
 var alarmLimit = 1000
+var grObj = {}
 
 // SET ALARMS ------------------------------------------------------------------
 function setAlarms(data, fn_after, timer, init, context){
@@ -37,6 +38,8 @@ function setAlarms(data, fn_after, timer, init, context){
 
       // Filter alarms by selected buttons (Only active, Types & Production)
       all_alarms = infilter(all_alarms)
+
+      console.log(all_alarms);
 
       // Alarm limit -----------------------------------------------------
       var len
@@ -82,6 +85,7 @@ function setAlarms(data, fn_after, timer, init, context){
           _datetime: "No Data",
           _duration: -1,
           _durtxt: "n/a",
+          _group: {stn:'',num:''},
           _linkID: -1,
           _state: "",
           statetxt: "",
@@ -144,13 +148,9 @@ function alarmPages(){
 
           alarms = alarmParts[v - 1]
 
-          $('.table-body').removeClass('loaded').addClass('loading')
-
           setTable()
           responsive();
           tableFilter();
-
-          $('.table-body').addClass('loaded') // Fade in table body
 
           v_old = v
 
@@ -226,7 +226,7 @@ function alarm(data) {
     aa: /.A[A-E]_/,
     mode:{
       a: /[Mm]ode.{0,}[Aa]uto/,
-      m: /[Mm]ode.{0,}[Mm]an/,
+      m: /[Mm]ode.{0,}[Mm]an.{0,}[Mm]ode/,
     },
     lck: /[Ii]nterlock/,
     prod: {
@@ -510,7 +510,7 @@ function analyze(fn_after, context){
 
         } else {
 
-          a._active = false
+          a._active = true
 
           a._duration = -1
           a._durtxt = 'n/a'
@@ -550,8 +550,6 @@ function analyze(fn_after, context){
 
     function analyzeA1(arr, i){
 
-      statusFields('Analyzing ON events: 100%', 'progress')
-
       asyncArr(arr, analyzeP2, analyzeS2, analyzeA2, this);
 
       function analyzeP2(arr, i){
@@ -588,12 +586,143 @@ function analyze(fn_after, context){
 
       function analyzeA2(arr, i){
 
-        statusFields('Done ', 'done')
+        var len = arr.length
+        var g = []
+        var gnum = 0
 
-        setTimeout(function () {
-          fn_after.call(context)
-        }, 10);
+        grObj = [] //REPLACE BY LOCAL OBJECT!!!!!!!!!!!!!!!!!!!!!
 
+        asyncArr(arr, analyzeP3, analyzeS3, analyzeA3, this)
+
+
+        // GROUPS -----------------------------------------------------
+        function analyzeP3(arr, i){
+
+          var gi = len - i - 1 // reverse itteration
+          var sar = ['A','B','C','D','E']
+          var stg
+
+          var sev = arr[gi].severity
+          var dt = dateT(new Date(sDateParse(arr[gi]._datetime)))
+
+          if (grObj[arr[gi].station] == undefined) {
+            grObj[arr[gi].station] = {
+              stn: arr[gi].station,
+              num : 0,
+              g : {},
+            }
+            defaultObj();
+          }
+
+          function defaultObj(){
+            for (var i = 0; i < sar.length; i++) {
+              grObj[arr[gi].station].g[sar[i]] = {}
+              grObj[arr[gi].station].g[sar[i]].t = [{s: undefined, e: undefined,}]
+              grObj[arr[gi].station].g[sar[i]].a = []
+              grObj[arr[gi].station].g[sar[i]].alarms = []
+            }
+          }
+
+          var stg = grObj[arr[gi].station]
+
+          var tgi = stg.g[sev].t.length - 1 //time group index
+
+          if (arr[gi]._state == 1 && !arr[gi]._active) { // ON event
+
+            stg.g[sev].a.push(arr[gi]._var)
+            stg.g[sev].alarms.push(arr[i])
+
+
+            if(stg.g[sev].t[tgi].s == undefined){
+              stg.g[sev].t[tgi].s = dt
+            } else if (stg.g[sev].t[tgi].e != undefined){
+              stg.g[sev].t.push({
+                s: dt, e: undefined,
+              })
+            }
+
+          } else if (arr[gi]._state == 0) { // OFF event
+
+            stg.g[sev].a.splice(
+              stg.g[sev].a.indexOf(arr[gi]._var), 1
+            )
+
+            if (stg.g[sev].a.length == 0) {
+              stg.g[sev].t[tgi].e = dt
+            }
+
+          }
+
+          if(!arr[gi]._active){
+            arr[gi]._group = {stn: stg.stn, num: stg.num}
+          } else {
+            arr[gi]._group = {stn: stg.stn, num: 'no group'}
+          }
+
+          if (
+            (
+              stg.g.A.a.length == 0 &&
+              stg.g.B.a.length == 0 &&
+              stg.g.C.a.length == 0 &&
+              stg.g.D.a.length == 0 &&
+              stg.g.E.a.length == 0 &&
+              !arr[gi]._active
+            ) || (
+              gi == 0
+            )
+          ) {
+
+            stg.end = dt
+
+            for (let i = 0; i < sar.length; i++) {
+              stg.g[sar[i]].count = stg.g[sar[i]].alarms.length
+
+              var dur = 0
+
+              for (let j = 0; j < stg.g[sar[i]].alarms.length; j++) {
+                dur += stg.g[sar[i]].alarms[j]._duration
+              }
+
+              stg.g[sar[i]].dur_comp = dur
+              stg.g[sar[i]].dur_comp_txt = dhms(dur)
+
+            }
+
+            arr[gi]._group = JSON.parse(JSON.stringify(stg))
+
+            defaultObj();
+
+            if (!arr[gi]._active) { stg.num++ }
+
+          }
+
+        }
+
+
+
+
+
+
+
+
+        function analyzeS3(arr, i){
+
+          var len = arr.length
+          var progress = Math.round( i / len * 100 )
+
+          statusFields('Analyzing alarm groups: ' + progress + '%', 'progress')
+
+        }
+
+        function analyzeA3(arr, i){
+
+          statusFields('Done ', 'done')
+
+          setTimeout(function () {
+            fn_after.call(context)
+          }, 1);
+
+        }
       }
     }
   }
@@ -629,7 +758,7 @@ function dhms(ms) {
   var sec = (ms / sec_c).toFixed(fx);
 
   if (days > 0) {
-    return days + 'd' + hrs + 'h' +  min + 'm' + sec + 's'
+    return days + 'd' + hrs + 'h' +  (min + Math.round(sec/60)) + 'm'
   } else if (hrs > 0) {
     return hrs + 'h' +  min + 'm' + sec + 's'
   } else if (min > 0) {

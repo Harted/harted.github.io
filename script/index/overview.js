@@ -10,7 +10,7 @@ function makeOverview(){
   // --- so add on and off time to every alarm
   // Adding duration for events doen't make sence
   // - C & D only need a count.. duration is not important
-  // SO.... DELETE THE SHIT BENEITH AND START OVER AT THE BASE 
+  // SO.... DELETE THE SHIT BENEITH AND START OVER AT THE BASE
 
   OVERVIEW = {}
 
@@ -97,6 +97,12 @@ var SHIFTS = {
     S2: { s: '13:30:00', e: '21:29:59' },
     N1: { s: '21:30:00', e: '23:59:59' },
   },
+  2: {
+    N2: { s: '00:00:00', e: '05:14:59' },
+    S1: { s: '05:15:00', e: '13:29:59' },
+    S2: { s: '13:30:00', e: '21:29:59' },
+    N1: { s: '21:30:00', e: '23:59:59' },
+  },
   5: {
     N2: { s: '00:00:00', e: '05:14:59' },
     S1: { s: '05:15:00', e: '12:14:59' },
@@ -112,7 +118,7 @@ var SHIFTS = {
   },
 }
 
-SHIFTS[2] = SHIFTS[3] = SHIFTS[4] = SHIFTS[1]
+ SHIFTS[3] = SHIFTS[4] = SHIFTS[2]
 
 
 function uniT(tStr){
@@ -185,7 +191,7 @@ var HOLIDAYS = [
   new Date (2019,11,30), new Date (2019,11,31),
 ]
 
-console.log(HOLIDAYS);
+// console.log(HOLIDAYS);
 
 
 
@@ -197,7 +203,7 @@ var LAYOFF = [
 
 ]
 
-console.log(LAYOFF);
+// console.log(LAYOFF);
 
 
 
@@ -478,7 +484,7 @@ function duration(s,e,zone){
 
 
 var br_s = dateT(new Date(sDateParse( '2019-09-23 11:23:00.725' )))
-var br_e = dateT(new Date(sDateParse( '2019-09-23 11:39:58.725' )))
+var br_e = dateT(new Date(sDateParse( '2019-09-25 11:39:58.725' )))
 
 duration(br_s, br_e, 'ZONE1')
 
