@@ -32,7 +32,7 @@ function ajax_s() {
 
     //Remote settings (data sample)
     return {
-      url: 'https://www.harted.be/php/alarmdata.php',
+      url: 'https://www.harted.be/php/alarmdata4.php',
       type: "GET",
       cache: false,
       dataType: "json",
@@ -56,9 +56,6 @@ function ajax_s() {
   }
 }
 
-function ajax_s_home(){
-
-}
 
 function GET_init(){
 
