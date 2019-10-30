@@ -1,5 +1,4 @@
 var alarmLimit = 1000
-var grObj = {}
 
 // SET ALARMS ------------------------------------------------------------------
 function setAlarms(data, fn_after, timer, init, context){
@@ -39,7 +38,7 @@ function setAlarms(data, fn_after, timer, init, context){
       // Filter alarms by selected buttons (Only active, Types & Production)
       all_alarms = infilter(all_alarms)
 
-      console.log(all_alarms);
+      console.log(all_alarms[8]._group);
 
       // Alarm limit -----------------------------------------------------
       var len
@@ -590,7 +589,7 @@ function analyze(fn_after, context){
         var g = []
         var gnum = 0
 
-        grObj = [] //REPLACE BY LOCAL OBJECT!!!!!!!!!!!!!!!!!!!!!
+        var group
 
         asyncArr(arr, analyzeP3, analyzeS3, analyzeA3, this)
 
@@ -603,97 +602,90 @@ function analyze(fn_after, context){
           var stg
 
           var sev = arr[gi].severity
-          var dt = dateT(new Date(sDateParse(arr[gi]._datetime)))
+          var dt = sDateParse(arr[gi]._datetime)
 
-          if (grObj[arr[gi].station] == undefined) {
-            grObj[arr[gi].station] = {
+          if (group == undefined) {
+            group = {
+              zone: arr[gi]._zone,
               stn: arr[gi].station,
-              num : 0,
-              g : {},
+              num : gnum,
+              class : {},
+              start: dt,
             }
             defaultObj();
           }
 
           function defaultObj(){
             for (var i = 0; i < sar.length; i++) {
-              grObj[arr[gi].station].g[sar[i]] = {}
-              grObj[arr[gi].station].g[sar[i]].t = [{s: undefined, e: undefined,}]
-              grObj[arr[gi].station].g[sar[i]].a = []
-              grObj[arr[gi].station].g[sar[i]].alarms = []
+              group.class[sar[i]] = {}
+              group.class[sar[i]].t = [{s: undefined, e: undefined,}]
+              group.class[sar[i]].a = []
+              group.class[sar[i]].alarms = []
             }
           }
 
-          var stg = grObj[arr[gi].station]
-
-          var tgi = stg.g[sev].t.length - 1 //time group index
+          var tgi = group.class[sev].t.length - 1 //time group index
 
           if (arr[gi]._state == 1 && !arr[gi]._active) { // ON event
 
-            stg.g[sev].a.push(arr[gi]._var)
-            stg.g[sev].alarms.push(arr[gi])
+            group.class[sev].a.push(arr[gi]._var)
+            group.class[sev].alarms.push(arr[gi])
 
 
-            if(stg.g[sev].t[tgi].s == undefined){
-              stg.g[sev].t[tgi].s = dt
-            } else if (stg.g[sev].t[tgi].e != undefined){
-              stg.g[sev].t.push({
+            if(group.class[sev].t[tgi].s == undefined){
+              group.class[sev].t[tgi].s = dt
+            } else if (group.class[sev].t[tgi].e != undefined){
+              group.class[sev].t.push({
                 s: dt, e: undefined,
               })
             }
 
           } else if (arr[gi]._state == 0) { // OFF event
 
-            stg.g[sev].a.splice(
-              stg.g[sev].a.indexOf(arr[gi]._var), 1
+            group.class[sev].a.splice(
+              group.class[sev].a.indexOf(arr[gi]._var), 1
             )
 
-            if (stg.g[sev].a.length == 0) {
-              stg.g[sev].t[tgi].e = dt
+            if (group.class[sev].a.length == 0) {
+              group.class[sev].t[tgi].e = dt
             }
 
           }
 
           if(!arr[gi]._active){
-            arr[gi]._group = {stn: stg.stn, num: stg.num}
+            arr[gi]._group = {stn: group.stn, num: group.num}
           } else {
-            arr[gi]._group = {stn: stg.stn, num: 'no group'}
+            arr[gi]._group = {stn: group.stn, num: 'no group'}
           }
 
           if (
             (
-              stg.g.A.a.length == 0 &&
-              stg.g.B.a.length == 0 &&
-              stg.g.C.a.length == 0 &&
-              stg.g.D.a.length == 0 &&
-              stg.g.E.a.length == 0 &&
+              group.class.A.a.length == 0 &&
+              group.class.B.a.length == 0 &&
+              group.class.C.a.length == 0 &&
+              group.class.D.a.length == 0 &&
+              group.class.E.a.length == 0 &&
               !arr[gi]._active
             ) || (
               gi == 0
             )
           ) {
 
-            stg.end = dt
+            group.end = dt
 
             for (let i = 0; i < sar.length; i++) {
-              stg.g[sar[i]].count = stg.g[sar[i]].alarms.length
+              group.class[sar[i]].count = group.class[sar[i]].alarms.length
             }
 
-            arr[gi]._group = JSON.parse(JSON.stringify(stg))
+            arr[gi]._group = JSON.parse(JSON.stringify(group))
 
-            defaultObj();
+            group = undefined //defaultObj();
 
-            if (!arr[gi]._active) { stg.num++ }
+            if (!arr[gi]._active) { gnum++ }
 
           }
 
         }
-
-
-
-
-
-
-
 
         function analyzeS3(arr, i){
 
@@ -709,7 +701,113 @@ function analyze(fn_after, context){
           statusFields('Done ', 'done')
 
           setTimeout(function () {
+
+            var si = arr.length - 1
+
+            for (var i = si; i >= 0; i--) {
+
+              if (arr[i]._group.hasOwnProperty('class')){
+
+                arr[i]._group.timeline = []
+
+                var s = Math.floor(arr[i]._group.start / 1000) * 1000
+                var e = Math.ceil(arr[i]._group.end / 1000) * 1000
+
+                arr[i]._group.tot_dur = e - 1000 - s
+                arr[i]._group.tot_durtxt = dhms(e - 1000 - s)
+
+                var array = arr[i]
+                var sev_mem = ''
+
+                for (var j = s; j < e; j+=1000) { //check for every second
+
+                  var sev_sec = {A:false, B:false, C:false, D:false, E:false}
+
+                  for (var sev in arr[i]._group.class) {
+                    if (arr[i]._group.class.hasOwnProperty(sev)) {
+
+                      for (var k = 0; k < arr[i]._group.class[sev].t.length; k++) {
+
+                        var sec_s = Math.floor(arr[i]._group.class[sev].t[k].s / 1000) * 1000
+                        var sec_e = Math.ceil(arr[i]._group.class[sev].t[k].e / 1000) * 1000
+
+                        if (sec_s <= j && j < sec_e){ sev_sec[sev] = true}
+
+                      }
+                    }
+                  }
+
+                  if (JSON.stringify(sev_sec) != sev_mem) {
+
+                    var dt = j //add new Date to debug
+
+                    arr[i]._group.timeline.push({
+                      start: dt,
+                      sev_obj: sev_sec,
+                      topLevel: topAlarm(sev_sec),
+                      end: undefined,
+                    });
+
+                    var len = arr[i]._group.timeline.length
+
+                    if (len > 1) {
+
+                      arr[i]._group.timeline[len - 2].end = dt
+
+                      arr[i]._group.timeline[len - 2].dur =
+                      arr[i]._group.timeline[len - 2].end -
+                      arr[i]._group.timeline[len - 2].start
+
+                      arr[i]._group.timeline[len - 2].durtxt =
+                      dhms(arr[i]._group.timeline[len - 2].dur)
+
+                    }
+
+                  }
+
+                  sev_mem = JSON.stringify(sev_sec)
+
+                  s = j
+
+                }
+
+                var len = arr[i]._group.timeline.length
+                arr[i]._group.timeline[len - 1].end = s //add new Date to debug
+
+                arr[i]._group.timeline[len - 1].dur =
+                arr[i]._group.timeline[len - 1].end -
+                arr[i]._group.timeline[len - 1].start
+
+                arr[i]._group.timeline[len - 1].durtxt =
+                dhms(arr[i]._group.timeline[len - 1].dur)
+
+                arr[i]._group.class_dur = {A:0, B:0, C:0, D:0, E:0}
+
+                for (var l = 0; l < arr[i]._group.timeline.length; l++) {
+                  var sv = arr[i]._group.timeline[l].topLevel
+
+                  arr[i]._group.class_dur[sv] += arr[i]._group.timeline[l].dur
+
+                }
+
+                console.log(i, arr[i]);
+
+              }
+            }
+
+
+            function topAlarm(obj){
+              for (var sev in obj) {
+                if (obj.hasOwnProperty(sev)) {
+                  if(obj[sev]){return sev}
+                }
+              }
+            }
+
+
+
             fn_after.call(context)
+
           }, 1);
 
         }

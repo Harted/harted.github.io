@@ -158,7 +158,7 @@ function makeTable(settings, data){
     for (let i = 0; i < d.length; i++){
 
 
-      if(d[i]._group.g != undefined && i > 0 && Object.keys(grObj).length == 1){
+      if(d[i]._group.class != undefined && i > 0){ //NOTE: don't forget
         body.push('<tr style="border-top: solid 6px #444" ')
       } else {
         body.push('<tr')
@@ -181,8 +181,8 @@ function makeTable(settings, data){
       body.push('\n' + d[i].statetxt + ' - Shift: ' + d[i]._shift )
       body.push( ' - Duration : ' + d[i]._durtxt)
       body.push('\nVariable : ' + d[i]._var)
-      body.push('\nGroup : ' + d[i]._group.stn + '_' + d[i]._group.num)
-      body.push(' - i: ' + i)
+      body.push('\nGroup : ' + d[i]._group.num)
+      body.push('\n\ni = ' + i)
 
       body.push('" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt)
 

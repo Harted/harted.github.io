@@ -1,3 +1,19 @@
+// LESS-----
+// .syntax--note, .syntax--optimize { // NOTE: // OPTIMIZE:
+//   font-style: normal;
+//   font-weight: bold;
+//   color: yellow;
+// }
+//
+// .syntax--debug { // DEBUG:
+//   color: red;
+//   font-style: normal;
+// }
+//
+// .syntax--property{
+//   color: #bd8f8f;
+// }
+
 // Body load ready (set on body in index.html) ---------------------------------
 function ready(){
 
