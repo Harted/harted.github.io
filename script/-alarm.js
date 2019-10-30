@@ -630,7 +630,7 @@ function analyze(fn_after, context){
           if (arr[gi]._state == 1 && !arr[gi]._active) { // ON event
 
             stg.g[sev].a.push(arr[gi]._var)
-            stg.g[sev].alarms.push(arr[i])
+            stg.g[sev].alarms.push(arr[gi])
 
 
             if(stg.g[sev].t[tgi].s == undefined){
@@ -676,16 +676,6 @@ function analyze(fn_after, context){
 
             for (let i = 0; i < sar.length; i++) {
               stg.g[sar[i]].count = stg.g[sar[i]].alarms.length
-
-              var dur = 0
-
-              for (let j = 0; j < stg.g[sar[i]].alarms.length; j++) {
-                dur += stg.g[sar[i]].alarms[j]._duration
-              }
-
-              stg.g[sar[i]].dur_comp = dur
-              stg.g[sar[i]].dur_comp_txt = dhms(dur)
-
             }
 
             arr[gi]._group = JSON.parse(JSON.stringify(stg))
