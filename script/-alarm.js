@@ -1,4 +1,5 @@
 var alarmLimit = 1000
+var groups = {}
 
 // SET ALARMS ------------------------------------------------------------------
 function setAlarms(data, fn_after, timer, init, context){
@@ -38,7 +39,7 @@ function setAlarms(data, fn_after, timer, init, context){
       // Filter alarms by selected buttons (Only active, Types & Production)
       all_alarms = infilter(all_alarms)
 
-      console.log(all_alarms[8]._group);
+      console.log(all_alarms);
 
       // Alarm limit -----------------------------------------------------
       var len
@@ -469,8 +470,7 @@ function analyze(fn_after, context){
       var a = arr[i]     //alarm row
       var v = a._var              //var name
       var s = a._state            //state integer
-      var dt = a._datetime        //datetimestamp
-      var date = sDateParse(dt)
+      var date = sDateParse(a._datetime)
 
       a._shift = getShift(date)
 
@@ -481,12 +481,15 @@ function analyze(fn_after, context){
       //    at the ON event
       // - Add 1 to link ID for next event
       if (s == 0){
+
         a._linkID = linkID;
         a._active = false;
         link_store._var[v] = linkID;
         id_set[linkID] = false
-        time_store[linkID] = sDateParse(dt);
+        time_store[linkID] = date;
         linkID++;
+
+        a._end = date
 
       } else if (s == 1 && dist._var[v] == 1){
         // First distinct event is ON event = ACTIVE -------------------
@@ -495,8 +498,6 @@ function analyze(fn_after, context){
         // - This event has no link but a duraction to now
 
         a._linkID = linkIDn
-
-
 
         if (TIME.rel) {
 
@@ -507,12 +508,18 @@ function analyze(fn_after, context){
           a._duration = dur
           a._durtxt = dhms(dur)
 
+          a._start = date
+          a._end = 'active'
+
         } else {
 
           a._active = true
 
           a._duration = -1
           a._durtxt = 'n/a'
+
+          a._start = date
+          a._end = 'unknown'
 
         }
 
@@ -525,10 +532,14 @@ function analyze(fn_after, context){
         // - Duration is stored to later assign to off event
         a._linkID = link_store._var[v]
         id_set[a._linkID] = true
+
+        a._end = time_store[a._linkID]
+        a._start = date
+
         var dur = time_store[a._linkID] - date
         a._duration = dur // value in ms
         a._durtxt = dhms(dur) // value in dhms
-        time_store[a._linkID] = dur
+        time_store[a._linkID] = date
 
       }
 
@@ -557,19 +568,26 @@ function analyze(fn_after, context){
         var a = arr[i]   //alarm row
         var v = a._var             //var name
         var s = a._state      //state integer
+        var date = sDateParse(a._datetime)
 
         if (s == 0 && a._linkID != 'none' && id_set[a._linkID] == true) {
           // Off event that has a link ID and the ON event's ID is also set
           // - Assing stored duration and durationtxt to the OFF event
-          a._duration = time_store[a._linkID]
-          a._durtxt = dhms( time_store[a._linkID])
+          a._start = time_store[a._linkID]
+
+          var dur = date - time_store[a._linkID]
+          a._duration = dur
+          a._durtxt = dhms(dur)
+
         } else if ( a._duration == undefined ) {
+
           // Event without duration set
           // - Assing not available and -1
           a._duration = -1
           a._durtxt = 'n/a'
           a._linkID = linkIDn
           linkIDn--
+
         };
 
       };
@@ -589,7 +607,7 @@ function analyze(fn_after, context){
         var g = []
         var gnum = 0
 
-        var group
+        var group = {}
 
         asyncArr(arr, analyzeP3, analyzeS3, analyzeA3, this)
 
@@ -599,15 +617,16 @@ function analyze(fn_after, context){
 
           var gi = len - i - 1 // reverse itteration
           var sar = ['A','B','C','D','E']
-          var stg
 
           var sev = arr[gi].severity
           var dt = sDateParse(arr[gi]._datetime)
 
-          if (group == undefined) {
-            group = {
+          var stn = arr[gi].station
+
+          if (group[stn] == undefined) {
+            group[stn] = {
               zone: arr[gi]._zone,
-              stn: arr[gi].station,
+              stn: stn,
               num : gnum,
               class : {},
               start: dt,
@@ -617,69 +636,70 @@ function analyze(fn_after, context){
 
           function defaultObj(){
             for (var i = 0; i < sar.length; i++) {
-              group.class[sar[i]] = {}
-              group.class[sar[i]].t = [{s: undefined, e: undefined,}]
-              group.class[sar[i]].a = []
-              group.class[sar[i]].alarms = []
+              group[stn].class[sar[i]] = {}
+              group[stn].class[sar[i]].t = [{s: undefined, e: undefined,}]
+              group[stn].class[sar[i]].a = []
+              group[stn].class[sar[i]].alarms = []
             }
           }
 
-          var tgi = group.class[sev].t.length - 1 //time group index
+          var tgi = group[stn].class[sev].t.length - 1 //time group index
 
           if (arr[gi]._state == 1 && !arr[gi]._active) { // ON event
 
-            group.class[sev].a.push(arr[gi]._var)
-            group.class[sev].alarms.push(arr[gi])
+            group[stn].class[sev].a.push(arr[gi]._var)
+            group[stn].class[sev].alarms.push(arr[gi])
 
 
-            if(group.class[sev].t[tgi].s == undefined){
-              group.class[sev].t[tgi].s = dt
-            } else if (group.class[sev].t[tgi].e != undefined){
-              group.class[sev].t.push({
+            if(group[stn].class[sev].t[tgi].s == undefined){
+              group[stn].class[sev].t[tgi].s = dt
+            } else if (group[stn].class[sev].t[tgi].e != undefined){
+              group[stn].class[sev].t.push({
                 s: dt, e: undefined,
               })
             }
 
           } else if (arr[gi]._state == 0) { // OFF event
 
-            group.class[sev].a.splice(
-              group.class[sev].a.indexOf(arr[gi]._var), 1
+            group[stn].class[sev].a.splice(
+              group[stn].class[sev].a.indexOf(arr[gi]._var), 1
             )
 
-            if (group.class[sev].a.length == 0) {
-              group.class[sev].t[tgi].e = dt
+            if (group[stn].class[sev].a.length == 0) {
+              group[stn].class[sev].t[tgi].e = dt
             }
 
           }
 
           if(!arr[gi]._active){
-            arr[gi]._group = {stn: group.stn, num: group.num}
+            arr[gi]._group = {stn: group[stn].stn, num: group[stn].num}
           } else {
-            arr[gi]._group = {stn: group.stn, num: 'no group'}
+            arr[gi]._group = {stn: group[stn].stn, num: 'no group'}
           }
 
           if (
             (
-              group.class.A.a.length == 0 &&
-              group.class.B.a.length == 0 &&
-              group.class.C.a.length == 0 &&
-              group.class.D.a.length == 0 &&
-              group.class.E.a.length == 0 &&
+              group[stn].class.A.a.length == 0 &&
+              group[stn].class.B.a.length == 0 &&
+              group[stn].class.C.a.length == 0 &&
+              group[stn].class.D.a.length == 0 &&
+              group[stn].class.E.a.length == 0 &&
               !arr[gi]._active
             ) || (
               gi == 0
             )
           ) {
 
-            group.end = dt
+            group[stn].end = dt
 
             for (let i = 0; i < sar.length; i++) {
-              group.class[sar[i]].count = group.class[sar[i]].alarms.length
+              delete group[stn].class[sar[i]].a
+              group[stn].class[sar[i]].count = group[stn].class[sar[i]].alarms.length
             }
 
-            arr[gi]._group = JSON.parse(JSON.stringify(group))
+            arr[gi]._group = JSON.parse(JSON.stringify(group[stn]))
 
-            group = undefined //defaultObj();
+            group[stn] = undefined //defaultObj();
 
             if (!arr[gi]._active) { gnum++ }
 
@@ -711,87 +731,121 @@ function analyze(fn_after, context){
                 arr[i]._group.timeline = []
 
                 var s = Math.floor(arr[i]._group.start / 1000) * 1000
-                var e = Math.ceil(arr[i]._group.end / 1000) * 1000
+                var e = Math.floor(arr[i]._group.end / 1000) * 1000
 
-                arr[i]._group.tot_dur = e - 1000 - s
-                arr[i]._group.tot_durtxt = dhms(e - 1000 - s)
+                arr[i]._group.dur = e - s
+                arr[i]._group.durtxt = dhms(e - s)
 
-                var array = arr[i]
-                var sev_mem = ''
+                if (arr[i]._group.dur > 0){
 
-                for (var j = s; j < e; j+=1000) { //check for every second
+                  var array = arr[i]
+                  var sev_mem = ''
 
-                  var sev_sec = {A:false, B:false, C:false, D:false, E:false}
+                  for (var j = s; j <= e; j+=1000) { //check for every second (incl last second for closure)
+
+                    var sev_sec = {A:false, B:false, C:false, D:false, E:false}
+
+                    for (var sev in arr[i]._group.class) {
+                      if (arr[i]._group.class.hasOwnProperty(sev)) {
+
+                        for (var k = 0; k < arr[i]._group.class[sev].t.length; k++) {
+
+                          var sec_s = Math.floor(arr[i]._group.class[sev].t[k].s / 1000) * 1000
+                          var sec_e = Math.floor(arr[i]._group.class[sev].t[k].e / 1000) * 1000
+
+                          if (sec_s <= j && j < sec_e){ sev_sec[sev] = true}
+
+                        }
+                      }
+                    }
+
+                    if (JSON.stringify(sev_sec) != sev_mem) { // when severity changes
+
+                      var dt = j
+                      var lookback = 2 //lookback
+
+                      if (j < e) { // don't create record for last second
+                        arr[i]._group.timeline.push({
+                          start: dt,
+                          sev_obj: sev_sec,
+                          topLevel: topAlarm(sev_sec),
+                          end: undefined,
+                        });
+                      } else {
+                        lookback = 1
+                        dt-=1000
+                      }
+
+                      var len = arr[i]._group.timeline.length - lookback
+
+                      if (len > -1) {
+
+                        arr[i]._group.timeline[len].end = dt
+
+                        arr[i]._group.timeline[len].dur =
+                        arr[i]._group.timeline[len].end -
+                        arr[i]._group.timeline[len].start
+
+                        arr[i]._group.timeline[len].durtxt =
+                        dhms(arr[i]._group.timeline[len].dur)
+
+                      }
+
+                    }
+
+                    sev_mem = JSON.stringify(sev_sec)
+
+                    s = j
+
+                  }
+
+                  var len = arr[i]._group.timeline.length
+                  arr[i]._group.timeline[len - 1].end = s
+
+                  arr[i]._group.timeline[len - 1].dur =
+                  arr[i]._group.timeline[len - 1].end -
+                  arr[i]._group.timeline[len - 1].start
+
+                  arr[i]._group.timeline[len - 1].durtxt =
+                  dhms(arr[i]._group.timeline[len - 1].dur)
 
                   for (var sev in arr[i]._group.class) {
                     if (arr[i]._group.class.hasOwnProperty(sev)) {
 
+                      arr[i]._group.class[sev].dur = {tot: 0, top: 0}
+
                       for (var k = 0; k < arr[i]._group.class[sev].t.length; k++) {
 
                         var sec_s = Math.floor(arr[i]._group.class[sev].t[k].s / 1000) * 1000
-                        var sec_e = Math.ceil(arr[i]._group.class[sev].t[k].e / 1000) * 1000
+                        var sec_e = Math.floor(arr[i]._group.class[sev].t[k].e / 1000) * 1000
 
-                        if (sec_s <= j && j < sec_e){ sev_sec[sev] = true}
+                        arr[i]._group.class[sev].dur.tot += (sec_e - sec_s)
 
                       }
+
                     }
                   }
 
-                  if (JSON.stringify(sev_sec) != sev_mem) {
 
-                    var dt = j //add new Date to debug
 
-                    arr[i]._group.timeline.push({
-                      start: dt,
-                      sev_obj: sev_sec,
-                      topLevel: topAlarm(sev_sec),
-                      end: undefined,
-                    });
+                  for (var l = 0; l < arr[i]._group.timeline.length; l++) {
 
-                    var len = arr[i]._group.timeline.length
-
-                    if (len > 1) {
-
-                      arr[i]._group.timeline[len - 2].end = dt
-
-                      arr[i]._group.timeline[len - 2].dur =
-                      arr[i]._group.timeline[len - 2].end -
-                      arr[i]._group.timeline[len - 2].start
-
-                      arr[i]._group.timeline[len - 2].durtxt =
-                      dhms(arr[i]._group.timeline[len - 2].dur)
-
-                    }
+                    var sv = arr[i]._group.timeline[l].topLevel
+                    arr[i]._group.class[sv].dur.top += arr[i]._group.timeline[l].dur
 
                   }
 
-                  sev_mem = JSON.stringify(sev_sec)
+                  if (groups[arr[i]._group.zone] == undefined){
+                    groups[arr[i]._group.zone] = {}
+                  }
 
-                  s = j
+                  if (groups[arr[i]._group.zone][arr[i]._group.stn] == undefined){
+                    groups[arr[i]._group.zone][arr[i]._group.stn] = []
+                  }
 
-                }
-
-                var len = arr[i]._group.timeline.length
-                arr[i]._group.timeline[len - 1].end = s //add new Date to debug
-
-                arr[i]._group.timeline[len - 1].dur =
-                arr[i]._group.timeline[len - 1].end -
-                arr[i]._group.timeline[len - 1].start
-
-                arr[i]._group.timeline[len - 1].durtxt =
-                dhms(arr[i]._group.timeline[len - 1].dur)
-
-                arr[i]._group.class_dur = {A:0, B:0, C:0, D:0, E:0}
-
-                for (var l = 0; l < arr[i]._group.timeline.length; l++) {
-                  var sv = arr[i]._group.timeline[l].topLevel
-
-                  arr[i]._group.class_dur[sv] += arr[i]._group.timeline[l].dur
+                  groups[arr[i]._group.zone][arr[i]._group.stn].push(arr[i]._group);
 
                 }
-
-                console.log(i, arr[i]);
-
               }
             }
 
@@ -804,7 +858,11 @@ function analyze(fn_after, context){
               }
             }
 
+            console.log('GROUPS:' , groups);
 
+            //NOTE NEXT= count stations
+            // use for loop to go throug zones
+            // Object.keys(groups[Object.keys(groups)[0]]).length
 
             fn_after.call(context)
 

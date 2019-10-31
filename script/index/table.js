@@ -158,7 +158,7 @@ function makeTable(settings, data){
     for (let i = 0; i < d.length; i++){
 
 
-      if(d[i]._group.class != undefined && i > 0){ //NOTE: don't forget
+      if(d[i]._group.class != undefined && i > 0){ 
         body.push('<tr style="border-top: solid 6px #444" ')
       } else {
         body.push('<tr')
