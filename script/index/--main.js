@@ -1,23 +1,7 @@
-// LESS-----
-// .syntax--note, .syntax--optimize { // NOTE: // OPTIMIZE:
-//   font-style: normal;
-//   font-weight: bold;
-//   color: yellow;
-// }
-//
-// .syntax--debug { // DEBUG:
-//   color: red;
-//   font-style: normal;
-// }
-//
-// .syntax--property{
-//   color: #bd8f8f;
-// }
-
 // Body load ready (set on body in index.html) ---------------------------------
 function ready(){
 
-  //busyChanges();
+  busyChanges();
   getStations();
 
 }
@@ -43,8 +27,11 @@ function responsive(){flex(); table.headsize()};
 // AJAX SETTINGS ---------------------------------------------------------------
 function ajax_s() {
 
+  var loc = window.location.host
 
-  if(window.location.host == 'harted.github.io' || window.location.host == 'localhost:8000'){
+  if(
+    loc == 'harted.github.io' || loc == 'localhost:8000'
+  ){
 
     //Remote settings (data sample)
     return {

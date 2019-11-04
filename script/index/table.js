@@ -157,13 +157,13 @@ function makeTable(settings, data){
     // for every record in array
     for (let i = 0; i < d.length; i++){
 
-
-      if(d[i]._group.class != undefined && i > 0){ 
+      if((d[i]._group.hasOwnProperty('alarms') && i > 0) ){
         body.push('<tr style="border-top: solid 6px #444" ')
+      } else if (d[i]._group.num == 0){
+        body.push('<tr style="opacity:0.7;" ')
       } else {
         body.push('<tr')
       }
-
 
       body.push(' class="' + d[i].severity + ' ' + d[i]._type + ' ')
 
@@ -182,6 +182,9 @@ function makeTable(settings, data){
       body.push( ' - Duration : ' + d[i]._durtxt)
       body.push('\nVariable : ' + d[i]._var)
       body.push('\nGroup : ' + d[i]._group.num)
+      if (d[i]._group.durtxt != undefined) {
+        body.push(' - Duration : ' + d[i]._group.durtxt)
+      }
       body.push('\n\ni = ' + i)
 
       body.push('" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt)
