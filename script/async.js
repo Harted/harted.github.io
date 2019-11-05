@@ -8,6 +8,8 @@ function asyncArr(array, fn_arr, fn_dom, fn_after, context) {
     var part = Math.ceil( len / 100 )
     var context = context || window
 
+    console.log('asyncarr: ' , len);
+
     function itter(){
 
         var p = part

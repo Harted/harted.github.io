@@ -64,7 +64,7 @@ function makeTable(settings, data){
   tbl += '<tr>'
 
   //prepare distinct data for filter
-  var dist_f = distinct(data)
+  var dist_f = new Distinct(data, 'filter')
 
   // get collumn header names from settings
   for (var col in settings.cols) {
@@ -158,13 +158,14 @@ function makeTable(settings, data){
     for (let i = 0; i < d.length; i++){
 
       //// TEMP: keys lenght in groups for showing group lines
-      if((d[i]._group.hasOwnProperty('alarms') && i > 0 && Object.keys(groups).length == 1) ){
-        body.push('<tr style="border-top: solid 6px #444" ')
-      } else if (d[i]._group.num == 0 && Object.keys(groups).length == 1){
-        body.push('<tr style="opacity:0.6;" ')
-      } else {
+      // TEMP: DISABLED
+      // if((d[i]._group.hasOwnProperty('alarms') && i > 0 && Object.keys(groups).length == 1)){
+      //   body.push('<tr style="border-top: solid 6px #444" ')
+      // } else if (d[i]._group.num == 0 && Object.keys(groups).length == 1){
+      //   body.push('<tr style="opacity:0.6;" ')
+      // } else {
         body.push('<tr')
-      }
+      // }
 
       body.push(' class="' + d[i].severity + ' ' + d[i]._type + ' ')
 
@@ -182,10 +183,10 @@ function makeTable(settings, data){
       body.push('\n' + d[i].statetxt + ' - Shift: ' + d[i]._shift )
       body.push( ' - Duration : ' + d[i]._durtxt)
       body.push('\nVariable : ' + d[i]._var)
-      body.push('\nGroup : ' + d[i]._group.num)
-      if (d[i]._group.durtxt != undefined) {
-        body.push(' - Duration : ' + d[i]._group.durtxt)
-      }
+      // body.push('\nGroup : ' + d[i]._group.num) // TEMP: DISABLED
+      // if (d[i]._group.durtxt != undefined) {
+      //   body.push(' - Duration : ' + d[i]._group.durtxt)
+      // }
       body.push('\n\ni = ' + i)
 
       body.push('" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt)

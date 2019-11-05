@@ -84,7 +84,7 @@ function makeOverview(){
 
   }
 
-  console.log(OVERVIEW)
+  // console.log(OVERVIEW)
 
 }
 
@@ -358,7 +358,7 @@ function duration(s,e,zone){
   var s_t = s[1]
   var e_t = e[1]
 
-  console.log(s_d, e_d, s_t, e_t)
+  // console.log(s_d, e_d, s_t, e_t)
 
   if (dur.tot.nmb < (7 * 24 * 60 * 60 * 1000)){ //less than 1 week
 
@@ -407,7 +407,7 @@ function duration(s,e,zone){
     }
 
 
-    console.log(inBrk);
+    // console.log(inBrk);
 
 
     // breaks between ------
@@ -470,7 +470,7 @@ function duration(s,e,zone){
     dur.prd.txt = dhms(dur.prd.nmb)
 
 
-    console.log(brks_between, dur_breaks, dhms(dur_breaks))
+    // console.log(brks_between, dur_breaks, dhms(dur_breaks))
 
   } else {
 
@@ -478,7 +478,7 @@ function duration(s,e,zone){
 
   }
 
-  console.log(dur)
+  // console.log(dur)
 
 }
 

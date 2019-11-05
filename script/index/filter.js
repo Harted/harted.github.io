@@ -96,8 +96,8 @@ function initFilter(){
   .on('mouseup', select)
 
   // make filter and hidden object
-  fltr = distinct(alarms, true);
-  hidden = distinct(alarms, true)
+  fltr = new Distinct(alarms, 'filter');
+  hidden = copyObj(fltr) // new Distinct(alarms, 'filter');
 
   // set true/false on filter and hidden object for filter items
   // no items with underscore included (see: setFltrObj() function)
