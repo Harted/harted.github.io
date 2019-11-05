@@ -100,3 +100,37 @@ function asyncArr(array, fn_arr, fn_dom, fn_after, context) {
   itter(); // start itteration
 
 }
+
+
+
+// Local yyyy-mm-ddThh:mm:ss sring from date
+function dateT(d, sub){
+
+  // now or defined by string
+  if (d == undefined){
+
+    d = new Date(Date.now()) // if ndefined set to now
+
+  } else if (/[\d]{4}-[\d]{1,}-[\d]{1,}T[\d]{2}:[\d]{2}:[\d]{2}/.test(d)) {
+
+      var p = d.match(/[\d]{1,}/g) // split by didget group
+
+      // Create new date with parts (because GMT is not in T string)
+      var d = new Date(p[0],p[1]-1,p[2],p[3],p[4],p[5])
+
+  }
+
+  var n = Date.parse(d) // parse date to enable calculations
+
+  if (sub != undefined) { n = n - sub } // subtract if defined
+
+  var o = new Date(n) // convert back to date string
+
+  // Make T string
+  var str = new Date(
+    new Date(n).toString().split('GMT')[0]+' UTC'
+  ).toISOString().split('.')[0];
+
+  return str // return T string
+
+}

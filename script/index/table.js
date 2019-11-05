@@ -157,10 +157,11 @@ function makeTable(settings, data){
     // for every record in array
     for (let i = 0; i < d.length; i++){
 
-      if((d[i]._group.hasOwnProperty('alarms') && i > 0) ){
+      //// TEMP: keys lenght in groups for showing group lines
+      if((d[i]._group.hasOwnProperty('alarms') && i > 0 && Object.keys(groups).length == 1) ){
         body.push('<tr style="border-top: solid 6px #444" ')
-      } else if (d[i]._group.num == 0){
-        body.push('<tr style="opacity:0.7;" ')
+      } else if (d[i]._group.num == 0 && Object.keys(groups).length == 1){
+        body.push('<tr style="opacity:0.6;" ')
       } else {
         body.push('<tr')
       }
