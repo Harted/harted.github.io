@@ -1,5 +1,6 @@
 var alarmLimit = 1000
 var groups = {}
+var testAlarms = [] // TEMP: for testing class
 
 // SET ALARMS ------------------------------------------------------------------
 function setAlarms(data, fn_after, timer, init, context){
@@ -7,10 +8,7 @@ function setAlarms(data, fn_after, timer, init, context){
   // Reset alarm array
   all_alarms = [];
   alarms = [];
-
-  var data_len = data.length
-  var part100 = Math.round(data_len/100)
-  var progress = 0
+  testAlarms = [] // TEMP: for testing class
 
   // Async Create Alarms
   asyncArr(data, alarmProcess, alarmsStatus, alarmsAfter, this) // ------------- ASYNC DRIVER ***
@@ -18,6 +16,7 @@ function setAlarms(data, fn_after, timer, init, context){
   function alarmProcess(arr, i){ // -------------------------------------------- PROCESS
 
     all_alarms.push(new alarm(arr[i]).alarm)
+    testAlarms.push(new Alarm(arr[i]))
 
   }
 
@@ -31,6 +30,8 @@ function setAlarms(data, fn_after, timer, init, context){
   }
 
   function alarmsAfter(arr, i){
+
+    console.log('testAlarms', testAlarms[0]);
 
     // Filter alarms by selected buttons (Only active, Types & Production)
     all_alarms = infilter(all_alarms)
@@ -102,64 +103,94 @@ function setAlarms(data, fn_after, timer, init, context){
 
 
 
+// REGEX expressions
+var varRegExp = {
+  stnc : /^[0-9]{4}[a-zA-Z]/,
+  zone: /^[0-9]{4}Z[M,S][0-9]{2,}/,
+  dscr: /.A[A-E]_.{0,}$/,
+}
 
 
+var alarmTypeRegExp = {
+  mode:{
+    a: /[Mm]ode.{0,}[Aa]uto/,
+    m: /[Mm]ode.{0,}[Mm]an.{0,}[Mm]ode/,
+  },
+  lck: /[Ii]nterlock/,
+  prod: {
+    p: /Prod/,
+    in: /[Ii]nfeed/,
+    out: /[Oo]utfeed/,
+    andon: /[Aa]ndon/,
+    cr: /StopCR/,
+  }
+};
 
 
-function alarmPages(){
+// ALARM CLASS - (in development) ----------------------------------------------
+class Alarm {
 
-  if(all_alarms.length > alarmLimit){
+  // CONSTRUCTOR -----------------------------------------------------
+  constructor(data) {
 
-    var pages = alarmParts.length
-    var v
-    var v_old = 0
+    // From database
+    this._datetime = data[0];
+    this.station = data[1];
+    this._var = this.tempVar(data[1], data[2]);
+    this.comment = data[3];
+    this.severity = data[4];
+    this._state = parseInt(data[5]);
 
-    $('#pagepick').addClass('display')
-    $('#pages').text('Pages: ' + pages)
-    $('#page').attr('max', pages)
+    // safe date parse of _datetime
+    this._dt = sDateParse(this._datetime);
 
-    $('#pagepick input[type=number]').on('input', pageChange)
+    // state text ON/OFF
+    this.statetxt = ['ON','OFF'][this._state];
 
-    function pageChange() {
+    // set zone and station full name
+    this.setZoneStation(this.station)
 
-      v = $(this).val()
+    this._stcode = this._var.match(varRegExp.stnc)[0].substr(0,4)
+    this.zone = this._var.match(varRegExp.zone)[0].substr(0,4) || 'General'
 
-      if (v > pages) {v = pages}
-      if (v < 1 && v != '' ) {v = 1}
+  }
 
-      $(this).val(v)
-
-      if(!Number.isNaN(parseInt(v))){
-
-        $(this).off('keyup').on('keyup',enter)
-        .off('focusout').on('focusout',pageConfirm)
-
-        function enter(event){
-
-          if (event.keyCode == 13) {
-            pageConfirm();
+  // Set zone and station according to TIA_GC object -----------------
+  setZoneStation(station){
+    for (var zone in TIA_GC) {
+      if (TIA_GC.hasOwnProperty(zone)) {
+        if (TIA_GC[zone].hasOwnProperty(station)) {
+          this._zone = zone
+          if (TIA_GC[zone][this.station].hasOwnProperty('name')){
+            this._stntxt = TIA_GC[zone][station].name
           }
         }
       }
-
-      function pageConfirm(){
-        if(v != v_old){
-
-          alarms = alarmParts[v - 1]
-
-          setTable()
-          responsive();
-          tableFilter();
-
-          v_old = v
-
-        }
-      }
     }
-  } else {
-    $('#pagepick').removeClass('display')
   }
+
+
+  // For "_var" without stationcode ----------------------------------
+  tempVar(station, _var){
+
+    var stationCode = /^[0-9]{3,}/; // stn number at start of string
+    var stationNum = /[0-9]{3,}/;   // any number in station 3 or longer
+
+    // No stationcode: add station code between ()
+    if (!_var.match(stationCode)) {
+      return '(' + station.match(stationNum) + ')' + _var
+    } else { return _var }
+
+  }
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -959,4 +990,74 @@ function dhms(ms) {
 
 function copyObj(obj){
   return JSON.parse(JSON.stringify(obj))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function alarmPages(){
+
+  if(all_alarms.length > alarmLimit){
+
+    var pages = alarmParts.length
+    var v
+    var v_old = 0
+
+    $('#pagepick').addClass('display')
+    $('#pages').text('Pages: ' + pages)
+    $('#page').attr('max', pages)
+
+    $('#pagepick input[type=number]').on('input', pageChange)
+
+    function pageChange() {
+
+      v = $(this).val()
+
+      if (v > pages) {v = pages}
+      if (v < 1 && v != '' ) {v = 1}
+
+      $(this).val(v)
+
+      if(!Number.isNaN(parseInt(v))){
+
+        $(this).off('keyup').on('keyup',enter)
+        .off('focusout').on('focusout',pageConfirm)
+
+        function enter(event){
+
+          if (event.keyCode == 13) {
+            pageConfirm();
+          }
+        }
+      }
+
+      function pageConfirm(){
+        if(v != v_old){
+
+          alarms = alarmParts[v - 1]
+
+          setTable()
+          responsive();
+          tableFilter();
+
+          v_old = v
+
+        }
+      }
+    }
+  } else {
+    $('#pagepick').removeClass('display')
+  }
 }
