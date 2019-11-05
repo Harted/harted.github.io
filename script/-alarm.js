@@ -150,8 +150,8 @@ class Alarm {
     // set zone and station full name
     this.setZoneStation(this.station)
 
-    this._stcode = this._var.match(varRegExp.stnc)[0].substr(0,4)
-    this.zone = this._var.match(varRegExp.zone)[0].substr(0,4) || 'General'
+    //this._stcode = this._var.match(varRegExp.stnc)[0].substr(0,4)
+    //this.zone = this._var.match(varRegExp.zone)[0].substr(0,4) || 'General'
 
   }
 
