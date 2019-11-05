@@ -607,6 +607,7 @@ function analyze(fn_after, context){
         var g = {}
         var gNum = 1
 
+        console.time('analyzeP3')
         asyncArr(arr, analyzeP3, analyzeS3, analyzeA3, this)
 
 
@@ -712,24 +713,38 @@ function analyze(fn_after, context){
                 }
               }
 
+              console.time('activeAlarmsCurrentSecond')
+
+              var startIndex = 0
+
               for (var i = gs; i < ge; i+=1000) {
 
                 var alarmsThisSecond = []
 
+                var startIndexSet = false
+
                 // Check active alarms at every second
-                for (var j = 0; j < this.alarms.length; j++) {
+                for (var j = startIndex; j < this.alarms.length; j++) {
 
                   var a = new CurrentAlarm(this.alarms[j])
-
 
 
                   var as = Math.floor(a.s / 1000)*1000
                   var ae = Math.floor(a.e / 1000)*1000
 
                   if (as <= i && i <= ae) {
+
+                    if (!startIndexSet) {
+                      startIndex = j; startIndexSet = true; // set start index to narrow search when first alarm changes index
+                    }
+
                     alarmsThisSecond.push(this.alarms[j])
                     topSev = this.getTopSev(topSev, a.sev)
                     sev_obj[a.sev] = true;
+                  } else if (as > i) {
+
+                    break // break when alarm is later than range for optimalisation
+
                   }
 
                 }
@@ -766,6 +781,7 @@ function analyze(fn_after, context){
 
                 }
               }
+              console.timeEnd('activeAlarmsCurrentSecond')
             }
 
             getTopSev(top, check){
@@ -842,8 +858,9 @@ function analyze(fn_after, context){
             if (g[a.stn].checkEmpty()) {
 
               g[a.stn].time("end", a.e);
+              console.time('createTimeline')
               g[a.stn].createTimeline();
-
+              console.timeEnd('createTimeline')
               arr[i]._group = copyObj(g[a.stn]);
 
               g[a.stn] = undefined;
@@ -868,6 +885,8 @@ function analyze(fn_after, context){
         }
 
         function analyzeA3(arr, i){
+
+          console.timeEnd('analyzeP3')
 
           statusFields('Done ', 'done')
 
