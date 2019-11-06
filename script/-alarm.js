@@ -1,6 +1,5 @@
 var alarmLimit = 1000
 var groups = {}
-var testAlarms = [] // TEMP: for testing class
 
 // SET ALARMS ------------------------------------------------------------------
 function setAlarms(data, fn_after, timer, init, context){
@@ -8,15 +7,14 @@ function setAlarms(data, fn_after, timer, init, context){
   // Reset alarm array
   all_alarms = [];
   alarms = [];
-  testAlarms = [] // TEMP: for testing class
 
   // Async Create Alarms
   asyncArr(data, alarmProcess, alarmsStatus, alarmsAfter, this) // ------------- ASYNC DRIVER ***
 
   function alarmProcess(arr, i){ // -------------------------------------------- PROCESS
 
-    all_alarms.push(new alarm(arr[i]).alarm)
-    testAlarms.push(new Alarm(arr[i]))
+    //all_alarms.push(new alarm(arr[i]).alarm)
+    all_alarms.push(new Alarm(arr[i]))
 
   }
 
@@ -31,10 +29,8 @@ function setAlarms(data, fn_after, timer, init, context){
 
   function alarmsAfter(arr, i){
 
-    console.log('testAlarms', testAlarms[0]);
-
     // Filter alarms by selected buttons (Only active, Types & Production)
-    all_alarms = infilter(all_alarms)
+    //all_alarms = infilter(all_alarms) // TEMP: DISABLED // REVIEW: other method
 
     // Analyze alarms (active, linkId, duration)
     analyze(afterAnalyze, this)
@@ -103,28 +99,6 @@ function setAlarms(data, fn_after, timer, init, context){
 
 
 
-// REGEX expressions
-var varRegExp = {
-  stnc : /^[0-9]{4}[a-zA-Z]/,
-  zone: /^[0-9]{4}Z[M,S][0-9]{2,}/,
-  dscr: /.A[A-E]_.{0,}$/,
-}
-
-
-var alarmTypeRegExp = {
-  mode:{
-    a: /[Mm]ode.{0,}[Aa]uto/,
-    m: /[Mm]ode.{0,}[Mm]an.{0,}[Mm]ode/,
-  },
-  lck: /[Ii]nterlock/,
-  prod: {
-    p: /Prod/,
-    in: /[Ii]nfeed/,
-    out: /[Oo]utfeed/,
-    andon: /[Aa]ndon/,
-    cr: /StopCR/,
-  }
-};
 
 
 // ALARM CLASS - (in development) ----------------------------------------------
@@ -136,7 +110,7 @@ class Alarm {
     // From database
     this._datetime = data[0];
     this.station = data[1];
-    this._var = this.tempVar(data[1], data[2]);
+    this._var = this.setVar_temp(data[1], data[2]);
     this.comment = data[3];
     this.severity = data[4];
     this._state = parseInt(data[5]);
@@ -148,30 +122,122 @@ class Alarm {
     this.statetxt = ['ON','OFF'][this._state];
 
     // set zone and station full name
-    this.setZoneStation(this.station)
+    this.getZoneStation(this.station)
 
-    //this._stcode = this._var.match(varRegExp.stnc)[0].substr(0,4)
-    //this.zone = this._var.match(varRegExp.zone)[0].substr(0,4) || 'General'
+    // set stationcode, modezone, object and description
+    this.setParts(this._var)
+
+    // set alarm type
+    this.setAlarmType(this._var)
+
 
   }
 
-  // Set zone and station according to TIA_GC object -----------------
-  setZoneStation(station){
-    for (var zone in TIA_GC) {
-      if (TIA_GC.hasOwnProperty(zone)) {
-        if (TIA_GC[zone].hasOwnProperty(station)) {
-          this._zone = zone
-          if (TIA_GC[zone][this.station].hasOwnProperty('name')){
-            this._stntxt = TIA_GC[zone][station].name
-          }
-        }
+  // Set alarm type --------------------------------------------------
+  setAlarmType(v){
+
+    var types = {
+
+      //General
+      autonotstarted: /[Mm]ode.{0,}[Aa]uto/,
+      manual: /[Mm]ode.{0,}[Mm]an.{0,}[Mm]ode/,
+      'manual resseq': /[Mm]ode.{0,}Res.{0,}Seq/,
+      'manual restm': /[Mm]ode.{0,}Res.{0,}TM/,
+      homerun: /[Mm]ode.{0,}HomeRun/,
+
+      interlock: /[Ii]nt.{0,}l.{0,}k/,
+      robot: /[0-9]R[0-9]{1,}/,
+      motor: /FC302/,
+      com: /Com/,
+
+      //Production
+      production: /Prod/,
+      inout: /[IiOo][un]t{0,1}feed/,
+      andon: /[Aa]ndon/,
+      controlroom: /StopCR/,
+
+      //Safety
+      safety: /Safety/,
+      motionstop: /MotionStop/,
+      accessrequest: /AccReq/,
+
+    }
+
+    //Init type (formatnok when there's no stationcode)
+    if(this._stcode == 'n/a'){
+      this._type = 'formatnok'
+    } else {
+      this._type = ''
+    }
+
+    //Go
+    for (var t in types) {
+      if (types[t].test(v)) {
+        if(this._type.length > 0) {this._type += ' '}
+        this._type += t
       }
+    }
+
+    if (this._type.length == 0) {
+      this._type = 'alarm'
+    }
+
+
+  }
+
+  // set stationcode, modezone, object and description ---------------
+  setParts(v){
+
+    // regExp
+    var dsc = /.A[A-E]_.{0,}$/
+    var stc = /^[0-9]{4}[a-zA-Z]/
+    var zm  = /^[0-9]{4}Z[M,S][0-9]{2,}/
+
+    // Description
+    var description =   regExp(dsc, '    n/a')
+    this.description =  description.substr(4)
+
+    // Remove description from var
+    v = v.replace(description,'')
+
+    // Stationcode & Modezone
+    this._stcode =      regExp(stc, 'n/a'    ).substr(0,4)
+    this.zone =         regExp(zm,  '    General').substr(4)
+
+    // Object = what is left
+    this.object = v.replace(this._stcode,'').replace(this.zone,'')
+
+    // Regex find function
+    function regExp(rgx, fallback){
+      if (rgx.test(v)) {
+        return v.match(rgx)[0]
+      } else {
+        return fallback
+      }
+    }
+
+  }
+
+
+  // Get zone and station from TIA_GC object -----------------
+  getZoneStation(station){
+    for (var zone in TIA_GC) {
+
+      // Station present in zone -> set zone & name
+      if (TIA_GC[zone].hasOwnProperty(station)) {
+
+        this._zone = zone
+        this._stntxt = TIA_GC[zone][station].name
+
+      }
+
     }
   }
 
 
   // For "_var" without stationcode ----------------------------------
-  tempVar(station, _var){
+  // TEMP: for vars without station code
+  setVar_temp(station, _var){
 
     var stationCode = /^[0-9]{3,}/; // stn number at start of string
     var stationNum = /[0-9]{3,}/;   // any number in station 3 or longer

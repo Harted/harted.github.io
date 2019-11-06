@@ -1,7 +1,7 @@
 // Body load ready (set on body in index.html) ---------------------------------
 function ready(){
 
-  //busyChanges();
+  busyChanges();
   getStations();
 
 }
@@ -35,7 +35,7 @@ function ajax_s() {
 
     //Remote settings (data sample)
     return {
-      url: 'https://www.harted.be/php/alarmdata4.php',
+      url: 'https://www.harted.be/php/alarmdata2.php',
       type: "GET",
       cache: false,
       dataType: "json",
@@ -229,6 +229,9 @@ function LIVE(){
 
 function busyChanges(){
   if(!(window.location.hostname == 'localhost')){
-    window.alert("Bezig met aanpassingen...\nInterface werkt mogelijks niet naar behoren!")
+    window.alert(
+      "Bezig met aanpassingen...\nInterface werkt mogelijks niet naar behoren!"
+      +"\n\nFilters (behalve severity) werken voorlopig niet"
+    )
   }
 }

@@ -187,7 +187,8 @@ function makeTable(settings, data){
       // if (d[i]._group.durtxt != undefined) {
       //   body.push(' - Duration : ' + d[i]._group.durtxt)
       // }
-      body.push('\n\ni = ' + i)
+      body.push('\n\ni = ' + d[i]._index)
+      body.push('\ntype = ' + d[i]._type)
 
       body.push('" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt)
 

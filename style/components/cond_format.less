@@ -22,6 +22,33 @@
 .manual{
   background-color: @color_blueM;
 }
+.resseq, .restm{
+  color: @color_bright;
+}
+.homerun {
+  background-color: @color_pink;
+}
+.robot {
+  td:nth-child(6){
+    span::before{
+      content: '\1F916  ' ;
+    }
+  }
+}
+.motor {
+  td:nth-child(6){
+    span::before{
+      content: '\24DC  ' ;
+    }
+  }
+}
+.com {
+  td:nth-child(6){
+    span::before{
+      content: '\1F4AC  ' ;
+    }
+  }
+}
 .autonotstarted{
   color: @color_dark;
   background-color: @color_green;
@@ -36,7 +63,7 @@
   }
 }
 .interlock {
-  td:nth-child(5),td:nth-child(6){
+  td:nth-child(6){
     span::before{
       content: '\1F512  ' ;
     }
@@ -46,35 +73,28 @@
   background-color: @color_orange;
 }
 .controlroom {
-  td:nth-child(5),td:nth-child(6){
+  td:nth-child(6){
     span::before{
       content: '\231b  ' ;
     }
   }
 }
-.outfeed {
-  td:nth-child(5),td:nth-child(6){
+.inout {
+  td:nth-child(6){
     span::before{
-      content: '\2B05  ' ;
-    }
-  }
-}
-.infeed {
-  td:nth-child(5),td:nth-child(6){
-    span::before{
-      content: '\27A1  ' ;
+      content: '\2B04  ' ;
     }
   }
 }
 .andon {
-  td:nth-child(5),td:nth-child(6){
+  td:nth-child(6){
     span::before{
       content: '\1F4A1  ';
     }
   }
 }
 .formatnok {
-  td:nth-child(5){
+  td:nth-child(4){
     span::before{
       content: '\2753  ';
     }

@@ -478,6 +478,8 @@ var FILTERS_def = function() {
       general: true, safety: true, interlock: true,
       autonotstarted: true, manual: true, formatnok: true,
       alarm: true,
+
+      resseq: true,
     },
     prod: {
       general: true, inout: true, andon: true, controlroom: true,
