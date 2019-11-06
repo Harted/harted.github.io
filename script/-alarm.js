@@ -8,7 +8,7 @@ var groups = {}
 
 // TODO:
 // - Fix alarmFilter and show butons
-
+// - replace 'alarms' by 'visibleAlarms'
 
 
 
