@@ -14,23 +14,23 @@ function makeOverview(){
 
   OVERVIEW = {}
 
-  for (var i = 0; i < all_alarms.length; i++) {
+  for (var i = 0; i < allAlarms.length; i++) {
 
-    if (all_alarms[i]._state == 1) {
+    if (allAlarms[i]._state == 1) {
 
 
-      var zone = all_alarms[i]._zone
-      var stn = all_alarms[i].station
+      var zone = allAlarms[i]._zone
+      var stn = allAlarms[i].station
       var stname = TIA_GC[zone][stn].name
-      var sev = all_alarms[i].severity
-      var zm = all_alarms[i].zone
-      var obj = all_alarms[i].object
-      var dsc = all_alarms[i].description
-      var cmt = all_alarms[i].comment
+      var sev = allAlarms[i].severity
+      var zm = allAlarms[i].zone
+      var obj = allAlarms[i].object
+      var dsc = allAlarms[i].description
+      var cmt = allAlarms[i].comment
 
       //filter miscalculated events (will resolve in the future by good logging)
-      if (all_alarms[i]._duration >= 0) {
-        var dur = all_alarms[i]._duration
+      if (allAlarms[i]._duration >= 0) {
+        var dur = allAlarms[i]._duration
       } else {
         var dur = 0
       }
@@ -78,7 +78,7 @@ function makeOverview(){
         OVERVIEW[zone][stn][sev][zm][obj][dsc].alarms = []
       }
 
-      OVERVIEW[zone][stn][sev][zm][obj][dsc].alarms.push(all_alarms[i])
+      OVERVIEW[zone][stn][sev][zm][obj][dsc].alarms.push(allAlarms[i])
 
     }
 

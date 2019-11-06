@@ -1,15 +1,18 @@
+// CONDITIONAL FORMATTING ------------------------------------------------------
+// Used for coloring  and animating alarms in table and live view
+
+// Severities ------------------------------------------------------------------
+
 .A , .B {
   background-color: @color_red;
   color: @color_bright;
   font-weight: bold;
 }
-.C {
-  background-color: @color_yellow;
-  font-weight: bold;
-}
-.D {
-  background-color: @color_yellowless;
-}
+.C { background-color: @color_yellow; }
+.D { background-color: @color_yellowless;}
+
+
+// Safety ----------------------------------------------------------------------
 .safety {
   font-weight: bold;
   span{
@@ -19,36 +22,13 @@
     box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, .5);
   }
 }
-.manual{
-  background-color: @color_blueM;
-}
-.resseq, .restm{
-  color: @color_bright;
-}
-.homerun {
-  background-color: @color_pink;
-}
-.robot {
-  td:nth-child(6){
-    span::before{
-      content: '\1F916  ' ;
-    }
-  }
-}
-.motor {
-  td:nth-child(6){
-    span::before{
-      content: '\24DC  ' ;
-    }
-  }
-}
-.com {
-  td:nth-child(6){
-    span::before{
-      content: '\1F4AC  ' ;
-    }
-  }
-}
+
+
+// Modes -----------------------------------------------------------------------
+.manual{ background-color: @color_blueM; }
+.resseq, .restm{ font-weight: bold; }
+.forced { color: @color_bright; }
+
 .autonotstarted{
   color: @color_dark;
   background-color: @color_green;
@@ -57,49 +37,45 @@
     td {animation: none;}
   }
 }
+
+.production {
+  background-color: @color_orange;
+}
+
+.homerun {
+  background-color: @color_pink;
+}
+
+
+// Active ----------------------------------------------------------------------
 .active {
   td {
     animation: pulse 2000ms linear infinite;
   }
 }
-.interlock {
+
+
+// Icons -----------------------------------------------------------------------
+.commentIcon(@icon){ // Mixin
   td:nth-child(6){
     span::before{
-      content: '\1F512  ' ;
+      content: @icon ;
+      font-weight: normal;
     }
   }
 }
-.production {
-  background-color: @color_orange;
-}
-.controlroom {
-  td:nth-child(6){
-    span::before{
-      content: '\231b  ' ;
-    }
-  }
-}
-.inout {
-  td:nth-child(6){
-    span::before{
-      content: '\2B04  ' ;
-    }
-  }
-}
-.andon {
-  td:nth-child(6){
-    span::before{
-      content: '\1F4A1  ';
-    }
-  }
-}
-.formatnok {
-  td:nth-child(4){
-    span::before{
-      content: '\2753  ';
-    }
-  }
-}
+.com { .commentIcon('\1F4AC  ') }
+.robot { .commentIcon('\1F916  ') }
+.processtime { .commentIcon('\1F551  ') }
+.atlascopco { .commentIcon('\1F529  ') }
+.interlock { .commentIcon('\1F512  ') }
+.controlroom { .commentIcon('\231b  ') }
+.inout { .commentIcon('\21D4  ') }
+.andon { .commentIcon('\1F4A1  ') }
+.formatnok { .commentIcon('\2753  ') }
+
+
+// Clear format ----------------------------------------------------------------
 .clearformat {
   background-color: @color_bright;
   color: @color_dark !important;
@@ -112,6 +88,8 @@
   }
 }
 
+
+// Animations ------------------------------------------------------------------
 @keyframes pulse {
   80% {opacity:1}
   90% {opacity:0}

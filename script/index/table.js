@@ -158,14 +158,13 @@ function makeTable(settings, data){
     for (let i = 0; i < d.length; i++){
 
       //// TEMP: keys lenght in groups for showing group lines
-      // TEMP: DISABLED
-      // if((d[i]._group.hasOwnProperty('alarms') && i > 0 && Object.keys(groups).length == 1)){
-      //   body.push('<tr style="border-top: solid 6px #444" ')
-      // } else if (d[i]._group.num == 0 && Object.keys(groups).length == 1){
-      //   body.push('<tr style="opacity:0.6;" ')
-      // } else {
+      if((d[i]._group.hasOwnProperty('alarms') && i > 0 && groups._stationcount == 1)){
+        body.push('<tr style="border-top: solid 6px #444" ')
+      } else if (d[i]._group.num == 0 && groups._stationcount == 1){
+        body.push('<tr style="opacity:0.7;" ')
+      } else {
         body.push('<tr')
-      // }
+      }
 
       body.push(' class="' + d[i].severity + ' ' + d[i]._type + ' ')
 
@@ -183,10 +182,10 @@ function makeTable(settings, data){
       body.push('\n' + d[i].statetxt + ' - Shift: ' + d[i]._shift )
       body.push( ' - Duration : ' + d[i]._durtxt)
       body.push('\nVariable : ' + d[i]._var)
-      // body.push('\nGroup : ' + d[i]._group.num) // TEMP: DISABLED
-      // if (d[i]._group.durtxt != undefined) {
-      //   body.push(' - Duration : ' + d[i]._group.durtxt)
-      // }
+      body.push('\nGroup : ' + d[i]._group.num) // TEMP: DISABLED
+      if (d[i]._group.durtxt != undefined) {
+        body.push(' - Duration : ' + d[i]._group.durtxt)
+      }
       body.push('\n\ni = ' + d[i]._index)
       body.push('\ntype = ' + d[i]._type)
 
@@ -222,14 +221,6 @@ function makeTable(settings, data){
         j++
       }
       body.push('</tr>')
-
-      // Event limit
-      // if (i == alarmLimit - 1) {
-      //   body.push('<tr id="linkID_">')
-      //   body.push('<td><span>' + alarmLimit + ' events limit reached..</span></td>')
-      //   body.push('<td></td><td></td><td></td><td></td><td></td><td></td><td></td>')
-      //   body.push('</tr>')
-      // }
 
     }
     // close tbl +(body)

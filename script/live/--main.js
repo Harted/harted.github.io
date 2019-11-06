@@ -131,11 +131,11 @@ function GET(){
   $.ajax(ajax_s())
   .done(function(data) {
 
-    setAlarms(data, afterAlarms, timer, false, this);
+    Alarms(data, afterAlarms, timer, false, this);
 
     function afterAlarms(timer, init){
 
-      checkActive(all_alarms)
+      checkActive(allAlarms)
 
       var status = (new Date() - timer) + 'ms'
 

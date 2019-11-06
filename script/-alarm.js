@@ -1,111 +1,116 @@
-var alarmLimit = 1000
+// GLOBAL alarms var -----------------------------------------------------------
+var alarms
+var allAlarms, filteredAlarms
+var alarmParts
 var groups = {}
 
-// SET ALARMS ------------------------------------------------------------------
-function setAlarms(data, fn_after, timer, init, context){
 
-  // Reset alarm array
-  all_alarms = [];
-  alarms = [];
 
-  // Async Create Alarms
-  asyncArr(data, alarmProcess, alarmsStatus, alarmsAfter, this) // ------------- ASYNC DRIVER ***
+// TODO:
+// - Fix alarmFilter and show butons
 
-  function alarmProcess(arr, i){ // -------------------------------------------- PROCESS
 
-    //all_alarms.push(new alarm(arr[i]).alarm)
-    all_alarms.push(new Alarm(arr[i]))
 
+
+
+
+// MASTER ALARMS FUNCTION ------------------------------------------------------
+function Alarms(data, fn_after, timer, init, context){
+
+  createAlarms(createAlarms_after, data) // 1
+
+  function createAlarms_after(){
+    analyzeAlarms(analyzeAlarms_after) // 2
   }
 
-  function alarmsStatus(arr, i){ // -------------------------------------------- STATUS
-
-    var len = arr.length
-    var progress = Math.round( i / len * 100 )
-
-    statusFields('Processing alarms: ' + progress + '%', 'progress')
-
+  function analyzeAlarms_after(id_set, time_store, linkIDn){
+    linkAlarms(linkAlarms_after, id_set, time_store, linkIDn) // 3
   }
 
-  function alarmsAfter(arr, i){
+  function linkAlarms_after() {
+    filterAlarms(filterAlarms_after) // 4
+  }
 
-    // Filter alarms by selected buttons (Only active, Types & Production)
-    //all_alarms = infilter(all_alarms) // TEMP: DISABLED // REVIEW: other method
+  function filterAlarms_after(){
+    groupAlarms(groupAlarms_after) // 5
+  }
 
-    // Analyze alarms (active, linkId, duration)
-    analyze(afterAnalyze, this)
+  //// NOTE: CLEANUP this part
+  function groupAlarms_after() {
 
-    function afterAnalyze() { // ----------------------------------------------- AFTER
+    var alarmLimit = 1000
 
-      // Alarm limit -----------------------------------------------------
-      var len
+    // Alarm limit -----------------------------------------------------
+    var len
 
-      if (all_alarms.length < alarmLimit) {
-        len = all_alarms.length
-      } else {
-        len = alarmLimit
+    if (filteredAlarms.length < alarmLimit) {
+      len = filteredAlarms.length
+    } else {
+      len = alarmLimit
+    }
+
+    alarms = [];
+
+    for (let i = 0; i < len; i++) {
+      alarms.push(filteredAlarms[i])
+    }
+
+
+    // Alarm parts ----------------------------------------------------
+    alarmParts = []
+
+    for (let i = 0; i < filteredAlarms.length; i++) {
+
+      p = Math.ceil((i+1)/alarmLimit) - 1
+
+      if (alarmParts[p] == undefined) {
+        alarmParts[p] = []
       }
 
-      for (let i = 0; i < len; i++) {
-        alarms.push(all_alarms[i])
-      }
-
-
-      // Alarm parts ----------------------------------------------------
-      alarmParts = []
-
-      for (let i = 0; i < all_alarms.length; i++) {
-
-        p = Math.ceil((i+1)/alarmLimit) - 1
-
-        if (alarmParts[p] == undefined) {
-          alarmParts[p] = []
-        }
-
-        alarmParts[p].push(all_alarms[i])
-
-      }
-
-      alarmPages();
-
-      // Fill no data item in alarms when there's no data ---------------
-      if (all_alarms.length == 0) {
-        alarms = [{
-          comment: "",
-          description: "",
-          object: "",
-          severity: "",
-          station: "",
-          zone: "",
-          _active: false,
-          _datetime: "No Data",
-          _duration: -1,
-          _durtxt: "n/a",
-          _group: {stn:'',num:''},
-          _linkID: -1,
-          _state: "",
-          statetxt: "",
-          _stcode: "",
-          _type: "",
-          _var: "No Data",
-        }];
-      }
-
-      fn_after.call(context, timer, init)
+      alarmParts[p].push(filteredAlarms[i])
 
     }
+
+    alarmPages(alarmLimit);
+
+    // Fill no data item in alarms when there's no data ---------------
+    if (filteredAlarms.length == 0) {
+      alarms = [{
+        comment: "",
+        description: "",
+        object: "",
+        severity: "",
+        station: "",
+        zone: "",
+        _active: false,
+        _datetime: "No Data",
+        _duration: -1,
+        _durtxt: "n/a",
+        _group: {stn:'',num:''},
+        _linkID: -1,
+        _state: "",
+        statetxt: "",
+        _stcode: "",
+        _type: "",
+        _var: "No Data",
+      }];
+    }
+
+    fn_after.call(context, timer, init)
+
   }
+
 }
 
 
-
-
-
-// ALARM CLASS - (in development) ----------------------------------------------
+// ALARM CLASS -----------------------------------------------------------------
 class Alarm {
 
   // CONSTRUCTOR -----------------------------------------------------
-  constructor(data) {
+  constructor(data, i) {
+
+    // index
+    this._index = i
 
     // From database
     this._datetime = data[0];
@@ -119,7 +124,7 @@ class Alarm {
     this._dt = sDateParse(this._datetime);
 
     // state text ON/OFF
-    this.statetxt = ['ON','OFF'][this._state];
+    this.statetxt = ['OFF','ON'][this._state];
 
     // set zone and station full name
     this.getZoneStation(this.station)
@@ -130,12 +135,12 @@ class Alarm {
     // set alarm type
     this.setAlarmType(this._var)
 
-
   }
 
   // Set alarm type --------------------------------------------------
   setAlarmType(v){
 
+    // NOTE: Change filtering of alarms
     var types = {
 
       //General
@@ -143,12 +148,14 @@ class Alarm {
       manual: /[Mm]ode.{0,}[Mm]an.{0,}[Mm]ode/,
       'manual resseq': /[Mm]ode.{0,}Res.{0,}Seq/,
       'manual restm': /[Mm]ode.{0,}Res.{0,}TM/,
-      homerun: /[Mm]ode.{0,}HomeRun/,
+      'manual forced': /[Mm]ode.{0,}ForcedMan/,
+      'general homerun': /[Mm]ode.{0,}HomeRun/,
 
       interlock: /[Ii]nt.{0,}l.{0,}k/,
-      robot: /[0-9]R[0-9]{1,}/,
-      motor: /FC302/,
-      com: /Com/,
+      'general robot': /[0-9]R[0-9]{1,}/,
+      'general com': /Com/,
+      'general processtime': /ProcessTime/,
+      'general atlascopco': /AtlasCopco/,
 
       //Production
       production: /Prod/,
@@ -159,53 +166,58 @@ class Alarm {
       //Safety
       safety: /Safety/,
       motionstop: /MotionStop/,
-      accessrequest: /AccReq/,
 
     }
 
     //Init type (formatnok when there's no stationcode)
     if(this._stcode == 'n/a'){
-      this._type = 'formatnok'
+      this._type = 'formatnok' // TEMP: When format is ok this is deprecated
     } else {
-      this._type = ''
+      this._type = '' // NOTE: Keep this when format of every station is ok
     }
 
-    //Go
+    //Give types in types object which regex test true
     for (var t in types) {
       if (types[t].test(v)) {
+        //Add a space when more then one type
         if(this._type.length > 0) {this._type += ' '}
+        // Add type
         this._type += t
       }
     }
 
+    //If no type is set, give it default type alarm
     if (this._type.length == 0) {
       this._type = 'alarm'
     }
-
-
   }
 
   // set stationcode, modezone, object and description ---------------
   setParts(v){
 
     // regExp
-    var dsc = /.A[A-E]_.{0,}$/
-    var stc = /^[0-9]{4}[a-zA-Z]/
-    var zm  = /^[0-9]{4}Z[M,S][0-9]{2,}/
+    var dsc = /.A[A-E]_.{0,}$/            // Description
+    var stc = /^[0-9]{4}[a-zA-Z]/         // Stationcode
+    var zm  = /^[0-9]{4}Z[M,S][0-9]{2,}/  // Modezone
 
     // Description
     var description =   regExp(dsc, '    n/a')
-    this.description =  description.substr(4)
+    this.description =  description.substr(4) //without ".AA_"
 
-    // Remove description from var
+    // Remove description from var (inclusive ".AA_")
     v = v.replace(description,'')
 
     // Stationcode & Modezone
-    this._stcode =      regExp(stc, 'n/a'    ).substr(0,4)
-    this.zone =         regExp(zm,  '    General').substr(4)
+    this._stcode = regExp(stc, 'n/a'    ).substr(0,4)
+    this.zone = regExp(zm,  '    General').substr(4)
 
     // Object = what is left
     this.object = v.replace(this._stcode,'').replace(this.zone,'')
+
+    // Object empty => set n/a
+    if (this.object.length == 0) {
+      this.object = 'n/a'
+    }
 
     // Regex find function
     function regExp(rgx, fallback){
@@ -237,255 +249,51 @@ class Alarm {
 
   // For "_var" without stationcode ----------------------------------
   // TEMP: for vars without station code
-  setVar_temp(station, _var){
+  setVar_temp(station, v){
 
     var stationCode = /^[0-9]{3,}/; // stn number at start of string
     var stationNum = /[0-9]{3,}/;   // any number in station 3 or longer
 
     // No stationcode: add station code between ()
-    if (!_var.match(stationCode)) {
-      return '(' + station.match(stationNum) + ')' + _var
-    } else { return _var }
-
-  }
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ALARM OBJECT GENERATOR ------------------------------------------------------
-function alarm(data) {
-
-  // Alarm part names for object in order of fetched data
-  var alarmparts = [
-    '_datetime','station', '_var', 'comment', 'severity', '_state'
-  ];
-
-  // Local alarm object
-  this.alarm = {};
-
-  // Put alarm parts into the object
-  for (let i = 0; i < data.length; i++) {
-    this.alarm[alarmparts[i]] = data[i]
-
-    //TEMP: for _var without stationscode
-    if(i == 2 && this.alarm._var.match(/^[0-9]{3,}/) == null){
-      this.alarm._var = '(' + this.alarm.station.match(/[0-9]{3,}/) + ')' + this.alarm._var
-    }
-
-
-  };
-
-
-  // FORMATTING DATA ------------------------------------------------------
-
-  // Set statetxt 0=OFF 1=ON
-  var onoff = ['OFF','ON']
-  this.alarm.statetxt = onoff[parseInt(this.alarm._state)]
-
-  // Station name & zone
-  for (var zone in TIA_GC) {
-    if (TIA_GC.hasOwnProperty(zone)) {
-      if (TIA_GC[zone].hasOwnProperty(this.alarm.station)) {
-        this.alarm._zone = zone
-        if (TIA_GC[zone][this.alarm.station].hasOwnProperty('name')){
-          this.alarm._stntxt = TIA_GC[zone][this.alarm.station].name
-        }
-      }
-    }
-  }
-
-
-  // REGEX expressions
-  var rgx = {
-    st : /^[0-9]{4}[a-zA-Z]/,
-    z: {
-      m: /^[0-9]{4}ZM[0-9.]{2,}/,
-      s: /^[0-9]{4}ZS[0-9.]{2,}/,
-      ms: /Z[M,S][0-9.]{2,}/,
-    },
-    dsc: /.A[A-E]_.{0,}$/,
-    aa: /.A[A-E]_/,
-    mode:{
-      a: /[Mm]ode.{0,}[Aa]uto/,
-      m: /[Mm]ode.{0,}[Mm]an.{0,}[Mm]ode/,
-    },
-    lck: /[Ii]nterlock/,
-    prod: {
-      p: /Prod/,
-      in: /[Ii]nfeed/,
-      out: /[Oo]utfeed/,
-      andon: /[Aa]ndon/,
-      cr: /StopCR/,
-    }
-  };
-
-  // Split object and set descrition          3037ZM02CR01.AD_TrfOutSetInterlock
-  if (rgx.dsc.test(this.alarm._var)){
-
-    //Part 2:                                             .AD_TrfOutSetInterlock
-    this.p2 = this.alarm._var.match(rgx.dsc)[0]
-
-    //Part 1:                                                       3037ZM02CR01
-    this.p1 = this.alarm._var.replace(this.p2,'')
-
-    //Description: Part 2 - Severity                          TrfOutSetInterlock
-    this.p2 = this.p2.replace(this.p2.match(rgx.aa)[0],'')
-    this.alarm['description'] = this.p2
-
-  };
-
-  // Station - Zone - Object                                        3037ZM02CR01
-  if (rgx.st.test(this.p1)){
-    //          _stcode:                                            3037
-    this.alarm['_stcode'] = this.p1.substr(0,4)
-
-    //is station is OK: extract zone
-    if (rgx.z.m.test(this.p1)){
-      //        modezone:                                               ZM02
-      this.alarm['zone'] = this.p1.match(rgx.z.ms)[0]
-
-      // TYPES +++++++++++++++++++++++++++++++++++++++++++++++++++
-
-      if (rgx.mode.a.test(this.alarm._var)) {
-        this.alarm['_type'] = 'autonotstarted'
-      } else if (rgx.mode.m.test(this.alarm._var)) {
-        this.alarm['_type'] = 'manual'
-      } else if (rgx.lck.test(this.alarm._var)) {
-        this.alarm['_type'] = 'interlock'
-      } else if (rgx.prod.p.test(this.alarm._var)) {
-
-        this.alarm['_type'] = 'production '
-        if (rgx.prod.in.test(this.alarm._var)) {
-          this.alarm['_type'] += 'inout'
-        } else if (rgx.prod.out.test(this.alarm._var)) {
-          this.alarm['_type'] += 'inout'
-        } else if (rgx.prod.andon.test(this.alarm._var)) {
-          this.alarm['_type'] += 'andon'
-        } else if (rgx.prod.cr.test(this.alarm._var)) {
-          this.alarm['_type'] += 'controlroom'
-        } else {
-          this.alarm['_type'] += 'general'
-        }
-
-      } else {
-        this.alarm['_type'] = 'alarm'
-      }
-
-      // END +++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-    } else if (rgx.z.s.test(this.p1)){
-      //      safetyzone:                                               ZS02
-      this.alarm['zone'] = this.p1.match(rgx.z.ms)[0]
-      this.alarm['_type'] = 'safety'
+    if (!v.match(stationCode)) {
+      return '(' + station.match(stationNum) + ')' + v
+      // StationCode 3 numbers in stead of 4 add 0
+    } else if (v.match(stationCode)[0].length == 3){
+      return '0' + v
     } else {
-      //if no ZM of ZS
-      this.alarm['zone'] = 'General'
-
-      if (rgx.prod.p.test(this.alarm._var)) {
-
-        this.alarm['_type'] = 'production '
-        if (rgx.prod.in.test(this.alarm._var)) {
-          this.alarm['_type'] += 'inout'
-        } else if (rgx.prod.out.test(this.alarm._var)) {
-          this.alarm['_type'] += 'inout'
-        } else if (rgx.prod.andon.test(this.alarm._var)) {
-          this.alarm['_type'] += 'andon'
-        } else if (rgx.prod.cr.test(this.alarm._var)) {
-          this.alarm['_type'] += 'controlroom'
-        } else {
-          this.alarm['_type'] += 'general'
-        }
-
-      } else {
-        this.alarm['_type'] = 'general'
-      }
-
-
-    };
-
-    //remove stcode and zone to retain object:                              CR01
-    this.alarm['object'] = this.p1
-    .replace(this.alarm._stcode,'').replace(this.alarm.zone,'')
-
-    if (this.alarm.object == "") {
-      this.alarm.object = "n/a"
+      return v
     }
-
-    //if station is NOK do nothing and place _var in desc.
-  } else {
-
-    this.alarm['_stcode'] = 'n/a'
-    this.alarm['zone'] = 'n/a'
-    this.alarm['object'] = 'n/a'
-    this.alarm['description'] = this.alarm._var
-    this.alarm['_type'] = 'formatnok'
-
   }
-
-
-};
-
-
-
-
-
-// INPUT FILTER ----------------------------------------------------------------
-function infilter(alarms){
-
-  var new_alarms = [] // to store filtered alarms
-
-  for (var i = 0; i < alarms.length; i++) {
-
-    var filtered = false
-
-    if (alarms[i]._type.search('production') < 0) {                             // TYPES
-
-      // Check if type of alarm is filered
-      if(!FILTERS.at[alarms[i]._type]) {filtered = true}
-
-    } else {                                                                    // PRODUCTION
-
-      // split production alarm
-      var sp = alarms[i]._type.split(' ')
-
-      // check if last part of porduction type alarm is filtered
-      if(!FILTERS.prod[sp[1]]) {filtered = true}
-
-    }
-
-    // filter non active alarms when set                                        // ONLY ACTIVE
-    if(FILTERS.only.active && !alarms[i]._active) {filtered = true}
-
-
-    // PUSH alarm in filtered list when filtered is false
-    if (!filtered) {
-      alarms[i]._index = i;
-      new_alarms.push(alarms[i]) ;
-    }
-
-  }
-
-  return new_alarms; // return the filtered array
-
 }
 
 
+// [1] CREATE ALARMS -----------------------------------------------------------
+function createAlarms(fn_after, data){
+
+  // Reset allAlarms array
+  allAlarms = [];
+
+  asyncArr(data, itter, status, after, this)
+
+  // ITTER -----------------------------------------------------------
+  function itter(arr, i){
+    allAlarms.push(new Alarm(arr[i], i))
+  }
+
+  // STATUS ----------------------------------------------------------
+  function status(arr, i){
+    statusFields('Creating', 'progress', arr, i)
+  }
+
+  // AFTER -----------------------------------------------------------
+  function after(arr,i){
+    statusFields('Creating', 'progress', arr, i)
+    setTimeout(function () {
+      fn_after.call()
+    }, 1);
+  }
+
+}
 
 
 // DISTINCT CLASS --------------------------------------------------------------
@@ -518,7 +326,7 @@ class Distinct {
           }
         }
 
-      // Array with chosen object ------------------------------------
+        // Array with chosen object ------------------------------------
       } else if (typeof(mode) == 'object'){
         for (var j = 0; j < mode.length; j++) {
 
@@ -537,44 +345,11 @@ class Distinct {
 }
 
 
-// Curent alarm class (to work with smaller vars)
-class CurrentAlarm {
-  constructor(alarm) {
-    this.cmt = alarm.comment || undefined;
-    this.dsc = alarm.description || undefined;
-    this.obj = alarm.object || undefined;
-    this.sev = alarm.severity || undefined;
-    this.stx = alarm.statetxt || undefined;
-    this.stn = alarm.station || undefined;
-    this.zm = alarm.zone || undefined;
+// [2] Analyze alarms for active, duration and link ----------------------------
+function analyzeAlarms(fn_after){
 
-    this.act = alarm._active || undefined;
-    this.dt = alarm._datetime || undefined;
-    this.dur = alarm._duration || undefined;
-    this.dtx = alarm._durtxt || undefined;
-    this.e = alarm._end || undefined;
-    this.lID = alarm._linkID || undefined;
-    this.sft = alarm._shift || undefined;
-    this.s = alarm._start || undefined;
-    this.st = alarm._state || undefined;
-    this.snc = alarm._stcode || undefined;
-    this.stt = alarm._stntxt || undefined;
-    this.tpe = alarm._type || undefined;
-    this.var = alarm._var || undefined;
-    this.zn = alarm._zone || undefined;
-  }
-}
-
-
-
-
-
-
-
-// Analyze alarms for active, duration and link --------------------------------
-function analyze(fn_after, context){
-
-  var dist = new Distinct(all_alarms, ['_var']);    // for fist dist on event
+  // Vars
+  var dist = new Distinct(allAlarms, ['_var']);    // for fist dist on event
   var link_store = copyObj(dist)                    // for linkID storage
   var count = copyObj(dist)                         // for alarm counting
 
@@ -583,12 +358,14 @@ function analyze(fn_after, context){
   var id_set = []                         // check if ID is set (ON exists)
   var time_store = []                     // time storage per ID
 
-  // NOTE: Async array (1) - of analyze-----------------------------------------// ASYNC DRIVER //
-  asyncArr(all_alarms, analyzeP1, analyzeS1, analyzeA1, this);
 
-  function analyzeP1(arr, i){                                                   // PROCESS
+  asyncArr(allAlarms, itter, status, after, this);
 
-    //String referenced VARS  --------------------------------------
+
+  // ITTER -----------------------------------------------------------
+  function itter(arr, i){
+
+    //String referenced VARS  -----------------------------------
     var a = arr[i]              //alarm row
     var v = a._var              //var name
     var s = a._state            //state integer
@@ -596,7 +373,7 @@ function analyze(fn_after, context){
 
     a._shift = getShift(date)
 
-    // OFF event ---------------------------------------------------
+    // OFF event ------------------------------------------------
     // - Assign link ID
     // - Store link ID in distinct object to later assign to ON event
     // - Store time to link array index to later calculate duration
@@ -614,7 +391,7 @@ function analyze(fn_after, context){
       a._end = date
 
     } else if (s == 1 && dist._var[v] == 1){
-      // First distinct event is ON event = ACTIVE -------------------
+      // First distinct event is ON event = ACTIVE ----------------
       // - Assign active and set true
       // - Change state text to ACTIVE
       // - This event has no link but a duraction to now
@@ -671,349 +448,505 @@ function analyze(fn_after, context){
 
   }
 
-  function analyzeS1(arr, i){                                                   // STATUS
+
+  // STATUS ----------------------------------------------------------
+  function status(arr, i){
+    statusFields('Analyzing', 'progress', arr, i)
+  }
+
+
+  // AFTER -----------------------------------------------------------
+  function after(arr,i){
+    statusFields('Analyzing', 'progress', arr, i)
+    setTimeout(function () {
+      fn_after.call(null, id_set, time_store)
+    }, 1);
+  }
+
+};
+
+
+// [3] Link remaining events ---------------------------------------------------
+function linkAlarms(fn_after, id_set, time_store, linkIDn){
+
+  asyncArr(allAlarms, itter, status, after, this);
+
+  function itter(arr, i){
+
+    //String referenced VARS  --------------------------------------
+    var a = arr[i]   //alarm row
+    var v = a._var             //var name
+    var s = a._state      //state integer
+    var date = sDateParse(a._datetime)
+
+    if (s == 0 && a._linkID != 'none' && id_set[a._linkID] == true) {
+      // Off event that has a link ID and the ON event's ID is also set
+      // - Assign stored duration and durationtxt to the OFF event
+      a._start = time_store[a._linkID]
+
+      var dur = date - time_store[a._linkID]
+      a._duration = dur
+      a._durtxt = dhms(dur)
+
+    } else if ( a._duration == undefined ) {
+
+      // Event without duration set
+      // - Assing not available and -1
+      a._duration = -1
+      a._durtxt = 'n/a'
+      a._linkID = linkIDn
+      linkIDn--
+
+    };
+
+  };
+
+  function status(arr, i){
+    statusFields('Linking', 'progress', arr, i)
+  }
+
+  // AFTER -----------------------------------------------------------
+  function after(arr,i){
+    statusFields('Linking', 'progress', arr, i)
+    setTimeout(function () {
+      fn_after.call(null, id_set, time_store)
+    }, 1);
+  }
+
+}
+
+
+// [4] FILTER ALARMS -----------------------------------------------------------
+function filterAlarms(fn_after){
+
+  filteredAlarms = [] // to store filtered alarms
+
+  asyncArr(allAlarms, itter, status, after, this)
+
+  // ITTER -----------------------------------------------------------
+  function itter(arr, i){
+
+    var filtered = false
+    var typeString = arr[i]._type
+
+    // Alarmtype filters
+    for (var sel in FILTERS.at) {
+      if (!FILTERS.at[sel] && typeString.search(sel) > -1) {
+        filtered = true
+      }
+    }
+
+    // Production filters
+    for (var sel in FILTERS.prod) {
+      if (!FILTERS.prod[sel] && typeString.search(sel) > -1) {
+        filtered = true
+      }
+    }
+
+    // Only active filter
+    if(FILTERS.only.active && !arr[i]._active) {filtered = true}
+
+    // Fill filtered alarms
+    if (!filtered) { filteredAlarms.push(arr[i]) }
+
+  }
+
+  // STATUS ----------------------------------------------------------
+  function status(arr, i) {
+    statusFields('Filtering', 'progress', arr, i)
+  }
+
+  // AFTER -----------------------------------------------------------
+  function after(arr,i){
+    statusFields('Filtering', 'progress', arr, i)
+    setTimeout(function () {
+      fn_after.call()
+    }, 1);
+  }
+
+}
+
+
+// GROUP CLASS -----------------------------------------------------------------
+class Group {
+
+  constructor(groupNumber, zone, station) {
+
+    this.num = groupNumber
+
+    if(zone != undefined && station != undefined){
+      this.zone = zone;
+      this.stn = station;
+      this.alarms = []
+      this.collection = []
+      this.sev = this.severityObj(['A','B','C','D','E'])
+    }
+
+  }
+
+  collect(alarm){
+    this.alarms.push(alarm)
+    this.collection.push(alarm._var)
+  }
+
+  detach(alarm){
+    var index = this.collection.indexOf(alarm._var)
+
+    if(index > -1){
+      this.collection.splice(index,1)
+    };
+  }
+
+  checkEmpty(){
+
+    var empty = this.collection.length === 0
+    if (empty) {
+
+      // Collection empty and not needed further
+      delete this.collection
+
+      // group alarms per severity
+      for (var i = 0; i < this.alarms.length; i++) {
+
+        var a = this.alarms[i]
+
+        if(this.sev[a.severity] == undefined){
+          this.sev[a.severity]
+        }
+
+        this.sev[a.severity].alarms.push(this.alarms[i])
+
+      }
+
+      this.countSev()
+
+    }
+    return empty
+
+  }
+
+  time(startEndStr, time){
+    this[startEndStr] = time;
+    this[startEndStr + 'Txt'] = dateT(new Date(time));
+    if (startEndStr === "end") {
+      this.duration = this.end - this.start
+      this.durtxt = dhms(this.duration)
+    }
+  }
+
+  severityObj(sevArr){
+    var obj = {};
+    for (var i = 0; i < sevArr.length; i++) {
+      obj[sevArr[i]] = {alarms: []}
+    }; return obj;
+  }
+
+  countSev(){
+    for (var sev in this.sev) {
+      if (this.sev.hasOwnProperty(sev)) {
+        this.sev[sev].count = this.sev[sev].alarms.length
+      }
+    }
+  }
+
+  getTopSev(top, check){
+    for (var sev in this.sev) {
+      if (this.sev.hasOwnProperty(sev)) {
+        if (sev == top || sev == check) {
+          return sev
+        }
+      }
+    }
+  }
+
+}
+
+
+// [5] Group events ------------------------------------------------------------
+function groupAlarms(fn_after){
+
+  //// TEMP: Don't analyze groups in live view
+  if (window.location.pathname == '/live.html'){
+
+    statusFields('Done', 'done');
+    setTimeout(function () {
+      fn_after.call()
+    }, 10);
+
+  } else {
+
+    var g = {} //to store temporary groups
+    var gNum = 1 // to increment group number with each new group
+
+    asyncArr(filteredAlarms, itter, status, after, this)
+
+  }
+
+
+  // ITTER ---------------------------------------------------------
+  function itter(arr, i){
+
+    // Reverse itteration
+    i = (arr.length - 1) - i
+
+    // Create current alarm
+    var a = arr[i]
+
+    // ON event +++++++++++++++++++++++++++++++++++++++++++++++++++++
+    if (!a._active && a._state == 1) {
+
+      // create new group for station when undefined
+      // - set to undefinded when last alarms is removed from collection
+      if (g[a.station] == undefined) {
+        g[a.station] = new Group(gNum, a._zone, a.station); gNum ++
+        g[a.station].time("start", a._start)
+      }
+
+      // Collect on event
+      g[a.station].collect(a)
+
+      // Give event group number
+      a._group = new Group(g[a.station].num)
+
+
+      // OFF event (with defined group) ++++++++++++++++++++++++++++++++
+    } else if (g[a.station] != undefined && a._state == 0) {
+
+      // OFF event not in collection
+      if (g[a.station].collection.indexOf(a._var) < 0) {
+
+        a._group = new Group(0)
+
+        // OFF event IN collection
+      } else {
+
+        // Detach event in collection with OFF event
+        g[a.station].detach(a)
+
+        // Give event group number
+        a._group = new Group(g[a.station].num)
+
+        // Set group to undefined so a new group wil be created on the
+        // next itteration when the collection is empty
+        if (g[a.station].checkEmpty()) {
+
+          g[a.station].time("end", a._end);
+
+          arr[i]._group = copyObj(g[a.station]);
+
+          g[a.station] = undefined;
+
+        };
+      }
+
+
+      // OFF event (without active group) || ACTIVE event ++++++++++++++
+    } else if ((g[a.station] == undefined && a._state == 0) || a._active) {
+      a._group = new Group(0)
+    }
+
+  }
+
+
+  // STATUS --------------------------------------------------------
+  function status(arr, i){
 
     var len = arr.length
     var progress = Math.round( i / len * 100 )
 
-    statusFields('Analyzing ON events: ' + progress + '%', 'progress')
+    statusFields('Analyzing alarm groups', 'progress', arr, i)
 
   }
 
-  function analyzeA1(arr, i){                                                   // AFTER
+  // AFTER ---------------------------------------------------------
+  function after(arr, i){
 
-    asyncArr(arr, analyzeP2, analyzeS2, analyzeA2, this);
+    statusFields('Done', 'done')
 
-    function analyzeP2(arr, i){
+    // Reset groups object
+    groups = {}
 
-      //String referenced VARS  --------------------------------------
-      var a = arr[i]   //alarm row
-      var v = a._var             //var name
-      var s = a._state      //state integer
-      var date = sDateParse(a._datetime)
+    // Search groups in alarm array
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i]._group.hasOwnProperty('alarms')) {
 
-      if (s == 0 && a._linkID != 'none' && id_set[a._linkID] == true) {
-        // Off event that has a link ID and the ON event's ID is also set
-        // - Assign stored duration and durationtxt to the OFF event
-        a._start = time_store[a._linkID]
+        // Define zone property
+        if (!groups.hasOwnProperty(arr[i]._zone)) {
+          groups[arr[i]._zone] = {}
+        }
 
-        var dur = date - time_store[a._linkID]
-        a._duration = dur
-        a._durtxt = dhms(dur)
+        // Define station property
+        if (!groups[arr[i]._zone].hasOwnProperty(arr[i].station)) {
+          groups[arr[i]._zone][arr[i].station] = []
+        }
 
-      } else if ( a._duration == undefined ) {
+        // Add group to groups object
+        groups[arr[i]._zone][arr[i].station].push(arr[i]._group)
 
-        // Event without duration set
-        // - Assing not available and -1
-        a._duration = -1
-        a._durtxt = 'n/a'
-        a._linkID = linkIDn
-        linkIDn--
-
-      };
-
-    };
-
-    function analyzeS2(arr, i){
-
-      var len = arr.length
-      var progress = Math.round( i / len * 100 )
-
-      statusFields('Analyzing OFF events: ' + progress + '%', 'progress')
-
+      }
     }
 
-    function analyzeA2(arr, i){
+    // Count stations present in group object
+    groups._stationcount = 0
 
-      var len = arr.length //len for reverse itteration
-      var g = {} //to store temporary groups
-      var gNum = 1 // to increment group number with each new group
-
-
-      // Group class
-      class Group {
-
-        constructor(groupNumber, zone, station) {
-
-          this.num = groupNumber
-
-          if(zone != undefined && station != undefined){
-            this.zone = zone;
-            this.stn = station;
-            this.alarms = []
-            this.collection = []
-            this.sev = this.severityObj(['A','B','C','D','E'])
-          }
-
-        }
-
-        collect(alarm){
-          this.alarms.push(alarm)
-          this.collection.push(alarm._var)
-        }
-
-        detach(alarm){
-          var index = this.collection.indexOf(alarm._var)
-
-          if(index > -1){
-            this.collection.splice(index,1)
-          };
-        }
-
-        checkEmpty(){
-          var empty = this.collection.length === 0
-          if (empty) {
-
-            // Collection empty and not needed further
-            delete this.collection
-
-            // group alarms per severity
-            for (var i = 0; i < this.alarms.length; i++) {
-
-              var a = new CurrentAlarm(this.alarms[i])
-
-              if(this.sev[a.sev] == undefined){
-                this.sev[a.sev]
-              }
-
-              this.sev[a.sev].alarms.push(this.alarms[i])
-
-            }
-
-            this.countSev()
-
-          }
-          return empty
-        }
-
-        time(startEndStr, time){
-          this[startEndStr] = time;
-          this[startEndStr + 'Txt'] = dateT(new Date(time));
-          if (startEndStr === "end") {
-            this.duration = this.end - this.start
-            this.durtxt = dhms(this.duration)
-          }
-        }
-
-        severityObj(sevArr){
-          var obj = {};
-          for (var i = 0; i < sevArr.length; i++) {
-            obj[sevArr[i]] = {alarms: []}
-          }; return obj;
-        }
-
-        countSev(){
-          for (var sev in this.sev) {
-            if (this.sev.hasOwnProperty(sev)) {
-              this.sev[sev].count = this.sev[sev].alarms.length
-            }
-          }
-        }
-
-        createTimeline(){
-
-          var gs = Math.floor(this.start / 1000)*1000
-          var ge = Math.floor(this.end / 1000)*1000
-
-          this.timeline = []
-
-          var alarmsTSMem = ''
-          var topSev = ''
-          var sev_obj = {A:false,B:false,C:false,D:false,E:false};
-
-          function resetSevObj(){
-            for (var sev in sev_obj) {
-              if (sev_obj.hasOwnProperty(sev)) {
-                sev_obj[sev] = false
-              }
-            }
-          }
-
-          var startIndex = 0
-
-          for (var i = gs; i < ge; i+=1000) {
-
-            var alarmsThisSecond = []
-
-            var startIndexSet = false
-
-            // Check active alarms at every second
-            for (var j = startIndex; j < this.alarms.length; j++) {
-
-              var a = new CurrentAlarm(this.alarms[j])
-
-              var as = Math.floor(a.s / 1000)*1000
-              var ae = Math.floor(a.e / 1000)*1000
-
-              if (as <= i && i <= ae) {
-
-                if (!startIndexSet) {
-                  startIndex = j; startIndexSet = true; // set start index to narrow search when first alarm changes index
-                }
-
-                alarmsThisSecond.push(this.alarms[j])
-                topSev = this.getTopSev(topSev, a.sev)
-                sev_obj[a.sev] = true;
-              } else if (as > i) {
-
-                break // break when alarm is later than range for optimalisation
-
-              }
-
-            }
-
-            if(JSON.stringify(alarmsThisSecond) != alarmsTSMem){
-
-              this.timeline.push({
-                start: i,
-                starttxt: dateT(new Date(i)),
-                alarms: alarmsThisSecond,
-                end: i + 1000,
-                endtxt: dateT(new Date(i + 1000)),
-                dur: 1000,
-                durtxt: dhms(1000),
-                top: topSev,
-                sev_obj: copyObj(sev_obj)
-              })
-
-              topSev = ''
-              resetSevObj();
-
-              alarmsTSMem = JSON.stringify(alarmsThisSecond)
-
-            } else {
-
-              var t = this.timeline[this.timeline.length - 1]
-
-              t.top = topSev; topSev = ''
-              t.sev_obj = copyObj(sev_obj); resetSevObj();
-              t.end = i + 1000;
-              t.endtxt = dateT(new Date(t.end));
-              t.dur = t.end - t.start;
-              t.durtxt = dhms(t.dur);
-
-            }
-          }
-        }
-
-        getTopSev(top, check){
-          for (var sev in this.sev) {
-            if (this.sev.hasOwnProperty(sev)) {
-              if (sev == top || sev == check) {
-                return sev
-              }
-            }
-          }
-        }
-
+    for (var zone in groups) {
+      for (var station in groups[zone]) {
+        groups._stationcount++
       }
+    }
+
+    // Call next function
+    setTimeout(function () {
+      fn_after.call()
+    }, 1);
+
+  }
+}
 
 
 
 
-      //// TEMP: Don't analyze groups in live view
-      if (window.location.pathname == '/live.html' || true){
-        fn_after.call(context)
-      } else {
-        asyncArr(arr, analyzeP3, analyzeS3, analyzeA3, this)
-      }
-
-
-      // GROUPS --------------------------------------------------------------
-      function analyzeP3(arr, i){
-
-        // Reverse itteration
-        i = (len - 1) - i
-
-        // Create current alarm object
-        var a = new CurrentAlarm(arr[i])
-
-        // GROUP DECISIONS ----------------------------------------------
-        if (!a.act && a.st == 1) {                                            // ON event
-
-          // create new group for station when undefined
-          // - set to undefinded when last alarms is removed from collection
-          if (g[a.stn] == undefined) {
-            g[a.stn] = new Group(gNum, a.zn, a.stn); gNum ++
-            g[a.stn].time("start", a.s)
-          }
-
-          // Collect on event
-          g[a.stn].collect(arr[i])
-
-          // Give event group number
-          arr[i]._group = new Group(g[a.stn].num)
-
-        } else if (g[a.stn] != undefined && a.st == 0) {                      // OFF event (with defined group)
-
-          // Detach event in collection with OFF event
-          g[a.stn].detach(arr[i])
-
-          // Give event group number
-          arr[i]._group = new Group(g[a.stn].num)
-
-          // Set group to undefined so a new group wil be created on the
-          // next itteration when the collection is empty
-          if (g[a.stn].checkEmpty()) {
-
-            g[a.stn].time("end", a.e);
-
-            g[a.stn].createTimeline();
-
-            arr[i]._group = copyObj(g[a.stn]);
-
-            g[a.stn] = undefined;
-
-          };
-
-        } else if ((g[a.stn] == undefined && a.st == 0) || a.act) {           // OFF event (without active group) || ACTIVE event
-
-          arr[i]._group = new Group(0)
-
-        }
-
-      }
-
-      function analyzeS3(arr, i){
-
-        var len = arr.length
-        var progress = Math.round( i / len * 100 )
-
-        statusFields('Analyzing alarm groups: ' + progress + '%', 'progress')
-
-      }
-
-      function analyzeA3(arr, i){
-
-        statusFields('Done ', 'done')
-
-        setTimeout(function () {
-
-          //// TEMP: Groups length for not showing groups when more then one station
-          groups = {}
-
-          for (var i = 0; i < arr.length; i++) {
-            if (arr[i]._group.hasOwnProperty('alarms')) {
-              groups[arr[i].station] = true;
-            }
-          }
 
 
 
 
-          fn_after.call(context)
 
-        }, 1);
 
+// NOTE: THIS SHOULD BE ASYNC (NOT WORKING ATM) step 6
+// Also: make this an option when there are too many alarms and it will take
+//       long to complete
+
+function createTimeline(){
+
+  var gs = Math.floor(this.start / 1000)*1000
+  var ge = Math.floor(this.end / 1000)*1000
+
+  this.timeline = []
+
+  var alarmsTSMem = ''
+  var topSev = ''
+  var sev_obj = {A:false,B:false,C:false,D:false,E:false};
+
+  function resetSevObj(){
+    for (var sev in sev_obj) {
+      if (sev_obj.hasOwnProperty(sev)) {
+        sev_obj[sev] = false
       }
     }
   }
 
+  var startIndex = 0
+
+  for (var i = gs; i < ge; i+=1000) {
+
+    var alarmsThisSecond = []
+
+    var startIndexSet = false
+
+    // Check active alarms at every second
+    for (var j = startIndex; j < this.alarms.length; j++) {
+
+      var a = this.alarms[j]
+
+      var as = Math.floor(a._start / 1000)*1000
+      var ae = Math.floor(a._end / 1000)*1000
+
+      if (as <= i && i <= ae) {
+
+        if (!startIndexSet) {
+          startIndex = j; startIndexSet = true; // set start index to narrow search when first alarm changes index
+        }
+
+        alarmsThisSecond.push(this.alarms[j])
+        topSev = this.getTopSev(topSev, a.severity)
+        sev_obj[a.severity] = true;
+      } else if (as > i) {
+
+        break // break when alarm is later than range for optimalisation
+
+      }
+
+    }
+
+    if(JSON.stringify(alarmsThisSecond) != alarmsTSMem){
+
+      this.timeline.push({
+        start: i,
+        starttxt: dateT(new Date(i)),
+        alarms: alarmsThisSecond,
+        end: i + 1000,
+        endtxt: dateT(new Date(i + 1000)),
+        dur: 1000,
+        durtxt: dhms(1000),
+        top: topSev,
+        sev_obj: copyObj(sev_obj)
+      })
+
+      topSev = ''
+      resetSevObj();
+
+      alarmsTSMem = JSON.stringify(alarmsThisSecond)
+
+    } else {
+
+      var t = this.timeline[this.timeline.length - 1]
+
+      t.top = topSev; topSev = ''
+      t.sev_obj = copyObj(sev_obj); resetSevObj();
+      t.end = i + 1000;
+      t.endtxt = dateT(new Date(t.end));
+      t.dur = t.end - t.start;
+      t.durtxt = dhms(t.dur);
+
+    }
+  }
+
+}
 
 
-};
 
-// For safari
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// For safari ------------------------------------------------------------------
+// Replace '-' by '/' & Remove 'ms' before new Date.. add 'ms' after again
 function sDateParse(date){
   date = date.replace(/-/g,'/')
   date = date.split('.')
@@ -1021,6 +954,7 @@ function sDateParse(date){
   var d = new Date(date[0]);
   return Date.parse(d)+parseInt(date[1]);
 }
+
 
 // Function: Convert ms to dhms string format ----------------------------------
 function dhms(ms) {
@@ -1053,7 +987,7 @@ function dhms(ms) {
 };
 
 
-
+// Copy object function --------------------------------------------------------
 function copyObj(obj){
   return JSON.parse(JSON.stringify(obj))
 }
@@ -1070,12 +1004,9 @@ function copyObj(obj){
 
 
 
+function alarmPages(alarmLimit){
 
-
-
-function alarmPages(){
-
-  if(all_alarms.length > alarmLimit){
+  if(filteredAlarms.length > alarmLimit){
 
     var pages = alarmParts.length
     var v

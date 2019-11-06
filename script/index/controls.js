@@ -8,7 +8,7 @@ tog = {
 
 
 // Clear/apply table formatting --------------------------------------
-$('#format').mouseup(format_mu) // NOTE: NOT USED ATM
+$('#footer').mouseup(format_mu) // NOTE: NOT USED ATM
 
 function format_mu(){
 
@@ -478,11 +478,9 @@ var FILTERS_def = function() {
       general: true, safety: true, interlock: true,
       autonotstarted: true, manual: true, formatnok: true,
       alarm: true,
-
-      resseq: true,
     },
     prod: {
-      general: true, inout: true, andon: true, controlroom: true,
+      production: true, inout: true, andon: true, controlroom: true,
     },
   }
 }

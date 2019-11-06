@@ -1,7 +1,3 @@
-// GLOBAL alarms var -----------------------------------------------------------
-var alarms
-var alarmParts
-
 // FADE functions --------------------------------------------------------------
 function loadFade(){ //fade interface on load
   $('.fade').css({'opacity': 1});
@@ -60,9 +56,16 @@ var TIA_GC = {
 }
 
 // Status fields ---------------------------------------------------------------
-function statusFields(str, cls){
+function statusFields(str, cls, arr, i){
 
-  if (TIME.rt){return}
+  // arr & i: only when cls (class) = progress
+
+  if (TIME.rt){return} //Don't show status when realtime is active
+
+  if (cls === "progress") {
+    var progress =  Math.round( i / arr.length * 100 )
+    str += ': ' + progress + '%'
+  }
 
   var ids = ['#load_status','#ul_status']
   var cl = 'loadstatus ' + cls

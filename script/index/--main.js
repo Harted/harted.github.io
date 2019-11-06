@@ -136,7 +136,7 @@ function GET(init){
 
     pushState(init); // push history state
 
-    setAlarms(data, afterAlarms, timer, init, this); // fill alarm object
+    Alarms(data, afterAlarms, timer, init, this); // fill alarm object
 
     function afterAlarms(timer, init){
 
