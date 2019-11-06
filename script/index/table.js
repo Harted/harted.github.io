@@ -181,7 +181,7 @@ function makeTable(settings, data){
 
       body.push('\n' + d[i].statetxt + ' - Shift: ' + d[i]._shift )
       body.push( ' - Duration : ' + d[i]._durtxt)
-      body.push('\nVariable : ' + d[i]._var)
+      body.push('\nVariable : ' + d[i]._varOrg)
       body.push('\nGroup : ' + d[i]._group.num) // TEMP: DISABLED
       if (d[i]._group.durtxt != undefined) {
         body.push(' - Duration : ' + d[i]._group.durtxt)

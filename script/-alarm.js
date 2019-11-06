@@ -117,6 +117,7 @@ class Alarm {
     this._datetime = data[0];
     this.station = data[1];
     this._var = this.setVar_temp(data[1], data[2]);
+    this._varOrg = data[2];
     this.comment = data[3];
     this.severity = data[4];
     this._state = parseInt(data[5]);
@@ -693,7 +694,7 @@ function groupAlarms(fn_after){
     // Create current alarm
     var a = arr[i]
 
-    a._groupEnd = false 
+    a._groupEnd = false
 
     // ON event +++++++++++++++++++++++++++++++++++++++++++++++++++++
     if (!a._active && a._state == 1) {
