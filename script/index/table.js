@@ -158,7 +158,7 @@ function makeTable(settings, data){
     for (let i = 0; i < d.length; i++){
 
       //// TEMP: keys lenght in groups for showing group lines
-      if((d[i]._group.hasOwnProperty('alarms') && i > 0 && groups._stationcount == 1)){
+      if(d[i]._groupEnd && i > 0 && groups._stationcount == 1){
         body.push('<tr style="border-top: solid 6px #444" ')
       } else if (d[i]._group.num == 0 && groups._stationcount == 1){
         body.push('<tr style="opacity:0.7;" ')

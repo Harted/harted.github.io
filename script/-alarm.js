@@ -3,6 +3,7 @@ var alarms
 var allAlarms, filteredAlarms
 var alarmParts
 var groups = {}
+var groupsNumRef = {}
 
 
 
@@ -692,6 +693,8 @@ function groupAlarms(fn_after){
     // Create current alarm
     var a = arr[i]
 
+    a._groupEnd = false 
+
     // ON event +++++++++++++++++++++++++++++++++++++++++++++++++++++
     if (!a._active && a._state == 1) {
 
@@ -732,7 +735,8 @@ function groupAlarms(fn_after){
 
           g[a.station].time("end", a._end);
 
-          arr[i]._group = copyObj(g[a.station]);
+          a._group = copyObj(g[a.station]);
+          a._groupEnd = true;
 
           g[a.station] = undefined;
 
@@ -783,7 +787,16 @@ function groupAlarms(fn_after){
         // Add group to groups object
         groups[arr[i]._zone][arr[i].station].push(arr[i]._group)
 
+        groupsNumRef[arr[i]._group.num] = arr[i]._group
+
       }
+    }
+
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i]._group.num > 0) {
+        arr[i]._group = groupsNumRef[arr[i]._group.num]
+      }
+
     }
 
     // Count stations present in group object
