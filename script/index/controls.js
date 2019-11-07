@@ -611,8 +611,6 @@ $('.control-group-header').click(collapseGroup)
 
 function collapseGroup(){
 
-  console.log('clickske zi');
-
   var el = $(this).parent()
 
   if(el.attr('class').search('collapse') > -1){

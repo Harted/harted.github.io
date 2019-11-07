@@ -157,7 +157,12 @@
 
   bottom: 0; // Stick at bottom
 
-
+  #pagepick {
+    display: none;
+    &.display {
+      display: block;
+    }
+  }
 
   div {
 
@@ -171,8 +176,6 @@
     opacity: 0.7;
     pointer-events: none;
 
-    display: none;
-
     input[type=number] {
       background-color: @color_dark;
       color: @color_bright;
@@ -181,10 +184,5 @@
       font-size: 1em;
       pointer-events: auto;
     }
-
-    &.display {
-      display: block;
-    }
-
   }
 }

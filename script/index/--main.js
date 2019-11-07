@@ -71,7 +71,23 @@ function GET_init(){
 
   updateAX(); // Update ajax parameter data
 
+  //Clear timeline stack
+  if (timelineStack.length > 0) {console.log('timelineStack CLEARED!');}
+  for (var j = 0; j < timelineStack.length; j++) {
+    clearTimeout(timelineStack[j])
+  }; timelineStack = [];
+
+  for (var j = 0; j < asyncStack.length; j++) {
+    clearTimeout(asyncStack[j])
+  }; asyncStack = [];
+
+
+
+
+
+
   return new Date();
+
 
 }
 

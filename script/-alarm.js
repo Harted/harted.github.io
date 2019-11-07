@@ -3,7 +3,9 @@ var alarms
 var allAlarms, filteredAlarms
 var alarmParts
 var groups = {}
-var groupsNumRef = {}
+var groupsByID = {}
+
+var distAlarmsCnt, distAlarmsDur
 
 
 
@@ -14,27 +16,8 @@ var groupsNumRef = {}
 
 
 
-
 // MASTER ALARMS FUNCTION ------------------------------------------------------
 function Alarms(data, fn_after, timer, init, context){
-
-
-
-
-  console.log('timelineStack before clear:', timelineStack);
-
-  //If create timelines are active stop them
-  for (var j = 0; j < timelineStack.length; j++) {
-    clearTimeout(timelineStack[j])
-  }
-
-  timelineStack = []
-
-  console.log('timelineStack after clear:', timelineStack);
-
-
-
-
 
   createAlarms(createAlarms_after, data) // 1
 
@@ -51,7 +34,11 @@ function Alarms(data, fn_after, timer, init, context){
   }
 
   function filterAlarms_after(){
-    groupAlarms(groupAlarms_after) // 5
+    distinctAlarms(distinctAlarms_after) // 5
+  }
+
+  function distinctAlarms_after(){
+    groupAlarms(groupAlarms_after) // 6
   }
 
   //// NOTE: CLEANUP this part
@@ -365,13 +352,29 @@ class Distinct {
 }
 
 
+// COUNT CLASS -----------------------------------------------------------------
+class CountObj {
+
+  constructor(name) {
+    this.count = 0
+    this.dur = 0
+  }
+
+  add(duration){
+    this.count++
+    this.dur += duration
+    this.durtxt = dhms(this.dur)
+  }
+}
+
+
+
 // [2] Analyze alarms for active, duration and link ----------------------------
 function analyzeAlarms(fn_after){
 
   // Vars
-  var dist = new Distinct(allAlarms, ['_var']);    // for fist dist on event
+  var dist = new Distinct(allAlarms, ['_var']);     // for fist dist on event
   var link_store = copyObj(dist)                    // for linkID storage
-  var count = copyObj(dist)                         // for alarm counting
 
   var linkID = 0;                         // linkID for ON.OFF events
   var linkIDn = -1;                       // linkID for ACTIVE
@@ -385,86 +388,70 @@ function analyzeAlarms(fn_after){
   // ITTER -----------------------------------------------------------
   function itter(arr, i){
 
-    //String referenced VARS  -----------------------------------
-    var a = arr[i]              //alarm row
-    var v = a._var              //var name
-    var s = a._state            //state integer
-    var date = sDateParse(a._datetime)
+    var a = arr[i]  // Set a as curent alarm reference
 
-    a._shift = getShift(date)
+    // Set alarms shift
+    a._shift = getShift(a._dt)
+
 
     // OFF event ------------------------------------------------
-    // - Assign link ID
-    // - Store link ID in distinct object to later assign to ON event
-    // - Store time to link array index to later calculate duration
-    //    at the ON event
-    // - Add 1 to link ID for next event
-    if (s == 0){
+    if (a._state == 0){
 
       a._linkID = linkID;
       a._active = false;
-      link_store._var[v] = linkID;
-      id_set[linkID] = false
-      time_store[linkID] = date;
-      linkID++;
 
-      a._end = date
+      // Set end time & store to calculate duration at ON event
+      a._end = time_store[linkID] = a._dt;
 
-    } else if (s == 1 && dist._var[v] == 1){
-      // First distinct event is ON event = ACTIVE ----------------
-      // - Assign active and set true
-      // - Change state text to ACTIVE
-      // - This event has no link but a duraction to now
+      // Store linkID and remember ON event linkID is not set yet
+      link_store._var[a._var] = linkID; id_set[linkID] = false;
+
+      linkID++ ; // Increment linkID
+
+    // ON event without OFF event = ACTIVE ----------------------
+    } else if (a._state == 1 && dist._var[a._var] == 1){
 
       a._linkID = linkIDn
+      a._active = true
+      a._start = a._dt
+      a._end = 'unknown'
 
       if (TIME.rel) {
 
-        a._active = true
-        a.statetxt = 'ACTIVE'
+        a.statetxt = 'ACTIVE' // Replace state text by ACTIVE
 
-        var dur = Date.now() - date
-        a._duration = dur
-        a._durtxt = dhms(dur)
-
-        a._start = date
-        a._end = 'active'
+        var dur = Date.now() - a._dt
+        a._duration = dur; a._durtxt = dhms(dur);
 
       } else {
-
-        a._active = true
 
         a._duration = -1
         a._durtxt = 'n/a'
 
-        a._start = date
-        a._end = 'unknown'
-
       }
 
-      linkIDn --
-    } else if (s == 1) {
-      // Not active ON events
-      // - Assing stored ID (stored at OFF event)
-      // - Link ID is set... when only OFF event this will be false
-      // - Duration = time at OFF event minus time at ON event
-      // - Duration is stored to later assign to off event
-      a._linkID = link_store._var[v]
-      id_set[a._linkID] = true
+      linkIDn -- // Set negative linkID
 
+    // ON event with OFF event ----------------------------------
+    } else if (a._state == 1) {
+
+
+      // Set stored linkID and remember ID is set
+      a._linkID = link_store._var[a._var]; id_set[a._linkID] = true;
+      a._active = false;
       a._end = time_store[a._linkID]
-      a._start = date
 
-      var dur = time_store[a._linkID] - date
-      a._duration = dur // value in ms
-      a._durtxt = dhms(dur) // value in dhms
-      time_store[a._linkID] = date
+      // Set duration
+      var dur = a._end - a._dt
+      a._duration = dur; a._durtxt = dhms(dur);
+
+      // Set start time & store to calculate duration at OFF event
+      a._start = a._dt; time_store[a._linkID] = a._dt
 
     }
 
-    // Set it to zero when the first distinct event is found.
-    // so the next same event can't be active
-    dist._var[v] = 0
+    // Set distinct to 0 - next ON event is not ACTIVE
+    dist._var[a._var] = 0
 
   }
 
@@ -489,24 +476,22 @@ function analyzeAlarms(fn_after){
 // [3] Link remaining events ---------------------------------------------------
 function linkAlarms(fn_after, id_set, time_store, linkIDn){
 
+  var cnt = new Distinct(allAlarms, ['_var']);  // for alarm counting
+
   asyncArr(allAlarms, itter, status, after, this);
 
   function itter(arr, i){
 
-    //String referenced VARS  --------------------------------------
-    var a = arr[i]   //alarm row
-    var v = a._var             //var name
-    var s = a._state      //state integer
-    var date = sDateParse(a._datetime)
+    var a = arr[i]  // Set a as curent alarm reference
 
-    if (s == 0 && a._linkID != 'none' && id_set[a._linkID] == true) {
-      // Off event that has a link ID and the ON event's ID is also set
-      // - Assign stored duration and durationtxt to the OFF event
-      a._start = time_store[a._linkID]
+    // OFF event with ON event set
+    if (a._state == 0 && id_set[a._linkID] == true) {
 
-      var dur = date - time_store[a._linkID]
-      a._duration = dur
-      a._durtxt = dhms(dur)
+      a._start = time_store[a._linkID] //stored time at ON event
+
+      // Set duration
+      var dur = a._dt - a._start
+      a._duration = dur; a._durtxt = dhms(dur);
 
     } else if ( a._duration == undefined ) {
 
@@ -519,6 +504,15 @@ function linkAlarms(fn_after, id_set, time_store, linkIDn){
 
     };
 
+    if (cnt._var[a._var] == 1) { cnt._var[a._var] = new CountObj()}
+
+    if (a._state == 1){
+      cnt._var[a._var].add(a._duration)
+      a._total = cnt._var[a._var]
+    } else {
+      a._total = cnt._var[a._var]
+    }
+
   };
 
   function status(arr, i){
@@ -527,6 +521,7 @@ function linkAlarms(fn_after, id_set, time_store, linkIDn){
 
   // AFTER -----------------------------------------------------------
   function after(arr,i){
+
     statusFields('Linking', 'progress', arr, i)
     setTimeout(function () {
       fn_after.call(null, id_set, time_store)
@@ -585,6 +580,96 @@ function filterAlarms(fn_after){
   }
 
 }
+
+
+// [5] Distinct events sumary --------------------------------------------------
+function distinctAlarms(fn_after){
+
+  distAlarmsCnt = {}
+  distAlarmsDur = {}
+
+  var distCnt = new Distinct(filteredAlarms, ['_var']);
+  var distDur = copyObj(distCnt)
+
+  asyncArr(filteredAlarms, itter, status, after, this)
+
+  // ITTER -----------------------------------------------------------
+  function itter(arr, i){
+
+    var a = arr[i]
+
+    if (distCnt._var[a._var] == 1) {
+      distCnt._var[a._var] = []
+    }
+
+    if (a._state == 1) {
+
+      distCnt._var[a._var].push(a)
+
+      // Create zone when not present
+      if (distAlarmsCnt[a._zone] == undefined) {
+        distAlarmsCnt[a._zone] = {}
+        distAlarmsDur[a._zone] = {}
+      }
+
+      // Create station when not presetn
+      if (distAlarmsCnt[a._zone][a.station] == undefined) {
+        distAlarmsCnt[a._zone][a.station] = {};
+        distAlarmsDur[a._zone][a.station] = {};
+      }
+
+      // Create station when not presetn
+      if (distAlarmsCnt[a._zone][a.station][a.severity] == undefined) {
+        distAlarmsCnt[a._zone][a.station][a.severity] = [];
+        distAlarmsDur[a._zone][a.station][a.severity] = [];
+      }
+
+      distAlarmsCnt[a._zone][a.station][a.severity].push([a._total.count, distCnt._var[a._var]])
+      distAlarmsDur[a._zone][a.station][a.severity].push([a._total.dur, distCnt._var[a._var]])
+
+    }
+
+  }
+
+  // STATUS ----------------------------------------------------------
+  function status(arr, i) {
+    statusFields('Distinct', 'progress', arr, i)
+  }
+
+  // AFTER -----------------------------------------------------------
+  function after(arr,i){
+
+    for (var z in distAlarmsCnt) {
+      for (var st in distAlarmsCnt[z]) {
+        for (var sev in distAlarmsCnt[z][st]) {
+
+          var arr = distAlarmsCnt[z][st][sev]
+
+          arr = arr.sort(function(a,b) {
+              return a[0] - b[0];
+          });
+
+          arr = distAlarmsDur[z][st][sev]
+
+          arr = arr.sort(function(a,b) {
+              return a[0] - b[0];
+          });
+
+        }
+      }
+    }
+
+    console.log(distAlarmsCnt, distAlarmsDur)
+
+    statusFields('Distinct', 'progress', arr, i)
+    setTimeout(function () {
+      fn_after.call()
+    }, 1);
+  }
+
+
+}
+
 
 
 // GROUP CLASS -----------------------------------------------------------------
@@ -674,7 +759,7 @@ class Group {
     }
   }
 
-  createTimeline(){
+  createTimeline(groupCnt){
 
     var gs = Math.floor(this.start / 1000)*1000
     var ge = Math.floor(this.end / 1000)*1000
@@ -695,7 +780,15 @@ class Group {
 
     var startIndex = 0
 
-    for (var i = gs; i < ge; i+=1000) {
+    var secondArr = []
+    for (var i = gs; i < ge; i+=1000) { secondArr.push(i) }
+
+    asyncArr(secondArr, itter, status, after, this, 10);
+
+    // ITTER ---------------------------------------------------------
+    function itter(arr, i){
+
+      i = arr[i]
 
       var alarmsThisSecond = []
 
@@ -759,28 +852,50 @@ class Group {
       }
     }
 
+    // STATUS --------------------------------------------------------
+    function status(arr, i){ timelineStatus(); };
+
+    // AFTER ---------------------------------------------------------
+    function after(arr,i){ groupCnt.count-- ; timelineStatus(); }
+
+    // Show status on interface
+    function timelineStatus(){
+
+      // Current count reverse & total group count
+      var current = (groupCnt.count * -1) + groupCnt.max
+      var max = groupCnt.max
+
+      // Show status
+      if (current < max) {
+        var txt = 'Creating timeline for group: ' + current + '/' + max
+      } else { var txt = ''; };
+
+      $('#timelineStatus span').text(txt)
+
+    }
+
   }
 
 }
 
+// timelineStack to be able to cancel timeline creation
+var timelineStack = []
 
-// [5] Group events ------------------------------------------------------------
+// [6] Group events ------------------------------------------------------------
 function groupAlarms(fn_after){
 
-  //// TEMP: Don't analyze groups in live view
+  // Don't analyze groups in live view
   if (window.location.pathname == '/live.html'){
 
     statusFields('Done', 'done');
     setTimeout(function () {
       fn_after.call()
-    }, 10);
+    }, 1);
 
   } else {
 
     var gID = 1 // to increment group number with each new group
-
-    // Reset groups object
-    groups = {}
+    groups = {} // Reset groups object
 
     // to set short g variable for current group
     var g, index
@@ -807,75 +922,71 @@ function groupAlarms(fn_after){
     a._groupEnd = false
 
 
-    // ON event
+    // ON event ++++++++++++++++++++++++++++++++++++++++++++++
     if (!a._active && a._state == 1) {
 
+      // Create zone when not present
       if (groups[a._zone] == undefined) {
         groups[a._zone] = {}
       }
 
+      // Create station when not presetn
       if (groups[a._zone][a.station] == undefined) {
-        groups[a._zone][a.station] = []; newGroup();
+        groups[a._zone][a.station] = []; newGroup(); // First new group
       }
 
-      currentGroup(a);
-      if (g.collection == undefined) { newGroup();}
+      currentGroup(a); // set current group object (g)
 
-      currentGroup(a);
-      g.collect(a)
-      a._group = g
+      if (g.collection == undefined) { newGroup();} // Add new group
+
+      currentGroup(a); // set current group object (g)
+
+      g.collect(a) // collect alarm
+      a._group = g // Add reference to alarm
 
       function newGroup(){
 
         groups[a._zone][a.station].push(new Group(gID)); gID++;
 
-        currentGroup(a);
-        g.time("start", a._start)
+        currentGroup(a); // set current group object (g)
+        g.time("start", a._start) // set start time of group
 
       }
 
-    // OFF event
+    // OFF event +++++++++++++++++++++++++++++++++++++++++++++
     } else if (a._state == 0) {
 
-      if (groups[a._zone][a.station] == undefined) {
-
-        a._group = 'no group'
-
+      if (groups[a._zone] == undefined) {
+        a._group = 'no group' // no group when zone is undefined
+      } else if (groups[a._zone][a.station] == undefined) {
+        a._group = 'no group' // no group when station is undefined
       } else {
+        currentGroup(a); // set current group object (g)
 
-        currentGroup(a);
-
-        if (g.collection != undefined) {
+        if (g.collection == undefined) {
+          a._group = 'no group' // no group when there's no collection
+        } else {
 
           if (g.collection.indexOf(a._var) < 0) {
-
-            a._group = 'no group'
+            a._group = 'no group' // no group when not in collection
 
           } else {
 
-            g.detach(a)
+            g.detach(a) // remove OFF event from colleciton
+            a._group = g // Add reference to alarm
 
-            a._group = g
-
+            // Check if the collection is empty
             if (g.checkEmpty()) {
 
-              g.time("end", a._end);
-
-              a._groupEnd = true;
+              g.time("end", a._end); // Set end time of group
+              a._groupEnd = true; // Set _groupEnd reference for table line
 
             }
-
           }
-
-        } else {
-
-          a._group = 'no group'
-
         }
       }
 
-
-    // ACTIVE event
+    // ACTIVE event ++++++++++++++++++++++++++++++++++++++++++
     } else if (a._active) { a._group = 'no group' }
 
   }
@@ -883,12 +994,7 @@ function groupAlarms(fn_after){
 
   // STATUS --------------------------------------------------------
   function status(arr, i){
-
-    var len = arr.length
-    var progress = Math.round( i / len * 100 )
-
-    statusFields('Analyzing alarm groups', 'progress', arr, i)
-
+    statusFields('Grouping', 'progress', arr, i)
   }
 
   // AFTER ---------------------------------------------------------
@@ -899,6 +1005,9 @@ function groupAlarms(fn_after){
     // Count stations present in group object
     groups._stationcount = 0
 
+    var groupCnt = {count: 0, max: 0} // To show satus
+    groupsByID = {} // Rest groupsByID object
+
     for (var zone in groups) {
       for (var station in groups[zone]) {
 
@@ -907,42 +1016,30 @@ function groupAlarms(fn_after){
         // Create timelines in the background
         for (var i = 0; i < groups[zone][station].length; i++) {
 
-          timelineStack.push(setTimeout(asyncTimeline.bind(null, i, zone, station), 0));
+          // Fill groupsByID object
+          groupsByID[groups[zone][station][i].ID] = groups[zone][station][i]
+
+          // count = todo, max = total groups (for status)
+          groupCnt.count++ ; groupCnt.max++ ;
+
+          // Async execution of timeline creation (add to timeline stack)
+          timelineStack.push(
+            setTimeout(asyncTimeline.bind(null, i, zone, station), 0)
+          );
 
           function asyncTimeline(i, zone, station){
-            var current = timelineStack.shift()
-
-            console.time('Group timeline: ' + groups[zone][station][i].ID + ' - Stack: ' + current);
-            groups[zone][station][i].createTimeline()
-            console.timeEnd('Group timeline: ' + groups[zone][station][i].ID + ' - Stack: ' + current);
-
+            var current = timelineStack.shift() // Empty timelinestack on exec.
+            groups[zone][station][i].createTimeline(groupCnt)
           }
-
         }
-
-
       }
     }
 
     console.log(groups);
-    fn_after.call()
-
-    // Call next function after timeout stack
-    setTimeout(function () {
-      //fn_after.call()
-    }, 1);
+    fn_after.call() // Call next function
 
   }
 }
-
-var timelineStack = []
-
-
-
-
-
-
-
 
 
 

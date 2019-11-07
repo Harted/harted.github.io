@@ -78,16 +78,16 @@ function statusFields(str, cls, arr, i){
 
 
 //Async array function ---------------------------------------------------------
-function asyncArr(array, fn_arr, fn_dom, fn_after, context) {
+var asyncStack = []
+function asyncArr(array, fn_arr, fn_dom, fn_after, context, time) {
 
   var i = 0
   var len = array.length
 
-  time = 100
+  time = time || 150
   var context = context || window
 
   function itter(){
-
     var starttime = Date.now() + time
 
     while(  Date.now() < starttime && i < len) { // array function
@@ -96,7 +96,7 @@ function asyncArr(array, fn_arr, fn_dom, fn_after, context) {
 
     if ( i < len ) { // between parts function
       fn_dom.call( context, array, i )
-      setTimeout( itter, 1 )
+      asyncStack.push(setTimeout( itter, 1 )) //able to cancel async opperation
     } else { // after itteration
       fn_after.call( context, array, i )
     }
