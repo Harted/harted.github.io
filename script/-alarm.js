@@ -589,7 +589,7 @@ function distinctAlarms(fn_after){
   distAlarmsDur = {}
 
   var distCnt = new Distinct(filteredAlarms, ['_var']);
-  var distDur = copyObj(distCnt)
+  var distSet = copyObj(distCnt)
 
   asyncArr(filteredAlarms, itter, status, after, this)
 
@@ -602,9 +602,12 @@ function distinctAlarms(fn_after){
       distCnt._var[a._var] = []
     }
 
-    if (a._state == 1) {
+    // NOTE: Should create a Class with a sort option
+
+    if (distSet._var[a._var] == 1 && a._state == 1) {
 
       distCnt._var[a._var].push(a)
+      distSet._var[a._var] = 0
 
       // Create zone when not present
       if (distAlarmsCnt[a._zone] == undefined) {
@@ -624,7 +627,7 @@ function distinctAlarms(fn_after){
         distAlarmsDur[a._zone][a.station][a.severity] = [];
       }
 
-      distAlarmsCnt[a._zone][a.station][a.severity].push([a._total.count, distCnt._var[a._var]])
+      distAlarmsCnt[a._zone][a.station][a.severity].push({cnt: a._total.count, alarm: distCnt._var[a._var]})
       distAlarmsDur[a._zone][a.station][a.severity].push([a._total.dur, distCnt._var[a._var]])
 
     }
@@ -646,7 +649,7 @@ function distinctAlarms(fn_after){
           var arr = distAlarmsCnt[z][st][sev]
 
           arr = arr.sort(function(a,b) {
-              return a[0] - b[0];
+              return a.cnt - b.cnt;
           });
 
           arr = distAlarmsDur[z][st][sev]
@@ -659,7 +662,8 @@ function distinctAlarms(fn_after){
       }
     }
 
-    console.log(distAlarmsCnt, distAlarmsDur)
+    console.log('count:', distAlarmsCnt)
+    console.log('durat:', distAlarmsDur)
 
     statusFields('Distinct', 'progress', arr, i)
     setTimeout(function () {
