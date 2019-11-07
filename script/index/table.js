@@ -48,7 +48,7 @@ function makeTable(settings, data){
 
   //VARIABLES -------------------------------------------------------------
   var tbl = '' // tbl +variable to output to html
-  var j = 0 // index to calculate max string lenght of th and td
+  var j = 0 // index to calculate max string length of th and td
   var th_min_w = [] // to store th min-width
   var td_min_w = [] // to store td min-width
 
@@ -70,7 +70,7 @@ function makeTable(settings, data){
   for (var col in settings.cols) {
     if (settings.cols.hasOwnProperty(col)) {
 
-      // record string lenght, multiply with font width + arrow space
+      // record string length, multiply with font width + arrow space
       th_min_w[j] =(settings.cols[col].length * settings.fontwidth)
       + settings.arrow;j++;
 
@@ -157,7 +157,7 @@ function makeTable(settings, data){
     // for every record in array
     for (let i = 0; i < d.length; i++){
 
-      //// TEMP: keys lenght in groups for showing group lines
+      //// TEMP: keys length in groups for showing group lines
       if(d[i]._groupEnd && i > 0 && groups._stationcount == 1){
         body.push('<tr style="border-top: solid 6px #444" ')
       } else if (d[i]._group.num == 0 && groups._stationcount == 1){
@@ -182,7 +182,7 @@ function makeTable(settings, data){
       body.push('\n' + d[i].statetxt + ' - Shift: ' + d[i]._shift )
       body.push( ' - Duration : ' + d[i]._durtxt)
       body.push('\nVariable : ' + d[i]._varOrg)
-      body.push('\nGroup : ' + d[i]._group.num) // TEMP: DISABLED
+      body.push('\nGroup : ' + d[i]._group.ID) // TEMP: DISABLED
       if (d[i]._group.durtxt != undefined) {
         body.push(' - Duration : ' + d[i]._group.durtxt)
       }
@@ -199,7 +199,7 @@ function makeTable(settings, data){
       // If there would be a mistake in the var name in the settings object
       // there will be no data in the collumn.
 
-      j = 0 // reset index for getting th maximum string lenght
+      j = 0 // reset index for getting th maximum string length
 
       for (var col in settings.cols) {
         if (d[i].hasOwnProperty(col)) {

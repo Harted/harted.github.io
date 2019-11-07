@@ -18,6 +18,24 @@ var groupsNumRef = {}
 // MASTER ALARMS FUNCTION ------------------------------------------------------
 function Alarms(data, fn_after, timer, init, context){
 
+
+
+
+  console.log('timelineStack before clear:', timelineStack);
+
+  //If create timelines are active stop them
+  for (var j = 0; j < timelineStack.length; j++) {
+    clearTimeout(timelineStack[j])
+  }
+
+  timelineStack = []
+
+  console.log('timelineStack after clear:', timelineStack);
+
+
+
+
+
   createAlarms(createAlarms_after, data) // 1
 
   function createAlarms_after(){
@@ -572,17 +590,12 @@ function filterAlarms(fn_after){
 // GROUP CLASS -----------------------------------------------------------------
 class Group {
 
-  constructor(groupNumber, zone, station) {
+  constructor(groupID) {
 
-    this.num = groupNumber
-
-    if(zone != undefined && station != undefined){
-      this.zone = zone;
-      this.stn = station;
-      this.alarms = []
-      this.collection = []
-      this.sev = this.severityObj(['A','B','C','D','E'])
-    }
+    this.ID = groupID
+    this.alarms = []
+    this.collection = []
+    this.sev = this.severityObj(['A','B','C','D','E'])
 
   }
 
@@ -661,6 +674,93 @@ class Group {
     }
   }
 
+  createTimeline(){
+
+    var gs = Math.floor(this.start / 1000)*1000
+    var ge = Math.floor(this.end / 1000)*1000
+
+    this.timeline = []
+
+    var alarmsTSMem = 0
+    var topSev = ''
+    var sev_obj = {A:false,B:false,C:false,D:false,E:false};
+
+    function resetSevObj(){
+      for (var sev in sev_obj) {
+        if (sev_obj.hasOwnProperty(sev)) {
+          sev_obj[sev] = false
+        }
+      }
+    }
+
+    var startIndex = 0
+
+    for (var i = gs; i < ge; i+=1000) {
+
+      var alarmsThisSecond = []
+
+      var startIndexSet = false
+
+      // Check active alarms at every second
+      for (var j = startIndex; j < this.alarms.length; j++) {
+
+        var a = this.alarms[j]
+
+        var as = Math.floor(a._start / 1000)*1000
+        var ae = Math.floor(a._end / 1000)*1000
+
+        if (as <= i && i <= ae) {
+
+          if (!startIndexSet) {
+            startIndex = j; startIndexSet = true; // set start index to narrow search when first alarm changes index
+          }
+
+          alarmsThisSecond.push(this.alarms[j])
+          topSev = this.getTopSev(topSev, a.severity)
+          sev_obj[a.severity] = true;
+        } else if (as > i) {
+
+          break // break when alarm is later than range for optimalisation
+
+        }
+
+      }
+
+      if(alarmsThisSecond.length != alarmsTSMem){
+
+        this.timeline.push({
+          start: i,
+          starttxt: dateT(new Date(i)),
+          alarms: alarmsThisSecond,
+          end: i + 1000,
+          endtxt: dateT(new Date(i + 1000)),
+          dur: 1000,
+          durtxt: dhms(1000),
+          top: topSev,
+          sev_obj: copyObj(sev_obj)
+        })
+
+        topSev = ''
+        resetSevObj();
+
+        alarmsTSMem = alarmsThisSecond.length
+
+      } else {
+
+        var t = this.timeline[this.timeline.length - 1]
+
+        t.top = topSev; topSev = ''
+        t.sev_obj = copyObj(sev_obj); resetSevObj();
+        t.end = i + 1000;
+        t.endtxt = dateT(new Date(t.end));
+        t.dur = t.end - t.start;
+        t.durtxt = dhms(t.dur);
+
+      }
+    }
+
+  }
+
 }
 
 
@@ -677,8 +777,17 @@ function groupAlarms(fn_after){
 
   } else {
 
-    var g = {} //to store temporary groups
-    var gNum = 1 // to increment group number with each new group
+    var gID = 1 // to increment group number with each new group
+
+    // Reset groups object
+    groups = {}
+
+    // to set short g variable for current group
+    var g, index
+    function currentGroup(a){
+      index = groups[a._zone][a.station].length - 1
+      g = groups[a._zone][a.station][index]
+    }
 
     asyncArr(filteredAlarms, itter, status, after, this)
 
@@ -691,64 +800,83 @@ function groupAlarms(fn_after){
     // Reverse itteration
     i = (arr.length - 1) - i
 
-    // Create current alarm
+    // Reference current alarm
     var a = arr[i]
 
+    // To draw border in table
     a._groupEnd = false
 
-    // ON event +++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    // ON event
     if (!a._active && a._state == 1) {
 
-      // create new group for station when undefined
-      // - set to undefinded when last alarms is removed from collection
-      if (g[a.station] == undefined) {
-        g[a.station] = new Group(gNum, a._zone, a.station); gNum ++
-        g[a.station].time("start", a._start)
+      if (groups[a._zone] == undefined) {
+        groups[a._zone] = {}
       }
 
-      // Collect on event
-      g[a.station].collect(a)
+      if (groups[a._zone][a.station] == undefined) {
+        groups[a._zone][a.station] = []; newGroup();
+      }
 
-      // Give event group number
-      a._group = new Group(g[a.station].num)
+      currentGroup(a);
+      if (g.collection == undefined) { newGroup();}
 
+      currentGroup(a);
+      g.collect(a)
+      a._group = g
 
-      // OFF event (with defined group) ++++++++++++++++++++++++++++++++
-    } else if (g[a.station] != undefined && a._state == 0) {
+      function newGroup(){
 
-      // OFF event not in collection
-      if (g[a.station].collection.indexOf(a._var) < 0) {
+        groups[a._zone][a.station].push(new Group(gID)); gID++;
 
-        a._group = new Group(0)
+        currentGroup(a);
+        g.time("start", a._start)
 
-        // OFF event IN collection
+      }
+
+    // OFF event
+    } else if (a._state == 0) {
+
+      if (groups[a._zone][a.station] == undefined) {
+
+        a._group = 'no group'
+
       } else {
 
-        // Detach event in collection with OFF event
-        g[a.station].detach(a)
+        currentGroup(a);
 
-        // Give event group number
-        a._group = new Group(g[a.station].num)
+        if (g.collection != undefined) {
 
-        // Set group to undefined so a new group wil be created on the
-        // next itteration when the collection is empty
-        if (g[a.station].checkEmpty()) {
+          if (g.collection.indexOf(a._var) < 0) {
 
-          g[a.station].time("end", a._end);
+            a._group = 'no group'
 
-          a._group = copyObj(g[a.station]);
-          a._groupEnd = true;
+          } else {
 
-          g[a.station] = undefined;
+            g.detach(a)
 
-        };
+            a._group = g
+
+            if (g.checkEmpty()) {
+
+              g.time("end", a._end);
+
+              a._groupEnd = true;
+
+            }
+
+          }
+
+        } else {
+
+          a._group = 'no group'
+
+        }
       }
 
 
-      // OFF event (without active group) || ACTIVE event ++++++++++++++
-    } else if ((g[a.station] == undefined && a._state == 0) || a._active) {
-      a._group = new Group(0)
-    }
+    // ACTIVE event
+    } else if (a._active) { a._group = 'no group' }
 
   }
 
@@ -768,154 +896,49 @@ function groupAlarms(fn_after){
 
     statusFields('Done', 'done')
 
-    // Reset groups object
-    groups = {}
-
-    // Search groups in alarm array
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i]._group.hasOwnProperty('alarms')) {
-
-        // Define zone property
-        if (!groups.hasOwnProperty(arr[i]._zone)) {
-          groups[arr[i]._zone] = {}
-        }
-
-        // Define station property
-        if (!groups[arr[i]._zone].hasOwnProperty(arr[i].station)) {
-          groups[arr[i]._zone][arr[i].station] = []
-        }
-
-        // Add group to groups object
-        groups[arr[i]._zone][arr[i].station].push(arr[i]._group)
-
-        groupsNumRef[arr[i]._group.num] = arr[i]._group
-
-      }
-    }
-
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i]._group.num > 0) {
-        arr[i]._group = groupsNumRef[arr[i]._group.num]
-      }
-
-    }
-
     // Count stations present in group object
     groups._stationcount = 0
 
     for (var zone in groups) {
       for (var station in groups[zone]) {
+
         groups._stationcount++
+
+        // Create timelines in the background
+        for (var i = 0; i < groups[zone][station].length; i++) {
+
+          timelineStack.push(setTimeout(asyncTimeline.bind(null, i, zone, station), 0));
+
+          function asyncTimeline(i, zone, station){
+            var current = timelineStack.shift()
+
+            console.time('Group timeline: ' + groups[zone][station][i].ID + ' - Stack: ' + current);
+            groups[zone][station][i].createTimeline()
+            console.timeEnd('Group timeline: ' + groups[zone][station][i].ID + ' - Stack: ' + current);
+
+          }
+
+        }
+
+
       }
     }
 
-    // Call next function
+    console.log(groups);
+    fn_after.call()
+
+    // Call next function after timeout stack
     setTimeout(function () {
-      fn_after.call()
+      //fn_after.call()
     }, 1);
 
   }
 }
 
+var timelineStack = []
 
 
 
-
-
-
-
-
-
-// NOTE: THIS SHOULD BE ASYNC (NOT WORKING ATM) step 6
-// Also: make this an option when there are too many alarms and it will take
-//       long to complete
-
-function createTimeline(){
-
-  var gs = Math.floor(this.start / 1000)*1000
-  var ge = Math.floor(this.end / 1000)*1000
-
-  this.timeline = []
-
-  var alarmsTSMem = ''
-  var topSev = ''
-  var sev_obj = {A:false,B:false,C:false,D:false,E:false};
-
-  function resetSevObj(){
-    for (var sev in sev_obj) {
-      if (sev_obj.hasOwnProperty(sev)) {
-        sev_obj[sev] = false
-      }
-    }
-  }
-
-  var startIndex = 0
-
-  for (var i = gs; i < ge; i+=1000) {
-
-    var alarmsThisSecond = []
-
-    var startIndexSet = false
-
-    // Check active alarms at every second
-    for (var j = startIndex; j < this.alarms.length; j++) {
-
-      var a = this.alarms[j]
-
-      var as = Math.floor(a._start / 1000)*1000
-      var ae = Math.floor(a._end / 1000)*1000
-
-      if (as <= i && i <= ae) {
-
-        if (!startIndexSet) {
-          startIndex = j; startIndexSet = true; // set start index to narrow search when first alarm changes index
-        }
-
-        alarmsThisSecond.push(this.alarms[j])
-        topSev = this.getTopSev(topSev, a.severity)
-        sev_obj[a.severity] = true;
-      } else if (as > i) {
-
-        break // break when alarm is later than range for optimalisation
-
-      }
-
-    }
-
-    if(JSON.stringify(alarmsThisSecond) != alarmsTSMem){
-
-      this.timeline.push({
-        start: i,
-        starttxt: dateT(new Date(i)),
-        alarms: alarmsThisSecond,
-        end: i + 1000,
-        endtxt: dateT(new Date(i + 1000)),
-        dur: 1000,
-        durtxt: dhms(1000),
-        top: topSev,
-        sev_obj: copyObj(sev_obj)
-      })
-
-      topSev = ''
-      resetSevObj();
-
-      alarmsTSMem = JSON.stringify(alarmsThisSecond)
-
-    } else {
-
-      var t = this.timeline[this.timeline.length - 1]
-
-      t.top = topSev; topSev = ''
-      t.sev_obj = copyObj(sev_obj); resetSevObj();
-      t.end = i + 1000;
-      t.endtxt = dateT(new Date(t.end));
-      t.dur = t.end - t.start;
-      t.durtxt = dhms(t.dur);
-
-    }
-  }
-
-}
 
 
 
