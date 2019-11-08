@@ -170,8 +170,6 @@ function GET(init){
 
       statusFields('', '')
 
-      makeOverview();
-
     }
   });
 }

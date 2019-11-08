@@ -5,8 +5,7 @@ var alarmParts
 var groups = {}
 var groupsByID = {}
 
-var distAlarmsCnt, distAlarmsDur
-
+var distAlarms
 
 
 // TODO:
@@ -582,14 +581,93 @@ function filterAlarms(fn_after){
 }
 
 
+// DISTINCT ALARMS CLASS -------------------------------------------------------
+class DistAlarms {
+
+  constructor(alarms) {
+    this.dist = new Distinct(alarms, ['_var']);
+    this.ordered = {}
+  }
+
+  addDist(a){
+
+    if (a._state == 1) {
+
+      if (this.dist._var[a._var] == 1) {
+        this.dist._var[a._var] = []
+      }
+
+      this.dist._var[a._var].push(a)
+
+    }
+
+  }
+
+  order(){
+
+    var obj = this.dist._var
+
+    for (var v in obj) {
+
+      if (obj[v].length > 0) {
+
+        var zn = obj[v][0]._zone
+        var stn = obj[v][0].station
+        var sev = obj[v][0].severity
+        var tot = obj[v][0]._total
+
+        var o = this.ordered
+
+        if( o[zn] == undefined) { o[zn] = {} }
+        if( o[zn][stn] == undefined) { o[zn][stn] = {} }
+        if( o[zn][stn][sev] == undefined) { o[zn][stn][sev] = [] }
+
+        o[zn][stn][sev].push({
+          cnt: tot.count,
+          dur: tot.dur,
+          durtxt: tot.durtxt,
+          _var: v,
+          obj: obj[v]
+        })
+
+      } else { delete obj[v] };
+
+    }
+
+  }
+
+  sort(mode){
+
+    var o = this.ordered
+
+    for (var z in o) {
+      for (var st in o[z]) {
+        for (var sev in o[z][st]) {
+
+          var arr = o[z][st][sev]
+
+          arr = arr.sort(function(a,b) {
+              return a[mode] - b[mode];
+          });
+
+          arr = arr.reverse()
+
+        }
+      }
+    }
+
+    console.log('Sorted by ' + mode, o);
+
+  }
+
+}
+
+
+
 // [5] Distinct events sumary --------------------------------------------------
 function distinctAlarms(fn_after){
 
-  distAlarmsCnt = {}
-  distAlarmsDur = {}
-
-  var distCnt = new Distinct(filteredAlarms, ['_var']);
-  var distSet = copyObj(distCnt)
+  distAlarms = new DistAlarms(filteredAlarms);
 
   asyncArr(filteredAlarms, itter, status, after, this)
 
@@ -598,39 +676,7 @@ function distinctAlarms(fn_after){
 
     var a = arr[i]
 
-    if (distCnt._var[a._var] == 1) {
-      distCnt._var[a._var] = []
-    }
-
-    // NOTE: Should create a Class with a sort option
-
-    if (distSet._var[a._var] == 1 && a._state == 1) {
-
-      distCnt._var[a._var].push(a)
-      distSet._var[a._var] = 0
-
-      // Create zone when not present
-      if (distAlarmsCnt[a._zone] == undefined) {
-        distAlarmsCnt[a._zone] = {}
-        distAlarmsDur[a._zone] = {}
-      }
-
-      // Create station when not presetn
-      if (distAlarmsCnt[a._zone][a.station] == undefined) {
-        distAlarmsCnt[a._zone][a.station] = {};
-        distAlarmsDur[a._zone][a.station] = {};
-      }
-
-      // Create station when not presetn
-      if (distAlarmsCnt[a._zone][a.station][a.severity] == undefined) {
-        distAlarmsCnt[a._zone][a.station][a.severity] = [];
-        distAlarmsDur[a._zone][a.station][a.severity] = [];
-      }
-
-      distAlarmsCnt[a._zone][a.station][a.severity].push({cnt: a._total.count, alarm: distCnt._var[a._var]})
-      distAlarmsDur[a._zone][a.station][a.severity].push([a._total.dur, distCnt._var[a._var]])
-
-    }
+    distAlarms.addDist(a)
 
   }
 
@@ -642,28 +688,8 @@ function distinctAlarms(fn_after){
   // AFTER -----------------------------------------------------------
   function after(arr,i){
 
-    for (var z in distAlarmsCnt) {
-      for (var st in distAlarmsCnt[z]) {
-        for (var sev in distAlarmsCnt[z][st]) {
-
-          var arr = distAlarmsCnt[z][st][sev]
-
-          arr = arr.sort(function(a,b) {
-              return a.cnt - b.cnt;
-          });
-
-          arr = distAlarmsDur[z][st][sev]
-
-          arr = arr.sort(function(a,b) {
-              return a[0] - b[0];
-          });
-
-        }
-      }
-    }
-
-    console.log('count:', distAlarmsCnt)
-    console.log('durat:', distAlarmsDur)
+    distAlarms.order()
+    distAlarms.sort('cnt')
 
     statusFields('Distinct', 'progress', arr, i)
     setTimeout(function () {
@@ -1039,7 +1065,7 @@ function groupAlarms(fn_after){
       }
     }
 
-    console.log(groups);
+    console.log('Groups', groups);
     fn_after.call() // Call next function
 
   }
