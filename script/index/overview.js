@@ -71,6 +71,7 @@ function getShift(date){
 
 // HOLIDAYs --------------------------------------------------------------------
 var HOLIDAYS = [
+  new Date (2018,11,31),
   // Januari
   new Date (2019,00,01), new Date (2019,00,02),
   // February (STAKING)
@@ -140,7 +141,6 @@ class Holidays {
 }
 
 var holidayTL = new Holidays(HOLIDAYS)
-
 console.log(holidayTL);
 
 
@@ -218,7 +218,7 @@ var LAYOFF = [
 
 ]
 
-
+// LAYOFF CLASS
 class LayOff {
   constructor(LO) {
     this.timeline = []
@@ -268,15 +268,70 @@ class LayOff {
 }
 
 var layOffTL = new LayOff(LAYOFF)
-
 console.log(layOffTL);
 
-var HDLOtimeline = holidayTL.timeline.concat(layOffTL.timeline)
+
+class Weekends {
+  constructor() {
+    this.timeline = []
+    this.createTimeline()
+  }
+
+  createTimeline(){
+
+    var satSt = Date.parse(new Date(2019,0,5,0,0,0))
+    var now = Date.parse(new Date())
+
+    for (var i = satSt; i < now; i += (1000*60*60*24*7) ) {
+
+      var ys = new Date(i).getFullYear()
+      var ms = new Date(i).getMonth()
+      var ds = new Date(i).getDate()
+
+      var mon = i + (1000*60*60*24*2)
+
+      var ye = new Date(mon).getFullYear()
+      var me = new Date(mon).getMonth()
+      var de = new Date(mon).getDate()
+
+      var sTime = SHIFTS[6].W.s.split(':')
+      var eTime = SHIFTS[1].W.e.split(':')
+
+      var sDate = new Date(ys, ms, ds, sTime[0], sTime[1], sTime[2])
+      var eDate = new Date(ye, me, de, eTime[0], eTime[1], eTime[2])
+
+      this.timeline.push({
+        start: Date.parse(sDate),
+        end: Date.parse(eDate),
+        type: 'weekend',
+        sdate: dateT(sDate),
+        eDate: dateT(eDate),
+      })
+
+
+    }
+
+  }
+}
+
+var weekendTL = new Weekends()
+console.log(weekendTL);
+
+// Add Holiday, LayOff & Weekend timeline and sort by start date
+var HDLOWtimeline = holidayTL.timeline
+.concat(layOffTL.timeline)
+.concat(weekendTL.timeline)
 .sort(function(a,b){
   return a.start - b.start
 })
 
-console.log('Holiday & layOff timeline', HDLOtimeline);
+
+
+
+
+
+
+
 
 // BREAK -----------------------------------------------------------------------
 var BREAK = {
@@ -407,26 +462,208 @@ var BREAK = {
 
 class ProdTimeline {
   constructor(a) {
+
     this.timeline = []
-    this.HDLObetween = []
-    this.startInHDLO = undefined
+
+    this.inHDLOW = undefined
+    this.sInHDLOW = undefined
+    this.eInHDLOW = undefined
+    this.HDLOWsBetween = []
+
+    this.timeNotHDLOW = []
+
+    this.inBrk = undefined
+    this.sInBrk = undefined
+    this.eInBrk = undefined
+    this.BrksBetween = []
+
+    this.inHDLOWB = undefined
+    this.sInHDLOWB = undefined
+    this.eInHDLOWB = undefined
+    this.HDLOWBsBetween = []
+
+    this.timeNotHDLOWB = []
+
     this.createTimeline(a)
+
   }
 
   createTimeline(a){
 
-    for (var i = 0; i < HDLOtimeline.length; i++) {
+    // Specific event time line function
+    function specTL(tlArr, name, context){
+      for (var i = 0; i < tlArr.length; i++) {
 
-      var tl = HDLOtimeline[i]
+        var tl = tlArr[i]
 
-      // Holidays
-      if (a._start <= tl.start && a._end > tl.end) { // holidays between
-        this.HDLObetween.push(tl)
-      } else if (a._start > tl.start && a._start <= tl.end) {
-        this.startInHDLO = tl
+        if (a._start >= tl.start && a._end <= tl.end) {
+          tl.duration = (a._end - a._start);
+          tl.durtxt = dhms(tl.duration);
+          context['in' + name] = tl // start and ends in
+        } else if (a._start <= tl.start && a._end >= tl.end) {
+          tl.duration = (tl.end + 1000) - tl.start;
+          tl.durtxt = dhms(tl.duration);
+          context[name + 'sBetween'].push(tl) // holidays lay between
+        } else if (a._start >= tl.start && a._start <= tl.end) {
+          tl.duration = (tl.end + 1000) - a._start;
+          tl.durtxt = dhms(tl.duration);
+          context['sIn' + name] = tl // starts in holiday and ends later
+        } else if (a._end >= tl.start && a._end <= tl.end) {
+          tl.duration = (a._end) - tl.start;
+          tl.durtxt = dhms(tl.duration);
+          context['eIn' + name] = tl // ends in holiday and start before
+        }
+      }
+    }
+
+    // Get specific HDLOW timeline
+    specTL(HDLOWtimeline, 'HDLOW', this)
+
+    function timeNot(name, context){
+
+      // Object reference
+      var tni = context['timeNot' + name]
+
+      function tniPush(start){ // push new time between item function
+        tni.push({
+          start: start,
+          type: 'PRODUCTION',
+          sdate: dateT(new Date(start)),
+        })
+      }
+
+      function tniPrevious(end){ // add end time to time between item function
+        tni[tni.length - 1].end = end
+        tni[tni.length - 1].eDate = dateT(new Date(end))
+        tni[tni.length - 1].duration = end - tni[tni.length - 1].start
+        tni[tni.length - 1].durtxt = dhms(tni[tni.length - 1].duration)
+        tniPop();
+      }
+
+      function tniPop(){ // If the time between is negative (neighbouring HDLOW)
+        if (tni[tni.length - 1].end < tni[tni.length - 1].start){
+          tni.pop();
+        }
+      }
+
+
+      if (context['sIn' + name] != undefined) { // starts in holiday
+        tniPush(context['sIn' + name].end + 1000)
+      } else if (context['in' + name] == undefined) { // doesn't start in holliday
+        tniPush(a._start)
+      }
+
+      // has holidays between
+      for (var i = 0; i < context[name + 'sBetween'].length; i++) {
+        var btw = context[name + 'sBetween'][i]
+        tniPrevious(btw.start - 1000) // give previous end time
+        tniPush(btw.end + 1000) // push new item with start time
+      }
+
+      if (context['eIn' + name] != undefined) { // ends in holiday
+        tniPrevious(context['eIn' + name].start - 1000)
+      } else if (context['in' + name] == undefined){ // doesn't end in holliday
+        tniPrevious(a._end)
+      }
+
+    };
+
+    timeNot('HDLOW', this)
+
+
+    // Create break timeline for dates between holidays ------------------
+    var breakTL = []
+    var tnih = this.timeNotHDLOW
+
+    for (var i = 0; i < tnih.length; i++) {
+
+      var sDay = new Date(tnih[i].start).getDay()
+      var eDay = new Date(tnih[i].end).getDay()
+
+      var day = 1000 * 60 * 60 * 24
+
+      for (var j = sDay; j <= eDay; j++) {
+
+        var thisDate = new Date(tnih[i].start + ((j - sDay) * day))
+
+        for (var br in BREAK[j]) {
+
+          if (Object.keys(BREAK[j][br])[0].length > 2){
+            if (BREAK[j][br].hasOwnProperty(a._zone)){
+
+              var brk = BREAK[j][br][a._zone]; pushBreak();
+
+            }
+          } else {
+
+            var brk = BREAK[j][br]; pushBreak()
+
+          }
+
+          function pushBreak(){
+
+            var bT = breakTime(thisDate, brk)
+
+            if (
+              tnih[i].start < bT.start && bT.end < tnih[i].end // breaks betw
+              || bT.start < tnih[i].start && tnih[i].start < bT.end // starts in
+              || bT.start < tnih[i].end && tnih[i].end < bT.end // ends in
+            ) {
+
+              breakTL.push(bT); return false;
+
+            }
+          }
+        }
+      }
+    }
+
+    function breakTime(thisDate, time) {
+
+      var sTime = time.s.split(':')
+      var eTime = time.e.split(':')
+
+      var dp = YMD(thisDate)
+
+      var sDate = new Date(dp[0], dp[1], dp[2], sTime[0], sTime[1], sTime[2])
+      var eDate = new Date(dp[0], dp[1], dp[2], eTime[0], eTime[1], eTime[2])
+
+      return {
+        start: Date.parse(sDate),
+        end: Date.parse(eDate),
+        type: 'break',
+        sdate: dateT(sDate),
+        eDate: dateT(eDate),
       }
 
     }
+
+    specTL(breakTL, 'Brk', this)
+
+    this.HDLOWBrkTL = this.HDLOWsBetween
+    .concat(this.BrksBetween)
+    .sort(function(a,b){
+      return a.start - b.start
+    })
+
+    this.startIn = this.sInBrk || this.sInHDLOW
+    this.endIn = this.eInBrk || this.eInHDLOW
+    this.in = this.inBrk || this.inHDLOW
+
+    if (this.startIn != undefined) { this.HDLOWBrkTL.unshift(this.startIn)}
+    if (this.endIn != undefined) { this.HDLOWBrkTL.push(this.endIn)}
+    if (this.in != undefined) { this.HDLOWBrkTL.push(this.in)}
+
+    specTL(this.HDLOWBrkTL, 'HDLOWB', this)
+
+    timeNot('HDLOWB', this);
+
+    this.timeline = this.HDLOWBrkTL
+    .concat(this.timeNotHDLOWB)
+    .sort(function(a,b){
+      return a.start - b.start
+    })
+
 
   }
 
@@ -434,188 +671,32 @@ class ProdTimeline {
 
 var prodTest = new ProdTimeline({
 
-  _start: Date.parse(new Date(2019,00,1,12,0,0)),
-  _end: Date.parse(new Date(2019,11,31,23,59,59)),
+  _start: Date.parse(new Date(2019,10,7,11,22,0)),
+  _end: Date.parse(new Date(2019,10,7,11,23,59)),
   _zone: 'ZONE2'
 
 })
 
-console.log('prodTest:', prodTest);
+var prodTest2 = new ProdTimeline({
 
+  _start: Date.parse(new Date(2019,10,1,11,22,10)),
+  _end: Date.parse(new Date(2019,10,7,11,35,59)),
+  _zone: 'ZONE2'
 
+})
 
+console.log('prodTest:', prodTest, prodTest2);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function duration(s,e,zone){
-
-  var dur = {
-    tot: {},
-    prd: {},
-    stl: {},
-  }
-
-  // Total
-  var s_date = new Date (s)
-  var e_date = new Date (e)
-
-  dur.tot.nmb = e_date - s_date
-  dur.tot.txt = dhms(dur.tot.nmb)
-
-  s = s.split('T')
-  e = e.split('T')
-
-  // Production <> Standstill
-  var s_d = new Date(s[0]).getDay(); if (s_d == 0) { s_d = 7 }; // 7 = sunday
-  var e_d = new Date(e[0]).getDay(); if (e_d == 0) { e_d = 7 }; // 7 = sunday
-
-  if (e_d < s_d) { e_d += 7 }
-
-  var s_t = s[1]
-  var e_t = e[1]
-
-  // console.log(s_d, e_d, s_t, e_t)
-
-  if (dur.tot.nmb < (7 * 24 * 60 * 60 * 1000)){ //less than 1 week
-
-    var end = e_d; if (end > 7){ end -= 7 } // e_d < s_d
-
-    // start in break ------
-    function inBreak(day, time, ref){
-
-      for (var brk in BREAK[day]) {
-        if (BREAK[day].hasOwnProperty(brk)) {
-
-          if (BREAK[day][brk].hasOwnProperty(zone)){
-            var brk_t = BREAK[day][brk][zone]
-          } else if (BREAK[day][brk].hasOwnProperty('s')) {
-            var brk_t = BREAK[day][brk]
-          }
-
-          if(uniT(brk_t.s) <= uniT(time) && uniT(time) < uniT(brk_t.e)) {
-
-            var nm = day + brk // name
-
-            switch (ref) { // time
-              case 'e': var tm = uniT(brk_t[ref]) - uniT(time) ;break;
-              case 's': var tm = uniT(time) - uniT(brk_t[ref]) ;break;
-            }
-
-            if (tm > dur.tot.nmb) { tm = dur.tot.nmb }
-
-          }
-        }
-      }
-
-      return [nm, tm]
-
-    }
-
-    var inBrk = {
-      s : {
-        name : inBreak (s_d, s_t, 'e')[0],
-        time : inBreak (s_d, s_t, 'e')[1],
-      },
-      e : {
-        name : inBreak (e_d, e_t, 's')[0],
-        time : inBreak (e_d, e_t, 's')[1],
-      },
-    }
-
-
-    // console.log(inBrk);
-
-
-    // breaks between ------
-    var brks_between = []
-
-    // if not in same break check breaks between
-    if (!(inBrk.s.name == inBrk.e.name) || (inBrk.s.name == undefined && inBrk.e.name == undefined) ){
-
-      for (var i = s_d; i <= e_d; i++) {
-
-        dn = i; if (dn > 7){ dn -= 7 } // e_d < s_d
-
-        for (brk in BREAK[dn]) {
-          if (BREAK[dn].hasOwnProperty(brk)) {
-
-            if (BREAK[dn][brk].hasOwnProperty(zone)){
-              var brk_t = BREAK[dn][brk][zone]
-            } else if (BREAK[dn][brk].hasOwnProperty('s')) {
-              var brk_t = BREAK[dn][brk]
-            }
-
-
-            if (
-
-              !(s_d == end) && ( // different day
-                s_d == dn && uniT(brk_t.s) > uniT(s_t) || // start day
-                end == dn && uniT(brk_t.e) <= uniT(e_t) || // end day
-                (s_d != dn && end != dn) // days between start and end
-              ) || (s_d == end) && ( // same day
-                uniT(brk_t.s) > uniT(s_t) &&
-                uniT(brk_t.e) <= uniT(e_t)
-              )
-
-            ) {
-
-
-              brks_between.push({
-                day : dn,
-                brk : brk,
-                time : brk_t,
-              })
-
-            }
-          }
-        }
-      }
-    }
-
-    var dur_breaks = 0
-
-    for (var i = 0; i < brks_between.length; i++) {
-      dur_breaks += uniT(brks_between[i].time.e) - uniT(brks_between[i].time.s) + 1000
-    }
-
-    dur.stl.nmb = dur_breaks + (inBrk.s.time || 0) + (inBrk.e.time || 0)
-    dur.stl.txt = dhms(dur.stl.nmb)
-
-    dur.prd.nmb = dur.tot.nmb - dur.stl.nmb
-    dur.prd.txt = dhms(dur.prd.nmb)
-
-
-    // console.log(brks_between, dur_breaks, dhms(dur_breaks))
-
-  } else {
-
-    window.alert('Found an alarm that lasts more than one week! WTF!')
-
-  }
-
-  //console.log(dur)
-
+for (var i = 0; i < prodTest.timeline.length - 1; i++) {
+  console.log(prodTest.timeline[i+1].start - prodTest.timeline[i].end)
 }
-var br_s = dateT(new Date(sDateParse( '2019-09-23 11:23:00.725' )))
-var br_e = dateT(new Date(sDateParse( '2019-09-25 11:39:58.725' )))
-
-duration(br_s, br_e, 'ZONE1')
 
 
 
-
-
-
-//
+function YMD(date){
+  return [
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+  ]
+}

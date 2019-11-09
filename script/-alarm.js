@@ -512,6 +512,12 @@ function linkAlarms(fn_after, id_set, time_store, linkIDn){
       a._total = cnt._var[a._var]
     }
 
+    // PRODUCTION timeline 
+    if (a._linkID >= 0) {
+      a._timeline = new ProdTimeline(a)
+    }
+
+
   };
 
   function status(arr, i){
