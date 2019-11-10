@@ -457,32 +457,50 @@ var BREAK = {
 }
 
 
+class SearchTL {
+  constructor() {
+    this.isIn = undefined
+    this.startsIn = undefined
+    this.endsIn = undefined
+    this.hasBetween = []
+    this.timeNotIn = []
+    this.timeline = []
+  }
+}
 
-
+class TLduration {
+  constructor(){
+    this.PRODUCTION = 0
+    this.break = 0
+    this.layoff = 0
+    this.holiday = 0
+    this.weekend = 0
+    this.STANDSTILL = 0
+    this.TOTAL = 0
+  }
+  updateTxt(){
+    this.PRODUCTION_txt = dhms(this.PRODUCTION)
+    this.break_txt = dhms(this.break)
+    this.layoff_txt = dhms(this.layoff)
+    this.holiday_txt = dhms(this.holiday)
+    this.weekend_txt = dhms(this.weekend)
+    this.STANDSTILL_txt = dhms(this.STANDSTILL)
+    this.TOTAL_txt = dhms(this.TOTAL)
+  }
+}
 
 class ProdTimeline {
   constructor(a) {
 
+    this.HDLOW = new SearchTL
+    this.HDLOW.timeline = copyObj(HDLOWtimeline)
+
+    this.BREAK = new SearchTL
+
+    this.HDLOWB = new SearchTL
+
     this.timeline = []
-
-    this.inHDLOW = undefined
-    this.sInHDLOW = undefined
-    this.eInHDLOW = undefined
-    this.HDLOWsBetween = []
-
-    this.timeNotHDLOW = []
-
-    this.inBrk = undefined
-    this.sInBrk = undefined
-    this.eInBrk = undefined
-    this.BrksBetween = []
-
-    this.inHDLOWB = undefined
-    this.sInHDLOWB = undefined
-    this.eInHDLOWB = undefined
-    this.HDLOWBsBetween = []
-
-    this.timeNotHDLOWB = []
+    this.duration = new TLduration
 
     this.createTimeline(a)
 
@@ -494,35 +512,47 @@ class ProdTimeline {
     function specTL(tlArr, name, context){
       for (var i = 0; i < tlArr.length; i++) {
 
-        var tl = tlArr[i]
+        var tl = tlArr[i] // Set reference to timeline object
 
-        if (a._start >= tl.start && a._end <= tl.end) {
+        if (a._start >= tl.start && a._end <= (tl.end + 999)) {
+
           tl.duration = (a._end - a._start);
           tl.durtxt = dhms(tl.duration);
-          context['in' + name] = tl // start and ends in
-        } else if (a._start <= tl.start && a._end >= tl.end) {
+
+          context[name].isIn = tl // start and ends in
+
+        } else if (a._start <= tl.start && a._end >= (tl.end + 999)) {
+
           tl.duration = (tl.end + 1000) - tl.start;
           tl.durtxt = dhms(tl.duration);
-          context[name + 'sBetween'].push(tl) // holidays lay between
-        } else if (a._start >= tl.start && a._start <= tl.end) {
+
+          context[name].hasBetween.push(tl) // holidays lay between
+
+        } else if (a._start >= tl.start && a._start <= (tl.end + 999)) {
+
           tl.duration = (tl.end + 1000) - a._start;
           tl.durtxt = dhms(tl.duration);
-          context['sIn' + name] = tl // starts in holiday and ends later
-        } else if (a._end >= tl.start && a._end <= tl.end) {
+
+          context[name].startsIn = tl // starts in holiday and ends later
+
+        } else if (a._end >= tl.start && a._end <= (tl.end + 999)) {
+
           tl.duration = (a._end) - tl.start;
           tl.durtxt = dhms(tl.duration);
-          context['eIn' + name] = tl // ends in holiday and start before
+
+          context[name].endsIn = tl // ends in holiday and start before
+
         }
       }
     }
 
     // Get specific HDLOW timeline
-    specTL(HDLOWtimeline, 'HDLOW', this)
+    specTL(this.HDLOW.timeline, 'HDLOW', this)
 
     function timeNot(name, context){
 
       // Object reference
-      var tni = context['timeNot' + name]
+      var tni = context[name].timeNotIn
 
       function tniPush(start){ // push new time between item function
         tni.push({
@@ -532,38 +562,48 @@ class ProdTimeline {
         })
       }
 
-      function tniPrevious(end){ // add end time to time between item function
-        tni[tni.length - 1].end = end
-        tni[tni.length - 1].eDate = dateT(new Date(end))
-        tni[tni.length - 1].duration = end - tni[tni.length - 1].start
-        tni[tni.length - 1].durtxt = dhms(tni[tni.length - 1].duration)
+      function tniPrevious(end, context){ // add end time to time between item function
+
+        var prev = tni[tni.length - 1]
+
+        prev.end = end
+        prev.eDate = dateT(new Date(end))
+
+        // Correction when ends in HDLOWB
+        if (context.endsIn != undefined){
+          var cor = 1000
+        } else { var cor = 0}
+
+        prev.duration = (end + cor) - prev.start
+        prev.durtxt = dhms(prev.duration)
+
         tniPop();
       }
 
       function tniPop(){ // If the time between is negative (neighbouring HDLOW)
-        if (tni[tni.length - 1].end < tni[tni.length - 1].start){
+        if ((tni[tni.length - 1].end + 999) < tni[tni.length - 1].start){
           tni.pop();
         }
       }
 
 
-      if (context['sIn' + name] != undefined) { // starts in holiday
-        tniPush(context['sIn' + name].end + 1000)
-      } else if (context['in' + name] == undefined) { // doesn't start in holliday
+      if (context[name].startsIn != undefined) { // starts in holiday
+        tniPush(context[name].startsIn.end + 1000)
+      } else if (context[name].isIn == undefined) { // doesn't start in holliday
         tniPush(a._start)
       }
 
       // has holidays between
-      for (var i = 0; i < context[name + 'sBetween'].length; i++) {
-        var btw = context[name + 'sBetween'][i]
-        tniPrevious(btw.start - 1000) // give previous end time
+      for (var i = 0; i < context[name].hasBetween.length; i++) {
+        var btw = context[name].hasBetween[i]
+        tniPrevious(btw.start - 1000, context) // give previous end time
         tniPush(btw.end + 1000) // push new item with start time
       }
 
-      if (context['eIn' + name] != undefined) { // ends in holiday
-        tniPrevious(context['eIn' + name].start - 1000)
-      } else if (context['in' + name] == undefined){ // doesn't end in holliday
-        tniPrevious(a._end)
+      if (context[name].endsIn != undefined) { // ends in holiday
+        tniPrevious(context[name].endsIn.start - 1000, context)
+      } else if (context[name].isIn == undefined){ // doesn't end in holliday
+        tniPrevious(a._end, context)
       }
 
     };
@@ -572,8 +612,8 @@ class ProdTimeline {
 
 
     // Create break timeline for dates between holidays ------------------
-    var breakTL = []
-    var tnih = this.timeNotHDLOW
+    this.BREAK.timeline = []
+    var tnih = this.HDLOW.timeNotIn
 
     for (var i = 0; i < tnih.length; i++) {
 
@@ -591,16 +631,16 @@ class ProdTimeline {
           if (Object.keys(BREAK[j][br])[0].length > 2){
             if (BREAK[j][br].hasOwnProperty(a._zone)){
 
-              var brk = BREAK[j][br][a._zone]; pushBreak();
+              var brk = BREAK[j][br][a._zone]; pushBreak(this);
 
             }
           } else {
 
-            var brk = BREAK[j][br]; pushBreak()
+            var brk = BREAK[j][br]; pushBreak(this)
 
           }
 
-          function pushBreak(){
+          function pushBreak(context){
 
             var bT = breakTime(thisDate, brk)
 
@@ -610,7 +650,7 @@ class ProdTimeline {
               || bT.start < tnih[i].end && tnih[i].end < bT.end // ends in
             ) {
 
-              breakTL.push(bT); return false;
+              context.BREAK.timeline.push(bT); return false;
 
             }
           }
@@ -638,32 +678,51 @@ class ProdTimeline {
 
     }
 
-    specTL(breakTL, 'Brk', this)
+    specTL(this.BREAK.timeline, 'BREAK', this)
 
-    this.HDLOWBrkTL = this.HDLOWsBetween
-    .concat(this.BrksBetween)
+    this.HDLOWB.timeline = this.HDLOW.hasBetween
+    .concat(this.BREAK.hasBetween)
     .sort(function(a,b){
       return a.start - b.start
     })
 
-    this.startIn = this.sInBrk || this.sInHDLOW
-    this.endIn = this.eInBrk || this.eInHDLOW
-    this.in = this.inBrk || this.inHDLOW
+    this.startsIn = this.BREAK.startsIn || this.HDLOW.startsIn
+    this.endsIn = this.BREAK.endsIn || this.HDLOW.endsIn
+    this.isIn = this.BREAK.isIn || this.HDLOW.isIn
 
-    if (this.startIn != undefined) { this.HDLOWBrkTL.unshift(this.startIn)}
-    if (this.endIn != undefined) { this.HDLOWBrkTL.push(this.endIn)}
-    if (this.in != undefined) { this.HDLOWBrkTL.push(this.in)}
+    if (this.startsIn != undefined) { this.HDLOWB.timeline.unshift(this.startsIn)}
+    if (this.endsIn != undefined) { this.HDLOWB.timeline.push(this.endsIn)}
+    if (this.isIn != undefined) { this.HDLOWB.timeline.push(this.isIn)}
 
-    specTL(this.HDLOWBrkTL, 'HDLOWB', this)
+    specTL(this.HDLOWB.timeline, 'HDLOWB', this)
 
     timeNot('HDLOWB', this);
 
-    this.timeline = this.HDLOWBrkTL
-    .concat(this.timeNotHDLOWB)
+    this.timeline = this.HDLOWB.timeline
+    .concat(this.HDLOWB.timeNotIn)
     .sort(function(a,b){
       return a.start - b.start
     })
 
+    for (var i = 0; i < this.timeline.length; i++) {
+
+      var type = this.timeline[i].type
+      var duration = this.timeline[i].duration
+
+      this.duration[type] += duration
+
+    }
+
+    var dur = this.duration
+
+    dur.STANDSTILL = dur.holiday + dur.layoff + dur.weekend + dur.break
+    dur.TOTAL = dur.PRODUCTION + dur.STANDSTILL
+
+    //// TEMP: TO debug time differendes
+    dur._checkTotalTime = a._end - a._start
+    dur._checkTotalDif = dur._checkTotalTime - dur.TOTAL
+
+    dur.updateTxt()
 
   }
 
@@ -671,15 +730,15 @@ class ProdTimeline {
 
 var prodTest = new ProdTimeline({
 
-  _start: Date.parse(new Date(2019,10,7,11,22,0)),
-  _end: Date.parse(new Date(2019,10,7,11,23,59)),
+  _start: Date.parse(new Date(2019,10,7,11,12,59))+999,
+  _end: Date.parse(new Date(2019,10,7,11,15,00))+341,
   _zone: 'ZONE2'
 
 })
 
 var prodTest2 = new ProdTimeline({
 
-  _start: Date.parse(new Date(2019,10,1,11,22,10)),
+  _start: Date.parse(new Date(2019,0,1,11,22,10)),
   _end: Date.parse(new Date(2019,10,7,11,35,59)),
   _zone: 'ZONE2'
 
@@ -687,9 +746,9 @@ var prodTest2 = new ProdTimeline({
 
 console.log('prodTest:', prodTest, prodTest2);
 
-for (var i = 0; i < prodTest.timeline.length - 1; i++) {
-  console.log(prodTest.timeline[i+1].start - prodTest.timeline[i].end)
-}
+// for (var i = 0; i < prodTest2.timeline.length - 1; i++) {
+//   console.log(prodTest2.timeline[i+1].start - prodTest2.timeline[i].end)
+// }
 
 
 

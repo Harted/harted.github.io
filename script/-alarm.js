@@ -29,6 +29,18 @@ function Alarms(data, fn_after, timer, init, context){
   }
 
   function linkAlarms_after() {
+
+    // TEMP: To check dif between total time and timeline total time
+    for(i = 0; i < allAlarms.length; i++){
+      if(allAlarms[i]._timeline != undefined){
+        if (allAlarms[i]._timeline.duration._checkTotalDif != 0){
+          console.log('DEBUG: difference between duration and timeline total');
+          console.log(allAlarms[i]._timeline.duration._checkTotalDif)
+          console.log(allAlarms[i])
+        }
+      }
+    }
+
     filterAlarms(filterAlarms_after) // 4
   }
 
@@ -356,13 +368,36 @@ class CountObj {
 
   constructor(name) {
     this.count = 0
-    this.dur = 0
+    this.duration = 0
+    this.fromTL = {}
   }
 
-  add(duration){
+  add(a){
     this.count++
-    this.dur += duration
-    this.durtxt = dhms(this.dur)
+    this.duration += a._duration
+    this.durtxt = dhms(this.duration)
+
+    if(a._timeline != undefined){
+      for (var item in a._timeline.duration) {
+        if(item.indexOf('_') != 0){
+
+          var split = item.split('_')
+
+          if (split.length == 1) {
+
+            if (this.fromTL[item] == undefined) {this.fromTL[split[0]] = 0}
+            this.fromTL[item] += a._timeline.duration[item]
+
+          } else {
+            //// NOTE: durtxt not needed here
+            //this.fromTL[item] = dhms(this.fromTL[split[0]])
+          }
+        }
+      }
+    }
+
+    this._timelineCorrect = this.dur === this.fromTL.TOTAL
+
   }
 }
 
@@ -476,6 +511,7 @@ function analyzeAlarms(fn_after){
 function linkAlarms(fn_after, id_set, time_store, linkIDn){
 
   var cnt = new Distinct(allAlarms, ['_var']);  // for alarm counting
+  var prodTlSet = [] // for production timeline reference
 
   asyncArr(allAlarms, itter, status, after, this);
 
@@ -484,7 +520,7 @@ function linkAlarms(fn_after, id_set, time_store, linkIDn){
     var a = arr[i]  // Set a as curent alarm reference
 
     // OFF event with ON event set
-    if (a._state == 0 && id_set[a._linkID] == true) {
+    if (a._state == 0 && id_set[a._linkID]) {
 
       a._start = time_store[a._linkID] //stored time at ON event
 
@@ -496,6 +532,7 @@ function linkAlarms(fn_after, id_set, time_store, linkIDn){
 
       // Event without duration set
       // - Assing not available and -1
+      a._start = 'unknown'
       a._duration = -1
       a._durtxt = 'n/a'
       a._linkID = linkIDn
@@ -503,20 +540,27 @@ function linkAlarms(fn_after, id_set, time_store, linkIDn){
 
     };
 
+    // PRODUCTION timeline (only if there's a link)
+    if (id_set[a._linkID]) {
+      if (a._state == 0){ // Off event
+        a._timeline = new ProdTimeline(a)
+        prodTlSet[a._linkID] = a._timeline
+      } else { // On event (reference)
+        a._timeline = prodTlSet[a._linkID] // add reference to object
+      }
+    } else {
+      a._timeline = undefined
+    }
+
+    // Count alarms
     if (cnt._var[a._var] == 1) { cnt._var[a._var] = new CountObj()}
 
-    if (a._state == 1){
-      cnt._var[a._var].add(a._duration)
-      a._total = cnt._var[a._var]
+    if (a._state == 0){
+      cnt._var[a._var].add(a)
+      a._count = cnt._var[a._var]
     } else {
-      a._total = cnt._var[a._var]
+      a._count = cnt._var[a._var] // add reference to count obj
     }
-
-    // PRODUCTION timeline 
-    if (a._linkID >= 0) {
-      a._timeline = new ProdTimeline(a)
-    }
-
 
   };
 
@@ -597,7 +641,7 @@ class DistAlarms {
 
   addDist(a){
 
-    if (a._state == 1) {
+    if (a._state == 1 && a._linkID > -1) {
 
       if (this.dist._var[a._var] == 1) {
         this.dist._var[a._var] = []
@@ -620,21 +664,54 @@ class DistAlarms {
         var zn = obj[v][0]._zone
         var stn = obj[v][0].station
         var sev = obj[v][0].severity
-        var tot = obj[v][0]._total
+        var cnt = obj[v][0]._count
 
         var o = this.ordered
 
         if( o[zn] == undefined) { o[zn] = {} }
         if( o[zn][stn] == undefined) { o[zn][stn] = {} }
-        if( o[zn][stn][sev] == undefined) { o[zn][stn][sev] = [] }
+        if( o[zn][stn][sev] == undefined) { o[zn][stn][sev] = {
+          alarms: [],
+          count: 0,
+          duration: 0,
+          PRODUCTION: 0,
+          STANDSTILL: 0,
+          TOTAL: 0,
+          break: 0,
+          holiday: 0,
+          layoff: 0,
+          weekend: 0,
+        }}
 
-        o[zn][stn][sev].push({
-          cnt: tot.count,
-          dur: tot.dur,
-          durtxt: tot.durtxt,
+        var sevObj = o[zn][stn][sev]
+
+        sevObj.alarms.push({
+          count: cnt.count,
+          duration: cnt.duration,
+          durtxt: cnt.durtxt,
+          PRODUCTION: cnt.fromTL.PRODUCTION,
+          STANDSTILL: cnt.fromTL.STANDSTILL,
+          TOTAL: cnt.fromTL.TOTAL,
+          break: cnt.fromTL.break,
+          holiday: cnt.fromTL.holiday,
+          layoff: cnt.fromTL.layoff,
+          weekend: cnt.fromTL.weekend,
           _var: v,
           obj: obj[v]
         })
+
+        sevObj.count += cnt.count
+        sevObj.duration += cnt.duration
+        sevObj.durtxt = dhms(sevObj.duration)
+        sevObj.PRODUCTION += cnt.fromTL.PRODUCTION
+        sevObj.STANDSTILL += cnt.fromTL.STANDSTILL
+        sevObj.TOTAL += cnt.fromTL.TOTAL
+        sevObj.break += cnt.fromTL.break
+        sevObj.holiday += cnt.fromTL.holiday
+        sevObj.layoff += cnt.fromTL.layoff
+        sevObj.weekend += cnt.fromTL.weekend
+
+
 
       } else { delete obj[v] };
 
@@ -650,7 +727,7 @@ class DistAlarms {
       for (var st in o[z]) {
         for (var sev in o[z][st]) {
 
-          var arr = o[z][st][sev]
+          var arr = o[z][st][sev].alarms
 
           arr = arr.sort(function(a,b) {
               return a[mode] - b[mode];
@@ -695,7 +772,7 @@ function distinctAlarms(fn_after){
   function after(arr,i){
 
     distAlarms.order()
-    distAlarms.sort('cnt')
+    distAlarms.sort('count')
 
     statusFields('Distinct', 'progress', arr, i)
     setTimeout(function () {
