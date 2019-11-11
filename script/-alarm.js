@@ -673,14 +673,6 @@ class DistAlarms {
         if( o[zn][stn][sev] == undefined) { o[zn][stn][sev] = {
           alarms: [],
           count: 0,
-          duration: 0,
-          PRODUCTION: 0,
-          STANDSTILL: 0,
-          TOTAL: 0,
-          break: 0,
-          holiday: 0,
-          layoff: 0,
-          weekend: 0,
         }}
 
         var sevObj = o[zn][stn][sev]
@@ -701,15 +693,6 @@ class DistAlarms {
         })
 
         sevObj.count += cnt.count
-        sevObj.duration += cnt.duration
-        sevObj.durtxt = dhms(sevObj.duration)
-        sevObj.PRODUCTION += cnt.fromTL.PRODUCTION
-        sevObj.STANDSTILL += cnt.fromTL.STANDSTILL
-        sevObj.TOTAL += cnt.fromTL.TOTAL
-        sevObj.break += cnt.fromTL.break
-        sevObj.holiday += cnt.fromTL.holiday
-        sevObj.layoff += cnt.fromTL.layoff
-        sevObj.weekend += cnt.fromTL.weekend
 
 
 
@@ -727,14 +710,17 @@ class DistAlarms {
       for (var st in o[z]) {
         for (var sev in o[z][st]) {
 
-          var arr = o[z][st][sev].alarms
+          if (sev.indexOf('_') != 0) {
 
-          arr = arr.sort(function(a,b) {
+            var arr = o[z][st][sev].alarms
+
+            arr = arr.sort(function(a,b) {
               return a[mode] - b[mode];
-          });
+            });
 
-          arr = arr.reverse()
+            arr = arr.reverse()
 
+          }
         }
       }
     }
@@ -743,6 +729,70 @@ class DistAlarms {
 
   }
 
+  calc(){
+
+    var selection = [
+      'count', //'duration', 'PRODUCTION', 'STANDSTILL',
+      //'break', 'holiday', 'layoff', 'weekend'
+    ]
+
+    for (var zone in this.ordered) {
+      for (var stn in this.ordered[zone]) {
+
+        var st = this.ordered[zone][stn]
+        st._total = {count: 0}
+
+        // Count total alarms / station
+        for (var sev in st) {
+
+          if (sev.indexOf('_') != 0) { // Don't include '_total'
+            var sv = this.ordered[zone][stn][sev]
+            st._total.count += sv.count
+          }
+
+        }
+
+        // Calculate percentages
+        for (var sev in st) {
+
+          if (sev.indexOf('_') != 0) {
+
+            var sv = this.ordered[zone][stn][sev]
+            setPercentage(st._total, sv, selection)
+
+
+            for (var i = 0; i < sv.alarms.length; i++) {
+
+              // Calculate percentage of alarm/severity
+              var a = sv.alarms[i]
+              setPercentage(sv, a, selection)
+
+            }
+
+
+          }
+        }
+      }
+    }
+
+    // Set percentage function
+    function setPercentage(top, sub, sel){
+
+      sub.perc = {}
+
+      for (var i = 0; i < sel.length; i++) {
+        var s = sel[i]
+
+        if (sev[s] == 0) {
+          sub.perc[s] = 0
+        } else {
+          sub.perc[s] = roundP(sub[s] / top[s] * 100,2)
+        }
+      }
+
+    }
+
+  }
 }
 
 
@@ -772,7 +822,7 @@ function distinctAlarms(fn_after){
   function after(arr,i){
 
     distAlarms.order()
-    distAlarms.sort('count')
+    distAlarms.calc()
 
     statusFields('Distinct', 'progress', arr, i)
     setTimeout(function () {
@@ -1304,4 +1354,12 @@ function alarmPages(alarmLimit){
   } else {
     $('#pagepick').removeClass('display')
   }
+}
+
+
+
+
+
+function roundP(num, digits){
+  return Math.round(num * Math.pow(10,digits)) / Math.pow(10,digits)
 }

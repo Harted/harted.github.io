@@ -35,17 +35,6 @@
 
   @ov_box_margin: 0.7vw;
 
-  #overview-overlay{
-
-    .position(@ov_box_margin);
-    z-index: 1000;
-    box-shadow: inset 0px 0px 6px 6px @color_dark;
-    pointer-events: none;
-    border-radius: 0.5vw;
-    margin-right: @scrolbar;
-
-  }
-
   #overview {
 
     .position(@ov_box_margin);
@@ -61,11 +50,6 @@
 
     div {
       margin-bottom: 10px;
-    }
-
-    td {
-      padding-right: 25px;
-      white-space: nowrap;
     }
 
     .zonename{
@@ -85,17 +69,129 @@
     .stationname{
 
       font-size: 1em;
+      font-weight: bold;
       letter-spacing: 0.1em;
 
       padding: 5px;
 
-      .borderbox();
-      border-bottom: 1px solid @color_bright_05;
+      // .borderbox();
+      // border-bottom: 1px solid @color_bright_05;
 
     }
 
-    @import "/style/components/cond_format.less";
+    .sev-circle {
 
+      svg {
+
+        fill: none;
+        stroke-width: 8;
+        filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.3);); // Shadow
+
+        .A {
+          stroke: @color_red;
+        }
+        .B {
+          stroke: @color_redless;
+        }
+        .C {
+          stroke: @color_yellow;
+        }
+        .D {
+          stroke: @color_yellowless;
+        }
+
+        text {
+
+          fill: @color_bright;
+
+          font-size: 1em;
+          font-weight: bold;
+          letter-spacing: 0.1em;
+
+          text-anchor: middle;
+          dominant-baseline: middle;
+
+        }
+      }
+    }
+
+    .sev-container {
+
+      display: flex;
+
+
+
+      .sev-letter {
+
+        font-weight: bold;
+        font-size: 3em;
+        text-align: center;
+
+        margin-right: 5px;
+
+        width: 50px;
+
+        //text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); // Shadow
+
+        &.A{ color: @color_red }
+        &.B{ color: @color_redless }
+        &.C{ color: @color_yellow }
+        &.D{ color: @color_yellowless }
+      }
+
+      table {
+
+        border-collapse: collapse;
+        table-layout: fixed;
+
+        td {
+          padding: 4px 12px 4px 4px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          &:nth-child(1){ max-width: 64px ; min-width: 64px; }
+          &:nth-child(2){ max-width: 82px ; min-width: 82px; }
+          &:nth-child(3){ max-width: 154px ; min-width: 154px; }
+          &:nth-child(4){ max-width: 358px ; min-width: 358px; }
+          &:nth-child(5){ max-width: 22px ; min-width: 22px; }
+          &:nth-child(n+6){ max-width: 64px ; min-width: 64px; }
+        }
+
+        thead {
+
+          tr {
+            border-bottom: 1px solid @color_blue_04;
+          }
+
+          font-weight: bold;
+          color: @color_blue;
+
+          .clickable {
+            .noselect();
+            cursor: pointer;
+            &:hover {
+              background-color: @color_blue_01;
+            }
+          }
+
+        }
+
+        tbody {
+
+          tr {
+            border-bottom: 1px solid @color_bright_01;
+            &:last-child {
+              border-bottom: none;
+            }
+          }
+
+        }
+
+      }
+
+
+
+
+
+    }
   }
-
 }
