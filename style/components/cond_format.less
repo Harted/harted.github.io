@@ -25,10 +25,7 @@
 
 
 // Modes -----------------------------------------------------------------------
-.manual{ background-color: @color_blueM; }
-.resseq, .restm{ font-weight: bold; }
-.forced { color: @color_bright; }
-
+.mode {}
 .autonotstarted{
   color: @color_dark;
   background-color: @color_green;
@@ -37,11 +34,9 @@
     td {animation: none;}
   }
 }
-
-.production {
-  background-color: @color_orange;
-}
-
+.manual{ background-color: @color_blueM; }
+.resseq, .restm{ background-color: @color_blueM; font-weight: bold; }
+.forced { color: @color_bright; }
 .homerun {
   background-color: @color_pink;
 }
@@ -54,6 +49,10 @@
   }
 }
 
+// Production & production mode ------------------------------------------------
+.production {
+  background-color: @color_orange;
+}
 
 // Icons -----------------------------------------------------------------------
 .commentIcon(@icon){ // Mixin

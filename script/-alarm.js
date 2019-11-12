@@ -161,44 +161,60 @@ class Alarm {
     // NOTE: Change filtering of alarms
     var types = {
 
-      //General
+      // for (i = 0; i < allAlarms.length; i++) {console.log(allAlarms[i]._type.replace(' formatnok','').split(' ').length, allAlarms[i]._type.replace(' formatnok',''))}
+
+      // MODE ---------------------------------------
+      mode: /.{0,}[^d]Mode/, // not prodmode
+
       autonotstarted: /[Mm]ode.{0,}[Aa]uto/,
       manual: /[Mm]ode.{0,}[Mm]an.{0,}[Mm]ode/,
-      'manual resseq': /[Mm]ode.{0,}Res.{0,}Seq/,
-      'manual restm': /[Mm]ode.{0,}Res.{0,}TM/,
-      'manual forced': /[Mm]ode.{0,}ForcedMan/,
-      'general homerun': /[Mm]ode.{0,}HomeRun/,
+      resseq: /[Mm]ode.{0,}Res.{0,}Seq/,
+      restm: /[Mm]ode.{0,}Res.{0,}TM/,
+      forced: /[Mm]ode.{0,}ForcedMan/,
+      homerun: /[Mm]ode.{0,}HomeRun/,
+      normalstop: /[Mm]ode.{0,}NormalStop/,
 
-      interlock: /[Ii]nt.{0,}l.{0,}k/,
-      'general robot': /[0-9]R[0-9]{1,}/,
-      'general com': /Com/,
+      // General ---------------------------------------
+      'general interlock': /[Ii]nt.{0,}l.{0,}k/,
+      'general keeppos': /KeepPos/,
       'general processtime': /ProcessTime/,
-      'general atlascopco': /AtlasCopco/,
+      'general overtime': /Ovt.{0,}Alm/,
 
-      //Production
+      'general atlascopco': /AtlasCopco/,
+      'general robot': /[0-9]R[0-9]{1,}/,
+
+      'general com': /Com/,
+      'general diag': /DiagPLC/,
+      'general system': /LSystemVar/,
+
+      //Production -------------------------------------
       production: /Prod/,
+
       inout: /[IiOo][un]t{0,1}feed/,
       andon: /[Aa]ndon/,
       controlroom: /StopCR/,
+      prodmode: /ProdMode/, // Cylce stop/sim without part
 
       //Safety
       safety: /Safety/,
-      motionstop: /MotionStop/,
+
+      EStop: /EStop/,
+      GStop: /GStop/,
+      MStop: /MotionStop/,
+
+      gate: /AS[0-9]{2}.{0,}SG/,
+      button: /AS[0-9]{2}.{0,}SH/,
+      overtravel: /CA[0-9]{2}.{0,}SG[0-9]{2}/,
 
     }
 
-    //Init type (formatnok when there's no stationcode)
-    if(this._stcode == 'n/a'){
-      this._type = 'formatnok' // TEMP: When format is ok this is deprecated
-    } else {
-      this._type = '' // NOTE: Keep this when format of every station is ok
-    }
+    this._type = ''
 
     //Give types in types object which regex test true
     for (var t in types) {
       if (types[t].test(v)) {
         //Add a space when more then one type
-        if(this._type.length > 0) {this._type += ' '}
+        if (this._type.length > 0) {this._type += ' '}
         // Add type
         this._type += t
       }
@@ -206,8 +222,17 @@ class Alarm {
 
     //If no type is set, give it default type alarm
     if (this._type.length == 0) {
-      this._type = 'alarm'
+      this._type = 'general other'
+    } else if (this._type.split(' ').length == 1) {
+      this._type += ' other'
     }
+
+    //Init type (formatnok when there's no stationcode)
+    if(this._stcode == 'n/a'){
+      this._type += ' formatnok' // TEMP: When format is ok this is deprecated
+    }
+
+
   }
 
   // set stationcode, modezone, object and description ---------------
@@ -442,7 +467,7 @@ function analyzeAlarms(fn_after){
 
       linkID++ ; // Increment linkID
 
-    // ON event without OFF event = ACTIVE ----------------------
+      // ON event without OFF event = ACTIVE ----------------------
     } else if (a._state == 1 && dist._var[a._var] == 1){
 
       a._linkID = linkIDn
@@ -466,7 +491,7 @@ function analyzeAlarms(fn_after){
 
       linkIDn -- // Set negative linkID
 
-    // ON event with OFF event ----------------------------------
+      // ON event with OFF event ----------------------------------
     } else if (a._state == 1) {
 
 
@@ -593,19 +618,29 @@ function filterAlarms(fn_after){
     var filtered = false
     var typeString = arr[i]._type
 
-    // Alarmtype filters
-    for (var sel in FILTERS.at) {
-      if (!FILTERS.at[sel] && typeString.search(sel) > -1) {
-        filtered = true
+    // Filter by button selection
+    for (var type in FILTERS) {
+      if (type != 'only' && type != 'sev' ) {
+        for (var sub in FILTERS[type]) {
+
+          if (!FILTERS[type][sub] && sub != 'other') {
+
+            if (typeString.search(sub) > -1) { //.split(' ')[1]
+              filtered = true
+            }
+
+          } else if (!FILTERS[type][sub] && sub == 'other'){
+
+            if (typeString.search(type + ' other') > -1) {
+              filtered = true
+            }
+
+          }
+        }
       }
     }
 
-    // Production filters
-    for (var sel in FILTERS.prod) {
-      if (!FILTERS.prod[sel] && typeString.search(sel) > -1) {
-        filtered = true
-      }
-    }
+    console.log(typeString, filtered);
 
     // Only active filter
     if(FILTERS.only.active && !arr[i]._active) {filtered = true}
@@ -1116,7 +1151,7 @@ function groupAlarms(fn_after){
 
       }
 
-    // OFF event +++++++++++++++++++++++++++++++++++++++++++++
+      // OFF event +++++++++++++++++++++++++++++++++++++++++++++
     } else if (a._state == 0) {
 
       if (groups[a._zone] == undefined) {
@@ -1149,7 +1184,7 @@ function groupAlarms(fn_after){
         }
       }
 
-    // ACTIVE event ++++++++++++++++++++++++++++++++++++++++++
+      // ACTIVE event ++++++++++++++++++++++++++++++++++++++++++
     } else if (a._active) { a._group = 'no group' }
 
   }
