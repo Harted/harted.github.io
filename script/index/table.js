@@ -158,13 +158,18 @@ function makeTable(settings, data){
     for (let i = 0; i < d.length; i++){
 
       //// TEMP: keys length in groups for showing group lines
-      if(d[i]._groupEnd && i > 0 && groups._stationcount == 1){
-        body.push('<tr style="border-top: solid 6px #444" ')
-      } else if (d[i]._group.num == 0 && groups._stationcount == 1){
-        body.push('<tr style="opacity:0.7;" ')
+      if (!TIME.rt) {
+        if(d[i]._groupEnd && i > 0 && groups._stationcount == 1){
+          body.push('<tr style="border-top: solid 6px #444" ')
+        } else if (d[i]._group.num == 0 && groups._stationcount == 1){
+          body.push('<tr style="opacity:0.7;" ')
+        } else {
+          body.push('<tr')
+        }
       } else {
         body.push('<tr')
       }
+
 
       body.push(' class="' + d[i].severity + ' ' + d[i]._type + ' ')
 
@@ -182,10 +187,14 @@ function makeTable(settings, data){
       body.push('\n' + d[i].statetxt + ' - Shift: ' + d[i]._shift )
       body.push( ' - Duration : ' + d[i]._durtxt)
       body.push('\nVariable : ' + d[i]._varOrg)
-      body.push('\nGroup : ' + d[i]._group.ID) // TEMP: DISABLED
-      if (d[i]._group.durtxt != undefined) {
-        body.push(' - Duration : ' + d[i]._group.durtxt)
+
+      if (!TIME.rt) { // TEMP:
+        body.push('\nGroup : ' + d[i]._group.ID)
+        if (d[i]._group.durtxt != undefined) {
+          body.push(' - Duration : ' + d[i]._group.durtxt)
+        }
       }
+
       body.push('\n\ni = ' + d[i]._index)
       body.push('\ntype = ' + d[i]._type)
 

@@ -4,6 +4,7 @@
 tog = {
   format: false, //not used
   showinact: false,
+  overview: false,
 }
 
 
@@ -38,6 +39,24 @@ function show_inact_mu(){
     el.addClass('showinactive')
   } else {
     el.removeClass('showinactive')
+    btn_off_style(this)
+  }
+
+}
+
+
+$('#showoverview').mouseup(show_overview_mu)
+
+function show_overview_mu(){
+
+  tog.overview = !tog.overview
+
+  var el = $('#overview-container')
+
+  if (tog.overview){
+    el.addClass('visible')
+  } else {
+    el.removeClass('visible')
     btn_off_style(this)
   }
 

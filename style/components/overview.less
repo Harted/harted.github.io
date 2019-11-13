@@ -24,6 +24,8 @@
 
   visibility: hidden;
 
+  &.visible { visibility: visible; }
+
   .position(0);
 
   background-color: @color_dark_09;
@@ -121,8 +123,6 @@
 
       display: flex;
 
-
-
       .sev-letter {
 
         font-weight: bold;
@@ -145,11 +145,14 @@
 
         border-collapse: collapse;
         table-layout: fixed;
+        white-space: nowrap;
 
         td {
           padding: 4px 12px 4px 4px;
-          white-space: nowrap;
+
+          overflow: hidden;
           text-overflow: ellipsis;
+
           &:nth-child(1){ max-width: 64px ; min-width: 64px; }
           &:nth-child(2){ max-width: 82px ; min-width: 82px; }
           &:nth-child(3){ max-width: 154px ; min-width: 154px; }

@@ -61,10 +61,10 @@ function createOverview(sortMode){
 
             html += '<tr>'
 
-            html += '<td>' + sv.obj[0].zone + '</td>'
-            html += '<td>' + sv.obj[0].object + '</td>'
-            html += '<td>' + sv.obj[0].description + '</td>'
-            html += '<td>' + sv.obj[0].comment + '</td>'
+            html += '<td title="' + sv.obj[0].zone + '">' + sv.obj[0].zone + '</td>'
+            html += '<td title="' + sv.obj[0].object + '\n' + sv.obj[0]._varOrg + '">' + sv.obj[0].object + '</td>'
+            html += '<td title="' + sv.obj[0].description + '">' + sv.obj[0].description + '</td>'
+            html += '<td title="' + sv.obj[0].comment + '">' + sv.obj[0].comment + '</td>'
 
             var times = ['duration', 'PRODUCTION', 'STANDSTILL']
 

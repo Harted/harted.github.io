@@ -152,9 +152,13 @@ function GET(init){
 
     pushState(init); // push history state
 
+    console.time('Alarms')
+
     Alarms(data, afterAlarms, timer, init, this); // fill alarm object
 
     function afterAlarms(timer, init){
+
+      console.timeEnd('Alarms')
 
       setTable(); // init table based on alarms
 
@@ -170,7 +174,7 @@ function GET(init){
 
       statusFields('', '')
 
-      createOverview();
+      if(!TIME.rt) {createOverview();}
 
     }
   });

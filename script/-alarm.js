@@ -18,34 +18,51 @@ var distAlarms
 // MASTER ALARMS FUNCTION ------------------------------------------------------
 function Alarms(data, fn_after, timer, init, context){
 
+  var liveView = window.location.pathname == '/live.html' || TIME.rt
+
+  console.time('createAlarms')
   createAlarms(createAlarms_after, data) // 1
 
   function createAlarms_after(){
-    analyzeAlarms(analyzeAlarms_after) // 2
+    console.timeEnd('createAlarms')
+    console.time('analyzeAlarms')
+      analyzeAlarms(analyzeAlarms_after) // 2
   }
 
   function analyzeAlarms_after(id_set, time_store, linkIDn){
-    linkAlarms(linkAlarms_after, id_set, time_store, linkIDn) // 3
+    console.timeEnd('analyzeAlarms')
+    console.time('linkAlarms')
+    linkAlarms(linkAlarms_after, id_set, time_store, linkIDn, liveView) // 3
   }
 
   function linkAlarms_after() {
 
+    console.timeEnd('linkAlarms')
     // TEMP: To check dif between total time and timeline total time
-    for(i = 0; i < allAlarms.length; i++){
-      if(allAlarms[i]._timeline != undefined){
-        if (allAlarms[i]._timeline.duration._checkTotalDif != 0){
-          console.log('DEBUG: difference between duration and timeline total');
-          console.log(allAlarms[i]._timeline.duration._checkTotalDif)
-          console.log(allAlarms[i])
+    if (!liveView) {
+      for(i = 0; i < allAlarms.length; i++){
+        if(allAlarms[i]._timeline != undefined){
+          if (allAlarms[i]._timeline.duration._checkTotalDif != 0){
+            console.log('DEBUG: difference between duration and timeline total');
+            console.log(allAlarms[i]._timeline.duration._checkTotalDif)
+            console.log(allAlarms[i])
+          }
         }
       }
     }
 
+    console.time('filterAlarms')
     filterAlarms(filterAlarms_after) // 4
   }
 
   function filterAlarms_after(){
-    distinctAlarms(distinctAlarms_after) // 5
+    console.timeEnd('filterAlarms')
+    if (liveView) {
+      groupAlarms_after();
+    } else {
+      distinctAlarms(distinctAlarms_after) // 5
+    }
+
   }
 
   function distinctAlarms_after(){
@@ -533,7 +550,7 @@ function analyzeAlarms(fn_after){
 
 
 // [3] Link remaining events ---------------------------------------------------
-function linkAlarms(fn_after, id_set, time_store, linkIDn){
+function linkAlarms(fn_after, id_set, time_store, linkIDn, liveView){
 
   var cnt = new Distinct(allAlarms, ['_var']);  // for alarm counting
   var prodTlSet = [] // for production timeline reference
@@ -565,27 +582,33 @@ function linkAlarms(fn_after, id_set, time_store, linkIDn){
 
     };
 
-    // PRODUCTION timeline (only if there's a link)
-    if (id_set[a._linkID]) {
-      if (a._state == 0){ // Off event
-        a._timeline = new ProdTimeline(a)
-        prodTlSet[a._linkID] = a._timeline
-      } else { // On event (reference)
-        a._timeline = prodTlSet[a._linkID] // add reference to object
+    if(!liveView) {
+
+      // PRODUCTION timeline (only if there's a link)
+      if (id_set[a._linkID]) {
+        if (a._state == 0){ // Off event
+          a._timeline = new ProdTimeline(a)
+          prodTlSet[a._linkID] = a._timeline
+        } else { // On event (reference)
+          a._timeline = prodTlSet[a._linkID] // add reference to object
+        }
+      } else {
+        a._timeline = undefined
       }
-    } else {
-      a._timeline = undefined
+
+      // Count alarms
+      if (cnt._var[a._var] == 1) { cnt._var[a._var] = new CountObj()}
+
+      if (a._state == 0){
+        cnt._var[a._var].add(a)
+        a._count = cnt._var[a._var]
+      } else {
+        a._count = cnt._var[a._var] // add reference to count obj
+      }
+      
     }
 
-    // Count alarms
-    if (cnt._var[a._var] == 1) { cnt._var[a._var] = new CountObj()}
 
-    if (a._state == 0){
-      cnt._var[a._var].add(a)
-      a._count = cnt._var[a._var]
-    } else {
-      a._count = cnt._var[a._var] // add reference to count obj
-    }
 
   };
 
@@ -639,8 +662,6 @@ function filterAlarms(fn_after){
         }
       }
     }
-
-    console.log(typeString, filtered);
 
     // Only active filter
     if(FILTERS.only.active && !arr[i]._active) {filtered = true}
