@@ -474,13 +474,22 @@ var FILTERS_def = function() {
     sev: {
       A: true, B: true, C: true, D: true, E: false,
     },
-    at: {
-      general: true, safety: true, interlock: true,
-      autonotstarted: true, manual: true, formatnok: true,
-      alarm: true,
+    general: {
+      interlock: true, keeppos: true, processtime: true, overtime: true,
+      com: true, diag: true, system: true, robot: true,
+      atlascopco: true, other: true,
     },
-    prod: {
-      production: true, inout: true, andon: true, controlroom: true,
+    safety: {
+      EStop: true, GStop: true, MStop: true, overtravel: true,
+      button: true, gate: true, other: true,
+    },
+    mode: {
+      autonotstarted: true, manual: true, resseq: true, restm: true,
+      forced: true, homerun: true, normalstop: true, other: true,
+    },
+    production: {
+      prodmode: true, inout: true, andon: true, controlroom: true,
+      other: true,
     },
   }
 }

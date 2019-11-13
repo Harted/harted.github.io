@@ -189,7 +189,7 @@
         </div>
 
         <!-- Filter selection ------------------------------------------------->
-        <div id='filters' class='control-group collapse'>
+        <div id='filters' class='control-group'>
           <div id='filters_header' class='control-group-header'>
             <span>Filters</span>
           </div>
@@ -213,26 +213,55 @@
               <div id="sev_E" class="glass_btn active">E</div>
             </div>
 
-            <!-- Alarmtype selection -->
-            <!-- <div id='alarmtype' class='control-item'>
-              <span id="at_title" class="item_title active">Types</span>
-              <div id="at_general" class="glass_btn active">General</div>
-              <div id="at_safety" class="glass_btn active">Safety</div>
-              <div id="at_interlock" class="glass_btn active">Interlock</div>
-              <div id="at_alarm" class="glass_btn active">Alarm</div>
-              <div id="at_manual" class="glass_btn active">Manual</div>
-              <div id="at_autonotstarted" class="glass_btn active">!Started</div>
-              <div id="at_formatnok" class="glass_btn active">FormatNOK</div>
-            </div> -->
+            <!-- General selection -->
+            <div id='general' class='control-item'>
+              <span id="general_title" class="item_title active">General</span>
+              <div id="general_interlock" class="glass_btn active">Intlk</div>
+              <div id="general_keeppos" class="glass_btn active">KeepPos</div>
+              <div id="general_processtime" class="glass_btn active">Process</div>
+              <div id="general_overtime" class="glass_btn active">Overtime</div>
+              <div id="general_com" class="glass_btn active">Com</div>
+              <div id="general_diag" class="glass_btn active">Diag</div>
+              <div id="general_system" class="glass_btn active">System</div>
+              <div id="general_robot" class="glass_btn active">Robot</div>
+              <div id="general_atlascopco" class="glass_btn active">AtlasC</div>
+              <div id="general_other" class="glass_btn active">Other</div>
+            </div>
+
+            <!-- Safety type selection -->
+            <div id='safety' class='control-item'>
+              <span id="safety_title" class="item_title active">Safety</span>
+              <div id="safety_EStop" class="glass_btn active">Estop</div>
+              <div id="safety_GStop" class="glass_btn active">Gstop</div>
+              <div id="safety_MStop" class="glass_btn active">Mstop</div>
+              <div id="safety_overtravel" class="glass_btn active">Ovrtrvl</div>
+              <div id="safety_button" class="glass_btn active">Button</div>
+              <div id="safety_gate" class="glass_btn active">Gate</div>
+              <div id="safety_other" class="glass_btn active">Other</div>
+            </div>
+
+            <!-- Mode type selection -->
+            <div id='mode' class='control-item'>
+              <span id="mode_title" class="item_title active">Mode</span>
+              <div id="mode_autonotstarted" class="glass_btn active">Auto</div>
+              <div id="mode_manual" class="glass_btn active">Manual</div>
+              <div id="mode_resseq" class="glass_btn active">ResSeq</div>
+              <div id="mode_restm" class="glass_btn active">ResTM</div>
+              <div id="mode_forced" class="glass_btn active">Forced</div>
+              <div id="mode_homerun" class="glass_btn active">Home</div>
+              <div id="mode_normalstop" class="glass_btn active">Stop</div>
+              <div id="mode_other" class="glass_btn active">Other</div>
+            </div>
 
             <!-- Production type selection -->
-            <!-- <div id='production' class='control-item'>
-              <span id="prod_title" class="item_title active">Production</span>
-              <div id="prod_production" class="glass_btn active">General</div>
-              <div id="prod_inout" class="glass_btn active">In/Out</div>
-              <div id="prod_andon" class="glass_btn active">Andon</div>
-              <div id="prod_controlroom" class="glass_btn active">CR</div>
-            </div> -->
+            <div id='production' class='control-item'>
+              <span id="production_title" class="item_title active">Production</span>
+              <div id="production_prodmode" class="glass_btn active">Mode</div>
+              <div id="production_inout" class="glass_btn active">InOut</div>
+              <div id="production_andon" class="glass_btn active">Andon</div>
+              <div id="production_controlroom" class="glass_btn active">CR</div>
+              <div id="production_other" class="glass_btn active">Other</div>
+            </div>
 
           </div>
         </div>
