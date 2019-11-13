@@ -79,7 +79,7 @@ function statusFields(str, cls, arr, i){
 
 //Async array function ---------------------------------------------------------
 var asyncStack = []
-function asyncArr(array, fn_arr, fn_dom, fn_after, context, time) {
+function asyncArr(array, fn_arr, fn_dom, fnAfter, context, time) {
 
   var i = 0
   var len = array.length
@@ -98,7 +98,7 @@ function asyncArr(array, fn_arr, fn_dom, fn_after, context, time) {
       fn_dom.call( context, array, i )
       asyncStack.push(setTimeout( itter, 1 )) //able to cancel async opperation
     } else { // after itteration
-      fn_after.call( context, array, i )
+      fnAfter.call( context, array, i )
     }
 
   }

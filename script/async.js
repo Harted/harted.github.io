@@ -1,7 +1,7 @@
 // last two args are optional
 var el = document.getElementById('ha1')
 
-function asyncArr(array, fn_arr, fn_dom, fn_after, context) {
+function asyncArr(array, fn_arr, fn_dom, fnAfter, context) {
 
     var i = 0
     var len = array.length
@@ -30,7 +30,7 @@ function asyncArr(array, fn_arr, fn_dom, fn_after, context) {
 
         } else {
 
-            fn_after.call( context, arr, i )
+            fnAfter.call( context, arr, i )
 
         }
 
@@ -47,7 +47,7 @@ arr = []; for(i = 0; i < 30000000; i++){ arr.push('dinge') }
 
 // Function -------------------------------------------------------------
 
-asyncArr(arr, fn_arr, fn_dom, fn_after);
+asyncArr(arr, fn_arr, fn_dom, fnAfter);
 
 function fn_arr( arr, i ) {
 
@@ -64,7 +64,7 @@ function fn_dom( arr, i ) {
 
 }
 
-function fn_after( arr, i ) {
+function fnAfter( arr, i ) {
 
     el.textContent = 100 + '%'
 
