@@ -81,9 +81,10 @@ function GET_init(){
     clearTimeout(asyncStack[j])
   }; asyncStack = [];
 
-
-
-
+  // Hide overview
+  $('#overview-container').removeClass('visible');
+  tog.overview = false;
+  btn_off_style($('#showoverview'))
 
 
   return new Date();
@@ -135,8 +136,6 @@ function GET(init){
   .fail(function() {                                                  // FAIL
 
     console.log("Data: error")
-
-    //loadFade(); // Fade in interface
 
     statusFields('Failed, try again', 'fail')
 
