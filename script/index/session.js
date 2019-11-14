@@ -2,27 +2,12 @@
 $('#volvo_logo img').click(copySession) // COPY Session
 $('#alfa_logo').click(state_default) // Set default state
 
-// Return one object of TIA_GC, FILTERS & TIME objects
-function curSet(){
-  return {
-    TIA_GC: TIA_GC,
-    FILTERS: FILTERS,
-    TIME: {
-      rel: TIME.rel,
-      rt: TIME.rt,
-      lbt: TIME.lbt(),
-      sta: TIME.sta(),
-      end: TIME.end(),
-    }
-  }
-}
 
 // copySession -------------------------------------------------------
 function copySession(){
 
-  // Push link to URL bar to bookmark or copy
-  var url = '/?' + btoa(JSON.stringify(curSet()))
-  history.pushState(curSet(),'',url)
+  var url = '/?' + encodeURI(JSON.stringify(new CurrentSet(true)))
+  history.pushState(new CurrentSet,'',url)
 
 }
 
@@ -44,7 +29,7 @@ window.onpopstate = function(event){
 function pushState(init){
 
   // Set new and old state
-  newstate = JSON.stringify(curSet())
+  newstate = JSON.stringify(new CurrentSet)
   oldstate = JSON.stringify(window.history.state)
 
   // DON'T push state when:
@@ -54,7 +39,7 @@ function pushState(init){
   // - If new and old state are the same
   if(!TIME.rt && !popper && !init && !(newstate == oldstate)) {
     console.log('History saved!')
-    history.pushState(curSet(),'','')
+    history.pushState(new CurrentSet,'','')
   }
 
   popper = false; // Reset popper
@@ -69,7 +54,11 @@ function loadSession(){
   var session // var to read the state
 
   if (window.location.search.length > 0){                         // FROM URL
-    session = JSON.parse(atob(window.location.search.substring(1)))
+
+    session = JSON.parse(decodeURI(window.location.search.substring(1)))
+    session = new fromCurrentSet(session);
+    console.log(session);
+
     history.pushState(session,'','/')
   } else if (window.history.state != null){                       // FROM STATE
     session = window.history.state

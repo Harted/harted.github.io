@@ -196,6 +196,9 @@ function timelineAlarms(fnAfter, idHasON){
 
       var a = arr[i]
 
+      // set shift for event ------------------------------------
+      a._shift = getShift(a._dt)
+
       // Set PRODUCTION timeline --------------------------------
       // - Only if the positive linkID created a link between the
       //   ON and OFF event

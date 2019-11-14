@@ -1,7 +1,7 @@
 // Body load ready (set on body in index.html) ---------------------------------
 function ready(){
 
-  //busyChanges();
+  busyChanges();
   getStations();
 
 }
@@ -240,7 +240,7 @@ $('#controllogo div').click(LIVE)
 
 function LIVE(){
   var origin = window.location.origin
-  var url = '/live.html?' + btoa(JSON.stringify(curSet()))
+  var url = '/live.html?' + encodeURI(JSON.stringify(new CurrentSet(true)))
 
   window.location = origin + url
 }

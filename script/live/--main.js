@@ -4,8 +4,6 @@ function ready(){
   GET();
 }
 
-var FILTERS = {}
-
 var TIME = {
   rel: true,
 }
@@ -16,8 +14,13 @@ function loadSession(){
   var session // var to read the state
 
   if (window.location.search.length > 0){                         // FROM URL
-    session = JSON.parse(atob(window.location.search.substring(1)))
+
+    session = JSON.parse(decodeURI(window.location.search.substring(1)))
+    console.log(session);
+    session = new fromCurrentSet(session);
+    console.log(session);
     history.pushState(session,'','/live.html')
+
   } else if (window.history.state != null){                       // FROM STATE
     session = window.history.state
   }
@@ -37,7 +40,7 @@ function loadSession(){
         for (var stn in ST[zone]) {
           if (ST[zone].hasOwnProperty(stn)) {
             if (stn.search('_') < 0) { //ignore zone active
-              TIA_GC[zone][stn].active = ST[zone][stn].active
+              TIA_GC[zone][stn].active = ST[zone][stn].sel
               TIA_GC[zone][stn].sel = ST[zone][stn].sel
 
               if(ST[zone][stn].sel){one_sel = true}
@@ -66,7 +69,11 @@ function loadSession(){
     if (!one_zone_selected) {
       for (var zone in TIA_GC) {
         if (TIA_GC[zone].hasOwnProperty(['_selected'])) {
-          TIA_GC[zone]._selected = true;
+          for (var stn in TIA_GC[zone]) {
+            if (TIA_GC[zone][stn].hasOwnProperty('sel')) {
+              TIA_GC[zone]._selected = true;
+            }
+          }
         }
       }
     }
@@ -241,7 +248,7 @@ function checkActive(alarms){
   for (var zone in TIA_GC) {
     if (TIA_GC.hasOwnProperty(zone)) {
 
-      if (TIA_GC[zone]._active && TIA_GC[zone]._selected ) {
+      if (TIA_GC[zone]._selected ) {
         html += '<div id="' + zone + '" '
         html += 'class="zonebox"><span>'
         html += zone.replace('ZONE','Zone ')
@@ -312,7 +319,7 @@ function checkActive(alarms){
         }
       }
 
-      if (TIA_GC[zone]._active && TIA_GC[zone]._selected ) {
+      if (TIA_GC[zone]._selected ) {
         html += '</div>'
       }
 

@@ -484,36 +484,6 @@ $('#filters .glass_btn').mouseup(filters_mu)
 $('#filters .fsel_btn').mouseup(fltr_res_none)
 $('#filters .item_title.active').mouseup(sel_type)
 
-// Default filter values ---------------------------------------------
-var FILTERS_def = function() {
-  return {
-    only: {
-      active: false,
-    },
-    sev: {
-      A: true, B: true, C: true, D: true, E: false,
-    },
-    general: {
-      interlock: true, keeppos: true, processtime: true, overtime: true,
-      com: true, diag: true, system: true, robot: true,
-      atlascopco: true, other: true,
-    },
-    safety: {
-      EStop: true, GStop: true, MStop: true, overtravel: true,
-      button: true, gate: true, other: true,
-    },
-    mode: {
-      autonotstarted: true, manual: true, resseq: true, restm: true,
-      forced: true, homerun: true, normalstop: true, other: true,
-    },
-    production: {
-      prodmode: true, inout: true, andon: true, controlroom: true,
-      other: true,
-    },
-  }
-}
-
-var FILTERS = FILTERS_def() //Set object to default structure on load
 
 //triggered in load session
 function default_fltr(){

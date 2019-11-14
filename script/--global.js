@@ -55,6 +55,45 @@ var TIA_GC = {
   OTHER: {},
 }
 
+
+// Default filter values ---------------------------------------------
+var FILTERS_def = function() {
+  return {
+    only: {
+      active: false,
+    },
+    sev: {
+      A: true, B: true, C: true, D: true, E: false,
+    },
+    general: {
+      interlock: true, keeppos: true, processtime: true, overtime: true,
+      com: true, diag: true, system: true, robot: true,
+      atlascopco: true, other: true,
+    },
+    safety: {
+      EStop: true, GStop: true, MStop: true, overtravel: true,
+      button: true, gate: true, other: true,
+    },
+    mode: {
+      autonotstarted: true, manual: true, resseq: true, restm: true,
+      forced: true, homerun: true, normalstop: true, other: true,
+    },
+    production: {
+      prodmode: true, inout: true, andon: true, controlroom: true,
+      other: true,
+    },
+  }
+}
+
+var FILTERS = FILTERS_def() //Set object to default structure on load
+
+
+
+
+
+
+
+
 // Status fields ---------------------------------------------------------------
 function statusFields(str, cls, arr, i){
 
@@ -138,5 +177,108 @@ function dateT(d, sub){
   ).toISOString().split('.')[0];
 
   return str // return T string
+
+}
+
+
+
+
+
+
+
+
+// CURRENT SET Class -----------------------------------------------------------
+class CurrentSet {
+  constructor(URI) {
+    URI = URI || false
+    if (URI) {
+      this.TIA_GC = this.toBinTIAGC(TIA_GC)
+      this.FILTERS = this.toBinFILTERS(FILTERS)
+    } else {
+      this.TIA_GC = TIA_GC
+      this.FILTERS = FILTERS
+    }
+    this.TIME = {
+      rel: TIME.rel,
+      rt: TIME.rt,
+      lbt: TIME.lbt(),
+      sta: TIME.sta(),
+      end: TIME.end(),
+    }
+  }
+
+  toBinTIAGC(TIA){
+    var binStr = '';
+    for (var zone in TIA) {
+      for (var stn in TIA[zone]) {
+        if (TIA[zone][stn].hasOwnProperty('sel')) {
+          switch (TIA[zone][stn].sel) {
+            case true: binStr += '1'
+            break;
+            case false: binStr += '0'
+            break;
+          }
+        }
+      }
+    }; return binStr;
+  }
+
+  toBinFILTERS(F){
+    var binStr = '';
+    for (var top in F) {
+      for (var sub in F[top]) {
+        switch (F[top][sub]) {
+          case true: binStr += '1'; break;
+          case false: binStr += '0'; break;
+        }
+      }
+    }; return binStr;
+  }
+}
+
+// FROM CURRENT SET Class ------------------------------------------------------
+class fromCurrentSet {
+  constructor(session) {
+    this.TIA_GC = this.fromBinTIAGC(session.TIA_GC)
+    this.FILTERS = this.fromFILTERS(session.FILTERS)
+    this.TIME = session.TIME
+  }
+
+  fromBinTIAGC(ses) {
+    for (var zone in TIA_GC) {
+      for (var stn in TIA_GC[zone]) {
+        if (stn.indexOf('_') != 0 && TIA_GC[zone][stn].hasOwnProperty('active')) {
+          var bin = ses.slice(0,1)
+          var ses = ses.slice(1)
+
+          console.log(zone, stn, bin);
+
+          switch (bin) {
+            case '1': TIA_GC[zone][stn].sel = true
+            break;
+            case '0': TIA_GC[zone][stn].sel = false
+            break;
+          }
+        }
+      }
+    }; return TIA_GC;
+  }
+
+  fromFILTERS(ses){
+    for (var top in FILTERS) {
+      for (var sub in FILTERS[top]) {
+
+        var bin = ses.slice(0,1)
+        var ses = ses.slice(1)
+
+        switch (bin) {
+          case '1': FILTERS[top][sub] = true
+          break;
+          case '0': FILTERS[top][sub] = false
+          break;
+        }
+      }
+    }; return FILTERS
+  }
 
 }

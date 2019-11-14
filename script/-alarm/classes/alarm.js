@@ -19,9 +19,6 @@ class Alarm {
     // safe date parse of _datetime
     this._dt = sDateParse(this._datetime);
 
-    // set shift for event 
-    this._shift = getShift(this._dt)
-
     // state text ON/OFF
     this.statetxt = ['OFF','ON'][this._state];
 
