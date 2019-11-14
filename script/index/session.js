@@ -57,9 +57,8 @@ function loadSession(){
 
     session = JSON.parse(decodeURI(window.location.search.substring(1)))
     session = new fromCurrentSet(session);
-    console.log(session);
-
     history.pushState(session,'','/')
+
   } else if (window.history.state != null){                       // FROM STATE
     session = window.history.state
   }

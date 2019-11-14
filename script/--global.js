@@ -251,8 +251,6 @@ class fromCurrentSet {
           var bin = ses.slice(0,1)
           var ses = ses.slice(1)
 
-          console.log(zone, stn, bin);
-
           switch (bin) {
             case '1': TIA_GC[zone][stn].sel = true
             break;

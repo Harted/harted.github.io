@@ -16,9 +16,7 @@ function loadSession(){
   if (window.location.search.length > 0){                         // FROM URL
 
     session = JSON.parse(decodeURI(window.location.search.substring(1)))
-    console.log(session);
     session = new fromCurrentSet(session);
-    console.log(session);
     history.pushState(session,'','/live.html')
 
   } else if (window.history.state != null){                       // FROM STATE
@@ -81,8 +79,6 @@ function loadSession(){
     // Set FILTERS from what was saved +++++
     for (var type in FI) {
       if (FI.hasOwnProperty(type)) {
-
-        FILTERS[type] = {}
 
         for (var sub in FI[type]) {
           if (FI[type].hasOwnProperty(sub)) {
