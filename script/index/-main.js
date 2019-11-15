@@ -1,7 +1,7 @@
-// Body load ready (set on body in index.html) ---------------------------------
+// Scripts loaded & ready (--script.js )----------------------------------------
 function ready(){
 
-  busyChanges();
+  //busyChanges();
   getStations();
 
 }

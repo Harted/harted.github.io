@@ -1,3 +1,26 @@
+// LOAD SCRIPTS ----------------------------------------------------------------
+loadScripts(
+
+  // Directory
+  'script/--global/alarm/',
+
+  // Scripts array
+  [
+    'class/alarm', 'class/count', 'class/dist',
+    'class/distalarm', 'class/group',
+
+    'parts'
+  ],
+
+  // Function when ready (string)
+  'alarmReady'
+  
+)
+
+function alarmReady(){
+  console.log('alarm scripts loaded');
+}
+
 // GLOBAL alarms var -----------------------------------------------------------
 var alarms
 var allAlarms, filteredAlarms
@@ -147,52 +170,10 @@ function Alarms(data, fnAfter, timer, init, context){
 }
 
 
-// For safari ------------------------------------------------------------------
-// Replace '-' by '/' & Remove 'ms' before new Date.. add 'ms' after again
-function sDateParse(date){
-  date = date.replace(/-/g,'/')
-  date = date.split('.')
-
-  var d = new Date(date[0]);
-  return Date.parse(d)+parseInt(date[1]);
-}
 
 
-// Function: Convert ms to dhms string format ----------------------------------
-function dhms(ms) {
-
-  var day_c = (1000 * 60 * 60 * 24)
-  var hrs_c = (1000 * 60 * 60)
-  var min_c = (1000 * 60)
-  var sec_c = 1000
-
-  if (ms < 10000) {var fx = 1} else {var fx = 0}
-
-  var days = Math.floor(ms / day_c);
-  ms -= days * day_c
-  var hrs = Math.floor(ms / hrs_c);
-  ms -= hrs * hrs_c
-  var min = Math.floor(ms / min_c);
-  ms -= min * min_c
-  var sec = (ms / sec_c).toFixed(fx);
-
-  if (days > 0) {
-    return days + 'd' + hrs + 'h' +  (min + Math.round(sec/60)) + 'm'
-  } else if (hrs > 0) {
-    return hrs + 'h' +  min + 'm' + sec + 's'
-  } else if (min > 0) {
-    return min + 'm' + sec + 's'
-  } else {
-    return sec + 's'
-  };
-
-};
 
 
-// Copy object function --------------------------------------------------------
-function copyObj(obj){
-  return JSON.parse(JSON.stringify(obj))
-}
 
 
 function alarmPages(alarmLimit){
@@ -248,12 +229,4 @@ function alarmPages(alarmLimit){
   } else {
     $('#pagepick').removeClass('display')
   }
-}
-
-
-
-
-
-function roundP(num, digits){
-  return Math.round(num * Math.pow(10,digits)) / Math.pow(10,digits)
 }

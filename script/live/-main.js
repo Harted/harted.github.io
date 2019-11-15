@@ -1,4 +1,3 @@
-// Body load ready (set on body in live.html) ---------------------------------
 function ready(){
   loadSession();
   GET();

@@ -63,6 +63,15 @@ function show_overview_mu(){
 }
 
 
+// TIME object -----------------------------------------------------------------// TIME
+var TIME = {
+  rel: false,
+  rt: false,
+  lbt: function(){return(lb.val())},
+  sta: function(){return(fr.val())},
+  end: function(){return(to.val())},
+}
+
 
 // BUTTON STYLE ----------------------------------------------------------------
 $('.btn').mousedown(btn_on_style)
@@ -155,16 +164,6 @@ function datecheck() {
         fr.val(dateT(to.val(), h))
       }
 
-    // limit date difference to 1 day
-    // } else if (fr.val() <= dateT(to.val(),h*24)) {
-    //
-    //   // if from date is set set o date vice versa
-    //   if ($(this).val() == fr.val()){
-    //     to.val(dateT(fr.val(), -h*24))
-    //   } else if ($(this).val() == to.val()){
-    //     fr.val(dateT(to.val(), h*24))
-    //   }
-
     }
 
     // date_to can't be bigger then NOW
@@ -202,14 +201,7 @@ var rel = $('#relative')
 var GD = $('#get_data')
 var oa = $("#only_active")
 
-// TIME object
-var TIME = {
-  rel: false,
-  rt: false,
-  lbt: function(){return(lb.val())},
-  sta: function(){return(fr.val())},
-  end: function(){return(to.val())},
-}
+
 
 //inderect hour button reference
 $('.h_btn').mouseup(hour_sel)
@@ -489,7 +481,7 @@ $('#filters .item_title.active').mouseup(sel_type)
 function default_fltr(){
 
   // Set FILTERS to default
-  FILTERS = FILTERS_def()
+  FILTERS = new DefaultFilters;
 
   // Apply style (and set again)
   for (var type in FILTERS) {
