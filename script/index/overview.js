@@ -562,19 +562,14 @@ class ProdTimeline {
         })
       }
 
-      function tniPrevious(end, context){ // add end time to time between item function
+      function tniPrevious(end){ // add end time to time between item function
 
         var prev = tni[tni.length - 1]
 
         prev.end = end
         prev.eDate = dateT(new Date(end))
 
-        // Correction when ends in HDLOWB
-        if (context.endsIn != undefined){
-          var cor = 1000
-        } else { var cor = 0}
-
-        prev.duration = (end + cor) - prev.start
+        prev.duration = (end + 1000) - prev.start
         prev.durtxt = dhms(prev.duration)
 
         tniPop();
@@ -596,14 +591,14 @@ class ProdTimeline {
       // has holidays between
       for (var i = 0; i < context[name].hasBetween.length; i++) {
         var btw = context[name].hasBetween[i]
-        tniPrevious(btw.start - 1000, context) // give previous end time
+        tniPrevious(btw.start - 1000) // give previous end time
         tniPush(btw.end + 1000) // push new item with start time
       }
 
       if (context[name].endsIn != undefined) { // ends in holiday
-        tniPrevious(context[name].endsIn.start - 1000, context)
+        tniPrevious(context[name].endsIn.start - 1000)
       } else if (context[name].isIn == undefined){ // doesn't end in holliday
-        tniPrevious(a._end, context)
+        tniPrevious(a._end - 1000, context)
       }
 
     };
@@ -730,8 +725,8 @@ class ProdTimeline {
 
 var prodTest = new ProdTimeline({
 
-  _start: Date.parse(new Date(2019,10,7,11,12,59))+999,
-  _end: Date.parse(new Date(2019,10,7,11,15,00))+341,
+  _start: Date.parse(new Date(2019,10,7,11,00,59)),
+  _end: Date.parse(new Date(2019,10,7,12,15,00)),
   _zone: 'ZONE2'
 
 })
