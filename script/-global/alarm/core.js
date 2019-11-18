@@ -2,7 +2,7 @@
 loadScripts(
 
   // Directory
-  'script/--global/alarm/',
+  'script/-global/alarm/',
 
   // Scripts array
   [

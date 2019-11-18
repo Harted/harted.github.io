@@ -1,6 +1,6 @@
 loadScripts(
   // Directory
-  'script/--global/',
+  'script/-global/',
 
   // Scripts array
   ['svg', 'objects', 'async', 'session', 'alarm/core'],
