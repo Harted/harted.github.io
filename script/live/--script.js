@@ -1,10 +1,16 @@
-loadScripts(
-  // Directory
-  'script/live/',
+function globalReady(){
 
-  // Scripts array
-  ['-main'],
+  loadScripts(
 
-  // Function name to call after
-  'ready'
-)
+    // Directory
+    'script/live/',
+
+    // Scripts array
+    ['-main'],
+
+    // Function name to call after
+    'ready'
+    
+  )
+
+}

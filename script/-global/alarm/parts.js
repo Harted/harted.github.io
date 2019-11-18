@@ -204,20 +204,20 @@ function timelineAlarms(fnAfter, idHasON){
       //   ON and OFF event
       // - Set the timeline to undefined otherwise
       if (idHasON[a._linkID]) {
-        // OFF event is first in array so create the timeline
+        // OFF event is first in array so create the timeline here
         // - store the reference to the timeline with linkID ref
         // ON event is second in array
         // - set timeline to stored reference
         // - this saves time by only creating timeline once
-        if (a._state == 0){
-          a._timeline = new ProdTimeline(a)
+        if (a._state == 0){ // OFF
+          a._timeline = new ProdTimeline(a)                                     //// NOTE: HIER BEN IK 
           prodTlSet[a._linkID] = a._timeline
-        } else {
+        } else { // ON
           a._timeline = prodTlSet[a._linkID]
         }
-      } else { a._timeline = undefined }
+      } else { a._timeline = undefined } // ACTIVE or OFF without ON
 
-      // Count alarms                                                           // NOTE: Hier ben ik
+      // Count alarms ------------------------------------------
       if (cnt._var[a._var] == 1) { cnt._var[a._var] = new CountObj()}
 
       if (a._state == 0){

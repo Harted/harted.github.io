@@ -62,7 +62,7 @@ function show_overview_mu(){
 
 }
 
-
+// NOTE: Find a way to centralize this object
 // TIME object -----------------------------------------------------------------// TIME
 var TIME = {
   rel: false,

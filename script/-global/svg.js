@@ -16,7 +16,7 @@ $('#controllogo polygon').attr('points',alfa_svg.poly)
 $('.table-underlay #ul_logo polygon').attr('points',alfa_svg.poly)
 $('.table-underlay #ul_logo svg').attr('viewBox',alfa_svg.viewbox)
 
-// Logo in backgound table
+// Logo in backgound table (only index)
 $('#loading polygon').attr('points',alfa_svg.poly)
 $('#loading svg').attr('viewBox',alfa_svg.viewbox)
 

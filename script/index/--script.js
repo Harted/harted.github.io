@@ -1,17 +1,21 @@
-loadScripts(
+function globalReady(){
 
-  // Directory
-  'script/index/',
+  loadScripts(
 
-  // Scripts array
-  [
-    'table', 'flex', 'controls', 'filter', 'stations',
-    'session', 'overview', 'overviewVis',
+    // Directory
+    'script/index/',
 
-    '-main'
-  ],
+    // Scripts array
+    [
+      'table', 'flex', 'controls', 'filter', 'stations',
+      'session', 'overview', 'overviewVis',
 
-  // Function name to call after
-  'ready'
+      '-main'
+    ],
 
-)
+    // Function name to call after
+    'ready'
+
+  )
+  
+}
