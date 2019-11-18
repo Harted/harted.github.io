@@ -210,7 +210,7 @@ function timelineAlarms(fnAfter, idHasON){
         // - set timeline to stored reference
         // - this saves time by only creating timeline once
         if (a._state == 0){ // OFF
-          a._timeline = new ProdTimeline(a)                                     //// NOTE: HIER BEN IK
+          a._timeline = new ProdTimeline(a)                                     //// NOTE: HIER BEN IK 
           prodTlSet[a._linkID] = a._timeline
         } else { // ON
           a._timeline = prodTlSet[a._linkID]
