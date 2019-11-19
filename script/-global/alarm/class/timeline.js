@@ -167,34 +167,42 @@ class ProdTimeline {
     // FUNCTIONS ----------------------------------------------------------     // FUNCTIONS
     // Specific HDLOW, BREAK & combined HDLOWB timeline/event creator
     function specTL(tlArr, name, context){
+
+      // Itterate over all the timelineEntries in HDLOW(B)
       for (var i = 0; i < tlArr.length; i++) {
 
         var tl = tlArr[i] // Set reference to timeline object
 
+        // Note: tl.end + 999ms to include last second
         if (a._start >= tl.start && a._end <= (tl.end + 999)) {
 
+          // event starts & ends in HDLOW(B)
+          // - duration = duration of event & add TimelineEntry to isIn
           tl.duration = (a._end - a._start);
-
-          context[name].isIn = tl // start and ends in
+          context[name].isIn = tl
 
         } else if (a._start <= tl.start && a._end >= (tl.end + 999)) {
 
+          // event has HDLOWB between, starts end ends before & after
+          // - duration = duration of TimelineEntry (add last sec)
+          //   (adding 1000 is nescesary because last second is not
+          //    included in endtime with timelines)
+          // - add TimelineEntry to hasBetween
           tl.duration = (tl.end + 1000) - tl.start;
-
-          context[name].hasBetween.push(tl) // holidays lay between
+          context[name].hasBetween.push(tl)
 
         } else if (a._start >= tl.start && a._start <= (tl.end + 999)) {
 
+          // event starts in TimelineEntry end ends after
+          // - duration = TimelineEntry end (add last sec) - event start
+          // - add TimelineEntry to startsIn
           tl.duration = (tl.end + 1000) - a._start;
-
-
-          context[name].startsIn = tl // starts in holiday and ends later
+          context[name].startsIn = tl ;
 
         } else if (a._end >= tl.start && a._end <= (tl.end + 999)) {
 
           tl.duration = (a._end) - tl.start;
-
-          context[name].endsIn = tl // ends in holiday and start before
+          context[name].endsIn = tl;
 
         }
 
