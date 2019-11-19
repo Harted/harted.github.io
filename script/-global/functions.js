@@ -29,6 +29,16 @@ function dhms(ms) {
 };
 
 
+// Function: get year, month & day from date -----------------------------------// YMD
+function YMD(date){
+  return [
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+  ]
+}
+
+
 // Function: round number with digits after period option ----------------------// roundP
 function roundP(num, digits){
   digits = digits || 0

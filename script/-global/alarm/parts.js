@@ -210,7 +210,7 @@ function timelineAlarms(fnAfter, idHasON){
         // - set timeline to stored reference
         // - this saves time by only creating timeline once
         if (a._state == 0){ // OFF
-          a._timeline = new ProdTimeline(a)                                     //// NOTE: HIER BEN IK 
+          a._timeline = new ProdTimeline(a)                                     //// NOTE: HIER BEN IK
           prodTlSet[a._linkID] = a._timeline
         } else { // ON
           a._timeline = prodTlSet[a._linkID]
@@ -238,6 +238,54 @@ function timelineAlarms(fnAfter, idHasON){
   function after(arr, i){
     status(arr, i); setTimeout(function () { fnAfter.call() }, 1);
   }
+
+  // FUNCTIONS -------------------------------------------------------
+  // Get shift with give date & time
+  function getShift(datetime){
+
+    datetime = new Date(datetime)
+
+    // convert day to 7 for sunday when it's 0
+    var day = datetime.getDay(); if (day == 0) { day = 7 }; // 7 = sunday
+
+    // create unified time for the datetime
+    var time = uniT(datetime.toTimeString().substr(0,8))
+
+    // Get the shifts for the specified date from the SHIFTS object
+    var shfts =  SHIFTS[day]
+
+    // Check in which shift the give time lies
+    for (var s in shfts) {
+      if (shfts.hasOwnProperty(s)) {
+
+        if (uniT(shfts[s].s) <= time && time <= uniT(shfts[s].e)) {
+
+          // Order of A & B shift depending on week
+          var AB = { S1: ['B','A'], S2: ['A','B']}
+
+          // Set A or B depending on week index
+          if (s == 'S1' || s == 'S2') { s = AB[s][weekIndex(datetime)]}
+
+          return s.substr(0,1) // return only first letter
+
+        }
+
+      }
+    }
+  }
+
+  // Create date from time string to compare easily
+  function uniT(tStr){
+    var arr = tStr.split(':')
+    return new Date(2019,0,1,arr[0], arr[1], arr[2])
+  }
+
+  // Get weekindex alternating between '1' & '0' from 1/1/2019
+  function weekIndex(date){
+    var base = new Date(2019,0,1,0,0,0)
+    return Math.round((date - base) / (1000 * 60 * 60 * 24 * 7)) % 2
+  }
+
 }
 
 

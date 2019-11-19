@@ -7,19 +7,13 @@ loadScripts(
   // Scripts array
   [
     'class/alarm', 'class/count', 'class/dist',
-    'class/distalarm', 'class/group',
+    'class/distalarm', 'class/group', 'class/hdlow',
+    'class/timeline',
 
     'parts'
   ],
 
-  // Function when ready (string)
-  'alarmReady'
-  
 )
-
-function alarmReady(){
-  console.log('alarm scripts loaded');
-}
 
 // GLOBAL alarms var -----------------------------------------------------------
 var alarms

@@ -8,7 +8,7 @@ function globalReady(){
     // Scripts array
     [
       'table', 'flex', 'controls', 'filter', 'stations',
-      'session', 'overview', 'overviewVis',
+      'session', 'overview',
 
       '-main'
     ],
@@ -17,5 +17,5 @@ function globalReady(){
     'ready'
 
   )
-  
+
 }
