@@ -106,7 +106,7 @@ function ajax_s() {
       rel: true,
       stn: ax.stn_str(),
       sev: ax.sev_str(),
-      lbt: 1,
+      lbt: 1/3,
       sta: '',
       end: '',
     }
