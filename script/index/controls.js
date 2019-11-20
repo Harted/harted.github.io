@@ -9,7 +9,7 @@ tog = {
 
 
 // Clear/apply table formatting --------------------------------------
-$('#footer').mouseup(format_mu) // NOTE: NOT USED ATM
+$('#noformat').mouseup(format_mu) // NOTE: NOT USED ATM
 
 function format_mu(){
 

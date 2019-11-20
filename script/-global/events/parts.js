@@ -1,13 +1,13 @@
-// CREATE ALARMS ---------------------------------------------------------------// createAlarms
-function createAlarms(fnAfter, data){
+// CREATE EVENTS ---------------------------------------------------------------// createEvents
+function createEvents(fnAfter, data){
 
-  allAlarms = [];
+  EVENTS.all = [];
 
   // asyncArr(array, fn_arr, fn_dom, fnAfter, context [, time])
   asyncArr(data, itter, status, after, this);
 
   // ITTER -----------------------------------------------------------
-  function itter(arr, i){ allAlarms.push(new Alarm(arr[i], i)) };
+  function itter(arr, i){ EVENTS.all.push(new Event(arr[i], i)) };
 
   // STATUS ----------------------------------------------------------
   function status(arr, i){
@@ -21,10 +21,10 @@ function createAlarms(fnAfter, data){
 }
 
 
-// Analyze alarms for active, duration and link --------------------------------// analyzeAlarms
-function analyzeAlarms(fnAfter){
+// Analyze alarms for active, duration and link --------------------------------// analyzeEvents
+function analyzeEvents(fnAfter){
 
-  var activeCheck = new Distinct(allAlarms, ['_var']);  // for finding ACTIVE
+  var activeCheck = new Distinct(EVENTS.all, ['_var']);  // for finding ACTIVE
   var linkStore = copyObj(activeCheck)                 // for linkID storage
 
   var linkID = 0;         // linkID for ON.OFF events
@@ -33,7 +33,7 @@ function analyzeAlarms(fnAfter){
   var timeStore = []      // time storage per ID
 
   // asyncArr(array, fn_arr, fn_dom, fnAfter, context [, time])
-  asyncArr(allAlarms, itter, status, after, this);
+  asyncArr(EVENTS.all, itter, status, after, this);
 
   // ITTER -----------------------------------------------------------
   function itter(arr, i){
@@ -129,7 +129,7 @@ function analyzeAlarms(fnAfter){
   function after(arr,i){
     status(arr, i); // Update status 100%
     setTimeout(function () {
-      // Call next function with arguments used in linkAlarms()
+      // Call next function with arguments used in linkEvents()
       fnAfter.call(null, idHasON, timeStore, linkIDn)
     }, 1);
   }
@@ -137,11 +137,11 @@ function analyzeAlarms(fnAfter){
 };
 
 
-// Link remaining events -------------------------------------------------------// linkAlarms
-function linkAlarms(fnAfter, idHasON, timeStore, linkIDn){
+// Link remaining events -------------------------------------------------------// linkEvents
+function linkEvents(fnAfter, idHasON, timeStore, linkIDn){
 
   // asyncArr(array, fn_arr, fn_dom, fnAfter, context [, time])
-  asyncArr(allAlarms, itter, status, after, this);
+  asyncArr(EVENTS.all, itter, status, after, this);
 
   // ITTER ----------------------------------------------------------
   function itter(arr, i){
@@ -182,14 +182,14 @@ function linkAlarms(fnAfter, idHasON, timeStore, linkIDn){
 }
 
 
-// TIMELINE ALARMS -------------------------------------------------------------// timelineAlarms
-function timelineAlarms(fnAfter, idHasON){
+// TIMELINE ALARMS -------------------------------------------------------------// timelineEvents
+function timelineEvents(fnAfter, idHasON){
 
-  var cnt = new Distinct(allAlarms, ['_var']);  // for alarm counting
+  var cnt = new Distinct(EVENTS.all, ['_var']);  // for alarm counting
   var prodTlSet = []                            // for timeline reference
 
   // asyncArr(array, fn_arr, fn_dom, fnAfter, context [, time])
-  asyncArr(allAlarms, itter, status, after, this);
+  asyncArr(EVENTS.all, itter, status, after, this);
 
   // ITTER -----------------------------------------------------------
   function itter(arr, i){
@@ -210,7 +210,7 @@ function timelineAlarms(fnAfter, idHasON){
         // - set timeline to stored reference
         // - this saves time by only creating timeline once
         if (a._state == 0){ // OFF
-          a._timeline = new ProdTimeline(a)                                     //// NOTE: HIER BEN IK
+          a._timeline = new ProdTimeline(a)
           prodTlSet[a._linkID] = a._timeline
         } else { // ON
           a._timeline = prodTlSet[a._linkID]
@@ -218,13 +218,15 @@ function timelineAlarms(fnAfter, idHasON){
       } else { a._timeline = undefined } // ACTIVE or OFF without ON
 
       // Count alarms ------------------------------------------
+      // - Create new CountObj when value in distinct obj is 1
       if (cnt._var[a._var] == 1) { cnt._var[a._var] = new CountObj()}
 
-      if (a._state == 0){
+      // Count at OFF event, add reference to ON event
+      if (a._state == 0){ // OFF event
         cnt._var[a._var].add(a)
         a._count = cnt._var[a._var]
       } else {
-        a._count = cnt._var[a._var] // add reference to count obj
+        a._count = cnt._var[a._var]
       }
 
   }
@@ -236,7 +238,20 @@ function timelineAlarms(fnAfter, idHasON){
 
   // AFTER -----------------------------------------------------------
   function after(arr, i){
-    status(arr, i); setTimeout(function () { fnAfter.call() }, 1);
+
+    // DEBUG: To check dif between total time and timeline total time
+    for(i = 0; i < EVENTS.all.length; i++){
+      if(EVENTS.all[i]._timeline != undefined){
+        if (EVENTS.all[i]._timeline.duration._checkTotalDif != 0){
+          console.log('DEBUG: difference between duration and timeline total');
+          console.log(EVENTS.all[i]._timeline.duration._checkTotalDif)
+          console.log(EVENTS.all[i])
+        }
+      }
+    }
+
+    status(arr, i); setTimeout(function () { fnAfter.call() }, 5);
+
   }
 
   // FUNCTIONS -------------------------------------------------------
@@ -289,21 +304,13 @@ function timelineAlarms(fnAfter, idHasON){
 }
 
 
+// FILTER ALARMS ---------------------------------------------------------------// filterEvents
+function filterEvents(fnAfter){
 
+  EVENTS.filtered = [] // reset EVENTS.filtered array
 
-
-
-
-
-
-
-
-// [4] FILTER ALARMS -----------------------------------------------------------
-function filterAlarms(fnAfter){
-
-  filteredAlarms = [] // to store filtered alarms
-
-  asyncArr(allAlarms, itter, status, after, this)
+  // asyncArr(array, fn_arr, fn_dom, fnAfter, context [, time])
+  asyncArr(EVENTS.all, itter, status, after, this)
 
   // ITTER -----------------------------------------------------------
   function itter(arr, i){
@@ -313,22 +320,21 @@ function filterAlarms(fnAfter){
 
     // Filter by button selection
     for (var type in FILTERS) {
+
+      // Itterate over FILTERS object, Don't filter on only and sev
       if (type != 'only' && type != 'sev' ) {
-        for (var sub in FILTERS[type]) {
+        for (var item in FILTERS[type]) {
 
-          if (!FILTERS[type][sub] && sub != 'other') {
-
-            if (typeString.search(sub) > -1) { //.split(' ')[1]
-              filtered = true
-            }
-
-          } else if (!FILTERS[type][sub] && sub == 'other'){
-
-            if (typeString.search(type + ' other') > -1) {
-              filtered = true
-            }
-
+          // If filteritem is false
+          // - other is in every filtertype, so combine type and other
+          //   to check if it has to filtered
+          // - if item is found in typeString filtered is true
+          if (!FILTERS[type][item] && item != 'other') {
+            if (typeString.search(item) > -1) { filtered = true }
+          } else if (!FILTERS[type][item] && item == 'other'){
+            if (typeString.search(type + ' other') > -1) { filtered = true }
           }
+
         }
       }
     }
@@ -336,8 +342,8 @@ function filterAlarms(fnAfter){
     // Only active filter
     if(FILTERS.only.active && !arr[i]._active) {filtered = true}
 
-    // Fill filtered alarms
-    if (!filtered) { filteredAlarms.push(arr[i]) }
+    // Fill EVENTS.filtered if item is not filtered
+    if (!filtered) { EVENTS.filtered.push(arr[i]) }
 
   }
 
@@ -348,31 +354,23 @@ function filterAlarms(fnAfter){
 
   // AFTER -----------------------------------------------------------
   function after(arr,i){
-    statusFields('Filtering', 'progress', arr, i)
-    setTimeout(function () {
-      fnAfter.call()
-    }, 1);
+    status(arr, i); setTimeout(function () { fnAfter.call() }, 5);
   }
-
 }
 
 
+// Distinct events sumary ------------------------------------------------------// distinctEvents
+function distinctEvents(fnAfter){
 
+  // distinct object based on filtered alarms
+  EVENTS.dist = new DistEvents(EVENTS.filtered);                                // NOTE: HIER BEN IK
 
-// [5] Distinct events sumary --------------------------------------------------
-function distinctAlarms(fnAfter){
-
-  distAlarms = new DistAlarms(filteredAlarms);
-
-  asyncArr(filteredAlarms, itter, status, after, this)
+  // asyncArr(array, fn_arr, fn_dom, fnAfter, context [, time])
+  asyncArr(EVENTS.filtered, itter, status, after, this)
 
   // ITTER -----------------------------------------------------------
   function itter(arr, i){
-
-    var a = arr[i]
-
-    distAlarms.addDist(a)
-
+    EVENTS.dist.add(arr[i])
   }
 
   // STATUS ----------------------------------------------------------
@@ -383,25 +381,27 @@ function distinctAlarms(fnAfter){
   // AFTER -----------------------------------------------------------
   function after(arr,i){
 
-    distAlarms.order()
-    distAlarms.calc()
+    // Order alarms and calculate total/percentages
+    EVENTS.dist.order(); EVENTS.dist.calc();
 
-    statusFields('Distinct', 'progress', arr, i)
-    setTimeout(function () {
-      fnAfter.call()
-    }, 1);
+    status(arr, i); setTimeout(function () { fnAfter.call() }, 5);
+
   }
-
-
 }
+
+
+
+
+
 
 // timelineStack to be able to cancel timeline creation
 var timelineStack = []
 
-// [6] Group events ------------------------------------------------------------
-function groupAlarms(fnAfter){
 
-  // Don't analyze groups in live view
+// [6] Group events ------------------------------------------------------------
+function groupEvents(fnAfter){
+
+  // Don't analyze GROUPS.ordered in live view
   if (window.location.pathname == '/live.html'){
 
     statusFields('Done', 'done');
@@ -412,16 +412,16 @@ function groupAlarms(fnAfter){
   } else {
 
     var gID = 1 // to increment group number with each new group
-    groups = {} // Reset groups object
+    GROUPS.ordered = {} // Reset GROUPS.ordered object
 
     // to set short g variable for current group
     var g, index
     function currentGroup(a){
-      index = groups[a._zone][a.station].length - 1
-      g = groups[a._zone][a.station][index]
+      index = GROUPS.ordered[a._zone][a.station].length - 1
+      g = GROUPS.ordered[a._zone][a.station][index]
     }
 
-    asyncArr(filteredAlarms, itter, status, after, this)
+    asyncArr(EVENTS.filtered, itter, status, after, this)
 
   }
 
@@ -443,13 +443,13 @@ function groupAlarms(fnAfter){
     if (!a._active && a._state == 1) {
 
       // Create zone when not present
-      if (groups[a._zone] == undefined) {
-        groups[a._zone] = {}
+      if (GROUPS.ordered[a._zone] == undefined) {
+        GROUPS.ordered[a._zone] = {}
       }
 
       // Create station when not presetn
-      if (groups[a._zone][a.station] == undefined) {
-        groups[a._zone][a.station] = []; newGroup(); // First new group
+      if (GROUPS.ordered[a._zone][a.station] == undefined) {
+        GROUPS.ordered[a._zone][a.station] = []; newGroup(); // First new group
       }
 
       currentGroup(a); // set current group object (g)
@@ -463,7 +463,7 @@ function groupAlarms(fnAfter){
 
       function newGroup(){
 
-        groups[a._zone][a.station].push(new Group(gID)); gID++;
+        GROUPS.ordered[a._zone][a.station].push(new Group(gID)); gID++;
 
         currentGroup(a); // set current group object (g)
         g.time("start", a._start) // set start time of group
@@ -473,9 +473,9 @@ function groupAlarms(fnAfter){
       // OFF event +++++++++++++++++++++++++++++++++++++++++++++
     } else if (a._state == 0) {
 
-      if (groups[a._zone] == undefined) {
+      if (GROUPS.ordered[a._zone] == undefined) {
         a._group = 'no group' // no group when zone is undefined
-      } else if (groups[a._zone][a.station] == undefined) {
+      } else if (GROUPS.ordered[a._zone][a.station] == undefined) {
         a._group = 'no group' // no group when station is undefined
       } else {
         currentGroup(a); // set current group object (g)
@@ -517,26 +517,25 @@ function groupAlarms(fnAfter){
   // AFTER ---------------------------------------------------------
   function after(arr, i){
 
-    statusFields('Done', 'done')
 
     // Count stations present in group object
-    groups._stationcount = 0
+    GROUPS.ordered._stationcount = 0
 
     var groupCnt = {count: 0, max: 0} // To show satus
-    groupsByID = {} // Rest groupsByID object
+    GROUPS.byID = {} // Rest GROUPS.byID object
 
-    for (var zone in groups) {
-      for (var station in groups[zone]) {
+    for (var zone in GROUPS.ordered) {
+      for (var station in GROUPS.ordered[zone]) {
 
-        groups._stationcount++
+        GROUPS.ordered._stationcount++
 
         // Create timelines in the background
-        for (var i = 0; i < groups[zone][station].length; i++) {
+        for (var i = 0; i < GROUPS.ordered[zone][station].length; i++) {
 
-          // Fill groupsByID object
-          groupsByID[groups[zone][station][i].ID] = groups[zone][station][i]
+          // Fill GROUPS.byID object
+          GROUPS.byID[GROUPS.ordered[zone][station][i].ID] = GROUPS.ordered[zone][station][i]
 
-          // count = todo, max = total groups (for status)
+          // count = todo, max = total GROUPS.ordered (for status)
           groupCnt.count++ ; groupCnt.max++ ;
 
           // Async execution of timeline creation (add to timeline stack)
@@ -546,14 +545,16 @@ function groupAlarms(fnAfter){
 
           function asyncTimeline(i, zone, station){
             var current = timelineStack.shift() // Empty timelinestack on exec.
-            groups[zone][station][i].createTimeline(groupCnt)
+            GROUPS.ordered[zone][station][i].createTimeline(groupCnt)
           }
         }
       }
     }
 
-    console.log('Groups', groups);
-    fnAfter.call() // Call next function
+    // Call next function without timeout!!!!
+    // - because group timelines are running in the timeout stack
+    fnAfter.call()
+
 
   }
 }
@@ -575,7 +576,7 @@ function groupAlarms(fnAfter){
 // function asyncTemplate(fnAfter){
 //
 //   // asyncArr(array, fn_arr, fn_dom, fnAfter, context [, time])
-//   asyncArr(allAlarms, itter, status, after, this);
+//   asyncArr(EVENTS.all, itter, status, after, this);
 //
 //   // ITTER -----------------------------------------------------------
 //   function itter(arr, i){
@@ -590,6 +591,6 @@ function groupAlarms(fnAfter){
 //
 //   // AFTER -----------------------------------------------------------
 //   function after(arr, i){
-//     status(arr, i); setTimeout(function () { fnAfter.call() }, 1);
+//     status(arr, i); setTimeout(function () { fnAfter.call() }, 5);
 //   }
 // }

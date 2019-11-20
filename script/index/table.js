@@ -26,7 +26,7 @@ const alarmlist_settings = {
 
 // INIT TABLE
 function setTable(){
-  table = new makeTable(alarmlist_settings, alarms);
+  table = new makeTable(alarmlist_settings, EVENTS.visible);
   table.dl() // Reset line
 }
 
@@ -157,11 +157,11 @@ function makeTable(settings, data){
     // for every record in array
     for (let i = 0; i < d.length; i++){
 
-      //// TEMP: keys length in groups for showing group lines
+      //// TEMP: keys length in GROUPS.ordered for showing group lines
       if (!TIME.rt) {
-        if(d[i]._groupEnd && i > 0 && groups._stationcount == 1){
+        if(d[i]._groupEnd && i > 0 && GROUPS.ordered._stationcount == 1){
           body.push('<tr style="border-top: solid 6px #444" ')
-        } else if (d[i]._group.num == 0 && groups._stationcount == 1){
+        } else if (d[i]._group.num == 0 && GROUPS.ordered._stationcount == 1){
           body.push('<tr style="opacity:0.7;" ')
         } else {
           body.push('<tr')

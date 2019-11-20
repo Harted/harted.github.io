@@ -84,7 +84,7 @@ function initFilter(){
   // clicking on filter chkbox updates filter
   $('.filterbox input').on('click', function(){
     updatefilter(this)
-    filter()
+    filter(EVENTS.visible)
   })
 
   // click on one button selects one
@@ -96,7 +96,7 @@ function initFilter(){
   .on('mouseup', select)
 
   // make filter and hidden object
-  fltr = new Distinct(alarms, 'filter');
+  fltr = new Distinct(EVENTS.visible, 'filter');
   hidden = copyObj(fltr) // new Distinct(alarms, 'filter');
 
   // set true/false on filter and hidden object for filter items
@@ -132,7 +132,7 @@ function updatefilter(target){
 
 
 // FILTER ----------------------------------------------------------------------
-function filter(){
+function filter(alarms){
 
   // reset var for filtered alarms
   filtered = []
@@ -432,7 +432,7 @@ function select(){
     }
   }
 
-  filter();
+  filter(EVENTS.visible);
 
   // Reset style of button when complete
   target.attr('style','')

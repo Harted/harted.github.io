@@ -38,7 +38,6 @@ function pushState(init){
   // - On init (function argument)
   // - If new and old state are the same
   if(!TIME.rt && !popper && !init && !(newstate == oldstate)) {
-    console.log('History saved!')
     history.pushState(new CurrentSet,'','')
   }
 

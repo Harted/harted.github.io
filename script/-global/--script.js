@@ -4,7 +4,7 @@ loadScripts(
   'script/-global/',
 
   // Scripts array - NOTE: order is important!!!
-  ['functions', 'svg', 'objects', 'async', 'session', 'alarm/core'],
+  ['functions', 'svg', 'objects', 'async', 'session', 'events/core'],
 
   // Function when ready (string)
   'globalReady' // index/live specific scripts are loaded after

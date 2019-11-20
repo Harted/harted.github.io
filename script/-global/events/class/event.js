@@ -1,10 +1,10 @@
-// ALARM CLASS -----------------------------------------------------------------
-class Alarm {
+// Event CLASS -----------------------------------------------------------------
+class Event {
 
   // CONSTRUCTOR -----------------------------------------------------          // constructor
   constructor(data, i) {
 
-    // The index number in the allAlarms array
+    // The index number in the EVENTS.all array
     this._index = i
 
     // From database

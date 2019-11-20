@@ -147,17 +147,13 @@ function GET(init){
 
   .done(function(data) {                                              // SUCCES
 
-    console.log("Data: succes");
+    //console.log("Data: succes");
 
     pushState(init); // push history state
 
-    console.time('Alarms')
+    Events(data, afterEvents, timer, init, this); // fill alarm object
 
-    Alarms(data, afterAlarms, timer, init, this); // fill alarm object
-
-    function afterAlarms(timer, init){
-
-      console.timeEnd('Alarms')
+    function afterEvents(timer, init){
 
       setTable(); // init table based on alarms
 

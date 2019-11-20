@@ -1,10 +1,10 @@
 function createOverview(sortMode){
 
   sortMode = sortMode || 'count'
-  distAlarms.sort(sortMode)
+  EVENTS.dist.sort(sortMode)
 
   var html = ''
-  var dist = distAlarms.ordered
+  var dist = EVENTS.dist.ordered
   var sevOrder = ['A','B','C','D','E']
 
   // http://jsbin.com/quhujowota/1/edit?html,js,output
@@ -55,16 +55,17 @@ function createOverview(sortMode){
 
           html += '<tbody>'
 
-          for (var j = 0; j < sev.alarms.length; j++) {
+          for (var j = 0; j < sev.distevents.length; j++) {
 
-            var sv = sev.alarms[j]
+            var sv = sev.distevents[j]
+            var evt = sv.events[0]
 
             html += '<tr>'
 
-            html += '<td title="' + sv.obj[0].zone + '">' + sv.obj[0].zone + '</td>'
-            html += '<td title="' + sv.obj[0].object + '\n' + sv.obj[0]._varOrg + '">' + sv.obj[0].object + '</td>'
-            html += '<td title="' + sv.obj[0].description + '">' + sv.obj[0].description + '</td>'
-            html += '<td title="' + sv.obj[0].comment + '">' + sv.obj[0].comment + '</td>'
+            html += '<td title="' + evt.zone + '">' + evt.zone + '</td>'
+            html += '<td title="' + evt.object + '\n' + evt._varOrg + '">' + evt.object + '</td>'
+            html += '<td title="' + evt.description + '">' + evt.description + '</td>'
+            html += '<td title="' + evt.comment + '">' + evt.comment + '</td>'
 
             var times = ['duration', 'PRODUCTION', 'STANDSTILL']
 

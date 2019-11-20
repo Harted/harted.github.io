@@ -2,12 +2,12 @@
 loadScripts(
 
   // Directory
-  'script/-global/alarm/',
+  'script/-global/events/',
 
   // Scripts array
   [
-    'class/alarm', 'class/count', 'class/dist',
-    'class/distalarm', 'class/group', 'class/hdlow',
+    'class/event', 'class/count', 'class/dist',
+    'class/distevent', 'class/group', 'class/hdlow',
     'class/timeline',
 
     'parts'
@@ -15,24 +15,23 @@ loadScripts(
 
 )
 
-// GLOBAL alarms var -----------------------------------------------------------
-var alarms
-var allAlarms, filteredAlarms
-var alarmParts
-var groups = {}
-var groupsByID = {}
+// GLOBAL var ------------------------------------------------------------------
+var EVENTS = {
+  all: [],
+  filtered: [],
+  visible: [],
+  parts: [],
+  dist: {},
+}
 
-var distAlarms
-
-
-// TODO:
-// - replace 'alarms' by 'visibleAlarms'
-
-
+var GROUPS = {
+  ordered: {},
+  byID: {}
+}
 
 
 // MASTER ALARMS FUNCTION ------------------------------------------------------
-function Alarms(data, fnAfter, timer, init, context){
+function Events(data, fnAfter, timer, init, context){
 
   var liveView = window.location.pathname == '/live.html' || TIME.rt
 
@@ -43,57 +42,47 @@ function Alarms(data, fnAfter, timer, init, context){
   // - Set zone and station (from TIA_GC object)
   // - Parse alarm parts (modezone, object, description)
   // - Parse alarm type with regular expressions
-  createAlarms(createAlarms_after, data)
-
+  createEvents(createAlarms_after, data)
 
   // Analyze alarms -------------------------------------------------------
   // - Set linkID, ACTIVE, start, end & ON event duration
-  function createAlarms_after(){ analyzeAlarms(analyzeAlarms_after) };
-
+  function createAlarms_after(){ analyzeEvents(analyzeAlarms_after) };
 
   // Link alarms ----------------------------------------------------------
   // - Set OFF event duration (complete the link)
   function analyzeAlarms_after(idHasON, timeStore, linkIDn){
     // TEMP: liveView should be in next itteration (timeline)
-    linkAlarms(linkAlarms_after, idHasON, timeStore, linkIDn)
+    linkEvents(linkAlarms_after, idHasON, timeStore, linkIDn)
   }
 
   // Timeline alarms || filterAlarms --------------------------------------
   function linkAlarms_after(idHasON) {
     if (liveView) {
-      filterAlarms(filterAlarms_after);
+      // - Filter alarms (in liveView or realtime)
+      filterEvents(filterAlarms_after);
     } else {
-      timelineAlarms(timelineAlarms_after, idHasON);
-
-      // DEBUG: : To check dif between total time and timeline total time
-      for(i = 0; i < allAlarms.length; i++){
-        if(allAlarms[i]._timeline != undefined){
-          if (allAlarms[i]._timeline.duration._checkTotalDif != 0){
-            console.log('DEBUG: difference between duration and timeline total');
-            console.log(allAlarms[i]._timeline.duration._checkTotalDif)
-            console.log(allAlarms[i])
-          }
-        }
-      }
+      // - Create HDLOWB timeline for event
+      timelineEvents(timelineAlarms_after, idHasON);
     }
   }
 
-
+  // filterAlarms ---------------------------------------------------------
   function timelineAlarms_after(){
-    filterAlarms(filterAlarms_after);
+    filterEvents(filterAlarms_after);
   }
 
+  // create event summary || Finish ---------------------------------------
   function filterAlarms_after(){
     if (liveView) {
       groupAlarms_after();
     } else {
-      distinctAlarms(distinctAlarms_after);
+      // - Count sort and order alarms for overview
+      distinctEvents(distinctAlarms_after);
     }
-
   }
 
   function distinctAlarms_after(){
-    groupAlarms(groupAlarms_after);
+    groupEvents(groupAlarms_after);
   }
 
   //// NOTE: CLEANUP this part
@@ -104,38 +93,38 @@ function Alarms(data, fnAfter, timer, init, context){
     // Alarm limit -----------------------------------------------------
     var len
 
-    if (filteredAlarms.length < alarmLimit) {
-      len = filteredAlarms.length
+    if (EVENTS.filtered.length < alarmLimit) {
+      len = EVENTS.filtered.length
     } else {
       len = alarmLimit
     }
 
-    alarms = [];
+    EVENTS.visible = [];
 
     for (let i = 0; i < len; i++) {
-      alarms.push(filteredAlarms[i])
+      EVENTS.visible.push(EVENTS.filtered[i])
     }
 
 
     // Alarm parts ----------------------------------------------------
-    alarmParts = []
+    EVENTS.parts = []
 
-    for (let i = 0; i < filteredAlarms.length; i++) {
+    for (let i = 0; i < EVENTS.filtered.length; i++) {
 
       p = Math.ceil((i+1)/alarmLimit) - 1
 
-      if (alarmParts[p] == undefined) {
-        alarmParts[p] = []
+      if (EVENTS.parts[p] == undefined) {
+        EVENTS.parts[p] = []
       }
 
-      alarmParts[p].push(filteredAlarms[i])
+      EVENTS.parts[p].push(EVENTS.filtered[i])
 
     }
 
     alarmPages(alarmLimit);
 
     // Fill no data item in alarms when there's no data ---------------
-    if (filteredAlarms.length == 0) {
+    if (EVENTS.filtered.length == 0) {
       alarms = [{
         comment: "",
         description: "",
@@ -172,9 +161,9 @@ function Alarms(data, fnAfter, timer, init, context){
 
 function alarmPages(alarmLimit){
 
-  if(filteredAlarms.length > alarmLimit){
+  if(EVENTS.filtered.length > alarmLimit){
 
-    var pages = alarmParts.length
+    var pages = EVENTS.parts.length
     var v
     var v_old = 0
 
@@ -209,7 +198,7 @@ function alarmPages(alarmLimit){
       function pageConfirm(){
         if(v != v_old){
 
-          alarms = alarmParts[v - 1]
+          EVENTS.visible = EVENTS.parts[v - 1]
 
           setTable()
           responsive();
