@@ -62,7 +62,7 @@ function ajax_s() {
 
 function GET_init(){
 
-  statusFields('Geting Data', 'loading') // Set status fields
+  statusFields('Getting Data', 'loading') // Set status fields
 
   // Fade out table body (not on realtime)
   if (!TIME.rt) {
