@@ -216,6 +216,7 @@ var LAYOFF = [
   [new Date (2019,10,13), 'S2'],
   [new Date (2019,10,15), 'N'],
   [new Date (2019,10,20), 'S2'],
+  [new Date (2019,10,21), 'S2'], // Exception: Missing parts
   [new Date (2019,10,22), 'N'],
   [new Date (2019,10,27), 'S2'],
   [new Date (2019,10,29), 'N'],
