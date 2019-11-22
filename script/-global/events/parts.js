@@ -250,7 +250,7 @@ function timelineEvents(fnAfter, idHasON){
       }
     }
 
-    status(arr, i); setTimeout(function () { fnAfter.call() }, 5);
+    status(arr, i); setTimeout(function () { fnAfter.call() }, 0);
 
   }
 
@@ -354,7 +354,7 @@ function filterEvents(fnAfter){
 
   // AFTER -----------------------------------------------------------
   function after(arr,i){
-    status(arr, i); setTimeout(function () { fnAfter.call() }, 5);
+    status(arr, i); setTimeout(function () { fnAfter.call() }, 0);
   }
 }
 
@@ -363,7 +363,7 @@ function filterEvents(fnAfter){
 function distinctEvents(fnAfter){
 
   // distinct object based on filtered alarms
-  EVENTS.dist = new DistEvents(EVENTS.filtered);                                // NOTE: HIER BEN IK
+  EVENTS.dist = new DistEvents(EVENTS.filtered);
 
   // asyncArr(array, fn_arr, fn_dom, fnAfter, context [, time])
   asyncArr(EVENTS.filtered, itter, status, after, this)
@@ -384,46 +384,27 @@ function distinctEvents(fnAfter){
     // Order alarms and calculate total/percentages
     EVENTS.dist.order(); EVENTS.dist.calc();
 
-    status(arr, i); setTimeout(function () { fnAfter.call() }, 5);
+    status(arr, i); setTimeout(function () { fnAfter.call() }, 0);
 
   }
 }
 
 
-
-
-
-
-// timelineStack to be able to cancel timeline creation
-var timelineStack = []
-
-
-// [6] Group events ------------------------------------------------------------
+// Group events ----------------------------------------------------------------// groupEvents
 function groupEvents(fnAfter){
 
-  // Don't analyze GROUPS.ordered in live view
-  if (window.location.pathname == '/live.html'){
+  var gID = 1 // to increment group number with each new group
+  GROUPS.ordered = {} // Reset GROUPS.ordered object
 
-    statusFields('Done', 'done');
-    setTimeout(function () {
-      fnAfter.call()
-    }, 1);
+  // to set short g variable for current group
+  var g, index
 
-  } else {
-
-    var gID = 1 // to increment group number with each new group
-    GROUPS.ordered = {} // Reset GROUPS.ordered object
-
-    // to set short g variable for current group
-    var g, index
-    function currentGroup(a){
-      index = GROUPS.ordered[a._zone][a.station].length - 1
-      g = GROUPS.ordered[a._zone][a.station][index]
-    }
-
-    asyncArr(EVENTS.filtered, itter, status, after, this)
-
+  function currentGroup(a){
+    index = GROUPS.ordered[a._zone][a.station].length - 1
+    g = GROUPS.ordered[a._zone][a.station][index]
   }
+
+  asyncArr(EVENTS.filtered, itter, status, after, this)
 
 
   // ITTER ---------------------------------------------------------
@@ -560,19 +541,132 @@ function groupEvents(fnAfter){
 }
 
 
+// Visible events (non async)---------------------------------------------------// visibleEvents
+function visibleEvents(){
+
+  // Set limit ------------------------------------------------------
+  var eventLimit = 1000
+
+  if (EVENTS.filtered.length < eventLimit) {
+    var len = EVENTS.filtered.length
+  } else {
+    var len = eventLimit
+  }
+
+  EVENTS.visible = []; // Reset visible events array
+
+  // Fill visible event array till len (limit or < 1000)
+  for (let i = 0; i < len; i++) {
+    EVENTS.visible.push(EVENTS.filtered[i])
+  }
+
+
+  // Event parts ----------------------------------------------------
+  // - Make parts of 1000 or less events
+  EVENTS.parts = [] // Reset parts array
+
+  for (let i = 0; i < EVENTS.filtered.length; i++) {
+
+    partIndex = Math.ceil((i+1)/eventLimit) - 1
+
+    if (EVENTS.parts[partIndex] == undefined) {
+      EVENTS.parts[partIndex] = []
+    }
+
+    EVENTS.parts[partIndex].push(EVENTS.filtered[i])
+
+  }
+
+  alarmPages(eventLimit);
+
+  // Fill no data item in alarms when there's no data ---------------
+  if (EVENTS.filtered.length == 0) {
+    alarms = [{
+      comment: "",
+      description: "",
+      object: "",
+      severity: "",
+      station: "",
+      zone: "",
+      _active: false,
+      _datetime: "No Data",
+      _duration: -1,
+      _durtxt: "n/a",
+      _group: {stn:'',num:''},
+      _linkID: -1,
+      _state: "",
+      statetxt: "",
+      _stcode: "",
+      _type: "",
+      _var: "No Data",
+    }];
+  }
+
+  function alarmPages(eventLimit){
+
+    // Show pages only when there are
+    if(EVENTS.filtered.length > eventLimit){
+
+      var pages = EVENTS.parts.length
+      var pageNumMem = 0
+
+      $('#pagepick').addClass('display')
+      $('#pages').text('Pages: ' + pages)
+      $('#page').attr('max', pages)
+
+      // Page change on input
+      $('#pagepick input[type=number]').on('input', pageChange)
+
+      function pageChange() {
+
+        var pageNum = $(this).val() // number value of input
+
+        // Input validation
+        if (pageNum > pages) {pageNum = pages}
+        if (pageNum < 1 && pageNum != '' ) {pageNum = 1}
+        $(this).val(pageNum)
+
+        // If pagenum is integer init pagechange on enter of focusout
+        if(!Number.isNaN(parseInt(pageNum))){
+
+          $(this).off('keyup').on('keyup', enter)
+          .off('focusout').on('focusout', pageConfirm.bind(null, pageNum))
+
+          function enter(event){
+            if (event.keyCode == 13) { pageConfirm(pageNum);}
+          }
+
+        }
+
+        // Page confirm: set table, make new filter and adjust
+        function pageConfirm(pageNum){
+          if(pageNum != pageNumMem){
+
+            // Set visible events to the selected page number
+            EVENTS.visible = EVENTS.parts[pageNum - 1]
+
+            setTable();
+            responsive();
+            tableFilter();
+
+            //remember pagenum so it's only fired on change
+            pageNumMem = pageNum
+
+          }
+        }
+      }
+    } else {
+      $('#pagepick').removeClass('display')
+    }
+  }
+
+}
 
 
 
 
 
-
-
-
-
-
-
-
-// TEMPLATE --------------------------------------------------------------------
+// ASYNC TEMPLATE --------------------------------------------------------------
 // function asyncTemplate(fnAfter){
 //
 //   // asyncArr(array, fn_arr, fn_dom, fnAfter, context [, time])
@@ -591,6 +685,6 @@ function groupEvents(fnAfter){
 //
 //   // AFTER -----------------------------------------------------------
 //   function after(arr, i){
-//     status(arr, i); setTimeout(function () { fnAfter.call() }, 5);
+//     status(arr, i); setTimeout(function () { fnAfter.call() }, 0);
 //   }
 // }

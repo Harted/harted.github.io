@@ -95,28 +95,32 @@ class DistEvents {
 
     var o = this.ordered
 
+    // For every seveirty level in the ordered object
     for (var z in o) {
       for (var st in o[z]) {
         for (var sev in o[z][st]) {
 
           if (sev.indexOf('_') != 0) {
 
+            // sort A-B then reverse
             var arr = o[z][st][sev].distevents
-
-            arr = arr.sort(function(a,b) {
-              return a[mode] - b[mode];
-            });
-
+            arr = arr.sort(function(a,b) { return a[mode] - b[mode];});
             arr = arr.reverse()
 
           }
         }
       }
     }
-
   }
 
+
+  // Count total & calc percentager ---------------------------------------     // calc
   calc(){
+
+    //
+    // NOTE: Currently only on count
+    // REVIEW: When groups are implemented and time is calculated
+    //
 
     var selection = [
       'count', //'duration', 'PRODUCTION', 'STANDSTILL',
@@ -162,7 +166,7 @@ class DistEvents {
       }
     }
 
-    // Set percentage function --------------------------------------------     //setPercentage
+    // Set percentage function
     function setPercentage(top, sub, sel){
 
       sub.perc = {}
