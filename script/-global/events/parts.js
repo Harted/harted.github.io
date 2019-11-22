@@ -581,7 +581,7 @@ function visibleEvents(){
 
   // Fill no data item in alarms when there's no data ---------------
   if (EVENTS.filtered.length == 0) {
-    alarms = [{
+    EVENTS.visible = [{
       comment: "",
       description: "",
       object: "",
