@@ -332,7 +332,7 @@ function checkActive(alarms){
 
 
 $('#alfa_logo').click(function(){
-  window.location = 'http://10.249.67.154'
+  window.location = window.location.origin
 })
 
 
