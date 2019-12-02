@@ -30,7 +30,8 @@ function ajax_s() {
   var loc = window.location.host
 
   if(
-    loc == 'harted.github.io' || loc == 'localhost:8000'
+    loc == 'harted.github.io' ||
+    loc.indexOf('8000') > -1
   ){
 
     //Remote settings (data sample)

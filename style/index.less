@@ -249,9 +249,9 @@ extract(@table_pad,4);
         margin: 2px 11px 2px 1px;
         height: @table_fontsize;
 
-        font-weight: bold; //////////HIERZO
+        //font-weight: bold; //////////HIERZO
 
-        background-color: @color_blue;
+        background-color: @color_blue_08;
         color: @color_dark;
         border-radius: 2px ;
 
@@ -266,14 +266,16 @@ extract(@table_pad,4);
         }
 
         &:hover{
-          box-shadow: 0px 0px 1px 1px @color_bright_05;
+          //box-shadow: 0px 0px 2px 1px rgba(0,0,0,1);
+          background-color: @color_blue_04;
           cursor: pointer;
         }
 
         &.clicked {
           color: @color_bright;
-          box-shadow: inset 0px 0px 2px 1px rgba(0,0,0,0.5);
-          text-shadow: 0px 0px 3px rgba(0, 0, 0, 1);
+          background-color: @color_blue_04;
+          //box-shadow: inset 0px 0px 1px 1px rgba(0,0,0,0.5);
+          //text-shadow: 0px 0px 1px rgba(0, 0, 0, 1);
         }
 
       }
@@ -301,6 +303,8 @@ extract(@table_pad,4);
         margin-bottom: 5px;
         border: none;
         outline: none;
+
+        font-weight: bold;
 
         &:disabled {
           background-color: @color_dark;
@@ -389,12 +393,12 @@ extract(@table_pad,4);
         display: none;
 
         &:hover {
-          background-color: @color_blue_04;
+          //background-color: @color_blue_04;
         }
 
         &.sel {
-          background-color: @color_blue_08;
-          text-shadow: 0px 0px 3px rgba(0, 0, 0, 1);
+          background-color: @color_blue_04;
+          //text-shadow: 0px 0px 3px rgba(0, 0, 0, 1);
         }
 
         &.hidden {
