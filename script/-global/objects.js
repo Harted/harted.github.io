@@ -232,7 +232,7 @@ var LAYOFF = [
   [new Date (2019,10,27), 'S2'],
   [new Date (2019,10,29), 'N'],
   // December
-  [new Date (2019,11,03), 'S1'],
+  // [new Date (2019,11,03), 'S1'], //Afgelast
   [new Date (2019,11,04), 'S2'],
   [new Date (2019,11,11), 'S2'],
   [new Date (2019,11,13), 'N'],
