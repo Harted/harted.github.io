@@ -5,12 +5,19 @@ function getStations(){
   statusFields('Connecting to database', 'loading')
 
   if(
-    window.location.host == 'harted.github.io' || 
+    window.location.host == 'harted.github.io' ||
     window.location.host.indexOf('8000') > -1
   ){
     // Sample for home
     setTimeout(function () {
-      setActiveStn([['CSR266'],['CLF2028'],['CLF2029'],['CHL2922'],['CCP2222'],['CMP305'],['CMP306'],['CMP310'], ['CMP311'],['CLF3037']])
+      setActiveStn([
+        ["CBU1001"],["CCP2222"],["CHL2922"],["CLF2000"],["CLF2028"],
+        ["CLF2029"],["CLF2030"],["CLF248"],["CLF260"],["CLF280"],
+        ["CLF285"],["CLF3037"],["CLF3038"],["CLF4000"],["CLF4030"],
+        ["CLF448"],["CMKE2100"],["CMP305"],["CMP306"],["CMP310"],
+        ["CMP311"],["CPU445"],["CPU446"],["CSR2364"],["CSR265"],
+        ["CSR266"],["CSR267"]
+      ])
     }, 2000);
     return;
   }
