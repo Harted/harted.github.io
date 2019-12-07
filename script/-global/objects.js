@@ -2,7 +2,7 @@
 var TIA_GC = {
   ZONE1: {
     CLF260: { active: false, name: 'Bodybuffer' },
-    CLF264: { active: false, name: 'Adjust Panoroof'},
+    CLF265: { active: false, name: 'Adjust Panoroof'},
     CLF280: { active: false, name: 'Doorline Assembly' },
     CLF285: { active: false, name: 'Doorline Buffer' },
     CSR2264: { active: false, name: 'Backup Panoroof CMA' },
