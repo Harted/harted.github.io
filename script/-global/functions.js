@@ -103,6 +103,7 @@ function loadFade(){ //fade interface on load
   $('.fade_reverse').css({'opacity': 0});
 }
 
+var animReq
 
 // Status fields ---------------------------------------------------------------// statusFields
 function statusFields(str, cls, arr, i){
@@ -111,16 +112,45 @@ function statusFields(str, cls, arr, i){
 
   if (TIME.rt){return} //Don't show status when realtime is active
 
+  cancelAnimationFrame(animReq)
+
   if (cls === "progress") {
+
     var progress =  Math.round( i / arr.length * 100 )
     str += ': ' + progress + '%'
+
+    console.log('progress')
+
+  } else if (cls === 'loading') {
+
+    var pointse = ['   ', '.  ','.. ', '...'], pi = 0
+    var last = 0
+
+    function points(now){
+      if (now - last >= 500) {
+        var newstr = ' ' + str + pointse[pi]
+        pi++; if (pi > 3) { pi = 0};
+        last = now;
+        updateStr(newstr)
+      }
+      animReq = requestAnimationFrame(points)
+    }
+
+    animReq = requestAnimationFrame(points)
+
   }
 
-  var ids = ['#load_status','#ul_status']
-  var cl = 'loadstatus ' + cls
+  function updateStr(str){
 
-  for (var i = 0; i < ids.length; i++) {
-    $(ids[i] + ' span').attr('class', cl).text(str)
+    var ids = ['#load_status','#ul_status']
+    var cl = 'loadstatus ' + cls
+
+    for (var i = 0; i < ids.length; i++) {
+      $(ids[i] + ' span').attr('class', cl).text(str)
+    }
+
   }
+
+  updateStr(str)
 
 }
