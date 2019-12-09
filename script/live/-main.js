@@ -268,22 +268,24 @@ function checkActive(alarms){
 
             for (var i = 0; i < TIA_GC[zone][stn].active_alarms.length; i++) {
 
-              var alarm =
-              '<span>' + TIA_GC[zone][stn].active_alarms[i].severity + ' |</span>'
+              var alarm = '<div><span>'
 
+              alarm += TIA_GC[zone][stn].active_alarms[i].severity
+              alarm += ' | '
 
+              if (TIA_GC[zone][stn].active_alarms[i]._type.indexOf('formatnok') > -1) {
 
-              if (TIA_GC[zone][stn].active_alarms[i]._type == 'formatnok') {
-
-                alarm +=
-                '<span>' + TIA_GC[zone][stn].active_alarms[i]._var + '</span>'
+                alarm += TIA_GC[zone][stn].active_alarms[i]._var
+                alarm += '</span></div>'
 
               } else {
 
-                alarm +=
-                '<span>' + TIA_GC[zone][stn].active_alarms[i].zone + ' |</span>'
-                + '<span>' + TIA_GC[zone][stn].active_alarms[i].object + ' |</span>'
-                + '<span>' + TIA_GC[zone][stn].active_alarms[i].comment + '</span>'
+                alarm += TIA_GC[zone][stn].active_alarms[i].zone
+                alarm += ' | '
+                alarm += TIA_GC[zone][stn].active_alarms[i].object
+                alarm += ' | '
+                alarm += TIA_GC[zone][stn].active_alarms[i].comment
+                alarm += '</span></div>'
 
               }
 
@@ -294,13 +296,13 @@ function checkActive(alarms){
               html += '">'
               html += alarm
 
-              html += '<div class="ignore" title="ignore" '
-              html += 'var="' + TIA_GC[zone][stn].active_alarms[i]._var + '">'
-              html += '</div>'
-
-              html += '<span class="duration">'
+              html += '<div><span class="duration">'
               html += TIA_GC[zone][stn].active_alarms[i]._durtxt
               html += '</span>'
+
+              html += '<div class="ignore" title="ignore" '
+              html += 'var="' + TIA_GC[zone][stn].active_alarms[i]._var + '">'
+              html += '</div></div>'
 
               html += '</div>'
 
@@ -373,8 +375,8 @@ function ignLen(zone){
 function ignore(){
 
   var ignr = $(this).attr('var');
-  var stn = $(this).parents().eq(1).attr('id');
-  var zone = $(this).parents().eq(2).attr('id');
+  var stn = $(this).parents().eq(2).attr('id');
+  var zone = $(this).parents().eq(3).attr('id');
 
   setIgn(zone,stn);
 
@@ -382,9 +384,7 @@ function ignore(){
     ignored[zone][stn].push(ignr)
   }
 
-  console.log(ignored)
-
-  $(this).parent().addClass('hidden')
+  $(this).parents().eq(1).addClass('hidden')
 }
 
 
