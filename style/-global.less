@@ -78,7 +78,8 @@ body {
   background-color: @color_dark;
   overflow: hidden; //no scrollbar
   height: 100%;
-  font-size: 0; //remove unwanted gaps, define fonsize always!!
+  font-size: 0; //remove unwanted gaps, define fontsize always!!
+  -webkit-text-size-adjust: 100%;
 }
 
 html {
@@ -193,30 +194,12 @@ html {
   &.loading{
     white-space: pre;
   }
-  //   &::before {
-  //     content: ' ';
-  //     white-space: pre;
-  //   }
-  //
-  //   &::after{
-  //     content: '   ';
-  //     animation: pointse 2s linear infinite;
-  //
-  //   }
-  // }
 
   &.fail {
     opacity: 0.9;
     color: @color_red;
   }
 
-}
-
-@keyframes pointse {
-  0%  {content: '   ' !important;}
-  25% {content: '.  ' !important;}
-  50% {content: '.. ' !important;}
-  75% {content: '...' !important;}
 }
 
 

@@ -24,3 +24,8 @@ function loadScripts(dir, scrArr, fnStr) {
     }
   }
 }
+
+// TOUCH -----------------------------------------------------------------------
+window.ontouchstart = function(event){
+  $('body').removeClass('no_touch') // remove notouch class 
+}

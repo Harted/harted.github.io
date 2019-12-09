@@ -232,7 +232,7 @@ function updateAX(){
 
 
 // Temp live test
-$('#controllogo div').click(LIVE)
+$('#controllogo').click(LIVE)
 
 function LIVE(){
   var origin = window.location.origin

@@ -14,7 +14,13 @@
   -webkit-box-sizing: border-box;
 }
 
+//HOVERS
 
+.no_touch {
+  thead .clickable:hover {
+    background-color: @color_blue_01;
+  }
+}
 
 
 
@@ -179,9 +185,9 @@
           .clickable {
             .noselect();
             cursor: pointer;
-            &:hover {
-              background-color: @color_blue_01;
-            }
+            // &:hover {
+            //   background-color: @color_blue_01;
+            // }
           }
 
         }

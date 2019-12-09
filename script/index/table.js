@@ -497,11 +497,12 @@ function makeTable(settings, data){
     // - return false and don't draw a line
     if(off_ot + off_oh >= on_ot){ return false; }
 
-    // Get position fot the line
+    // Get position for the line
     // - The offset top of the tbl +overlay
     // - The offset left of the second td (-6 = half the div width)
+    var size = parseInt($('#line').css('width').replace('px',''))
     var sh_ot = $(settings.id).prev('.table-overlay').offset().top
-    var l = el_th[1].offsetLeft - 6;
+    var l = el_th[1].offsetLeft - size/2;
 
     // Calculater line t(op) Y, b(ottom) Y and h(eight)
     var t = off_ot - sh_ot + off_oh
@@ -509,7 +510,7 @@ function makeTable(settings, data){
     var h = b - t
 
     // Draw the line
-    line(h, l , t, b)
+    line(h, l , t, b, size)
 
     // Return true for the event listeners to apply
     return true;
@@ -517,15 +518,29 @@ function makeTable(settings, data){
   };
 
 
-  function line(h, osl, t, b){
+  function line(h, osl, t, b, s){
 
     // Prepare the string for the svg
-    var l = '<svg viewBox="0 0 12 ' + h + '">'
-    l += '<line x1="6" y1="0" x2="6" y2="' + h + '" />'
-    l += '<circle cx="6" cy="' + h + '" r="4" />'
-    l += '<circle cx="6" cy="0" r="4"/>'
-    l += ' <polygon points="6,' + ((h/2)-4) + ' 2,'
-    l += ((h/2)+4) + ' 10,' + ((h/2)+4) + '" />'
+    var l = '<svg viewBox="0 0 ' + s + ' ' + h + '">'
+
+    // Line
+    l += '<line '
+    l += 'x1="' + (s/2) + '" y1="0" '
+    l += 'x2="' + (s/2) + '" y2="' + h + '" />'
+
+    // Circle bottom
+    l += '<circle cx="' + (s/2) + '" cy="' + h + '" r="' + (s/4) + '" />'
+
+    // Circle top
+    l += '<circle cx="' + (s/2) + '" cy="0" r="' + (s/4) + '"/>'
+
+    // Triangle
+    l += ' <polygon points="'
+    l += ' ' + (s/2) + ','  + ((h/2) - (s/2-3))
+    l += ' 3,'  + ((h/2) + (s/2-3))
+    l += ' ' + (s-3) + ',' + ((h/2) + (s/2-3))
+    l += '" />'
+
     l += '</svg>'
 
     // Output the html and set the div style for positioning

@@ -31,7 +31,7 @@
   <script src="script/--external/jQuery.js" charset="utf-8"></script>
 
 </head>
-<body> <!-- BODY -------------------------------------------------------------->
+<body class='no_touch'> <!-- BODY --------------------------------------------->
 
   <!-- Spinner -->
   <!-- <div id='spinner' class='fade_reverse'></div> -->
@@ -270,9 +270,11 @@
         </div>
 
         <!-- Bottom logo to look nice on scroll -->
-        <div id='controllogo' class='control-group'>
-          <div><svg><polygon></polygon></svg></div>
-          <span>Live view</span>
+        <div id='controllogo_container' class='control-group'>
+          <div id='controllogo'>
+            <div><svg><polygon></polygon></svg></div>
+            <span>Live view</span>
+          </div>
         </div>
 
       </div>

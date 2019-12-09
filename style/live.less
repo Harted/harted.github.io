@@ -14,16 +14,33 @@
 @import '/style/components/headfoot.less';
 
 #pauze {
+
   color: @color_blue_04;
   cursor: pointer;
   .noselect();
   font-weight: bold;
-  &:hover {
-    color: @color_blue_08;
-  }
+
   &.pauzed {
     font-size: 2em;
   }
+
+}
+
+// HOVERS ----------------------------------------------------------------------
+.no_touch {
+
+  #pauze:hover {
+    color: @color_blue_08;
+  }
+
+  .reset_ignored:hover {
+    background-color: @color_blue_04 !important;
+  }
+
+  .stationbox .alarmrow:hover {
+    .ignore { opacity: 1 !important;}
+  }
+
 }
 
 
@@ -64,7 +81,10 @@
 
     // FLEX (child)
     flex-grow: 1;
+
     flex-basis: 500px;
+
+    min-width: 0px;
 
     @media all and (min-width: 1475px)  {
       flex-basis: 700px;
@@ -104,9 +124,6 @@
       padding: 3px;
       border-radius: 3px;
       background-color: @color_blue_01;
-      &:hover {
-        background-color: @color_blue_04;
-      }
 
 
     }
@@ -155,22 +172,16 @@
 
         span {
           margin-right: 5px;
+          word-wrap: break-word;
+          max-width: 52vw;
         }
 
         .duration {
-          width: 70px;
           text-align: right;
-        }
-
-        &:hover {
-          .ignore {
-            opacity: 1;
-          }
         }
 
         .ignore {
 
-          //display: inline-block;
           opacity: 0.3;
           height: 15px; width: 15px;
 

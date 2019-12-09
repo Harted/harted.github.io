@@ -119,8 +119,6 @@ function statusFields(str, cls, arr, i){
     var progress =  Math.round( i / arr.length * 100 )
     str += ': ' + progress + '%'
 
-    console.log('progress')
-
   } else if (cls === 'loading') {
 
     var pointse = ['   ', '.  ','.. ', '...'], pi = 0

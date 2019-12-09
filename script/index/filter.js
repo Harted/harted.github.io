@@ -403,7 +403,6 @@ function dsblInput(){
 function selectpress(){
   $(this).css({
     "color":"#F5F5F5",
-    "box-shadow": 'inset 0px 0px 3px 1px rgba(0,0,0,0.5)'
   })
 }
 
