@@ -235,7 +235,7 @@ var LAYOFF = [
   // [new Date (2019,11,03), 'S1'], //Afgelast
   [new Date (2019,11,04), 'S2'],
   [new Date (2019,11,11), 'S2'],
-  [new Date (2019,11,13), 'N'],
+  // [new Date (2019,11,13), 'N'], Afgelast
   [new Date (2019,11,18), 'S2'],
   [new Date (2019,11,20), 'N'],
 
