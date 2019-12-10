@@ -196,13 +196,14 @@ extract(@table_pad,4);
     #control-container {
 
       &::-webkit-scrollbar{
-        &-track{
-          box-shadow: inset 0 0 3px rgba(0,0,0,.5);
-        }
-        &-thumb {
-          background-color: @color_blue_08;
-          box-shadow: inset 0 0 3px rgba(0,0,0,.5);
-        };
+        width: 0;
+        // &-track{
+        //   box-shadow: inset 0 0 3px rgba(0,0,0,.5);
+        // }
+        // &-thumb {
+        //   background-color: @color_blue_01;
+        //   box-shadow: inset 0 0 3px rgba(0,0,0,.5);
+        // };
       };
 
       scrollbar-width: none; //Firefox scrollbar hiding (windows
