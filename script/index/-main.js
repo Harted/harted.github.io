@@ -9,6 +9,8 @@ function ready(){
 // When stations are fetched
 function stationsReady(){
 
+  window.alert('This server will soon be unavailable!\nUse: 10.249.67.184\n\nTip Change the 5 to an 8 in the IP address')
+
   loadSession(); // load default, history or link session
   GET(true); // GET data from database (INIT)
 

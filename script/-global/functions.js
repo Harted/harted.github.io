@@ -101,7 +101,6 @@ function copyObj(obj){
 function loadFade(){ //fade interface on load
   $('.fade').css({'opacity': 1});
   $('.fade_reverse').css({'opacity': 0});
-  window.alert('This server will soon be unavailable!\nUse: 10.249.67.184\n\nTip Change the 5 to an 8 in the IP address')
 }
 
 var animReq
