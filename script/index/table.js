@@ -348,6 +348,21 @@ function makeTable(settings, data){
             stored_id = undefined; stored_obj = undefined
 
           };
+
+          // var eventInfo = {}
+          //
+          // eventInfo[$(this).attr('id')] = document.createElement('tr')
+          // eventInfo[$(this).attr('id')].innerHTML = '<td colspan="8">Test</td>'
+          //
+          // console.log(eventInfo[$(this).attr('id')]);
+          // console.log(eventInfo);
+          //
+          // $(eventInfo[$(this).attr('id')]).insertAfter(this)
+
+
+
+
+
         };
 
         // DON'T execute actions when freeze = true
