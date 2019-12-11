@@ -293,6 +293,9 @@ function makeTable(settings, data){
   // line object to output the html
   var lineobj = $(settings.id).prev('.table-overlay').find('#line')
 
+  var eventInfo = {}
+  var storedInfo
+
   // ON HOVER --------------------------------------------------------
   this.setHover = function(external){
 
@@ -321,6 +324,14 @@ function makeTable(settings, data){
               stored_id = undefined ; stored_obj = undefined ; freeze = false;
               $(this).removeClass('freeze')
 
+
+
+              $(eventInfo[storedInfo]).remove()
+              storedInfo = undefined
+
+
+
+
             } else {
 
               freeze = true // freeze is true: disable actions on hover
@@ -331,6 +342,22 @@ function makeTable(settings, data){
 
               // box shadow to show it's freezed
               $(this).addClass('freeze')
+
+
+
+
+
+              // EVENTINFO
+              eventInfo[$(this).attr('id')] = document.createElement('tr')
+              eventInfo[$(this).attr('id')].innerHTML = '<td colspan="8">Test<br>1<br>2<br>3</td>'
+
+              $(eventInfo[$(this).attr('id')]).insertAfter(this)
+
+              storedInfo = $(this).attr('id')
+
+
+
+
 
             }
           } else if (stored_id != undefined && freeze) {
@@ -347,17 +374,17 @@ function makeTable(settings, data){
             // reset stored id & object
             stored_id = undefined; stored_obj = undefined
 
+
+            $(eventInfo[storedInfo]).remove()
+            storedInfo = undefined
+
+
           };
 
-          // var eventInfo = {}
-          //
-          // eventInfo[$(this).attr('id')] = document.createElement('tr')
-          // eventInfo[$(this).attr('id')].innerHTML = '<td colspan="8">Test</td>'
-          //
-          // console.log(eventInfo[$(this).attr('id')]);
-          // console.log(eventInfo);
-          //
-          // $(eventInfo[$(this).attr('id')]).insertAfter(this)
+
+
+
+
 
 
 
