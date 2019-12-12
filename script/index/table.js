@@ -144,7 +144,6 @@ function makeTable(settings, data){
 
 
 
-
   // BODY -----------------------------------------------------------------
   // Made internal function to access from outside (not use atm)
 
@@ -171,7 +170,7 @@ function makeTable(settings, data){
       }
 
 
-      body.push(' class="' + d[i].severity + ' ' + d[i]._type + ' ')
+      body.push(' class="' + d[i].severity + ' ' + d[i]._type + '" ')
 
       // active
       if (d[i]._active) {
@@ -179,23 +178,16 @@ function makeTable(settings, data){
         if (TIME.rt) { body.push('duration ') }
       }
 
+      body.push('" index="' + d[i]._index + '"')
+
       // title (info on mouse over)
       body.push('" title="')
-      body.push(d[i]._zone + ' - ')
-      body.push(d[i]._stntxt)
-
-      body.push('\n' + d[i].statetxt + ' - Shift: ' + d[i]._shift )
-      body.push( ' - Duration : ' + d[i]._durtxt)
-      body.push('\nVariable : ' + d[i]._varOrg)
 
       if (!TIME.rt) { // TEMP:
-        body.push('\nGroup : ' + d[i]._group.ID)
-        if (d[i]._group.durtxt != undefined) {
-          body.push(' - Duration : ' + d[i]._group.durtxt)
-        }
+        body.push('Group : ' + d[i]._group.ID)
       }
 
-      body.push('\n\ni = ' + d[i]._index)
+      body.push('\ni = ' + d[i]._index)
       body.push('\ntype = ' + d[i]._type)
 
       body.push('" id="linkID_' + d[i]._linkID + '_' + d[i].statetxt)
@@ -329,7 +321,7 @@ function makeTable(settings, data){
               $(eventInfo[storedInfo]).remove()
               storedInfo = undefined
 
-
+              drawLine()
 
 
             } else {
@@ -349,14 +341,40 @@ function makeTable(settings, data){
 
               // EVENTINFO
               eventInfo[$(this).attr('id')] = document.createElement('tr')
-              eventInfo[$(this).attr('id')].innerHTML = '<td colspan="8">Test<br>1<br>2<br>3</td>'
+              eventInfo[$(this).attr('id')].setAttribute('class','eventinfo')
+
+              var a = EVENTS.all[$(this).attr('index')]
+
+              var info = '<td colspan="8"><div>'
+
+              info += '<span class="infotitle">' + a._zone + ' - ' + a._stntxt + '</span>'
+              info += '<span class="infocontent">Alarm name: ' + a._varOrg + '<br>'
+              info += 'Duration: ' + a._durtxt
+              info += '&emsp;&emsp;Shift: ' + a._shift + '<br>'
+              info += 'Group duration: ' + a._group.durtxt
+              info += '</span>'
+
+              if (a._linkID >= 0) {
+                info += '<span class="infocontent">Total count: ' + a._count.count + ''
+                info += ' - duration: ' + dhms(a._count.fromTL.TOTAL) + '<br>'
+                info += '.in production: ' + dhms(a._count.fromTL.PRODUCTION) + '<br>'
+                info += '.in standstill: ' + dhms(a._count.fromTL.STANDSTILL) + '</span>'
+              }
+
+
+              info += '</div></td>'
+
+
+
+
+              eventInfo[$(this).attr('id')].innerHTML = info
 
               $(eventInfo[$(this).attr('id')]).insertAfter(this)
 
               storedInfo = $(this).attr('id')
 
 
-
+              drawLine()
 
 
             }
@@ -377,6 +395,8 @@ function makeTable(settings, data){
 
             $(eventInfo[storedInfo]).remove()
             storedInfo = undefined
+
+            drawLine()
 
 
           };

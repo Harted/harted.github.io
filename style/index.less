@@ -526,6 +526,7 @@ extract(@table_pad,4);
           pointer-events: none;
           #line{
             display: none;
+            opacity: 0.5;
             width: 12px;
             position: absolute;
             -webkit-background-clip: svg;
@@ -708,6 +709,40 @@ extract(@table_pad,4);
                   }
                 }
               }
+
+              &.eventinfo {
+
+                background-color: @color_dark;
+                color: @color_bright;
+
+                div {
+
+                  display: flex;
+                  flex-direction: column;
+
+                }
+
+                span {
+
+                  &.infotitle {
+
+                    font-weight: bold;
+                    font-size: 1.1em;
+
+                  }
+
+                  &.infocontent {
+
+                    line-height: 1.5em;
+
+                  }
+
+                  padding: @th_pad;
+
+                }
+
+              }
+
             }
 
             //Conditional formatting ----------------------------------------START
