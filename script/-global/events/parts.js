@@ -188,8 +188,6 @@ function timelineEvents(fnAfter, idHasON){
   var cnt = new Distinct(EVENTS.all, ['_var']);  // for alarm counting
   var prodTlSet = []                            // for timeline reference
 
-  console.time('timeline')
-
   // asyncArr(array, fn_arr, fn_dom, fnAfter, context [, time])
   asyncArr(EVENTS.all, itter, status, after, this);
 
@@ -244,8 +242,6 @@ function timelineEvents(fnAfter, idHasON){
 
   // AFTER -----------------------------------------------------------
   function after(arr, i){
-
-    console.timeEnd('timeline')
 
     // DEBUG: To check dif between total time and timeline total time
     for(i = 0; i < EVENTS.all.length; i++){

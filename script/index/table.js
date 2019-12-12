@@ -348,17 +348,21 @@ function makeTable(settings, data){
               var info = '<td colspan="8"><div>'
 
               info += '<span class="infotitle">' + a._zone + ' - ' + a._stntxt + '</span>'
-              info += '<span class="infocontent">Alarm name: ' + a._varOrg + '<br>'
+              info += '<span class="infocontent">Name: ' + a._varOrg + '<br>'
               info += 'Duration: ' + a._durtxt
               info += '&emsp;&emsp;Shift: ' + a._shift + '<br>'
-              info += 'Group duration: ' + a._group.durtxt
               info += '</span>'
 
               if (a._linkID >= 0) {
-                info += '<span class="infocontent">Total count: ' + a._count.count + ''
+
+                info += '<span class="infocontent">'
+                info += 'Group duration: ' + a._group.durtxt + '<br><br>'
+                info += 'Total count: ' + a._count.count + ''
                 info += ' - duration: ' + dhms(a._count.fromTL.TOTAL) + '<br>'
                 info += '.in production: ' + dhms(a._count.fromTL.PRODUCTION) + '<br>'
-                info += '.in standstill: ' + dhms(a._count.fromTL.STANDSTILL) + '</span>'
+                info += '.in standstill: ' + dhms(a._count.fromTL.STANDSTILL)
+
+                info += '</span>'
               }
 
 
