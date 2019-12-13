@@ -167,21 +167,19 @@ function GET(){
 
       var procTime = new Date() - timer
 
-      if (pauze) { status = 'Pauzed'}
+      setTimeout(function () {
 
-      if(!pauze) {
-
-        setTimeout(function () {
-
+        if (pauze) {
+          status = 'Pauzed'
+        } else if (!pauze) {
           status = (new Date() - timer) + 'ms'
-
-          document.title = 'L I V E - ' + status
-          $('#foot_status span').text( 'Update: ' + status)
           GET()
+        }
 
-        }, 998 - procTime);
+        document.title = 'L I V E - ' + status
+        $('#foot_status span').text( 'Update: ' + status)
 
-      }
+      }, 998 - procTime);
 
     }
 
