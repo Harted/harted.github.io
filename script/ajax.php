@@ -7,12 +7,19 @@ OR die('Unable to connect to the database. Error: <pre>'
 $aq = "SELECT ALARMDATEANDTIMESTAMP, ALARMSOURCE, ALARMOBJECT,
 ALARMCOMMENT, ALARMSEVERITY, ALARMSTATUS FROM ALARM_DATA_FINALASS WHERE ";
 
+$nid = "SELECT MIN(NID_ALARM_DATA) FROM ALARM_DATA_FINALASS WHERE ";
+
 // ALARM DATA GET --------------------------------------------------------------
-if (isset($_GET['rel']) && isset($_GET['stn']) && isset($_GET['sev'])
-&& (isset($_GET['lbt']) || (isset($_GET['sta']) && isset($_GET['end'])))) {
+if (!isset($_GET['nid'])
+&& isset($_GET['mid'])
+&& isset($_GET['rel'])
+&& isset($_GET['stn'])
+&& isset($_GET['sev'])
+&& (isset($_GET['lbt']) || (isset($_GET['sta'])
+&& isset($_GET['end'])))) {
 
 // create query
-$q = $aq . alarmquery(
+$q = $aq . "NID_ALARM_DATA > " . $_GET['mid'] . " AND ". alarmquery(
 	$_GET['rel'],$_GET['stn'],$_GET['sev'],
 	$_GET['lbt'],$_GET['sta'],$_GET['end']
 );
@@ -34,12 +41,15 @@ function alarmquery($rel,$stn,$sev,$lbt,$sta,$end){
 
 	$rel = filter_var($rel, FILTER_VALIDATE_BOOLEAN);
 
-	// Time (always)
+	// NOTE: tried this for tuning because it's indexed, needs longer!!!!
+	//				6s!! with changets it's 2s
+	// $timestamp = "TO_TIMESTAMP(ALARMDATEANDTIMESTAMP, 'yyyy-mm-dd hh24:mi:ss.ff')";
+
 	if ($rel) {
 		$q = "CHANGETS > SYSTIMESTAMP - " . $lbt . " ";
 	} else {
 		$q = "(CHANGETS > TO_TIMESTAMP('" . $sta . "', 'yyyy-mm-dd hh24:mi:ss') AND "
-		. "CHANGETS < TO_TIMESTAMP('" . $end . "', 'yyyy-mm-dd hh24:mi:ss')) ";
+		. "(CHANGETS < TO_TIMESTAMP('" . $end . "', 'yyyy-mm-dd hh24:mi:ss')) ";
 	};
 
 	// Station
@@ -91,13 +101,38 @@ if (isset($_GET['stations'])){
 };
 
 
+// MIN NID ---------------------------------------------------------------------
+if (isset($_GET['nid']) && isset($_GET['rel']) && isset($_GET['stn'])
+&& isset($_GET['sev']) && isset($_GET['lbt'])) {
+
+	// create query
+	$q = $nid . alarmquery(
+		$_GET['rel'],$_GET['stn'],$_GET['sev'],
+		$_GET['lbt'],$_GET['sta'],$_GET['end']
+	);
+
+	echo request($q, $c, false)[0][0];
+
+};
+
+
 // ORACLE REQUEST AND ECHO BACK ------------------------------------------------
-function request($q, $c){
+function request($q, $c, $echo = true){
 
 	$s = oci_parse($c, $q);
 	oci_execute($s);
 	oci_fetch_all($s,$data,null,null,OCI_FETCHSTATEMENT_BY_ROW+OCI_NUM );
-	echo json_encode($data);
+
+	if ($echo) {
+		echo json_encode($data);
+	} else {
+		return $data;
+	}
+
 
 };
+
+
+
+
 ?>

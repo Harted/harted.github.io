@@ -56,6 +56,7 @@ function ajax_s() {
       lbt: ax.lbt_str(),
       sta: ax.sta_str(),
       end: ax.end_str(),
+      mid: 1037992
     }
   }
 }

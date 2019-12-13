@@ -1,11 +1,13 @@
 function ready(){
   loadSession();
-  GET();
+  GET_minNid();
 }
 
 var TIME = {
   rel: true,
 }
+
+var minNid = 0
 
 // Load session (load default, pushed state or state from URL) -------
 function loadSession(){
@@ -109,6 +111,7 @@ function ajax_s() {
       lbt: 1/3,
       sta: '',
       end: '',
+      mid: minNid
     }
   }
 }
@@ -121,6 +124,27 @@ function ajax_s_home(){
     dataType: "json",
   }
 }
+
+
+function GET_minNid(){
+
+  var nidParam = ajax_s()
+  nidParam.data.nid = true
+
+  $.ajax(nidParam)
+  .done(function(data) {
+    minNid = data
+    console.log(minNid);
+    GET()
+  })
+  .fail(function() {
+    console.log("nid_error");
+  });
+
+
+}
+
+
 
 
 
@@ -139,14 +163,25 @@ function GET(){
 
       checkActive(EVENTS.all)
 
-      var status = (new Date() - timer) + 'ms'
+      var status
+
+      var procTime = new Date() - timer
 
       if (pauze) { status = 'Pauzed'}
 
-      document.title = 'L I V E - ' + status
-      $('#foot_status span').text( 'Update: ' + status)
+      if(!pauze) {
 
-      if(!pauze) {GET()}
+        setTimeout(function () {
+
+          status = (new Date() - timer) + 'ms'
+
+          document.title = 'L I V E - ' + status
+          $('#foot_status span').text( 'Update: ' + status)
+          GET()
+
+        }, 998 - procTime);
+
+      }
 
     }
 
