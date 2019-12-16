@@ -23,10 +23,25 @@ class Group {
     };
   }
 
-  checkEmpty(){
+  checkEmpty(last, next){
 
     var empty = this.collection.length === 0
-    if (empty) {
+
+    var neighbour
+    var range = 1000 // in millliseconds
+
+    // When colection is empty and next event start time is equal to this
+    // events start time
+    if (next != undefined) {
+      neighbour = Math.round(last._end/range) === Math.round(next._start/range)
+    } else {
+      neighbour = false
+    }
+
+
+    if (empty && !neighbour) {
+
+      console.log(last, next, neighbour);
 
       // Collection empty and not needed further
       delete this.collection
@@ -47,7 +62,8 @@ class Group {
       this.countSev()
 
     }
-    return empty
+
+    return empty && !neighbour
 
   }
 

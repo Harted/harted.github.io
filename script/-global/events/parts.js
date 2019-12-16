@@ -478,7 +478,7 @@ function groupEvents(fnAfter){
             a._group = g // Add reference to alarm
 
             // Check if the collection is empty
-            if (g.checkEmpty()) {
+            if (g.checkEmpty(a, arr[i-1])) {
 
               g.time("end", a._end); // Set end time of group
               a._groupEnd = true; // Set _groupEnd reference for table line
