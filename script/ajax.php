@@ -48,7 +48,7 @@ function alarmquery($rel,$stn,$sev,$lbt,$sta,$end){
 	if ($rel) {
 		$q = "CHANGETS > SYSTIMESTAMP - " . $lbt . " ";
 	} else {
-		$q = "(CHANGETS > TO_TIMESTAMP('" . $sta . "', 'yyyy-mm-dd hh24:mi:ss') AND "
+		$q = "(CHANGETS > TO_TIMESTAMP('" . $sta . "', 'yyyy-mm-dd hh24:mi:ss')) AND "
 		. "(CHANGETS < TO_TIMESTAMP('" . $end . "', 'yyyy-mm-dd hh24:mi:ss')) ";
 	};
 
@@ -131,8 +131,6 @@ function request($q, $c, $echo = true){
 
 
 };
-
-
 
 
 ?>
