@@ -1,0 +1,42 @@
+/* BOXES -------------------------------------------------------------------- */
+.box {
+  position: absolute; transition: 250ms;
+  background-color: #ffffff70;
+}
+
+#top_left { right: 50%; bottom: 50%; }
+#bottom_left { right: 50%; top: 50%; }
+#bottom_right { left: 50%; top: 50%; }
+#top_right { left: 50%; bottom: 50%; }
+
+/* ALIGNMENT ---------------------------------------------------------------- */
+.center {
+	margin: auto; position:absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.top_left_align, .bottom_left_align, .bottom_right_align, .top_right_align {
+	position: absolute;
+}
+.bottom_left_align {bottom:0; left:0;}
+.bottom_right_align {bottom:0; right:0}
+.top_left_align {left:0; top:0}
+.top_right_align {right:0; top:0}
+
+/* CANVAS ------------------------------------------------------------------- */
+#center_logo, #background, #art, #tree_tl {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+#background, #art, #tree_tl  {
+  pointer-events: none;
+}
+
+#tree_tl {
+  /* border: 1px solid #000; */
+}
